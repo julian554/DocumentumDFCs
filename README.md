@@ -1,9 +1,11 @@
 # DocumentumDFCs
 Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
-* Búsqueda de documentos por:
-- r_object_id. Ejemplo 09507b1f8001066b
-- nombre de carpeta. Ejemplo  AGOSTO
-- path del Cabinet. Ejemplo /EXPEDIENTES/2014/AGOSTO/18 
+
+* Búsqueda de documentos por r_object_id. Ejemplo 09507b1f8001066b
+
+* Búsqueda de documentos por nombre de carpeta. Ejemplo  AGOSTO
+
+* Búsqueda de documentos por path del Cabinet. Ejemplo /EXPEDIENTES/2014/AGOSTO/18 
 
 * Visualizar todos los atributos del documento, carpeta, cabinet, etc
 
