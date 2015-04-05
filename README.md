@@ -22,3 +22,6 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
 * Ejecución de sentencias DQL
 
 * Exportar a Excel el resultado de la ejecución de una DQL
+
+* Exportar a Excel lista de documentos 
+
