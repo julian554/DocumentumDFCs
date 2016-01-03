@@ -1,45 +1,41 @@
-GUI Form Example Descriptions
-================================================================================
+DocumentumDFCs
 
-This project contains three visual forms that were designed with the IDE's
-GUI Builder. You can open these forms in the IDE, and you can view accompanying 
-demos that show you how those forms can be created in the IDE.
+Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
 
+    Búsqueda de documentos por r_object_id. Ejemplo 09507b1f8001066b
 
-To open an example form in the GUI Builder:
+    Búsqueda de documentos por nombre de carpeta. Ejemplo AGOSTO
 
-1) In the IDE's Projects window, navigate to the examples package node within the 
-Source Packages directory.
+    Búsqueda de documentos por path del Cabinet. Ejemplo /EXPEDIENTES/2014/AGOSTO/18
 
-2) Double-click the node of the sample form you want to view.
+    Navegación haciendo doble click sobre una carpeta o cabinet. Botón para subir de nivel hasta los cabinets.
 
-The IDE launches the GUI Builder and displays the chosen form.
+    Visualizar todos los atributos del documento, carpeta, cabinet, etc
 
+    Modificar atributos
 
-Contact Editor
---------------
+    Abrir documentos
 
-This complex form is similar to Windows dialogs typically used to display and 
-edit database information. The example illustrates the full range of GUI Builder 
-features, including alignment, anchoring, sizing, indentation, and runtime 
-auto-resizing behavior. To view a detailed tutorial including flash 
-demonstrations showing how to build this form, copy and paste the following link 
-into your web browser http://netbeans.org/kb/60/java/quickstart-gui.html.
+    Exportar documentos
 
-Antenna Preferences
--------------------
+    Borrar documentos
 
-This example illustrates a type of table-based form commonly used to display 
-related information in visually coherent groups. The GUI Builder's advanced 
-alignment features enable you to group and size non-adjacent components (such as 
-labels, text fields, and buttons) consistently without the need to merge cells
-manually. 
+    Importar documentos pudiendo seleccionar su nombre, carpeta de destino y tipo documental
 
-Find
-----
+    Ejecución de sentencias DQL
 
-This simple form illustrates a straight-forward layout often used in various 
-applications requiring basic search functionality. The GUI Builder's alignment 
-and sizing features enable you to quickly construct such forms while ensuring 
-that they localize predictably. 
+    Exportar a excel el resultado de la ejecución de una DQL
 
+    Exportar a excel lista de documentos
+
+    Utilidad para hacer dump de los atributos de un objeto.
+
+    Exportar a excel datos del dump.
+
+    Actualizadas DFCs a la versión 7.1
+
+    Buscar un r_object_id a partir del path del fichero en el sistema de ficheros
+
+    Obtener el path de un documento en el sistema de ficheros partiendo del data_ticket de la tabla dmr_content_s
+    
+    Exportar una carpeta de Documentum al Sistema de Ficheros local
