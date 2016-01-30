@@ -1621,7 +1621,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
         Properties prop = util.leerPropeties(dirdfc + "dfc.properties");
         prop.setProperty("dfc.data.dir", dirdfc);
-        util.escribirPropeties(dirdfc + "dfc.properties", prop);
+        util.escribirProperties(dirdfc + "dfc.properties", prop);
 
         util.sacarArchivoJar("/es/documentum/manual/DocumentumDFCs.pdf", dirdfc + "manual" + util.separador() + "DocumentumDFCs.pdf");
         util.sacarArchivoJar("/es/documentum/lib/cryptojce.jar", dirdfc + "lib" + util.separador() + "cryptojce.jar");

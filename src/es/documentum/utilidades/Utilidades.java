@@ -452,7 +452,7 @@ public class Utilidades {
         return props;
     }
 
-    public void escribirPropeties(String archivo, Properties props) {
+    public void escribirProperties(String archivo, Properties props) {
         DIGIERROR = "";
         try {
             //Cargamos el archivo 
@@ -460,6 +460,7 @@ public class Utilidades {
             // Properties props = new Properties();
             FileOutputStream ops = new FileOutputStream(fichero, false);
             props.store(ops, "\n");
+            ops.flush();
             ops.close();
         } catch (Exception ex) {
             escribeLog("Error al escribir en el fichero de propiedades " + archivo + " - " + ex.getMessage());
@@ -545,8 +546,8 @@ public class Utilidades {
         String ip = "";
         DIGIERROR = "";
         try {
-            InetAddress address = InetAddress.getByName("localhost");
-
+       //     InetAddress address = InetAddress.getByName("localhost");
+            InetAddress address = InetAddress.getLocalHost();
             address = InetAddress.getLocalHost();
             // Coge la dirección ip como un array de bytes
             byte[] bytes = address.getAddress();

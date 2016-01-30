@@ -1,14 +1,18 @@
 package es.documentum.pantalla;
 
+import com.documentum.fc.client.IDfClient;
+import com.documentum.fc.client.IDfDocbaseMap;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.impl.util.RegistryPasswordUtils;
 import es.documentum.utilidades.Utilidades;
+import static es.documentum.utilidades.Utilidades.escribeLog;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Color;
 import java.io.File;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 
 /**
@@ -31,6 +35,7 @@ public class PantallaConexion extends javax.swing.JDialog {
     Color colornoconex = new Color(255, 200, 200);
     Color colorconex = new Color(200, 255, 200);
     public Boolean conexionOK = false;
+    String boton = "";
 
     public static String getValor() {
         return valor;
@@ -107,6 +112,8 @@ public class PantallaConexion extends javax.swing.JDialog {
         botonSelecionar = new javax.swing.JButton();
         botonTestConex = new javax.swing.JButton();
         EtiquetaPanel = new javax.swing.JLabel();
+        comboRepositorio = new javax.swing.JComboBox<>();
+        botonConectar = new javax.swing.JButton();
 
         opcionBorrar.setText("Borrar conexión");
         opcionBorrar.setToolTipText("Borra la conexión seleccionada");
@@ -219,6 +226,20 @@ public class PantallaConexion extends javax.swing.JDialog {
             }
         });
 
+        comboRepositorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboRepositorioActionPerformed(evt);
+            }
+        });
+
+        botonConectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar.png"))); // NOI18N
+        botonConectar.setText("Conectar");
+        botonConectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonConectarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -226,61 +247,73 @@ public class PantallaConexion extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(botonTestConex, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(botonSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))
+                        .addGap(28, 28, 28)
+                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(PanelSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textoDocbroker)
-                            .addComponent(textoPuerto)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textoRepositorio, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textoPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
-                        .addGap(51, 51, 51))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(138, 138, 138)
+                                .addComponent(botonConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textoDocbroker, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(textoPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(textoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(textoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(comboRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(textoRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(22, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
+                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(2, 2, 2))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addComponent(textoDocbroker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textoDocbroker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textoPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(botonConectar)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textoRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(PanelSeleccion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addGap(31, 31, 31))
+                    .addComponent(PanelSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botonGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(botonSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -311,7 +344,7 @@ public class PantallaConexion extends javax.swing.JDialog {
             Logger.getLogger(PantallaConexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         prop.setProperty("repositorio", textoRepositorio.getText());
-        util.escribirPropeties(directorio + "dfc.properties", prop);
+        util.escribirProperties(directorio + "dfc.properties", prop);
 
         int numelem = ListaSeleccion.getModel().getSize();
         int pos = 0;
@@ -381,7 +414,7 @@ public class PantallaConexion extends javax.swing.JDialog {
             prop.setProperty("usuario", textoUsuario.getText());
             prop.setProperty("password", new String(textoPassword.getPassword()));
             prop.setProperty("repositorio", textoRepositorio.getText());
-            util.escribirPropeties(dirdfc + "dfc.properties", prop);
+            util.escribirProperties(dirdfc + "dfc.properties", prop);
             UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
             try {
                 Thread.sleep(1000);
@@ -433,6 +466,18 @@ public class PantallaConexion extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_EtiquetaPanelMouseClicked
 
+    private void comboRepositorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRepositorioActionPerformed
+        textoRepositorio.setText(comboRepositorio.getItemAt(comboRepositorio.getSelectedIndex()));
+    }//GEN-LAST:event_comboRepositorioActionPerformed
+
+    private void botonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConectarActionPerformed
+        boton = "conectar";
+        IDfClient dfClient = conectar_bocbroker();
+        if (dfClient != null) {
+            cargarRepositorios(dfClient);
+        }
+    }//GEN-LAST:event_botonConectarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -455,10 +500,12 @@ public class PantallaConexion extends javax.swing.JDialog {
     private javax.swing.JLabel EtiquetaPanel;
     private javax.swing.JList ListaSeleccion;
     private javax.swing.JScrollPane PanelSeleccion;
+    private javax.swing.JButton botonConectar;
     private javax.swing.JButton botonGuardar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JButton botonSelecionar;
     private javax.swing.JButton botonTestConex;
+    private javax.swing.JComboBox<String> comboRepositorio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -507,7 +554,7 @@ public class PantallaConexion extends javax.swing.JDialog {
         prop.setProperty("repositorio", textoRepositorio.getText());
         prop.setProperty("usuario", textoUsuario.getText());
         prop.setProperty("password", new String(textoPassword.getPassword()));
-        util.escribirPropeties(dirdfc + "dfc.properties", prop);
+        util.escribirProperties(dirdfc + "dfc.properties", prop);
         valor = "SELECION";
         docbroker = textoDocbroker.getText();
         repositorio = textoRepositorio.getText();
@@ -525,11 +572,7 @@ public class PantallaConexion extends javax.swing.JDialog {
             textoPuerto.requestFocus();
             return false;
         }
-        if (textoRepositorio.getText().isEmpty()) {
-            EtiquetaPanel.setText("Debe dar un valor al Repositorio");
-            textoRepositorio.requestFocus();
-            return false;
-        }
+
         if (textoUsuario.getText().isEmpty()) {
             EtiquetaPanel.setText("Debe indicar el Usuario");
             textoUsuario.requestFocus();
@@ -541,6 +584,60 @@ public class PantallaConexion extends javax.swing.JDialog {
             return false;
         }
 
+        if (boton.equals("conectar")) {
+            boton = "";
+        } else if (textoRepositorio.getText().isEmpty()) {
+            EtiquetaPanel.setText("Debe dar un valor al Repositorio");
+            textoRepositorio.requestFocus();
+            return false;
+        }
+        EtiquetaPanel.setText("");
         return resultado;
+    }
+
+    private IDfClient conectar_bocbroker() {
+        comboRepositorio.removeAllItems();
+        if (ComprobarValores()) {
+            Properties prop = util.leerPropeties(dirdfc + "dfc.properties");
+            prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
+            prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
+            prop.setProperty("usuario", textoUsuario.getText());
+            prop.setProperty("password", new String(textoPassword.getPassword()));
+            prop.setProperty("repositorio", textoRepositorio.getText());
+            util.escribirProperties(dirdfc + "dfc.properties", prop);
+            UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                escribeLog("Error al ejecutar (conectar_bocbroker)" + ex.getMessage());
+            }
+            return utildocum.dameCliente();
+        }
+        return null;
+    }
+
+    private void cargarRepositorios(IDfClient dfClient) {
+        try {
+            if (dfClient == null) {
+                comboRepositorio.removeAllItems();
+                return;
+            }
+
+            IDfDocbaseMap dfDocbaseMap = dfClient.getDocbaseMap();
+            DefaultComboBoxModel ModeloLista = new DefaultComboBoxModel();
+            comboRepositorio.removeAllItems();
+            comboRepositorio.setModel(ModeloLista);
+            for (int i = 0; i < dfDocbaseMap.getDocbaseCount(); i++) {
+                String docbaseName = dfDocbaseMap.getDocbaseName(i);
+                String docbaseDescription = dfDocbaseMap.getDocbaseDescription(i);
+                ModeloLista.addElement(dfDocbaseMap.getDocbaseName(i));
+                System.out.println(docbaseName + " | " + docbaseDescription);
+            }
+            comboRepositorio.setModel(ModeloLista);
+            comboRepositorio.doLayout();
+            textoRepositorio.setText(comboRepositorio.getItemAt(comboRepositorio.getSelectedIndex()));
+        } catch (DfException ex) {
+            escribeLog("Error al ejecutar (cargarRepositorios)" + ex.getMessage());
+        }
     }
 }

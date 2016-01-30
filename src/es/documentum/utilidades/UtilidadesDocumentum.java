@@ -13,9 +13,7 @@ import es.documentum.Beans.AtributosDocumentum;
 import es.documentum.Beans.ResultadoGDBean;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +26,7 @@ public class UtilidadesDocumentum {
     String docbase = "";
     String ficheropropiedades = "";
     String ERROR = "";
+
     private Set m_childIds = new HashSet(5);
 
     public String dameError() {
@@ -43,7 +42,6 @@ public class UtilidadesDocumentum {
 
     public void cargarConfiguraciones() {
         ERROR = "";
-
         if (!ficheropropiedades.isEmpty()) {
             try {
                 InputStream in = new FileInputStream(ficheropropiedades);
@@ -1059,6 +1057,9 @@ public class UtilidadesDocumentum {
     }
 
     public static void main(String s[]) {
+
+        prueba();
+
         Utilidades util = new Utilidades();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
 
@@ -1458,6 +1459,44 @@ public class UtilidadesDocumentum {
 
         }
 
+    }
+
+    public IDfClient dameCliente() {
+        IDfClient cliente = null;
+        try {
+            cargarConfiguraciones();
+            cliente = DfClient.getLocalClient();
+            usuario = pro.getProperty("usuario");
+            password = pro.getProperty("password");
+            docbase = pro.getProperty("repositorio");
+            String docbroker = pro.getProperty("dfc.docbroker.host[0]");
+            String puerto = pro.getProperty("dfc.docbroker.port[0]");
+            IDfTypedObject config = cliente.getClientConfig();
+            config.setString("primary_host", docbroker);
+            config.setInt("primary_port", Integer.parseInt(puerto));
+            IDfLoginInfo loginInfoObj = new DfLoginInfo();
+            loginInfoObj.setUser(usuario);
+            loginInfoObj.setPassword(password);
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al solicitar cliente a Documentum: " + ex.getMessage());
+        }
+        return cliente;
+    }
+
+    public static void prueba() {
+        try {
+            //  IDfClient dfClient = new DfClientX().getLocalClient();
+            IDfClient dfClient = DfClient.getLocalClient();
+
+            IDfDocbaseMap dfDocbaseMap = dfClient.getDocbaseMap();
+            for (int i = 0; i < dfDocbaseMap.getDocbaseCount(); i++) {
+                String docbaseName = dfDocbaseMap.getDocbaseName(i);
+                String docbaseDescription = dfDocbaseMap.getDocbaseDescription(i);
+                System.out.println(docbaseName + " | " + docbaseDescription);
+            }
+        } catch (DfException ex) {
+            Logger.getLogger(UtilidadesDocumentum.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
