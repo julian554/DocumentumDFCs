@@ -39,3 +39,7 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     Obtener el path de un documento en el sistema de ficheros partiendo del data_ticket de la tabla dmr_content_s
     
     Exportar una carpeta de Documentum al Sistema de Ficheros local
+
+    Añadida nueva funcionalidad en la conexión para conectar con el Docbroker y nos devuelva la lista de Repositorios disponibles
+    
+    Proyecto compatible para versiones de java 7 o superior
