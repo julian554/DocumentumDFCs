@@ -31,6 +31,8 @@
             <zipfileset src="dist/lib/jsch-0.1.41.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/zehon_file_transfer-1.1.6.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/guava-11.0.2.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/LGoodDatePicker-2.4.2-core.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/javax.mail-1.5.2.jar" excludes="META-INF/*"/>
             <manifest>
                 <attribute name="Main-Class" value="${main.class}"/>
                 <attribute name="Class-Path" value=". / META-INF/services"/>

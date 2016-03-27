@@ -111,9 +111,69 @@ public class UtilidadesDocumentum {
         return sesion;
     }
 
+    public IDfSession conectarDocumentum(String usu, String clave, String repo, String server, String port) {
+        usuario = usu;
+        password = clave;
+        docbase = repo;
+        String docbroker = server;
+        String puerto = port;
+//        System.out.println(usuario + " - " + password + " - " + docbase + " - " + docbroker);
+
+        ERROR = "";
+        IDfSession sesion = null;
+
+        if (puerto == null || docbroker == null || puerto.isEmpty() || docbroker.isEmpty()) {
+            ERROR = "No hay datos de conexión";
+            return null;
+        }
+
+        try {
+            IDfClient client = DfClient.getLocalClient();
+            IDfTypedObject config = client.getClientConfig();
+            config.setString("primary_host", docbroker);
+            config.setInt("primary_port", Integer.parseInt(puerto));
+            IDfLoginInfo loginInfoObj = new DfLoginInfo();
+            loginInfoObj.setUser(usuario);
+            loginInfoObj.setPassword(password);
+            //sesion = client.newSession(docbase, loginInfoObj);
+            docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
+            sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
+            if (!sesion.isConnected()) {
+                ERROR = "No se pudo obtener sesión de Documentum (conectarDocumentum)";
+                return null;
+            }
+        } catch (DfException dfe) {
+            Utilidades.escribeLog("Error al conectar con Documentum (conectarDocumentum): " + dfe.toString());
+            ERROR = "Error al conectar con Documentum (conectarDocumentum): " + dfe.toString();
+        }
+        return sesion;
+    }
+
     public IDfCollection ejecutarDql(String dql) {
         IDfCollection coleccion = null;
         IDfSession sesion = conectarDocumentum();
+        if (sesion == null) {
+            if (ERROR.isEmpty()) {
+                ERROR = "No se pudo obtener sesión de Documentum (ejecutarDql)";
+            }
+            return coleccion;
+        }
+        IDfQuery query = new DfClientX().getQuery();
+        query.setDQL(dql);
+        try {
+            coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
+        } catch (Exception ex) {
+            ERROR = "Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage();
+            Utilidades.escribeLog("Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage());
+            return coleccion;
+        }
+
+        ERROR = "";
+        return coleccion;
+    }
+
+    public IDfCollection ejecutarDql(String dql, IDfSession sesion) {
+        IDfCollection coleccion = null;
         if (sesion == null) {
             if (ERROR.isEmpty()) {
                 ERROR = "No se pudo obtener sesión de Documentum (ejecutarDql)";

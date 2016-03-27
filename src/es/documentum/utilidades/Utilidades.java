@@ -877,6 +877,16 @@ public class Utilidades {
             escribeLog("Error al generar el fichero Excel de salida (exportaExcel) Error - " + ex.getMessage());
         }
     }
+    
+        public String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) {
+            return bytes + " B";
+        }
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "KMGTPE" : "KMGTPE").charAt(exp - 1) + "";
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+    }
 }
 
 class EvaluaExtension implements FilenameFilter {

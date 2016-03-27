@@ -3,30 +3,40 @@ package es.documentum.pantalla;
 import com.documentum.fc.client.IDfCollection;
 import com.documentum.fc.client.IDfFolder;
 import com.documentum.fc.client.IDfSession;
+import com.documentum.fc.client.IDfTypedObject;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.DfId;
 import com.documentum.fc.common.IDfAttr;
 import com.documentum.fc.common.IDfId;
+import com.documentum.fc.common.IDfValue;
 import es.documentum.Beans.AtributosDocumentum;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import es.documentum.utilidades.ClassPathUpdater;
+import es.documentum.utilidades.Correo;
+import es.documentum.utilidades.CorreoPropiedades;
 import es.documentum.utilidades.TablaSinEditarCol;
 import es.documentum.utilidades.Utilidades;
+import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.Vector;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -169,6 +179,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         opcionLeerLog = new javax.swing.JMenuItem();
         opcionPasswordLDAP = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        opcionEstadisticasRepos = new javax.swing.JMenuItem();
         opcionAcercade = new javax.swing.JMenu();
         opcionManual = new javax.swing.JMenuItem();
         Acercade = new javax.swing.JMenuItem();
@@ -737,6 +749,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
         opcionUtilidades.add(opcionPasswordLDAP);
+        opcionUtilidades.add(jSeparator4);
+
+        opcionEstadisticasRepos.setText("Estadísticas de Repositorios");
+        opcionEstadisticasRepos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionEstadisticasReposActionPerformed(evt);
+            }
+        });
+        opcionUtilidades.add(opcionEstadisticasRepos);
 
         MenuDocumentum.add(opcionUtilidades);
 
@@ -1177,7 +1198,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         String dia = String.valueOf(cal.get(Calendar.DAY_OF_MONTH)).length() == 1 ? "0" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)) : String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
         PantallaLeerFichero log = new PantallaLeerFichero(this, true);
         log.CargarFichero(dirbase + util.separador() + "DocumentumDFCs-" + dia + "-" + mes + "-" + anio + ".log");
-        log.setTitle("Fichero de log " + dirbase + util.separador() + "HDFSExplorer-" + dia + "-" + mes + "-" + anio + ".log");
+        log.setTitle("Fichero de log " + dirbase + util.separador() + "DocumentumDFCs-" + dia + "-" + mes + "-" + anio + ".log");
         log.setVisible(true);
         System.gc();
     }//GEN-LAST:event_opcionLeerLogActionPerformed
@@ -1252,6 +1273,144 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionExportarCarpetaActionPerformed
 
+    private void opcionEstadisticasReposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionEstadisticasReposActionPerformed
+        PantallaPedirFechas pedirDatos = new PantallaPedirFechas(this, true);
+        pedirDatos.setTitle("Fechas para Estadísticas de Repositorios");
+        pedirDatos.setVisible(true);
+        final String fechainicial = pedirDatos.getFechainicial();
+        final String fechafinal = pedirDatos.getFechafinal();
+        final String correodestino = pedirDatos.getCorreo();
+        final boolean resultado = pedirDatos.getRespuesta();
+
+        final String fechafichero = fechainicial.replace("/", "") + "-" + fechafinal.replace("/", "");
+
+        if (!resultado || (fechainicial == null) || (fechafinal == null)) {
+            return;
+        }
+
+        new Thread() {
+            public void run() {
+                barradocum = new PantallaBarra(PantallaDocumentum.this, false);
+                barradocum.setTitle("Calculando estadísticas de repositorios ...");
+                barradocum.barra.setIndeterminate(true);
+                barradocum.botonParar.setVisible(false);
+                barradocum.setLabelMensa("");
+                barradocum.barra.setOpaque(true);
+                barradocum.barra.setStringPainted(false);
+                barradocum.validate();
+                barradocum.setVisible(true);
+                BufferedReader br = null;
+                String fichero = dirbase + util.separador() + "repos.txt";
+                try {
+                    String s1;
+                    // Cargamos el buffer con el contenido del archivo
+                    br = new BufferedReader(new FileReader(fichero));
+                    int lNumeroLineas = 0;
+                    while (br.readLine() != null) {
+                        lNumeroLineas++;
+                    }
+                    Object[][] datos = new Object[lNumeroLineas][4];
+                    br.close();
+                    br = new BufferedReader(new FileReader(fichero));
+                    lNumeroLineas = 0;
+                    while ((s1 = br.readLine()) != null) {
+                        String[] result = s1.split(";");
+                        String servidor = result[0];
+                        String repositorio = result[1];
+                        String usuario = result[2];
+                        String clave = result[3];
+                        String puerto = result[4];
+                        barradocum.setLabelMensa(servidor + "  <-->  " + repositorio);
+                        //   System.out.println(repositorio + "-" + servidor + "-" + puerto + "-" + usuario + "-" + clave);
+                        IDfSession sesion = utilDocum.conectarDocumentum(usuario, clave, repositorio, servidor, puerto);
+                        IDfCollection col = utilDocum.ejecutarDql("select count(*) from dmr_content where r_object_id in (select i_contents_id from  dm_sysobject where A_STORAGE_TYPE='filestore_01' and (R_CREATION_DATE > DATE('" + fechainicial + "','DD/MM/YYYY')) and (R_CREATION_DATE < DATE('" + fechafinal + "','DD/MM/YYYY')) )", sesion);
+                        Vector filas = new Vector();
+                        datos[lNumeroLineas][0] = servidor;
+                        datos[lNumeroLineas][1] = repositorio;
+                        try {
+                            while (col.next()) {
+                                filas.addElement(col.getTypedObject());
+                            }
+                            col.close();
+                            IDfTypedObject row = (IDfTypedObject) filas.elementAt(0);
+                            IDfAttr attr = row.getAttr(0);
+                            IDfValue attrValue = row.getValue(attr.getName());
+                            String resultado = (String) getDfObjectValue(attrValue);
+                            DecimalFormat formateador = new DecimalFormat("###,###");
+                            datos[lNumeroLineas][2] = formateador.format(Double.parseDouble(resultado));
+                            System.out.println(repositorio + " - Ficheros: " + formateador.format(Long.parseLong(resultado)));
+                        } catch (Exception Ex) {
+                            System.out.println(Ex.getMessage());
+                        }
+
+                        col = utilDocum.ejecutarDql("select sum(full_content_size)  from dmr_content where r_object_id in (select i_contents_id from  dm_sysobject where A_STORAGE_TYPE='filestore_01' and (R_CREATION_DATE > DATE('" + fechainicial + "','DD/MM/YYYY')) and (R_CREATION_DATE < DATE('" + fechafinal + "','DD/MM/YYYY')) )", sesion);
+                        filas = new Vector();
+                        try {
+                            while (col.next()) {
+                                filas.addElement(col.getTypedObject());
+                            }
+                            col.close();
+                            IDfTypedObject row = (IDfTypedObject) filas.elementAt(0);
+                            IDfAttr attr = row.getAttr(0);
+                            IDfValue attrValue = row.getValue(attr.getName());
+                            Double resultado = Double.parseDouble((String) getDfObjectValue(attrValue));
+                            datos[lNumeroLineas][3] = util.humanReadableByteCount(Math.round(resultado), false);
+                            System.out.println(repositorio + " - Tamaño de los Ficheros: " + util.humanReadableByteCount(Math.round(resultado), false));
+                        } catch (Exception Ex) {
+                            System.out.println(Ex.getMessage());
+                        }
+                        lNumeroLineas++;
+                    }
+
+                    String[] cabecera = {"Servidor", "Repositorio", "Nº de Ficheros", "Tamaño de los Ficheros"};
+                    TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
+                    if (datos.length > 0) {
+                        modeloLotes = new TablaSinEditarCol(datos, cabecera);
+                        modeloLotes.setRowCount(lNumeroLineas);
+                        javax.swing.JTable tablaResultados = new JTable(modeloLotes);
+                        fichero = dirbase + util.separador() + "Documentum-estadisticas-" + fechafichero + ".xls";
+                        util.exportaExcel(tablaResultados, fichero);
+                        EtiquetaEstado.setText("Generado el fichero " + fichero);
+                    }
+                } catch (FileNotFoundException ex) {
+                    System.out.println(ex.getMessage());
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                } finally {
+                    try {
+                        if (br != null) {
+                            br.close();
+                        }
+                        if (!correodestino.isEmpty()) {
+                            Correo correo = new Correo();
+                            correo.setCorreoPropiedades(new CorreoPropiedades());
+                            correo.getCorreoPropiedades().setUsuario("null");
+                            correo.getCorreoPropiedades().setClave("null");
+                            correo.getCorreoPropiedades().setServidorsmtp("smtp.adif.es");
+                            correo.getCorreoPropiedades().setPuertosmtp("25");
+                            correo.getCorreoPropiedades().setPropiedades(new Properties());
+                            correo.setAsunto("Estádisticas de Repositorios de Documentum");
+                            correo.setCuerpo("Hola,"
+                                    + "\n\nEstádisticas de Repositorios de Documentum desde el " + fechainicial + " hasta el " + fechafinal
+                                    + "\n\n Un saludo");
+                            correo.setEnviarA(correodestino);
+                            // correo.setEnviarBCC("jcollado@gmail.com");
+                            correo.setEnviadoDesde("documentum@adif.es");
+                            correo.setAdjuntos(new String[]{fichero});
+                            String res = correo.Enviar();
+                            System.out.println("Correo enviado: "+res);
+                        }
+                    } catch (IOException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+                barradocum.dispose();
+
+            }
+        }.start();
+        System.gc();
+    }//GEN-LAST:event_opcionEstadisticasReposActionPerformed
+
     public void mostrarAcercade() {
         Acercade about = new Acercade(this, true);
         about.setDirdfc(dirdfc);
@@ -1296,6 +1455,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JMenuItem opcionAbrirDocumento;
     private javax.swing.JMenu opcionAcercade;
     private javax.swing.JMenuItem opcionActualizarAtributo;
@@ -1312,6 +1472,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionDql;
     private javax.swing.JMenuItem opcionDumpAtributo;
     private javax.swing.JMenuItem opcionDumpAtributos;
+    private javax.swing.JMenuItem opcionEstadisticasRepos;
     private javax.swing.JMenuItem opcionExportar;
     private javax.swing.JMenuItem opcionExportarAtributosExcel;
     private javax.swing.JMenuItem opcionExportarCarpeta;
