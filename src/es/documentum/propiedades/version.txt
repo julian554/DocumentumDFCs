@@ -1,7 +1,1 @@
-<<<<<<< HEAD
-nombre=DocumentumDFCs
 version=1.0 300
-=======
-nombre=DocumentumDFCs
-version=1.0 300
->>>>>>> origin/master
