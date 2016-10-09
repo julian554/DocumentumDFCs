@@ -1,2 +1,1 @@
-nombre=DocumentumDFCs
-version=1.0 200
+version=1.0 300
