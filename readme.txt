@@ -43,3 +43,5 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     Añadida nueva funcionalidad en la conexión para conectar con el Docbroker y nos devuelva la lista de Repositorios disponibles
     
     Proyecto compatible para versiones de java 7 o superior
+    
+    Añadida pantalla para ejecutar comando de API
