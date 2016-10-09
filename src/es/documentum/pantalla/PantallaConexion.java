@@ -2,6 +2,7 @@ package es.documentum.pantalla;
 
 import com.documentum.fc.client.IDfClient;
 import com.documentum.fc.client.IDfDocbaseMap;
+import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.impl.util.RegistryPasswordUtils;
 import es.documentum.utilidades.Utilidades;
@@ -416,12 +417,17 @@ public class PantallaConexion extends javax.swing.JDialog {
             prop.setProperty("repositorio", textoRepositorio.getText());
             util.escribirProperties(dirdfc + "dfc.properties", prop);
             UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+            utildocum.setPro(prop);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 botonTestConex.setEnabled(true);
             }
-            if (utildocum.conectarDocumentum() == null) {
+
+            IDfSession idsesion = utildocum.conectarDocumentum(textoUsuario.getText(), new String(textoPassword.getPassword()),
+                    textoRepositorio.getText(), textoDocbroker.getText(), textoPuerto.getText());
+
+            if (idsesion == null) {
                 botonTestConex.setBackground(colornoconex);
                 conexionOK = false;
                 EtiquetaPanel.setText(utildocum.dameError());
@@ -435,6 +441,18 @@ public class PantallaConexion extends javax.swing.JDialog {
                 repositorio = textoRepositorio.getText();
                 puerto = textoPuerto.getText();
                 usuario = textoUsuario.getText();
+                try {
+                    IDfDocbaseMap dfDocbaseMap = idsesion.getClient().getDocbaseMap();
+
+                    for (int i = 0; i < dfDocbaseMap.getDocbaseCount(); i++) {
+                        String docbaseName = dfDocbaseMap.getDocbaseName(i);
+                        String docbaseDescription = dfDocbaseMap.getDocbaseDescription(i);
+                        System.out.println(docbaseName + " | " + docbaseDescription);
+                    }
+                } catch (Exception ex) {
+
+                }
+
             }
             botonTestConex.setEnabled(true);
         }
@@ -467,7 +485,9 @@ public class PantallaConexion extends javax.swing.JDialog {
     }//GEN-LAST:event_EtiquetaPanelMouseClicked
 
     private void comboRepositorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRepositorioActionPerformed
+
         textoRepositorio.setText(comboRepositorio.getItemAt(comboRepositorio.getSelectedIndex()));
+
     }//GEN-LAST:event_comboRepositorioActionPerformed
 
     private void botonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConectarActionPerformed
@@ -635,7 +655,9 @@ public class PantallaConexion extends javax.swing.JDialog {
             }
             comboRepositorio.setModel(ModeloLista);
             comboRepositorio.doLayout();
-            textoRepositorio.setText(comboRepositorio.getItemAt(comboRepositorio.getSelectedIndex()));
+            if (textoRepositorio.getText().isEmpty()) {
+                textoRepositorio.setText(comboRepositorio.getItemAt(comboRepositorio.getSelectedIndex()));
+            }
         } catch (DfException ex) {
             escribeLog("Error al ejecutar (cargarRepositorios)" + ex.getMessage());
         }

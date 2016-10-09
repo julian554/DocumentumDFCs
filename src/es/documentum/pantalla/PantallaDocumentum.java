@@ -172,7 +172,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionRBPorDefecto = new javax.swing.JRadioButtonMenuItem();
         opcionUtilidades = new javax.swing.JMenu();
         opcionDql = new javax.swing.JMenuItem();
-        opcionDumpAtributo = new javax.swing.JMenuItem();
+        opcionAPI = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         importarADocumentum = new javax.swing.JMenuItem();
         opcionExportarCarpeta = new javax.swing.JMenuItem();
@@ -705,13 +705,13 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionUtilidades.add(opcionDql);
 
-        opcionDumpAtributo.setText("Volcar Atributo de Objeto");
-        opcionDumpAtributo.addActionListener(new java.awt.event.ActionListener() {
+        opcionAPI.setText("Ejecutar comando API");
+        opcionAPI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opcionDumpAtributoActionPerformed(evt);
+                opcionAPIActionPerformed(evt);
             }
         });
-        opcionUtilidades.add(opcionDumpAtributo);
+        opcionUtilidades.add(opcionAPI);
         opcionUtilidades.add(jSeparator3);
 
         importarADocumentum.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -1219,18 +1219,6 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonArribaDirActionPerformed
 
-    private void opcionDumpAtributoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionDumpAtributoActionPerformed
-        if (botonBuscar.isEnabled()) {
-            PantallaAtributos dump = new PantallaAtributos(this, true);
-            dump.setTitle("Volcado de Atributos de Objetos de Documentum   -   " + EtiquetaRepositorio.getText() + " / " + EtiquetaDocbroker.getText());
-            dump.setVisible(true);
-            System.gc();
-        } else {
-            EtiquetaEstado.setText("Debe seleccionar antes una conexión.");
-            botonConectar.requestFocus();
-        }
-    }//GEN-LAST:event_opcionDumpAtributoActionPerformed
-
     private void opcionDumpAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionDumpAtributosActionPerformed
         if (botonBuscar.isEnabled()) {
             PantallaAtributos dump = new PantallaAtributos(this, true);
@@ -1338,7 +1326,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             String resultado = (String) getDfObjectValue(attrValue);
                             DecimalFormat formateador = new DecimalFormat("###,###");
                             datos[lNumeroLineas][2] = formateador.format(Double.parseDouble(resultado));
-                            System.out.println(repositorio + " - Ficheros: " + formateador.format(Long.parseLong(resultado)));
+                            System.out.println(repositorio + " - Ficheros: " + formateador.format(Double.parseDouble(resultado)));
                         } catch (Exception Ex) {
                             System.out.println(Ex.getMessage());
                         }
@@ -1360,6 +1348,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             System.out.println(Ex.getMessage());
                         }
                         lNumeroLineas++;
+
                     }
 
                     String[] cabecera = {"Servidor", "Repositorio", "Nº de Ficheros", "Tamaño de los Ficheros"};
@@ -1398,7 +1387,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             correo.setEnviadoDesde("documentum@adif.es");
                             correo.setAdjuntos(new String[]{fichero});
                             String res = correo.Enviar();
-                            System.out.println("Correo enviado: "+res);
+                            System.out.println("Correo enviado: " + res);
                         }
                     } catch (IOException ex) {
                         System.out.println(ex.getMessage());
@@ -1410,6 +1399,18 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }.start();
         System.gc();
     }//GEN-LAST:event_opcionEstadisticasReposActionPerformed
+
+    private void opcionAPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionAPIActionPerformed
+        if (botonBuscar.isEnabled()) {
+            PantallaApi pantallaApi = new PantallaApi(this, true);
+            pantallaApi.setTitle("Comandos de API  -  " + EtiquetaDocbroker.getText() + " / " + EtiquetaRepositorio.getText());
+            pantallaApi.setVisible(true);
+        } else {
+            EtiquetaEstado.setText("Debe seleccionar antes una conexión.");
+            botonConectar.requestFocus();
+        }
+
+    }//GEN-LAST:event_opcionAPIActionPerformed
 
     public void mostrarAcercade() {
         Acercade about = new Acercade(this, true);
@@ -1456,6 +1457,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JMenuItem opcionAPI;
     private javax.swing.JMenuItem opcionAbrirDocumento;
     private javax.swing.JMenu opcionAcercade;
     private javax.swing.JMenuItem opcionActualizarAtributo;
@@ -1470,7 +1472,6 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionCopiarNombre;
     private javax.swing.JMenuItem opcionCopiarValor;
     private javax.swing.JMenuItem opcionDql;
-    private javax.swing.JMenuItem opcionDumpAtributo;
     private javax.swing.JMenuItem opcionDumpAtributos;
     private javax.swing.JMenuItem opcionEstadisticasRepos;
     private javax.swing.JMenuItem opcionExportar;

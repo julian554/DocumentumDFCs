@@ -753,7 +753,7 @@ public class Utilidades {
 
     public String scp(String fichero, String fichero_destino) {
         String resultado = "";
-        Properties props = leerConfiguracion("es/seap/minhap/utilidades/propiedades/scp.properties");
+        Properties props = leerConfiguracion("../propiedades/scp.properties");
         String servidor = props.getProperty("servidor");
         String usuario = props.getProperty("usuario");
         usuario = decodificaBase64(hexToASCII(usuario));

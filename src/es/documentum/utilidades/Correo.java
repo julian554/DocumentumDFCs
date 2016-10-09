@@ -1,8 +1,9 @@
 package es.documentum.utilidades;
 
-
+import javax.activation.CommandMap;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+import javax.activation.MailcapCommandMap;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,6 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class Correo {
 
@@ -126,7 +128,7 @@ public class Correo {
             for (String nombrefichero : getAdjuntos()) {
                 nombrefichero = nombrefichero.replace("\\", "/");
                 addAdjunto(multiParte, nombrefichero);
-                System.out.println(nombrefichero);
+                //   System.out.println(nombrefichero);
             }
 
             Message message = new MimeMessage(session);
@@ -144,6 +146,15 @@ public class Correo {
             }
             message.setSubject(getAsunto());
             message.setContent(multiParte);
+
+            MailcapCommandMap mc = (MailcapCommandMap) CommandMap.getDefaultCommandMap();
+            mc.addMailcap("text/html;; x-java-content-handler=com.sun.mail.handlers.text_html");
+            mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
+            mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
+            mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+            mc.addMailcap("message/rfc822;; x-java-content- handler=com.sun.mail.handlers.message_rfc822");
+            CommandMap.setDefaultCommandMap(mc);
+
             if (getCorreoPropiedades().getUsuario() == null || getCorreoPropiedades().getUsuario().isEmpty() || getCorreoPropiedades().getUsuario().equals("null")) {
                 Transport.send(message);
             } else {
@@ -152,8 +163,8 @@ public class Correo {
                 t.sendMessage(message, message.getAllRecipients());
                 t.close();
             }
-        } catch (MessagingException ex) {
-            respuesta = "Error al enviar el correo: " + ex.getMessage() + " - " + ex.getLocalizedMessage();
+        } catch (Exception ex) {
+            respuesta = "Error al enviar el correo: " + ex.getMessage() + " - " + getStackTrace(ex);
         }
 
         return respuesta;
@@ -166,7 +177,7 @@ public class Correo {
             adjunto.setFileName(archivo.substring(archivo.lastIndexOf("/") + 1, archivo.length()));
             multiParte.addBodyPart(adjunto);
         } catch (MessagingException ex) {
-
+            System.out.println("Error al adjuntar fichero al correo - " + ex.getMessage());
         }
     }
 }

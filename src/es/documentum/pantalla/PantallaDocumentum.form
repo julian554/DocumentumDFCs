@@ -262,12 +262,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionDqlActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="opcionDumpAtributo">
+            <MenuItem class="javax.swing.JMenuItem" name="opcionAPI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Volcar Atributo de Objeto"/>
+                <Property name="text" type="java.lang.String" value="Ejecutar comando API"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionDumpAtributoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionAPIActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">

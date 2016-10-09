@@ -17,10 +17,19 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class UtilidadesDocumentum {
 
     Properties pro = new Properties();
+
+    public Properties getPro() {
+        return pro;
+    }
+
+    public void setPro(Properties pro) {
+        this.pro = pro;
+    }
     String usuario = "";
     String password = "";
     String docbase = "";
@@ -186,12 +195,29 @@ public class UtilidadesDocumentum {
             coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
         } catch (Exception ex) {
             ERROR = "Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage();
-            Utilidades.escribeLog("Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage());
+            Utilidades.escribeLog("Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage() + " - " + getStackTrace(ex));
             return coleccion;
         }
 
         ERROR = "";
         return coleccion;
+    }
+
+    public String dameSql(IDfSession sesion) {
+        String sqlResult = null;
+        try {
+            IDfSession session = sesion;
+            String collId = session.apiGet("apply", "NULL,GET_LAST_SQL");
+            if (!collId.equals("")) {
+                session.apiExec("next", collId);
+                sqlResult = session.apiGet("get", collId + ",result");
+                session.apiExec("close", collId);
+            }
+        } catch (Exception ex) {
+            ERROR = "Error al obtener SQL (getSqlQuery) - Error: " + ex.getMessage();
+            Utilidades.escribeLog("Error al obtener SQL (getSqlQuery) - Error: " + ex.getMessage() + " - " + getStackTrace(ex));
+        }
+        return sqlResult;
     }
 
     public ArrayList<ResultadoGDBean> subirDocumentosDocumentum(String rutacarpetadocumentum, String rutacarpeta) {
@@ -452,9 +478,15 @@ public class UtilidadesDocumentum {
         ERROR = "";
         try {
             //object ID based on the object ID string.
-            IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + r_object_id + "'");
-            // Instantiate an object from the ID.
-            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
+            //         IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + r_object_id + "'");
+            //     IDfId idObj = new DfId(r_object_id);   
+
+            DfId dfId = new DfId(r_object_id);
+
+            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(dfId);
+
+// Instantiate an object from the ID.
+            //         IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
             Utilidades.escribeLog("Nº de atributos: " + sysObj.getAttrCount());
             String nombre = "";
             for (int i = 0; i < sysObj.getAttrCount(); i++) {
@@ -555,6 +587,49 @@ public class UtilidadesDocumentum {
         return resultado;
     }
 
+    public String DameDocbroker() {
+        String resultado = "";
+        try {
+
+            IDfSession sesion = conectarDocumentum();
+            if (sesion == null) {
+                if (ERROR.isEmpty()) {
+                    ERROR = "Error al crear sesión en Documentum (DameIdRepositorio)";
+                }
+                return resultado;
+            }
+            ERROR = "";
+            resultado = sesion.getClientConfig().getString("primary_host");
+
+        } catch (DfException ex) {
+            ERROR = "Error al obtener Docbroker (DameDocbroker) - Error: " + ex.getMessage();
+        }
+
+        return resultado;
+
+    }
+
+    public String DamePuertoDocbroker() {
+        String resultado = "";
+        try {
+
+            IDfSession sesion = conectarDocumentum();
+            if (sesion == null) {
+                if (ERROR.isEmpty()) {
+                    ERROR = "Error al crear sesión en Documentum (DameIdRepositorio)";
+                }
+                return resultado;
+            }
+            ERROR = "";
+            resultado = sesion.getClientConfig().getInt("primary_port") + "";
+
+        } catch (DfException ex) {
+            ERROR = "Error al obtener Docbroker (DameDocbroker) - Error: " + ex.getMessage();
+        }
+
+        return resultado;
+    }
+
     public ArrayList<AtributosDocumentum> DameTodosAtributos(String r_object_id) {
         ArrayList<AtributosDocumentum> resultado = new ArrayList<AtributosDocumentum>();
         IDfSession sesion = conectarDocumentum();
@@ -569,8 +644,10 @@ public class UtilidadesDocumentum {
         try {
             //object ID based on the object ID string.
             IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + r_object_id + "'");
+            DfId dfId = new DfId(r_object_id);
             // Instantiate an object from the ID.
-            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
+            //   IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
+            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(dfId);
 //            Utilidades.escribeLog("Nº de atributos: " + sysObj.getAttrCount());
             String nombre = "";
             for (int i = 0; i < sysObj.getAttrCount(); i++) {
