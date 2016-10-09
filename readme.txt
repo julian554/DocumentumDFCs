@@ -32,7 +32,7 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
 
     Exportar a excel datos del dump.
 
-    Actualizadas DFCs a la versión 7.1
+    Actualizadas DFCs a la versión 7.2
 
     Buscar un r_object_id a partir del path del fichero en el sistema de ficheros
 
