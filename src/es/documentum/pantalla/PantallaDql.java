@@ -101,6 +101,8 @@ public class PantallaDql extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         comboHistorial = new javax.swing.JComboBox();
         checkDameSQL = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
+        TextoNumReg = new javax.swing.JFormattedTextField();
         panelResultado = new javax.swing.JScrollPane();
         tablaResultados = new javax.swing.JTable();
         panelEstado = new javax.swing.JPanel();
@@ -222,6 +224,16 @@ public class PantallaDql extends javax.swing.JFrame {
 
         checkDameSQL.setText("Mostrar SQL");
 
+        jLabel3.setText("Nº de registros de salida");
+
+        TextoNumReg.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#"))));
+        TextoNumReg.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        TextoNumReg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextoNumRegActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelDqlLayout = new javax.swing.GroupLayout(panelDql);
         panelDql.setLayout(panelDqlLayout);
         panelDqlLayout.setHorizontalGroup(
@@ -232,19 +244,23 @@ public class PantallaDql extends javax.swing.JFrame {
                     .addGroup(panelDqlLayout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panelDqlLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDqlLayout.createSequentialGroup()
                         .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
-                            .addComponent(comboHistorial, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(28, 28, 28)
-                        .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                            .addComponent(botonConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                            .addComponent(checkDameSQL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(panelDqlLayout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(panelDqlLayout.createSequentialGroup()
+                                .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
+                                    .addComponent(comboHistorial, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(28, 28, 28)
+                                .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(botonSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(botonConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(checkDameSQL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(TextoNumReg))))
                         .addGap(33, 33, 33))))
         );
         panelDqlLayout.setVerticalGroup(
@@ -265,8 +281,13 @@ public class PantallaDql extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(panelDqlLayout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextoNumReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -358,13 +379,13 @@ public class PantallaDql extends javax.swing.JFrame {
 
     private void botonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultarActionPerformed
         if (!textoDql.getText().isEmpty()) {
-            ejecutarDql(textoDql.getText());
+            ejecutarDql(textoDql.getText(), TextoNumReg.getText());
         }
     }//GEN-LAST:event_botonConsultarActionPerformed
 
     private void opcionConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionConsultarActionPerformed
         if (!textoDql.getText().isEmpty()) {
-            ejecutarDql(textoDql.getText());
+            ejecutarDql(textoDql.getText(), TextoNumReg.getText());
         }
     }//GEN-LAST:event_opcionConsultarActionPerformed
 
@@ -476,8 +497,17 @@ public class PantallaDql extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionVaciarHistorialActionPerformed
 
-    private void ejecutarDql(String pdql) {
-        final String dql = pdql;
+    private void TextoNumRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoNumRegActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextoNumRegActionPerformed
+
+    private void ejecutarDql(String pdql, String numreg) {
+        String sqlfinal = pdql;
+        final long numregsalida = Long.parseLong(numreg);
+        if (numregsalida > 0) {
+            sqlfinal = sqlfinal + " enable (return_top " + numreg + ")";
+        }
+        final String dql = sqlfinal;
         TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
         tablaResultados.setModel(modeloLotes);
         EtiquetaEstado.setText("");
@@ -496,8 +526,8 @@ public class PantallaDql extends javax.swing.JFrame {
                 }
                 UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
 
-                sesion= utildocum.conectarDocumentum();
-                
+                sesion = utildocum.conectarDocumentum();
+
                 barradocum = new PantallaBarra(PantallaDql.this, false);
                 barradocum.setTitle("Consultando en Documentum ...");
                 barradocum.barra.setIndeterminate(true);
@@ -509,7 +539,7 @@ public class PantallaDql extends javax.swing.JFrame {
                 barradocum.setVisible(true);
 
                 try {
-                    IDfCollection col = utildocum.ejecutarDql(dql,sesion);
+                    IDfCollection col = utildocum.ejecutarDql(dql, sesion);
                     if (!utildocum.dameError().equals("")) {
                         textoLog.setText(utildocum.dameError());
                         barradocum.dispose();
@@ -635,12 +665,14 @@ public class PantallaDql extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel EtiquetaEstado;
+    private javax.swing.JFormattedTextField TextoNumReg;
     private javax.swing.JButton botonConsultar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JCheckBox checkDameSQL;
     private javax.swing.JComboBox comboHistorial;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -664,8 +696,10 @@ public class PantallaDql extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void salir() {
-        this.dispose();
+        TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
+        tablaResultados.setModel(modeloLotes);
         System.gc();
+        this.dispose();
     }
 
     private void popupmenu(MouseEvent evt) {

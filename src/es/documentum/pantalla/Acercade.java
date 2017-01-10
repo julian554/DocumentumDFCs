@@ -1,6 +1,5 @@
 package es.documentum.pantalla;
 
-import com.documentum.com.IDfClientX;
 import es.documentum.utilidades.Utilidades;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -478,7 +477,11 @@ public class Acercade extends javax.swing.JDialog {
     private void valoresPc() {
         Utilidades pc = new Utilidades();
         CargarConfiguraciones();
+        try{
         labelVersion.setText(pro.getProperty("nombre").toString() + "  v. " + pro.getProperty("version").toString());
+        }catch(Exception ex){
+            
+        }
         labelIP.setText(pc.ip());
         labelPC.setText(pc.nombrePC());
 
