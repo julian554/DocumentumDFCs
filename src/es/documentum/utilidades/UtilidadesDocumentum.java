@@ -1193,6 +1193,30 @@ public class UtilidadesDocumentum {
         return "Exportado de Documentum";
     }
 
+    public void checkoutDoc(String objectId, IDfSession sesion) throws Exception {
+
+        IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(objectId));
+        if (!sysObject.isCheckedOut()) // if it is not checked out
+        {
+            sysObject.checkout();
+        }
+
+        System.out.println("is Check out " + sysObject.isCheckedOut());
+    }
+
+    public String checkinDoc(String objectId, IDfSession sesion) {
+        try {
+            IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(objectId));
+            if (sysObject.isCheckedOut()) { // if it is checked out
+                return sysObject.checkin(false, "CURRENT").getId();
+            }
+
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al hacer checkin de " + objectId + "  -  Error " + ex.getMessage());
+        }
+        return null;
+    }
+
     public static void main(String s[]) {
 
         prueba();
@@ -1636,4 +1660,205 @@ public class UtilidadesDocumentum {
         }
     }
 
+    public void FolderNavigate(String usu, String clave, String repo, String server, String port, String folderPath) {
+        try {
+            // call function to generate XML content
+            navigate(folderPath, "", conectarDocumentum(usu, clave, repo, server, port));
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error navegar por carpeta: " + ex.getMessage());
+        }
+
+    }
+
+    /**
+     * Recursive function for generating map of folder structure and documents
+     *
+     * @param rootPath absolute path to repository cabinet or folder (i.e.
+     * "/Temp/myfolder")
+     * @param indent string containing indentation tabs
+     * @param session repository session
+     *
+     * @throws DfException
+     */
+    public void navigate(String rootPath, String indent, IDfSession session)
+            throws DfException {
+
+        IDfId idObj = session.getIdByQualification("dm_sysobject where object_name='" + rootPath + "'");
+        IDfSysObject sysObj = (IDfSysObject) session.getObject(idObj);
+        IDfFolder root = session.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
+        // Folder representation of absolute path
+        //    IDfFolder root = session.getFolderByPath(rootPath);
+
+        // These rows are being stored first because
+        // if you make your recursive call within the 
+        // loop, you will quickly run out of collections
+        List rows = new ArrayList();
+        IDfCollection coll = null;
+        try {
+            // get all objects in folder
+            coll = root.getContents("");
+            while (coll.next()) {
+                rows.add(coll.getTypedObject());
+            }
+        } finally {
+            if (coll != null) {
+                coll.close();
+            }
+        }
+
+        // write beginning XML element
+        String relementName = resolveElementName(
+                root.getString("r_object_id"),
+                root.getString("r_object_type"));
+        System.out.println(
+                createStartElement(
+                        indent,
+                        relementName,
+                        root.getString("r_object_id"),
+                        root.getString("object_name")
+                )
+        );
+
+        // iterate through results of folder
+        for (int i = 0; i < rows.size(); i++) {
+            IDfTypedObject row = (IDfTypedObject) rows.get(i);
+            String id = row.getString("r_object_id");
+
+            // if cabinet or folder, recursively navigate contents
+            if (id.startsWith("0c") || id.startsWith("0b")) {
+                navigate(rootPath + "/" + row.getString("object_name"), indent + "\t", session);
+            } else {
+
+                // resolve element name
+                String elementName = resolveElementName(id, row.getString("r_object_type"));
+
+                // write object XML element
+                System.out.println(
+                        createObjectElement(
+                                indent + "\t",
+                                elementName,
+                                row.getString("r_object_id"),
+                                row.getString("object_name")
+                        )
+                );
+            }
+        } // results list
+        // write matching end XML element
+        System.out.println(
+                createEndElement(
+                        indent,
+                        relementName
+                )
+        );
+
+    } // navigate
+
+    // resolves a DCTM type to a name
+    public String resolveElementName(String id, String type) {
+        // resolve element name
+        String elementName = "";
+        if (id.startsWith("0c")) {
+            elementName = "cabinet";
+        } else if (id.startsWith("0b")) {
+            elementName = "folder";
+        } else if (id.startsWith("09")) {
+            elementName = "document";
+        } else {
+            elementName = type;
+        }
+        return elementName;
+    }
+
+    // starting XML element
+    public String createStartElement(String indent, String elementName, String id, String name) {
+        StringBuilder sbuf = new StringBuilder(indent);
+        sbuf.append("<\"").append(id).append("\" ");
+        sbuf.append("name=\"").append(name).append("\">");
+        return sbuf.toString();
+    }
+
+    // closing XML element
+    public String createEndElement(String indent, String elementName) {
+        StringBuilder sbuf = new StringBuilder(indent);
+        sbuf.append("</");
+        return sbuf.toString();
+    }
+
+    // Self-contained object XML element
+    public String createObjectElement(String indent, String elementName, String id, String name) {
+        StringBuilder sbuf = new StringBuilder(indent);
+        sbuf.append("<\" id=\"").append(id).append("\" ");
+        sbuf.append("name=\"").append(name).append("\" />");
+        return sbuf.toString();
+    }
+
+    public void arrancarIndexAgent(IDfSession sesion) throws DfException {
+        IDfPersistentObject FTIndexObj = (IDfPersistentObject) sesion.getObjectByQualification("dm_fulltext_index where is_standby = false ");
+        String indexName = FTIndexObj.getString("index_name");
+        String query = "NULL,FTINDEX_AGENT_ADMIN,NAME,S," + indexName + ",AGENT_INSTANCE_NAME,S,all,ACTION,S,start";
+        DfClientX clientX = new DfClientX();
+        String repositorio = sesion.getDocbaseName();
+        IDfQuery q = clientX.getQuery();
+        q.setDQL(query);
+        try {
+            IDfCollection col = q.execute(sesion, IDfQuery.DF_APPLY);
+            col.next();
+            String resul = col.getTypedObject().getRepeatingString("status", 0);
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
+        }
+    }
+
+    public String estadoIndexAgent(IDfSession sesion) throws DfException {
+        IDfPersistentObject FTIndexObj = (IDfPersistentObject) sesion.getObjectByQualification("dm_fulltext_index where is_standby = false ");
+        String indexName = FTIndexObj.getString("index_name");
+        String query = "NULL,FTINDEX_AGENT_ADMIN,NAME,S," + indexName + ",AGENT_INSTANCE_NAME,S,all,ACTION,S,status";
+        DfClientX clientX = new DfClientX();
+        String repositorio = sesion.getDocbaseName();
+        IDfQuery q = clientX.getQuery();
+        q.setDQL(query);
+        String resultado = "";
+        try {
+            IDfCollection col = q.execute(sesion, IDfQuery.DF_APPLY);
+            col.next();
+            String status = col.getRepeatingString("status", 0);
+            String indexAgentName = col.getRepeatingString("name", 0);
+
+            switch (Integer.parseInt(status)) {
+                case 200:
+                    resultado = "No hay respuesta de la intancia de index agent '" + indexAgentName + "'";
+                    System.out.println("No hay respuesta de la intancia de index agent '" + indexAgentName + "'");
+                    break;
+                case 100:
+                    resultado = "La instancia de index agent '" + indexAgentName + "' está parada";
+                    System.out.println("La instancia de index agent '" + indexAgentName + "' está parada");
+                    break;
+                default:
+                    resultado = "La instancia de index agent '" + indexAgentName + "' está en ejecución";
+                    System.out.println("La instancia de index agent '" + indexAgentName + "' está en ejecución");
+                    break;
+            }
+
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
+        }
+        return resultado;
+    }
+
+    public void pararIndexAgent(IDfSession sesion) throws DfException {
+        IDfPersistentObject FTIndexObj = (IDfPersistentObject) sesion.getObjectByQualification("dm_fulltext_index where is_standby = false ");
+        String indexName = FTIndexObj.getString("index_name");
+        String query = "NULL,FTINDEX_AGENT_ADMIN,NAME,S," + indexName + ",AGENT_INSTANCE_NAME,S,all,ACTION,S,shutdown";
+        DfClientX clientX = new DfClientX();
+        String repositorio = sesion.getDocbaseName();
+        IDfQuery q = clientX.getQuery();
+        q.setDQL(query);
+        try {
+            IDfCollection col = q.execute(sesion, IDfQuery.DF_APPLY);
+            col.next();
+            String resul = col.getTypedObject().getRepeatingString("status", 0);
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
+        }
+    }
 }
