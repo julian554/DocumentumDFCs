@@ -1809,7 +1809,7 @@ public class UtilidadesDocumentum {
         }
     }
 
-    public void estadoIndexAgent(IDfSession sesion) throws DfException {
+    public String estadoIndexAgent(IDfSession sesion) throws DfException {
         IDfPersistentObject FTIndexObj = (IDfPersistentObject) sesion.getObjectByQualification("dm_fulltext_index where is_standby = false ");
         String indexName = FTIndexObj.getString("index_name");
         String query = "NULL,FTINDEX_AGENT_ADMIN,NAME,S," + indexName + ",AGENT_INSTANCE_NAME,S,all,ACTION,S,status";
@@ -1817,6 +1817,7 @@ public class UtilidadesDocumentum {
         String repositorio = sesion.getDocbaseName();
         IDfQuery q = clientX.getQuery();
         q.setDQL(query);
+        String resultado = "";
         try {
             IDfCollection col = q.execute(sesion, IDfQuery.DF_APPLY);
             col.next();
@@ -1825,12 +1826,15 @@ public class UtilidadesDocumentum {
 
             switch (Integer.parseInt(status)) {
                 case 200:
+                    resultado = "No hay respuesta de la intancia de index agent '" + indexAgentName + "'";
                     System.out.println("No hay respuesta de la intancia de index agent '" + indexAgentName + "'");
                     break;
                 case 100:
+                    resultado = "La instancia de index agent '" + indexAgentName + "' está parada";
                     System.out.println("La instancia de index agent '" + indexAgentName + "' está parada");
                     break;
                 default:
+                    resultado = "La instancia de index agent '" + indexAgentName + "' está en ejecución";
                     System.out.println("La instancia de index agent '" + indexAgentName + "' está en ejecución");
                     break;
             }
@@ -1838,6 +1842,7 @@ public class UtilidadesDocumentum {
         } catch (DfException ex) {
             Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
         }
+        return resultado;
     }
 
     public void pararIndexAgent(IDfSession sesion) throws DfException {
