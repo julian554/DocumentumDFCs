@@ -164,21 +164,27 @@
                           <Component id="jLabel2" min="-2" pref="86" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel1" min="-2" pref="131" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jScrollPane1" alignment="0" pref="832" max="32767" attributes="0"/>
-                              <Component id="comboHistorial" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="botonSalir" pref="115" max="32767" attributes="0"/>
-                              <Component id="botonConsultar" pref="115" max="32767" attributes="0"/>
-                              <Component id="checkDameSQL" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jLabel1" min="-2" pref="131" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane1" alignment="0" pref="830" max="32767" attributes="0"/>
+                                      <Component id="comboHistorial" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="28" pref="28" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="botonSalir" max="32767" attributes="0"/>
+                                      <Component id="botonConsultar" max="32767" attributes="0"/>
+                                      <Component id="checkDameSQL" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jLabel3" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="TextoNumReg" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                           <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       </Group>
@@ -206,8 +212,14 @@
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" pref="16" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="botonSalir" min="-2" pref="40" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="TextoNumReg" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="botonSalir" min="-2" pref="40" max="-2" attributes="0"/>
+                      </Group>
                       <Component id="jScrollPane2" min="-2" pref="117" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -333,6 +345,22 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Mostrar SQL"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="N&#xba; de registros de salida"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="TextoNumReg">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format format="#" subtype="-1" type="0"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="4"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextoNumRegActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
