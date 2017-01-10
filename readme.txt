@@ -45,3 +45,7 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     Proyecto compatible para versiones de java 7 o superior
     
     Añadida pantalla para ejecutar comando de API
+	
+	Añadido en la pantalla de DQLs el número de registros a mostrar
+	
+	Añadidas funciones varias para Documentum
