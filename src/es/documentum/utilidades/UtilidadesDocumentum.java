@@ -1219,7 +1219,7 @@ public class UtilidadesDocumentum {
 
     public static void main(String s[]) {
 
-        prueba();
+    //    prueba();
 
         Utilidades util = new Utilidades();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
@@ -1231,8 +1231,15 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
         UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        IDfSession sesion = ed.conectarDocumentum();
+        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "D_A1_CYC", "vilcs470.dcsi.adif", "1489");
 
+        String resul="";
+        try {
+            resul=ed.estadoIndexAgent(sesion);
+        } catch (DfException ex) {
+            Logger.getLogger(UtilidadesDocumentum.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         //    ed.exportarCarpeta("/System", "f:\\tmp");
         /*
         IDfFolder carpeta = null;

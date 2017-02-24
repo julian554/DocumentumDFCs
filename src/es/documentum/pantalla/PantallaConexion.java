@@ -30,6 +30,8 @@ public class PantallaConexion extends javax.swing.JDialog {
 
     public static String puerto = "";
     public static String usuario = "";
+    public static String clave = "";
+
     private String dirdfc = "";
     private Utilidades util = new Utilidades();
     public static PantallaDocumentum ventanapadre = null;
@@ -72,6 +74,14 @@ public class PantallaConexion extends javax.swing.JDialog {
 
     public static void setIdrepositorio(String idrepositorio) {
         PantallaConexion.idrepositorio = idrepositorio;
+    }
+
+    public void setClave(String clave) {
+        clave = new String(textoPassword.getPassword());
+    }
+
+    public static String getClave() {
+        return clave;
     }
 
     public PantallaConexion(PantallaDocumentum parent, boolean modal) {
@@ -576,8 +586,10 @@ public class PantallaConexion extends javax.swing.JDialog {
         prop.setProperty("password", new String(textoPassword.getPassword()));
         util.escribirProperties(dirdfc + "dfc.properties", prop);
         valor = "SELECION";
+        clave=new String(textoPassword.getPassword());
         docbroker = textoDocbroker.getText();
         repositorio = textoRepositorio.getText();
+
     }
 
     private Boolean ComprobarValores() {

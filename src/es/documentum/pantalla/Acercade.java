@@ -505,7 +505,7 @@ public class Acercade extends javax.swing.JDialog {
         labelVersionRepositorio.setText(versiondocumentum);
         labelPuerto.setText(puerto);
         labelUsuarioDocumentum.setText(usuario);
-        labelIdRepositorio.setText(idrepositorio);
+        labelIdRepositorio.setText(idrepositorio + " ("+Integer.toHexString(Integer.parseInt(idrepositorio))+")");
         labelVersionDFCs.setText(versiondfcs);
     }
 

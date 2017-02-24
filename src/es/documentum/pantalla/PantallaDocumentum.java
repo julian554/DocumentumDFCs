@@ -70,6 +70,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     Color colorborrado = new Color(255, 215, 255);
     Color coloraviso = new Color(0, 0, 255);
     String usuario = "";
+    String clave = "";
     String repositorio = "";
     String docbroker = "";
     String versiondocumentum = "";
@@ -181,6 +182,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionPasswordLDAP = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         opcionEstadisticasRepos = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        opcionEjecutarComandoSSOO = new javax.swing.JMenuItem();
         opcionAcercade = new javax.swing.JMenu();
         opcionManual = new javax.swing.JMenuItem();
         Acercade = new javax.swing.JMenuItem();
@@ -758,6 +761,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
         opcionUtilidades.add(opcionEstadisticasRepos);
+        opcionUtilidades.add(jSeparator5);
+
+        opcionEjecutarComandoSSOO.setText("Ejecutar comando de Sistema");
+        opcionEjecutarComandoSSOO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionEjecutarComandoSSOOActionPerformed(evt);
+            }
+        });
+        opcionUtilidades.add(opcionEjecutarComandoSSOO);
 
         MenuDocumentum.add(opcionUtilidades);
 
@@ -1412,6 +1424,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     }//GEN-LAST:event_opcionAPIActionPerformed
 
+    private void opcionEjecutarComandoSSOOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionEjecutarComandoSSOOActionPerformed
+        PantallaEjecutarComandoRemoto pantallaComandoRemoto = new PantallaEjecutarComandoRemoto(this, true);
+        pantallaComandoRemoto.setTitle("Ejecutar comando bash de Sistema Operativo remoto  -  "+docbroker);
+        pantallaComandoRemoto.setUsuario(usuario);
+        pantallaComandoRemoto.setClave(clave);
+        pantallaComandoRemoto.setServidor(docbroker);
+        pantallaComandoRemoto.setVisible(true);
+    }//GEN-LAST:event_opcionEjecutarComandoSSOOActionPerformed
+
     public void mostrarAcercade() {
         Acercade about = new Acercade(this, true);
         about.setDirdfc(dirdfc);
@@ -1457,6 +1478,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JMenuItem opcionAPI;
     private javax.swing.JMenuItem opcionAbrirDocumento;
     private javax.swing.JMenu opcionAcercade;
@@ -1473,6 +1495,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionCopiarValor;
     private javax.swing.JMenuItem opcionDql;
     private javax.swing.JMenuItem opcionDumpAtributos;
+    private javax.swing.JMenuItem opcionEjecutarComandoSSOO;
     private javax.swing.JMenuItem opcionEstadisticasRepos;
     private javax.swing.JMenuItem opcionExportar;
     private javax.swing.JMenuItem opcionExportarAtributosExcel;
@@ -1813,6 +1836,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         versiondocumentum = PantallaConexion.getVersiondocumentum();
 
         usuario = PantallaConexion.getUsuario();
+        clave = PantallaConexion.getClave();
         panelEstado.revalidate();
 
         if (PantallaConexion.getValor().equals("SALIR")) {
@@ -1944,13 +1968,13 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
         // ActualizarAtributo(int tipo, String r_object_id, String nombre, String valor)
         String nombre = tablaAtributos.getModel().getValueAt(tablaAtributos.convertRowIndexToModel(tablaAtributos.getSelectedRow()), 0).toString();
-
+        /*       
         if (!nombre.equals("a_content_type") && !nombre.equals("subject") && !nombre.equals("title") && !nombre.equals("acl_name")
                 && !nombre.equals("object_name") && !nombre.startsWith("map_atr")) {
             EtiquetaEstado.setText("Atributo " + nombre + " no modificable");
             return;
         }
-
+         */
         String valor = "";
         if (tablaAtributos.getModel().getValueAt(tablaAtributos.convertRowIndexToModel(tablaAtributos.getSelectedRow()), 1) == null) {
             valor = null;

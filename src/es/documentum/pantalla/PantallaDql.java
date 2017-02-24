@@ -60,6 +60,7 @@ public class PantallaDql extends javax.swing.JFrame {
         tablaResultados.setAutoscrolls(true);
         setLocationRelativeTo(null);
         cargarComboHistorial();
+        TextoNumReg.setText("0");
     }
 
     protected static Image getLogo() {

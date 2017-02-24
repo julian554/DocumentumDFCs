@@ -406,7 +406,9 @@ public class PantallaImportar extends javax.swing.JFrame {
         int posicion=0;
         
         try {
-            IDfCollection col = utildocum.ejecutarDql("select name from dm_type where  super_name in ('dm_document') or name in ('dm_document') order by name");
+            //            IDfCollection col = utildocum.ejecutarDql("select name from dm_type where  super_name in ('dm_document') or name in ('dm_document') order by name");
+
+            IDfCollection col = utildocum.ejecutarDql("select name from dm_type order by name");
             if (!utildocum.dameError().equals("")) {
                 textoLog.setText(utildocum.dameError());
                 barradocum.dispose();

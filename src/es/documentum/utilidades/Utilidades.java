@@ -1,5 +1,12 @@
 package es.documentum.utilidades;
 
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 import com.zehon.FileTransferStatus;
 import com.zehon.exception.FileTransferException;
 import com.zehon.scp.SCP;
@@ -18,8 +25,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipInputStream;
@@ -546,7 +556,7 @@ public class Utilidades {
         String ip = "";
         DIGIERROR = "";
         try {
-       //     InetAddress address = InetAddress.getByName("localhost");
+            //     InetAddress address = InetAddress.getByName("localhost");
             InetAddress address = InetAddress.getLocalHost();
             address = InetAddress.getLocalHost();
             // Coge la dirección ip como un array de bytes
@@ -777,6 +787,107 @@ public class Utilidades {
         return resultado;
     }
 
+    public Boolean cambiarPermisoRemoto(String servidor, String usuario, String clave, String nombre, int permisos) {
+        try {
+            JSch jsch = new JSch();
+            Session session = jsch.getSession(usuario, servidor, 22);
+            session.setPassword(clave);
+            session.setConfig("StrictHostKeyChecking", "no");
+            session.connect();
+            Channel channel = session.openChannel("sftp");
+            channel.connect();
+            ChannelSftp cSftp = (ChannelSftp) channel;
+            cSftp.chmod(permisos, nombre);
+            channel.disconnect();
+            session.disconnect();
+        } catch (JSchException | SftpException ex) {
+            System.out.println("Error al cambiar permisos de " + nombre + " en " + servidor + " - Error - " + ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean ejecutarComandoRemoto(String servidor, String usuario, String clave, String comando) {
+        return ejecutarComandoRemoto(servidor, usuario, clave, comando, 22);
+    }
+
+    public Boolean ejecutarComandoRemoto(String servidor, String usuario, String clave, String comando, int puerto) {
+        try {
+            JSch jsch = new JSch();
+            Session sesion = jsch.getSession(usuario, servidor, puerto);
+            sesion.setPassword(clave);
+            Properties config = new Properties();
+            config.put("StrictHostKeyChecking", "no");
+            sesion.setConfig(config);
+            sesion.connect();
+            Channel canal = sesion.openChannel("exec");
+            ChannelExec canalexec = (ChannelExec) canal;
+            canalexec.setCommand(comando);
+            canalexec.setErrStream(System.err);
+            canalexec.connect();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(canalexec.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            canalexec.disconnect();
+            sesion.disconnect();
+            return canalexec.getExitStatus() == 0;
+        } catch (JSchException ex) {
+            escribeLog("Error al establecer sesión remota. Error - " + ex.getMessage());
+            return false;
+        } catch (IOException ex) {
+            escribeLog("Error obtener stream remoto. Error - " + ex.getMessage());
+            return false;
+        }
+    }
+
+    public List<String> comandoRemoto(String servidor, String usuario, String clave, String comando) {
+        return comandoRemoto(servidor, usuario, clave, comando, 22);
+    }
+
+    public List<String> comandoRemoto(String servidor, String usuario, String clave, String comando, int puerto) {
+        List<String> resultado = new ArrayList<String>();
+        try {
+            JSch jsch = new JSch();
+            Session sesion = jsch.getSession(usuario, servidor, puerto);
+            sesion.setPassword(clave);
+            Properties config = new Properties();
+            config.put("StrictHostKeyChecking", "no");
+            sesion.setConfig(config);
+            sesion.connect();
+            Channel canal = sesion.openChannel("exec");
+            ChannelExec canalexec = (ChannelExec) canal;
+            canalexec.setCommand(comando);
+            canalexec.setErrStream(System.err);
+            canalexec.connect();
+
+            BufferedReader readererro = new BufferedReader(new InputStreamReader(canalexec.getErrStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(canalexec.getInputStream()));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+                resultado.add(line);
+            }
+
+            canalexec.disconnect();
+            sesion.disconnect();
+//            return canalexec.getExitStatus() == 0;
+            //          return resultado;
+        } catch (JSchException ex) {
+            escribeLog("Error al establecer sesión remota. Error - " + ex.getMessage());
+            resultado.add("Error al establecer sesión remota. Error - " + ex.getMessage());
+
+        } catch (IOException ex) {
+            escribeLog("Error obtener stream remoto. Error - " + ex.getMessage());
+            resultado.add("Error obtener stream remoto. Error - " + ex.getMessage());
+        }
+        return resultado;
+    }
+
     public Boolean validarNombreLote(String fichero) {
         Boolean resultado = false;
 
@@ -877,8 +988,8 @@ public class Utilidades {
             escribeLog("Error al generar el fichero Excel de salida (exportaExcel) Error - " + ex.getMessage());
         }
     }
-    
-        public String humanReadableByteCount(long bytes, boolean si) {
+
+    public String humanReadableByteCount(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
         if (bytes < unit) {
             return bytes + " B";
@@ -886,6 +997,30 @@ public class Utilidades {
         int exp = (int) (Math.log(bytes) / Math.log(unit));
         String pre = (si ? "KMGTPE" : "KMGTPE").charAt(exp - 1) + "";
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+    }
+
+    public static int OctalToDecimal(String octo) {
+        int number = 0;      // init result
+        for (int i = 0; i < octo.length(); i++) { // pass through all input characters
+            char digit = octo.charAt(i);            // fetch octal digit
+            digit -= '0';                           // translate to number (integer)
+            if (digit < 0 || digit > 7) {          // validate user inpu
+                System.out.println("No es un numero octal válido");
+                return -1;
+            }
+            number *= 8;                            // shift to left what I already ahve
+            number += digit;                        // add new number
+        }
+        return number;
+    }
+
+    public static void main(String args[]) {
+        Utilidades util = new Utilidades();
+        util.cambiarPermisoRemoto("tx0655.correos.es", "s000232", "eCvaLL05v", "/home/s000232/borrado/borrado1/*.sh", OctalToDecimal("744"));
+        List<String> resultado = util.comandoRemoto("tx0655.correos.es", "s000232", "eCvaLL05v", "ls -l /home/s000232/borrado/borrado1");
+        for (int x = 0; x < resultado.size(); x++) {
+            System.out.println(resultado.get(x));
+        }
     }
 }
 
