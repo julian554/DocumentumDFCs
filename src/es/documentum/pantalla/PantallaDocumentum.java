@@ -83,7 +83,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String memoria = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 + " KB / " + Runtime.getRuntime().totalMemory() / 1024 + " KB ";
-            setTitle(titulo + "     -     Memoria utilizada: " + memoria);
+            if (!idrepositorio.isEmpty()) {
+                setTitle(titulo + "     -     " + repositorio + " - " + idrepositorio + " (" + Integer.toHexString(Integer.parseInt(idrepositorio)) + ")" + "     -     Memoria utilizada: " + memoria);
+            } else {
+                setTitle(titulo + "     -     Memoria utilizada: " + memoria);
+            }
             panelEntrada.revalidate();
         }
     });
@@ -1426,7 +1430,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     private void opcionEjecutarComandoSSOOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionEjecutarComandoSSOOActionPerformed
         PantallaEjecutarComandoRemoto pantallaComandoRemoto = new PantallaEjecutarComandoRemoto(this, true);
-        pantallaComandoRemoto.setTitle("Ejecutar comando bash de Sistema Operativo remoto  -  "+docbroker);
+        pantallaComandoRemoto.setTitle("Ejecutar comando bash de Sistema Operativo remoto  -  " + docbroker);
         pantallaComandoRemoto.setUsuario(usuario);
         pantallaComandoRemoto.setClave(clave);
         pantallaComandoRemoto.setServidor(docbroker);
@@ -2216,8 +2220,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                         if (path0 != null) {
                             String subFolderPath
                                     = myFolder.getFolderPath(0).substring(
-                                    docbaseRootFolderPath.length(),
-                                    path0.length());
+                                            docbaseRootFolderPath.length(),
+                                            path0.length());
                             bufAbsFolderPath.append(subFolderPath);
                             String absFolderPath = bufAbsFolderPath.toString();
                             barradocum.setLabelMensa(absFolderPath);
