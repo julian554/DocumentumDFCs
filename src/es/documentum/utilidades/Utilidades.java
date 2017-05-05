@@ -28,8 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipInputStream;
@@ -89,25 +87,13 @@ public class Utilidades {
     }
 
     public String crearDirBase() {
-        String SO = so();
         String separador = separador();
         String dirbase = "";
-        // dirbase = usuarioHome() + separador + "digita";
-        if (!SO.toLowerCase().contains("windows")) {
-            dirbase = usuarioHome() + separador + "digita";
-        } else if (existeFichero("d:\\")) {
-            dirbase = "d:\\usuarios" + separador + usuario() + separador + "digita";
-        } else {
-            dirbase = usuarioHome() + separador + "digita";
-        }
-        // Siempre tiene que existir la ruta "digita" en el "home" del usuario
+        dirbase = usuarioHome() + separador + "DocumentumDFCs";
+        // Siempre tiene que existir la ruta "DocumentumDFCs" en el "home" del usuario
         crearDirectorio(dirbase);
-        crearDirectorio(dirbase + separador + "lotes");
-        crearDirectorio(dirbase + separador + "pendientes");
-        //  crearDirectorio(dirbase + separador + "enviados");
         crearDirectorio(dirbase + separador + "logs");
         return dirbase;
-
     }
 
     public boolean borrarDirectorio(String path) {
@@ -178,10 +164,7 @@ public class Utilidades {
         if (hasTransferableText) {
             try {
                 resultado = (String) contents.getTransferData(DataFlavor.stringFlavor);
-            } catch (UnsupportedFlavorException ex) {
-                //highly unlikely since we are using a standard DataFlavor
-                System.out.println(ex);
-            } catch (IOException ex) {
+            } catch (UnsupportedFlavorException | IOException ex) {
                 System.out.println(ex);
             }
         }
@@ -209,16 +192,14 @@ public class Utilidades {
         if (!SO.toLowerCase().contains("windows")) {
             separador = "/";
         }
-        String dirbase = "";
-        // dirbase = usuarioHome() + separador + "digita";
+        String dirbase = usuarioHome() + separador + "DocumentumDFCs";
+        /*
         if (!SO.toLowerCase().contains("windows")) {
-            dirbase = usuarioHome() + separador + "digita";
-        } else if (existeFichero("d:\\")) {
-            dirbase = "d:\\usuarios" + separador + usuario() + separador + "digita";
+            dirbase = usuarioHome() + separador + "DocumentumDFCs";
         } else {
-            dirbase = usuarioHome() + separador + "digita";
+            dirbase = usuarioHome() + separador + "DocumentumDFCs";
         }
-
+        */
         return dirbase;
     }
 

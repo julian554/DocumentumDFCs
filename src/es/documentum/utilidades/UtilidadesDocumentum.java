@@ -21,6 +21,7 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class UtilidadesDocumentum {
 
+    Utilidades util = new Utilidades();
     Properties pro = new Properties();
 
     public Properties getPro() {
@@ -953,19 +954,21 @@ public class UtilidadesDocumentum {
                 datos.setValor(doc.getString("r_object_id"));
                 datos.setTipoobjeto(doc.getString("r_object_type"));
                 ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
-                datos.setFechacreacion(resultado.get(0).toString());
-                if (doc.getString("r_object_type").equals("map_t_doc_extranjeria")) {
-                    resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_aplicacion");
-                    if (resultado.size() > 0) {
-                        datos.setAplicacion(resultado.get(0).toString());
+                if (resultado.size() > 0) {
+                    datos.setFechacreacion(resultado.get(0).toString());
+                    if (doc.getString("r_object_type").equals("map_t_doc_extranjeria")) {
+                        resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_aplicacion");
+                        if (resultado.size() > 0) {
+                            datos.setAplicacion(resultado.get(0).toString());
+                        }
+                        resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_usuario");
+                        if (resultado.size() > 0) {
+                            datos.setUsuario(resultado.get(0).toString());
+                        }
                     }
-                    resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_usuario");
-                    if (resultado.size() > 0) {
-                        datos.setUsuario(resultado.get(0).toString());
-                    }
+                    datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
+                    listaficheros.add(datos);
                 }
-
-                listaficheros.add(datos);
             }
 
         } catch (Exception ex) {
@@ -1022,9 +1025,12 @@ public class UtilidadesDocumentum {
                 datos.setValor(doc.getString("r_object_id"));
                 datos.setTipoobjeto(doc.getString("r_object_type"));
                 ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
-                String fechacreacion = resultado.get(0).toString();
-                datos.setFechacreacion(fechacreacion);
-                listaficheros.add(datos);
+                if (resultado.size() > 0) {
+                    String fechacreacion = resultado.get(0).toString();
+                    datos.setFechacreacion(fechacreacion);
+                    datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
+                    listaficheros.add(datos);
+                }
             }
 
         } catch (Exception ex) {
@@ -1090,20 +1096,22 @@ public class UtilidadesDocumentum {
                     datos.setValor(doc.getString("r_object_id"));
                     datos.setTipoobjeto(doc.getString("r_object_type"));
                     ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
-                    String fechacreacion = resultado.get(0).toString();
-                    datos.setFechacreacion(fechacreacion);
-                    if (doc.getString("r_object_type").equals("map_t_doc_extranjeria")) {
-                        resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_aplicacion");
-                        if (resultado.size() > 0) {
-                            datos.setAplicacion(resultado.get(0).toString());
+                    if (resultado.size() > 0) {
+                        String fechacreacion = resultado.get(0).toString();
+                        datos.setFechacreacion(fechacreacion);
+                        if (doc.getString("r_object_type").equals("map_t_doc_extranjeria")) {
+                            resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_aplicacion");
+                            if (resultado.size() > 0) {
+                                datos.setAplicacion(resultado.get(0).toString());
+                            }
+                            resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_usuario");
+                            if (resultado.size() > 0) {
+                                datos.setUsuario(resultado.get(0).toString());
+                            }
                         }
-                        resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_usuario");
-                        if (resultado.size() > 0) {
-                            datos.setUsuario(resultado.get(0).toString());
-                        }
+                        datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
+                        listaficheros.add(datos);
                     }
-
-                    listaficheros.add(datos);
                     if (!Escarpeta && !Escabinet) {
                         break;
                     }
@@ -1193,34 +1201,158 @@ public class UtilidadesDocumentum {
         return "Exportado de Documentum";
     }
 
-    public void checkoutDoc(String objectId, IDfSession sesion) throws Exception {
-
-        IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(objectId));
-        if (!sysObject.isCheckedOut()) // if it is not checked out
-        {
-            sysObject.checkout();
-        }
-
-        System.out.println("is Check out " + sysObject.isCheckedOut());
-    }
-
-    public String checkinDoc(String objectId, IDfSession sesion) {
+//    public void checkoutDoc(String objectId, IDfSession sesion) {
+//
+//        try {
+//            IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(objectId));
+//            if (!sysObject.isCheckedOut()) // if it is not checked out
+//            {
+//                String directorio = util.dirBase() + util.separador() + "Documentum" + util.separador()
+//                        + "Checkout" + util.separador();
+//                util.crearDirectorio(directorio);
+//                GuardarFichero(objectId, directorio);
+//                
+//                sysObject.checkout();
+//            }
+//
+//            //   System.out.println("is Check out " + sysObject.isCheckedOut());
+//        } catch (DfException ex) {
+//            Utilidades.escribeLog("Error al hacer check out de " + objectId + "  -  Error " + ex.getMessage());
+//        }
+//    }
+    public String checkoutDoc(String objectId, IDfSession sesion) {
+        String resultado = "";
         try {
-            IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(objectId));
-            if (sysObject.isCheckedOut()) { // if it is checked out
-                return sysObject.checkin(false, "CURRENT").getId();
+            IDfClientX clientx = new DfClientX();
+// Use the factory method to create a checkout operation object.
+            IDfCheckoutOperation coOp = clientx.getCheckoutOperation();
+// Set the location where the local copy of the checked out file is stored.
+            coOp.setDestinationDirectory(util.dirBase() + util.separador() + "Documentum" + util.separador()
+                    + "Checkout" + util.separador());
+// Get the document instance using the document ID.
+            IDfDocument doc = (IDfDocument) sesion.getObject(new DfId(objectId));
+// Create an empty checkout node object.
+            IDfCheckoutNode coNode;
+// If the doc is a virtual document, instantiate it as a virtual document
+// object and add it to the checkout operation. Otherwise, add the document
+// object to the checkout operation.
+            if (doc.isVirtualDocument()) {
+                IDfVirtualDocument vDoc = doc.asVirtualDocument("CURRENT", false);
+                coNode = (IDfCheckoutNode) coOp.add(vDoc);
+            } else {
+                coNode = (IDfCheckoutNode) coOp.add(doc);
             }
 
-        } catch (DfException ex) {
-            Utilidades.escribeLog("Error al hacer checkin de " + objectId + "  -  Error " + ex.getMessage());
+            if (coNode == null) {
+                resultado = ("coNode is null");
+            }
+// Execute the checkout operation. Return the result.
+            if (coOp.execute()) {
+                resultado = "Successfully checked out file ID: " + objectId;
+            } else {
+                resultado = ("Checkout failed.");
+            }
+
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al hacer checkout de "+objectId+" - Error: "+ ex.getMessage());
+            return "Error al hacer checkout de "+objectId+" - Error: "+ ex.getMessage();
         }
-        return null;
+
+        return resultado;
+    }
+
+    public String cancelCheckout(String objectId, IDfSession sesion) {
+        String resultado = "";
+        try {
+            IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(objectId));
+            IDfClientX clientx = new DfClientX();
+            IDfCancelCheckoutOperation cco = clientx.getCancelCheckoutOperation();
+            IDfDocument doc = (IDfDocument) sesion.getObject(new DfId(objectId));
+// Indicate whether to keep the local file.
+            cco.setKeepLocalFile(false);
+            IDfCancelCheckoutNode node;
+            node = (IDfCancelCheckoutNode) cco.add(doc);
+            if (node == null) {
+                resultado = "Node is null";
+            }
+            if (!cco.execute()) {
+                resultado = "Operation failed";
+            }
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al cancelar check out de " + objectId + "  -  Error " + ex.getMessage());
+        }
+        return resultado;
+    }
+
+    public String checkinDoc(String objectId, IDfSession sesion, String fichero, String version, String descripcion, Boolean indexar) {
+        String resultado = "";
+        try {
+            IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(objectId));
+            if (sysObject.isCheckedOut()) {
+                sysObject.setObjectName(fichero);
+                sysObject.setTitle(descripcion);
+                sysObject.setFullText(indexar);
+                IDfVersionPolicy vp = sysObject.getVersionPolicy();
+                IDfClientX clientx = new DfClientX();
+                IDfCheckinOperation operation = clientx.getCheckinOperation();
+                IDfCheckinNode node;
+
+                if (sysObject.isVirtualDocument()) {
+                    IDfVirtualDocument vDoc = sysObject.asVirtualDocument("CURRENT", false);
+                    node = (IDfCheckinNode) operation.add(vDoc);
+                } else {
+                    IDfDocument doc = (IDfDocument) sesion.getObject(new DfId(objectId));
+                    node = (IDfCheckinNode) operation.add(doc);
+                }
+                node.setFilePath(util.dirBase() + util.separador() + "Documentum" + util.separador()
+                        + "Checkout" + util.separador() + fichero);
+                switch (version) {
+                    case "igual":
+                        node.setCheckinVersion(IDfCheckinOperation.SAME_VERSION);
+                        break;
+                    case "mayor":
+                        node.setCheckinVersion(IDfCheckinOperation.NEXT_MAJOR);
+                        break;
+                    case "menor":
+                        node.setCheckinVersion(IDfCheckinOperation.NEXT_MINOR);
+                        break;
+                }
+                node.setVersionLabels("CURRENT");
+                if (operation.execute()) {
+                    resultado = "Check In realizado";
+                } else {
+                    resultado = "Check In fallido";
+                }
+                IDfId newId = node.getNewObjectId();
+                Utilidades.escribeLog("Nuevo ID tras el check in: " + newId.getId());
+            }
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al hacer check in de " + objectId + "  -  Error " + ex.getMessage());
+            resultado = "Check In fallido";
+        }
+        return resultado;
+    }
+
+    public boolean estaCheckin(String r_object_id) {
+        IDfSession sesion = conectarDocumentum();
+        if (sesion == null) {
+            Utilidades.escribeLog("No se pudo obtener sesión de Documentum (estaCheckin)");
+
+        }
+        try {
+            IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(r_object_id));
+            if (sysObject.isCheckedOut()) {
+                return false;
+            }
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al comprobar check in de " + r_object_id + "  -  Error " + ex.getMessage());
+        }
+        return true;
     }
 
     public static void main(String s[]) {
 
-    //    prueba();
-
+        //    prueba();
         Utilidades util = new Utilidades();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
 
@@ -1233,13 +1365,15 @@ public class UtilidadesDocumentum {
         UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
         IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "D_A1_CYC", "vilcs470.dcsi.adif", "1489");
 
-        String resul="";
+        String resul = "";
         try {
-            resul=ed.estadoIndexAgent(sesion);
+            resul = ed.estadoIndexAgent(sesion);
+
         } catch (DfException ex) {
-            Logger.getLogger(UtilidadesDocumentum.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UtilidadesDocumentum.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //    ed.exportarCarpeta("/System", "f:\\tmp");
         /*
         IDfFolder carpeta = null;
@@ -1297,13 +1431,13 @@ public class UtilidadesDocumentum {
 //            ed.ListarFicheros("289920100141552");
 //            Utilidades.escribeLog(ed.GuardarFichero("0901e3758006f7f8", "c:\\tmp"));
             IDfCollection col = ed.ejecutarDql("Select * from dm_format");
-            Vector filas = new Vector();
+            ArrayList filas = new ArrayList();
             while (col.next()) {
-                filas.addElement(col.getTypedObject());
+                filas.add(col.getTypedObject());
             }
 
             int cont = filas.size();
-            IDfTypedObject primerafila = (IDfTypedObject) filas.elementAt(0);
+            IDfTypedObject primerafila = (IDfTypedObject) filas.get(0);
             int tam = primerafila.getAttrCount();
             Object[] cabecera = new Object[tam];
             Object[][] datos = new Object[cont][tam];
@@ -1312,7 +1446,7 @@ public class UtilidadesDocumentum {
             }
 
             for (int i = 0; i < cont; i++) {
-                IDfTypedObject row = (IDfTypedObject) filas.elementAt(i);
+                IDfTypedObject row = (IDfTypedObject) filas.get(i);
 
                 for (int n = 0; n < row.getAttrCount(); n++) {
                     IDfAttr attr = row.getAttr(n);
@@ -1661,9 +1795,11 @@ public class UtilidadesDocumentum {
                 String docbaseName = dfDocbaseMap.getDocbaseName(i);
                 String docbaseDescription = dfDocbaseMap.getDocbaseDescription(i);
                 System.out.println(docbaseName + " | " + docbaseDescription);
+
             }
         } catch (DfException ex) {
-            Logger.getLogger(UtilidadesDocumentum.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UtilidadesDocumentum.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1868,4 +2004,5 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
         }
     }
+
 }

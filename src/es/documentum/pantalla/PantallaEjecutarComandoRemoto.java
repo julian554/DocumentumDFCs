@@ -2,7 +2,6 @@ package es.documentum.pantalla;
 
 import es.documentum.utilidades.Utilidades;
 import static es.documentum.utilidades.Utilidades.escribeLog;
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -11,18 +10,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.text.DefaultHighlighter;
 
 public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
 
@@ -545,7 +541,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     }
 
     private void cargarComboHistorial() {
-        Vector comboBoxItems = new Vector();
+        ArrayList comboBoxItems = new ArrayList();
         Utilidades util = new Utilidades();
         util.crearDirectorio(util.usuarioHome() + util.separador() + "tmp" + util.separador());
         util.crearFichero(util.usuarioHome() + util.separador() + "tmp" + util.separador() + "historialCmd.log", "texto");
@@ -570,7 +566,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             }
         }
 
-        DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems);
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems.toArray());
         comboHistorial.setModel(modelo);
     }
 

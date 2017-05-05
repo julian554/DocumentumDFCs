@@ -477,10 +477,10 @@ public class Acercade extends javax.swing.JDialog {
     private void valoresPc() {
         Utilidades pc = new Utilidades();
         CargarConfiguraciones();
-        try{
-        labelVersion.setText(pro.getProperty("nombre").toString() + "  v. " + pro.getProperty("version").toString());
-        }catch(Exception ex){
-            
+        try {
+            labelVersion.setText(pro.getProperty("nombre").toString() + "  v. " + pro.getProperty("version").toString());
+        } catch (Exception ex) {
+
         }
         labelIP.setText(pc.ip());
         labelPC.setText(pc.nombrePC());
@@ -505,7 +505,9 @@ public class Acercade extends javax.swing.JDialog {
         labelVersionRepositorio.setText(versiondocumentum);
         labelPuerto.setText(puerto);
         labelUsuarioDocumentum.setText(usuario);
-        labelIdRepositorio.setText(idrepositorio + " ("+Integer.toHexString(Integer.parseInt(idrepositorio))+")");
+        if (!idrepositorio.isEmpty()) {
+            labelIdRepositorio.setText(idrepositorio + " (" + Integer.toHexString(Integer.parseInt(idrepositorio)) + ")");
+        }
         labelVersionDFCs.setText(versiondfcs);
     }
 

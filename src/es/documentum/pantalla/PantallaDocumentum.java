@@ -35,9 +35,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.Vector;
-import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -130,6 +127,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionExportar = new javax.swing.JMenuItem();
         opcionBorrarDocumento = new javax.swing.JMenuItem();
         opcionBorradoLogico = new javax.swing.JMenuItem();
+        opcionCheckin = new javax.swing.JMenuItem();
+        opcionCancelCheckout = new javax.swing.JMenuItem();
+        opcionCheckout = new javax.swing.JMenuItem();
         separador = new javax.swing.JPopupMenu.Separator();
         opcionCopiarNombre = new javax.swing.JMenuItem();
         opcionCopiarIDDocumentum = new javax.swing.JMenuItem();
@@ -220,12 +220,37 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         popupDocumentos.add(opcionBorrarDocumento);
 
         opcionBorradoLogico.setText("Borrado Lógico del Documento");
+        opcionBorradoLogico.setEnabled(false);
         opcionBorradoLogico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcionBorradoLogicoActionPerformed(evt);
             }
         });
         popupDocumentos.add(opcionBorradoLogico);
+
+        opcionCheckin.setText("Check In");
+        opcionCheckin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionCheckinActionPerformed(evt);
+            }
+        });
+        popupDocumentos.add(opcionCheckin);
+
+        opcionCancelCheckout.setText("Cancelar Check Out");
+        opcionCancelCheckout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionCancelCheckoutActionPerformed(evt);
+            }
+        });
+        popupDocumentos.add(opcionCancelCheckout);
+
+        opcionCheckout.setText("Check Out");
+        opcionCheckout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionCheckoutActionPerformed(evt);
+            }
+        });
+        popupDocumentos.add(opcionCheckout);
         popupDocumentos.add(separador);
 
         opcionCopiarNombre.setText("Copiar Nombre");
@@ -314,7 +339,6 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         setTitle("Consultas en Documentum");
         setMinimumSize(new java.awt.Dimension(1088, 770));
         setName("tabla"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1088, 770));
 
         panelDocumentos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panelDocumentos.setAutoscrolls(true);
@@ -399,7 +423,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
         EtiquetaEstado.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         EtiquetaEstado.setToolTipText("");
+        EtiquetaEstado.setAutoscrolls(true);
         EtiquetaEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        EtiquetaEstado.setMaximumSize(new java.awt.Dimension(800, 4));
         EtiquetaEstado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 EtiquetaEstadoMouseEntered(evt);
@@ -425,20 +451,20 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         panelEstadoLayout.setHorizontalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEstadoLayout.createSequentialGroup()
-                .addComponent(EtiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
+                .addComponent(EtiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(EtiquetaDocbroker, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                .addComponent(EtiquetaDocbroker, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addGap(2, 2, 2)
-                .addComponent(EtiquetaRepositorio, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+                .addComponent(EtiquetaRepositorio, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
         );
         panelEstadoLayout.setVerticalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(EtiquetaDocbroker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(panelEstadoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEstadoLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(EtiquetaRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EtiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(EtiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout panelDocumentosLayout = new javax.swing.GroupLayout(panelDocumentos);
@@ -474,6 +500,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 textoRutaDocumentumActionPerformed(evt);
             }
         });
+        textoRutaDocumentum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textoRutaDocumentumKeyPressed(evt);
+            }
+        });
 
         botonSalir.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         botonSalir.setMnemonic('S');
@@ -495,6 +526,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         textoIdDocumentum.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 textoIdDocumentumMousePressed(evt);
+            }
+        });
+        textoIdDocumentum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textoIdDocumentumKeyPressed(evt);
             }
         });
 
@@ -521,6 +557,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         textoCarpeta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 textoCarpetaMousePressed(evt);
+            }
+        });
+        textoCarpeta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textoCarpetaKeyPressed(evt);
             }
         });
 
@@ -1213,9 +1254,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         String mes = String.valueOf((cal.get(Calendar.MONTH) + 1)).length() == 1 ? "0" + String.valueOf((cal.get(Calendar.MONTH) + 1)) : String.valueOf((cal.get(Calendar.MONTH) + 1));
         String dia = String.valueOf(cal.get(Calendar.DAY_OF_MONTH)).length() == 1 ? "0" + String.valueOf(cal.get(Calendar.DAY_OF_MONTH)) : String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
         PantallaLeerFichero log = new PantallaLeerFichero(this, true);
+        log.setVisible(true);
         log.CargarFichero(dirbase + util.separador() + "DocumentumDFCs-" + dia + "-" + mes + "-" + anio + ".log");
         log.setTitle("Fichero de log " + dirbase + util.separador() + "DocumentumDFCs-" + dia + "-" + mes + "-" + anio + ".log");
-        log.setVisible(true);
         System.gc();
     }//GEN-LAST:event_opcionLeerLogActionPerformed
 
@@ -1328,15 +1369,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                         //   System.out.println(repositorio + "-" + servidor + "-" + puerto + "-" + usuario + "-" + clave);
                         IDfSession sesion = utilDocum.conectarDocumentum(usuario, clave, repositorio, servidor, puerto);
                         IDfCollection col = utilDocum.ejecutarDql("select count(*) from dmr_content where r_object_id in (select i_contents_id from  dm_sysobject where A_STORAGE_TYPE='filestore_01' and (R_CREATION_DATE > DATE('" + fechainicial + "','DD/MM/YYYY')) and (R_CREATION_DATE < DATE('" + fechafinal + "','DD/MM/YYYY')) )", sesion);
-                        Vector filas = new Vector();
+                        ArrayList filas = new ArrayList();
                         datos[lNumeroLineas][0] = servidor;
                         datos[lNumeroLineas][1] = repositorio;
                         try {
                             while (col.next()) {
-                                filas.addElement(col.getTypedObject());
+                                filas.add(col.getTypedObject());
                             }
                             col.close();
-                            IDfTypedObject row = (IDfTypedObject) filas.elementAt(0);
+                            IDfTypedObject row = (IDfTypedObject) filas.get(0);
                             IDfAttr attr = row.getAttr(0);
                             IDfValue attrValue = row.getValue(attr.getName());
                             String resultado = (String) getDfObjectValue(attrValue);
@@ -1348,13 +1389,13 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                         }
 
                         col = utilDocum.ejecutarDql("select sum(full_content_size)  from dmr_content where r_object_id in (select i_contents_id from  dm_sysobject where A_STORAGE_TYPE='filestore_01' and (R_CREATION_DATE > DATE('" + fechainicial + "','DD/MM/YYYY')) and (R_CREATION_DATE < DATE('" + fechafinal + "','DD/MM/YYYY')) )", sesion);
-                        filas = new Vector();
+                        filas = new ArrayList();
                         try {
                             while (col.next()) {
-                                filas.addElement(col.getTypedObject());
+                                filas.add(col.getTypedObject());
                             }
                             col.close();
-                            IDfTypedObject row = (IDfTypedObject) filas.elementAt(0);
+                            IDfTypedObject row = (IDfTypedObject) filas.get(0);
                             IDfAttr attr = row.getAttr(0);
                             IDfValue attrValue = row.getValue(attr.getName());
                             Double resultado = Double.parseDouble((String) getDfObjectValue(attrValue));
@@ -1437,6 +1478,112 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         pantallaComandoRemoto.setVisible(true);
     }//GEN-LAST:event_opcionEjecutarComandoSSOOActionPerformed
 
+    private void opcionCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCheckoutActionPerformed
+        IDfSession sesion = utilDocum.conectarDocumentum();
+        if (sesion == null) {
+            Utilidades.escribeLog("No se pudo obtener sesión de Documentum (checkout)");
+
+        }
+        String r_object_id = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString();
+        try {
+            String resultado = utilDocum.checkoutDoc(r_object_id, sesion);
+            if (resultado.contains("Error al hacer checkout de")) {
+                EtiquetaEstado.setText(resultado);
+            } else {
+                int fila = tablaDocumentos.getSelectedRow();
+                int columna = 6;
+                java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/bloqueado.gif");
+                ImageIcon iconoCheckout = new ImageIcon(imgURL);
+                tablaDocumentos.getModel().setValueAt(iconoCheckout, fila, columna);
+                //   tablaDocumentos.getModel().setValueAt("*", fila, columna);            
+                opcionCancelCheckout.setVisible(true);
+                opcionCheckin.setVisible(true);
+                opcionCheckout.setVisible(false);
+            }
+        } catch (Exception ex) {
+            Utilidades.escribeLog("No se pudo hacer check out de " + r_object_id + " - Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_opcionCheckoutActionPerformed
+
+    private void opcionCheckinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCheckinActionPerformed
+        IDfSession sesion = utilDocum.conectarDocumentum();
+        if (sesion == null) {
+            Utilidades.escribeLog("No se pudo obtener sesión de Documentum (checkin)");
+        }
+        String r_object_id = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString();
+        String fichero = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
+        try {
+            PantallaCheckin pantallaCheckin = new PantallaCheckin(this, true);
+            pantallaCheckin.setTitle("Check In de " + fichero);
+            pantallaCheckin.setFichero(fichero);
+            pantallaCheckin.setR_object_id(r_object_id);
+            pantallaCheckin.setLabelFichero(fichero);
+            pantallaCheckin.setVisible(true);
+
+            Boolean resultado = pantallaCheckin.respuesta();
+            String version = pantallaCheckin.getVersion();
+            String descripcion = pantallaCheckin.getDescripcion();
+            Boolean indexar = pantallaCheckin.getIndexar();
+            if (resultado) {
+                utilDocum.checkinDoc(r_object_id, sesion, fichero, version, descripcion, indexar);
+                int fila = tablaDocumentos.getSelectedRow();
+                int columna = 6;
+                java.net.URL imgURL = PantallaDocumentum.class
+                        .getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
+                ImageIcon iconoCheckin = new ImageIcon(imgURL);
+                tablaDocumentos.getModel().setValueAt(iconoCheckin, fila, columna);
+                // tablaDocumentos.getModel().setValueAt(" ", fila, columna);
+                opcionCancelCheckout.setVisible(false);
+                opcionCheckin.setVisible(false);
+                opcionCheckout.setVisible(true);
+            }
+        } catch (Exception ex) {
+            Utilidades.escribeLog("No se pudo hacer check in de " + r_object_id + " - Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_opcionCheckinActionPerformed
+
+    private void opcionCancelCheckoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCancelCheckoutActionPerformed
+        IDfSession sesion = utilDocum.conectarDocumentum();
+        if (sesion == null) {
+            Utilidades.escribeLog("No se pudo obtener sesión de Documentum (CancelCheckout)");
+
+        }
+        String r_object_id = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString();
+        try {
+            utilDocum.cancelCheckout(r_object_id, sesion);
+            int fila = tablaDocumentos.getSelectedRow();
+            int columna = 6;
+            java.net.URL imgURL = PantallaDocumentum.class
+                    .getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
+            ImageIcon iconoCheckin = new ImageIcon(imgURL);
+            tablaDocumentos.getModel().setValueAt(iconoCheckin, fila, columna);
+            // tablaDocumentos.getModel().setValueAt(" ", fila, columna);
+            opcionCancelCheckout.setVisible(false);
+            opcionCheckin.setVisible(false);
+            opcionCheckout.setVisible(true);
+        } catch (Exception ex) {
+            Utilidades.escribeLog("No se pudo hacer cancel check out de " + r_object_id + " - Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_opcionCancelCheckoutActionPerformed
+
+    private void textoRutaDocumentumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoRutaDocumentumKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            BuscarEnDocumentum();
+        }
+    }//GEN-LAST:event_textoRutaDocumentumKeyPressed
+
+    private void textoCarpetaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoCarpetaKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            BuscarEnDocumentum();
+        }
+    }//GEN-LAST:event_textoCarpetaKeyPressed
+
+    private void textoIdDocumentumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoIdDocumentumKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            BuscarEnDocumentum();
+        }
+    }//GEN-LAST:event_textoIdDocumentumKeyPressed
+
     public void mostrarAcercade() {
         Acercade about = new Acercade(this, true);
         about.setDirdfc(dirdfc);
@@ -1491,6 +1638,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionBorradoLogico;
     private javax.swing.JMenuItem opcionBorrarDocumento;
     private javax.swing.JMenuItem opcionBuscar;
+    private javax.swing.JMenuItem opcionCancelCheckout;
+    private javax.swing.JMenuItem opcionCheckin;
+    private javax.swing.JMenuItem opcionCheckout;
     private javax.swing.JMenuItem opcionConectar;
     private javax.swing.JMenuItem opcionCopiar;
     private javax.swing.JMenuItem opcionCopiarAtributo;
@@ -1657,8 +1807,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     return;
                 }
                 try {
-                    Object[][] datos = new Object[documentos.size()][6];
-                    Object[] cabecera = {"Nombre ", "ID Documentum (r_object_id)", "Tipo Documental", "Usuario", "Aplicación", "Fecha Creación"};
+                    Object[][] datos = new Object[documentos.size()][7];
+                    Object[] cabecera = {"Nombre ", "ID Documentum (r_object_id)", "Tipo Documental", "Usuario", "Aplicación", "Fecha Creación", "Check Out"};
+                    java.net.URL imgURL = PantallaDocumentum.class
+                            .getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
+                    ImageIcon iconoCheckin = new ImageIcon(imgURL);
+                    imgURL
+                            = PantallaDocumentum.class
+                                    .getClassLoader().getResource("es/documentum/imagenes/bloqueado.gif");
+                    ImageIcon iconoCheckout = new ImageIcon(imgURL);
                     for (int n = 0; n < documentos.size(); n++) {
                         datos[n][0] = documentos.get(n).getNombre();
                         datos[n][1] = documentos.get(n).getValor();
@@ -1666,6 +1823,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                         datos[n][3] = documentos.get(n).getUsuario();
                         datos[n][4] = documentos.get(n).getAplicacion();
                         datos[n][5] = documentos.get(n).getFechacreacion();
+                        //  datos[n][6] = documentos.get(n).isCheckin() ? " " : "*";
+                        datos[n][6] = documentos.get(n).isCheckin() ? iconoCheckin : iconoCheckout;
                     }
 
                     if (datos.length > 0) {
@@ -1676,11 +1835,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
                 modeloLotes.setRowCount(documentos.size());
                 tablaDocumentos.setModel(modeloLotes);
-
                 TableColumn columna = tablaDocumentos.getColumnModel().getColumn(0);
                 columna.setPreferredWidth(125);
                 columna.setMinWidth(125);
                 columna.sizeWidthToFit();
+
                 tablaDocumentos.doLayout();
                 if (tipo.toLowerCase().equals("id")) {
                     EtiquetaEstado.setText("Encontrado(s) " + documentos.size() + " documento(s) con id " + carpeta);
@@ -1703,15 +1862,20 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     }
 
     private void asignarIconos() {
-        java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/buscar_peq.png");
+        java.net.URL imgURL = PantallaDocumentum.class
+                .getClassLoader().getResource("es/documentum/imagenes/buscar_peq.png");
         Icon imgicon = new ImageIcon(imgURL);
         this.botonBuscar.setIcon(imgicon);
 
-        imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/salir_peq.png");
+        imgURL
+                = PantallaDocumentum.class
+                        .getClassLoader().getResource("es/documentum/imagenes/salir_peq.png");
         imgicon = new ImageIcon(imgURL);
         this.botonSalir.setIcon(imgicon);
 
-        imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/conectar_peq.png");
+        imgURL
+                = PantallaDocumentum.class
+                        .getClassLoader().getResource("es/documentum/imagenes/conectar_peq.png");
         imgicon = new ImageIcon(imgURL);
         this.botonConectar.setIcon(imgicon);
 
@@ -1732,6 +1896,17 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 if (componente.equals("tablaDocumentos")) {
                     if (row >= 0 && column >= 0 && tablaDocumentos.getModel().getRowCount() > 0) {
                         opcionExportar.setEnabled(true);
+                        opcionBorradoLogico.setVisible(false);
+                        String r_object_id = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString();
+                        if (utilDocum.estaCheckin(r_object_id)) {
+                            opcionCheckin.setVisible(false);
+                            opcionCancelCheckout.setVisible(false);
+                            opcionCheckout.setVisible(true);
+                        } else {
+                            opcionCheckin.setVisible(true);
+                            opcionCancelCheckout.setVisible(true);
+                            opcionCheckout.setVisible(false);
+                        }
                         popupDocumentos.show(evt.getComponent(), evt.getX(), evt.getY());
                     }
 
@@ -1785,8 +1960,10 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             fis = new FileOutputStream(ficherolog, true);
             out = new PrintStream(fis);
             System.setOut(out);
+
         } catch (FileNotFoundException ex) {
-            Utilidades.escribeLog(PantallaDocumentum.class.getName().toString() + " - " + ex.getMessage());
+            Utilidades.escribeLog(PantallaDocumentum.class
+                    .getName().toString() + " - " + ex.getMessage());
         }
 
         Utilidades.escribeLog("Inicio de DocumentumDFCs");
@@ -1828,6 +2005,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionRBMetalActionPerformed(null);
         versiondfcs = utilDocum.DameVersionDFC();
         botonArribaDir.setEnabled(false);
+        opcionPasswordLDAP.setVisible(false);
     }
 
     private void ConexionDocumentum() {
@@ -1927,14 +2105,13 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 return;
             }
 
-            String directorio = "";
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));
             chooser.setDialogTitle("Seleccionar directorio");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setAcceptAllFileFilterUsed(false);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                directorio = chooser.getSelectedFile().toString();
+                String directorio = chooser.getSelectedFile().toString();
                 utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
                 String resultado = utilDocum.GuardarFichero(nombre, directorio);
                 EtiquetaEstado.setText(resultado);
@@ -1961,7 +2138,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     File path = new File(resultado);
                     Desktop.getDesktop().open(path);
                 }
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 Utilidades.escribeLog("Error al abrir el archivo (" + resultado + ") - Error " + ex.getMessage());
             }
         }
@@ -2058,13 +2235,12 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     private void ExportarDocumentosExcel() {
         if (tablaDocumentos.getModel().getRowCount() > 0) {
-            String fichero = "";
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));
             chooser.setDialogTitle("Seleccionar directorio y nombre de fichero");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                fichero = chooser.getSelectedFile().toString();
+                String fichero = chooser.getSelectedFile().toString();
                 if (!fichero.toLowerCase().endsWith(".xls")) {
                     fichero = fichero + ".xls";
                 }
@@ -2078,13 +2254,12 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     private void ExportarAtributosExcel() {
         if (tablaAtributos.getModel().getRowCount() > 0) {
-            String fichero = "";
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));
             chooser.setDialogTitle("Seleccionar directorio y nombre de fichero");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                fichero = chooser.getSelectedFile().toString();
+                String fichero = chooser.getSelectedFile().toString();
                 if (!fichero.toLowerCase().endsWith(".xls")) {
                     fichero = fichero + ".xls";
                 }
@@ -2101,19 +2276,12 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         if (rutaRepositorio.isEmpty() || rutaSistemaFicheros.isEmpty()) {
             return;
         }
-        Utilidades util = new Utilidades();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
 
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-        } catch (IOException ex) {
-            Utilidades.escribeLog("Error al exportarCarpeta - Error: " + ex.getMessage());
-        } catch (NoSuchMethodException ex) {
-            Utilidades.escribeLog("Error al exportarCarpeta - Error: " + ex.getMessage());
-        } catch (IllegalAccessException ex) {
-            Utilidades.escribeLog("Error al exportarCarpeta - Error: " + ex.getMessage());
-        } catch (InvocationTargetException ex) {
+        } catch (IOException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
             Utilidades.escribeLog("Error al exportarCarpeta - Error: " + ex.getMessage());
         }
         UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
@@ -2125,8 +2293,6 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al recuperar carpeta (exportarCarpeta) - Error: " + ex.getMessage());
         }
-
-        String resultado = "";
         try {
             if (carpeta != null) {
                 deepExportFolder(carpeta.getObjectId(), rutaSistemaFicheros, rutaRepositorio);
@@ -2181,8 +2347,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             + "'), DESCEND)";
                     IDfCollection colDQL = utilDocum.execQuery(session, qualification);
 
-                    IDfFolder myFolder = null;
-                    myFolder = (IDfFolder) session.getObject(idCarpeta);
+                    IDfFolder myFolder = (IDfFolder) session.getObject(idCarpeta);
 
                     bufAbsPath
                             .append(rutaSistemaFicheros)

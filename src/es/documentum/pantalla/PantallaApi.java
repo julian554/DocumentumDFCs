@@ -13,12 +13,15 @@ import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
 import javax.swing.JTable;
@@ -43,6 +46,7 @@ public class PantallaApi extends javax.swing.JFrame {
 
         pintarMulti(checkMulti.isSelected());
         setLocationRelativeTo(null);
+        cargarComboHistorial();
     }
 
     protected static Image getLogo() {
@@ -85,6 +89,7 @@ public class PantallaApi extends javax.swing.JFrame {
         textoAPI = new javax.swing.JTextField();
         BotonBorrarSalida = new javax.swing.JButton();
         checkMostrarSQL = new javax.swing.JCheckBox();
+        comboHistorial = new javax.swing.JComboBox();
         panelEstado = new javax.swing.JPanel();
         EtiquetaEstado = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -199,6 +204,17 @@ public class PantallaApi extends javax.swing.JFrame {
             }
         });
 
+        comboHistorial.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                comboHistorialMousePressed(evt);
+            }
+        });
+        comboHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboHistorialActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelAPILayout = new javax.swing.GroupLayout(panelAPI);
         panelAPI.setLayout(panelAPILayout);
         panelAPILayout.setHorizontalGroup(
@@ -206,29 +222,30 @@ public class PantallaApi extends javax.swing.JFrame {
             .addGroup(panelAPILayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelAPILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAPILayout.createSequentialGroup()
+                        .addComponent(labelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAPILayout.createSequentialGroup()
-                        .addGroup(panelAPILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelAPILayout.createSequentialGroup()
+                        .addGroup(panelAPILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(comboHistorial, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAPILayout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(BotonBorrarSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(textoDatosApi)
-                            .addComponent(scrollMultiAPI)
-                            .addGroup(panelAPILayout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(scrollMultiAPI, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAPILayout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 617, Short.MAX_VALUE)
                                 .addComponent(checkMulti))
-                            .addComponent(textoAPI))
+                            .addComponent(textoAPI, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textoDatosApi))
                         .addGap(32, 32, 32)
                         .addGroup(panelAPILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(botonConsultar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonSalir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkMostrarSQL, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(23, 23, 23))
-                    .addGroup(panelAPILayout.createSequentialGroup()
-                        .addComponent(labelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(23, 23, 23))))
         );
         panelAPILayout.setVerticalGroup(
             panelAPILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,12 +267,14 @@ public class PantallaApi extends javax.swing.JFrame {
                         .addComponent(labelDatos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textoDatosApi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25)
+                        .addGap(9, 9, 9)
+                        .addComponent(comboHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(panelAPILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BotonBorrarSalida))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
                     .addGroup(panelAPILayout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(checkMostrarSQL)
@@ -280,7 +299,7 @@ public class PantallaApi extends javax.swing.JFrame {
         opciones.setText("Opciones");
 
         opcionConsultar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        opcionConsultar.setText("Consultar");
+        opcionConsultar.setText("Ejecutar comando de API");
         opcionConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcionConsultarActionPerformed(evt);
@@ -325,7 +344,7 @@ public class PantallaApi extends javax.swing.JFrame {
 
     private void botonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultarActionPerformed
         if (checkMulti.isSelected()) {
-            ejecutarAPI(textoMultiAPI.getText(),"");
+            ejecutarAPI(textoMultiAPI.getText(), "");
         } else {
             ejecutarAPI(textoAPI.getText(), textoDatosApi.getText());
         }
@@ -333,7 +352,7 @@ public class PantallaApi extends javax.swing.JFrame {
 
     private void opcionConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionConsultarActionPerformed
         if (checkMulti.isSelected()) {
-            ejecutarAPI(textoMultiAPI.getText(),"");
+            ejecutarAPI(textoMultiAPI.getText(), "");
         } else {
             ejecutarAPI(textoAPI.getText(), textoDatosApi.getText());
         }
@@ -401,6 +420,23 @@ public class PantallaApi extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_checkMostrarSQLActionPerformed
 
+    private void comboHistorialMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboHistorialMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            componente = "comboHistorial";
+            botonderecho = true;
+            popupmenu(evt);
+        }
+    }//GEN-LAST:event_comboHistorialMousePressed
+
+    private void comboHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboHistorialActionPerformed
+        String valor = (String) comboHistorial.getSelectedItem();
+        if (textoAPI.getText().isEmpty() || !textoAPI.getText().equals(valor)) {
+            if (!valor.isEmpty()) {
+                textoAPI.setText(valor);
+            }
+        }
+    }//GEN-LAST:event_comboHistorialActionPerformed
+
     public void ejecutarApi(String papi) {
         final String api = papi;
         EtiquetaEstado.setText("");
@@ -409,8 +445,8 @@ public class PantallaApi extends javax.swing.JFrame {
     }
 
     private void cargarComboHistorial() {
-        Vector comboBoxItems = new Vector();
-        String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial.log";
+        ArrayList comboBoxItems = new ArrayList();
+        String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-api.log";
         BufferedReader br = null;
 
         try {
@@ -420,17 +456,18 @@ public class PantallaApi extends javax.swing.JFrame {
                 comboBoxItems.add(linea);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Utilidades.escribeLog("Error al cargar el fichero de historial. (cargarComboHistorial) Error: " + e.getMessage());
         } finally {
             try {
                 if (br != null) {
                     br.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Utilidades.escribeLog("Error al cerrar el fichero de historial. (cargarComboHistorial) Error: " + ex.getMessage());
             }
         }
-
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems.toArray());
+        comboHistorial.setModel(modelo);
     }
 
     public static void main(String args[]) {
@@ -448,6 +485,7 @@ public class PantallaApi extends javax.swing.JFrame {
     private javax.swing.JButton botonSalir;
     private javax.swing.JCheckBox checkMostrarSQL;
     private javax.swing.JCheckBox checkMulti;
+    private javax.swing.JComboBox comboHistorial;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -522,7 +560,6 @@ public class PantallaApi extends javax.swing.JFrame {
         } catch (Exception ex) {
             Utilidades.escribeLog("Error al cargar el fichero de propiedades. (cargarConfiguraciones) Error: " + ex.getMessage());
         }
-
 
         String apiCommand = ComandoApi;
         String apiDataCtl = datosApi;
@@ -720,8 +757,22 @@ public class PantallaApi extends javax.swing.JFrame {
             resultsBuf.append(lastResults);
             output = resultsBuf.toString();
             textoLog.setText(output);
+            if (!BuscarEnComboHistorial(textoAPI.getText())) {
+                try {
+                    FileOutputStream historial = new FileOutputStream(new File(dirdfc + "historial-api.log"), true);
+                    historial.write(("\n" + textoAPI.getText().replaceAll("(\r\n|\n)", " ")).getBytes());
+                    historial.close();
+                    cargarComboHistorial();
+                } catch (Exception ex) {
+                }
+            }
         }
 
+    }
+
+    private Boolean BuscarEnComboHistorial(String texto) {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) comboHistorial.getModel();
+        return (model.getIndexOf(texto) > 0);
     }
 
     private String getSqlQuery(IDfSession sesion) {
@@ -744,6 +795,7 @@ public class PantallaApi extends javax.swing.JFrame {
             scrollMultiAPI.setVisible(true);
             textoMultiAPI.setVisible(true);
             textoAPI.setVisible(false);
+            comboHistorial.setVisible(false);
             labelDatos.setVisible(false);
             textoDatosApi.setVisible(false);
             checkMostrarSQL.setVisible(false);
@@ -751,6 +803,7 @@ public class PantallaApi extends javax.swing.JFrame {
             scrollMultiAPI.setVisible(false);
             textoMultiAPI.setVisible(false);
             textoAPI.setVisible(true);
+            comboHistorial.setVisible(true);
             labelDatos.setVisible(true);
             textoDatosApi.setVisible(true);
             checkMostrarSQL.setVisible(true);

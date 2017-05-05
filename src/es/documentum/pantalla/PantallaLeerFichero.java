@@ -1,6 +1,5 @@
 package es.documentum.pantalla;
 
-import static es.documentum.pantalla.PantallaDocumentum.getLogo;
 import es.documentum.utilidades.Utilidades;
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -11,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.text.DefaultCaret;
 
 public class PantallaLeerFichero extends javax.swing.JFrame {
 
@@ -39,6 +39,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
             }
 
         });
+
     }
 
     private void formWindowLostFocus(java.awt.event.WindowEvent evt) {
@@ -64,6 +65,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
 
         Texto.setEditable(false);
         Texto.setColumns(20);
+        Texto.setLineWrap(true);
         Texto.setRows(5);
         jScrollPane1.setViewportView(Texto);
 
@@ -188,6 +190,8 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
     }
 
     public void CargarFichero(String fichero) {
+        DefaultCaret caret = (DefaultCaret) Texto.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(fichero));
@@ -205,6 +209,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
                 }
             }
         }
+        Texto.setCaretPosition(Texto.getDocument().getLength());
     }
 
     public Boolean CargarLista(List<String> lista) {
