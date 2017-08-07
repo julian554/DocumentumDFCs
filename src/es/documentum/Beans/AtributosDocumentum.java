@@ -21,6 +21,15 @@ public class AtributosDocumentum implements Serializable {
     private String usuario;
     private int tipo;
     private int longitud;
+    private boolean checkin;
+
+    public boolean isCheckin() {
+        return checkin;
+    }
+
+    public void setCheckin(boolean checkin) {
+        this.checkin = checkin;
+    }
 
     public String getNombre() {
         return nombre;
