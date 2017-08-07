@@ -2,6 +2,7 @@ package es.documentum.utilidades;
 
 import java.io.Serializable;
 import java.util.Vector;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 public class TablaSinEditarCol extends DefaultTableModel implements Serializable {
@@ -43,7 +44,6 @@ public class TablaSinEditarCol extends DefaultTableModel implements Serializable
         } else {
             return true;
         }
-
     }
 
     @Override
@@ -54,6 +54,10 @@ public class TablaSinEditarCol extends DefaultTableModel implements Serializable
         if (getValueAt(0, c) == null) {
             return "".getClass();
         }
+        if (c==5){
+            return ImageIcon.class;
+        }
         return getValueAt(0, c).getClass();
     }
+
 }

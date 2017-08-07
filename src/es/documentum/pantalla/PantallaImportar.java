@@ -15,7 +15,7 @@ import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Image;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -388,7 +388,7 @@ public class PantallaImportar extends javax.swing.JFrame {
     }//GEN-LAST:event_textoLogActionPerformed
 
     private void cargarComboTipos() {
-        Vector comboBoxItems = new Vector();
+        ArrayList comboBoxItems = new ArrayList();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
         try {
             ClassPathUpdater.add(dirdfc);
@@ -406,7 +406,9 @@ public class PantallaImportar extends javax.swing.JFrame {
         int posicion=0;
         
         try {
-            IDfCollection col = utildocum.ejecutarDql("select name from dm_type where  super_name in ('dm_document') or name in ('dm_document') order by name");
+            //            IDfCollection col = utildocum.ejecutarDql("select name from dm_type where  super_name in ('dm_document') or name in ('dm_document') order by name");
+
+            IDfCollection col = utildocum.ejecutarDql("select name from dm_type order by name");
             if (!utildocum.dameError().equals("")) {
                 textoLog.setText(utildocum.dameError());
                 barradocum.dispose();
@@ -428,7 +430,7 @@ public class PantallaImportar extends javax.swing.JFrame {
             textoLog.setText("Error - " + e.getMessage());
         }
 
-        DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems);
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems.toArray());
         comboTipoDocumental.setModel(modelo);
         comboTipoDocumental.setSelectedIndex(posicion);
     }

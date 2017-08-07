@@ -25,7 +25,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -39,11 +39,12 @@ import javax.swing.table.TableColumn;
 public class PantallaDql extends javax.swing.JFrame {
 
     Utilidades util = new Utilidades();
+    UtilidadesDocumentum utildocum = new UtilidadesDocumentum();
     PantallaBarra barradocum = null;
     Boolean botonderecho = false;
     String componente = "";
     public static PantallaDocumentum ventanapadre = null;
-    IDfSession sesion = null;
+    IDfSession sesion = sesionDocumentum();
 
     public PantallaDql(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
@@ -60,6 +61,7 @@ public class PantallaDql extends javax.swing.JFrame {
         tablaResultados.setAutoscrolls(true);
         setLocationRelativeTo(null);
         cargarComboHistorial();
+        TextoNumReg.setText("0");
     }
 
     protected static Image getLogo() {
@@ -489,7 +491,7 @@ public class PantallaDql extends javax.swing.JFrame {
         try {
             DefaultComboBoxModel modelo = new DefaultComboBoxModel();
             comboHistorial.setModel(modelo);
-            String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial.log";
+            String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
             BufferedWriter bw = new BufferedWriter(new FileWriter(dirhist));
             bw.write("");
             bw.close();
@@ -518,17 +520,7 @@ public class PantallaDql extends javax.swing.JFrame {
                 TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
                 tablaResultados.setModel(modeloLotes);
                 String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-                try {
-                    ClassPathUpdater.add(dirdfc);
-                    ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-                } catch (Exception ex) {
-                    Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-                }
-                UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-
-                sesion = utildocum.conectarDocumentum();
-
-                barradocum = new PantallaBarra(PantallaDql.this, false);
+                 barradocum = new PantallaBarra(PantallaDql.this, false);
                 barradocum.setTitle("Consultando en Documentum ...");
                 barradocum.barra.setIndeterminate(true);
                 barradocum.botonParar.setVisible(false);
@@ -545,21 +537,22 @@ public class PantallaDql extends javax.swing.JFrame {
                         barradocum.dispose();
                         return;
                     }
-                    if (!textoDql.getText().equals(comboHistorial.getSelectedItem())) {
+                    if (!BuscarEnComboHistorial(textoDql.getText())) {
                         try {
-                            FileOutputStream historial = new FileOutputStream(new File(dirdfc + "historial.log"), true);
+                            FileOutputStream historial = new FileOutputStream(new File(dirdfc + "historial-dql.log"), true);
                             historial.write(("\n" + textoDql.getText().replaceAll("(\r\n|\n)", " ")).getBytes());
                             historial.close();
                             cargarComboHistorial();
                         } catch (Exception ex) {
                         }
                     }
-                    Vector filas = new Vector();
+                    ArrayList filas = new ArrayList();
                     while (col.next()) {
-                        filas.addElement(col.getTypedObject());
+                        filas.add(col.getTypedObject());
                     }
                     col.close();
 
+                   
                     if (filas.size() <= 0) {
                         EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
                         textoLog.setText("0 Registro(s) encontrado(s) ");
@@ -568,7 +561,7 @@ public class PantallaDql extends javax.swing.JFrame {
                     }
 
                     int cont = filas.size();
-                    IDfTypedObject primerafila = (IDfTypedObject) filas.elementAt(0);
+                    IDfTypedObject primerafila = (IDfTypedObject) filas.get(0);
                     int tam = primerafila.getAttrCount();
                     Object[] cabecera = new Object[tam];
                     Integer[] tamcabecera = new Integer[tam];
@@ -579,7 +572,7 @@ public class PantallaDql extends javax.swing.JFrame {
                     }
 
                     for (int i = 0; i < cont; i++) {
-                        IDfTypedObject row = (IDfTypedObject) filas.elementAt(i);
+                        IDfTypedObject row = (IDfTypedObject) filas.get(i);
 
                         for (int n = 0; n < row.getAttrCount(); n++) {
                             IDfAttr attr = row.getAttr(n);
@@ -629,8 +622,8 @@ public class PantallaDql extends javax.swing.JFrame {
     }
 
     private void cargarComboHistorial() {
-        Vector comboBoxItems = new Vector();
-        String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial.log";
+        ArrayList comboBoxItems = new ArrayList();
+        String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
         BufferedReader br = null;
 
         try {
@@ -640,19 +633,24 @@ public class PantallaDql extends javax.swing.JFrame {
                 comboBoxItems.add(linea);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Utilidades.escribeLog("Error al cargar el fichero de historial. (cargarComboHistorial) Error: " + e.getMessage());
         } finally {
             try {
                 if (br != null) {
                     br.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Utilidades.escribeLog("Error al cerrar el fichero de historial. (cargarComboHistorial) Error: " + ex.getMessage());
             }
         }
 
-        DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems);
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems.toArray());
         comboHistorial.setModel(modelo);
+    }
+
+    private Boolean BuscarEnComboHistorial(String texto) {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) comboHistorial.getModel();
+        return (model.getIndexOf(texto) > 0);
     }
 
     public static void main(String args[]) {
@@ -730,5 +728,18 @@ public class PantallaDql extends javax.swing.JFrame {
                 popupHistorial.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
+    }
+    
+        private IDfSession sesionDocumentum() {
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        try {
+            ClassPathUpdater.add(dirdfc);
+            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
+        }
+        UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+        IDfSession nuevasesion = utildocum.conectarDocumentum();
+        return nuevasesion;
     }
 }
