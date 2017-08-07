@@ -19,6 +19,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
 
@@ -54,6 +56,18 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         this.servidor = servidor;
     }
 
+        public void setTextoServidor(String servidor) {
+        TextoServidor.setText(servidor);
+    }
+
+    public void setTextoUsuario(String usuario) {
+        TextoUsuario.setText(usuario);
+    }
+
+    public void setTextoClave(String clave) {
+        TextoClave.setText(clave);
+    }
+    
     public PantallaEjecutarComandoRemoto(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
         initComponents();
@@ -76,6 +90,75 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
         }
         opcionRBMetalActionPerformed(null);
+        TextoComando.requestFocus();
+        TextoServidor.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (!TextoServidor.getText().isEmpty()) {
+                    setServidor(TextoServidor.getText());
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (!TextoServidor.getText().isEmpty()) {
+                    setServidor(TextoServidor.getText());
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if (!TextoServidor.getText().isEmpty()) {
+                    setServidor(TextoServidor.getText());
+                }
+            }
+        });
+
+        TextoUsuario.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (!TextoUsuario.getText().isEmpty()) {
+                    setUsuario(TextoUsuario.getText());
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (!TextoUsuario.getText().isEmpty()) {
+                    setUsuario(TextoUsuario.getText());
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if (!TextoUsuario.getText().isEmpty()) {
+                    setUsuario(TextoUsuario.getText());
+                }
+            }
+        });
+
+        TextoClave.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (!String.valueOf(TextoClave.getPassword()).isEmpty()) {
+                    setClave(String.valueOf(TextoClave.getPassword()));
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (!String.valueOf(TextoClave.getPassword()).isEmpty()) {
+                    setClave(String.valueOf(TextoClave.getPassword()));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if (!String.valueOf(TextoClave.getPassword()).isEmpty()) {
+                    setUsuario(String.valueOf(TextoClave.getPassword()));
+                }
+            }
+        });
     }
 
     protected static Image getLogo() {
@@ -108,6 +191,12 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         comboHistorial = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         Texto = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
+        TextoServidor = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        TextoUsuario = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        TextoClave = new javax.swing.JPasswordField();
         jMenuBar1 = new javax.swing.JMenuBar();
         Menu = new javax.swing.JMenu();
         opcionCerrar = new javax.swing.JMenuItem();
@@ -135,7 +224,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         popupEditar.add(opcionPegar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Comandos SSH Remotos");
+        setTitle("Ejecutar Comandos SSH en remoto");
         setAlwaysOnTop(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setName("VentanaLeerFichero"); // NOI18N
@@ -195,6 +284,20 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(Texto);
+
+        jLabel1.setText("Servidor");
+
+        TextoServidor.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                TextoServidorInputMethodTextChanged(evt);
+            }
+        });
+
+        jLabel2.setText("Usuario");
+
+        jLabel3.setText("Contraseña");
 
         Menu.setMnemonic('A');
         Menu.setText("Archivo");
@@ -271,35 +374,51 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(LabelComando, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LabelComando, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TextoComando, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
-                        .addGap(46, 46, 46)
-                        .addComponent(botonEjecutar)
-                        .addGap(21, 21, 21))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(TextoServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextoClave, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                            .addComponent(TextoComando))
+                        .addGap(29, 29, 29)
+                        .addComponent(botonEjecutar))
+                    .addComponent(comboHistorial, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(comboHistorial, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())))
+                        .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TextoServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(TextoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(TextoClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextoComando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LabelComando)
                     .addComponent(botonEjecutar))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(botonCerrar)
                 .addContainerGap())
@@ -514,6 +633,12 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             popupmenu(evt);
         }
     }//GEN-LAST:event_TextoMousePressed
+
+    private void TextoServidorInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_TextoServidorInputMethodTextChanged
+        if (!TextoServidor.getText().isEmpty()) {
+            setServidor(TextoServidor.getText());
+        }
+    }//GEN-LAST:event_TextoServidorInputMethodTextChanged
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
             botonderecho = false;
@@ -621,10 +746,16 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     private javax.swing.JLabel LabelComando;
     private javax.swing.JMenu Menu;
     private javax.swing.JList<String> Texto;
+    private javax.swing.JPasswordField TextoClave;
     private javax.swing.JTextField TextoComando;
+    private javax.swing.JTextField TextoServidor;
+    private javax.swing.JTextField TextoUsuario;
     public static javax.swing.JButton botonCerrar;
     private javax.swing.JButton botonEjecutar;
     private javax.swing.JComboBox comboHistorial;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenu opcionApariencia;

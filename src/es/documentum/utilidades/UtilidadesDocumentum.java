@@ -11,9 +11,12 @@ import com.documentum.operations.*;
 import com.google.common.io.Files;
 import es.documentum.Beans.AtributosDocumentum;
 import es.documentum.Beans.ResultadoGDBean;
+import es.documentum.pantalla.PantallaDocumentum;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +26,16 @@ public class UtilidadesDocumentum {
 
     Utilidades util = new Utilidades();
     Properties pro = new Properties();
+
+    public PantallaDocumentum ventanapadre = null;
+
+    public PantallaDocumentum getVentanapadre() {
+        return ventanapadre;
+    }
+
+    public void setVentanapadre(PantallaDocumentum ventanapadre) {
+        this.ventanapadre = ventanapadre;
+    }
 
     public Properties getPro() {
         return pro;
@@ -36,6 +49,7 @@ public class UtilidadesDocumentum {
     String docbase = "";
     String ficheropropiedades = "";
     String ERROR = "";
+    String dir = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "renditions" + util.separador();
 
     private Set m_childIds = new HashSet(5);
 
@@ -681,7 +695,11 @@ public class UtilidadesDocumentum {
                     }
                 } else {
                     atri.setNombre(nombre);
-                    atri.setValor(sysObj.getValue(nombre).toString());
+                    if (sysObj.getAttrDataType(nombre) == IDfValue.DF_TIME) {
+                        atri.setValor(sysObj.getValue(nombre).asTime().asString("yyyy/mm/dd hh:mi:ss"));
+                    } else {
+                        atri.setValor(sysObj.getValue(nombre).toString());
+                    }
                     atri.setMultivalor(false);
                     atri.setTipo(sysObj.getAttrDataType(nombre));
                     atri.setLongitud(sysObj.getAttr(i).getLength());
@@ -946,29 +964,43 @@ public class UtilidadesDocumentum {
             IDfFolder myFolder = sesion.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
             ficheros = myFolder.getContents(null);
 
-            while (ficheros.next()) {
+            int conta = 0;
+            Boolean seguir = true;
+            while (ficheros.next() && seguir) {
+                conta++;
                 AtributosDocumentum datos = new AtributosDocumentum();
                 IDfTypedObject doc = ficheros.getTypedObject();
 //                Utilidades.escribeLog(doc.getString("object_name") + " - " + doc.getString("r_object_id"));
                 datos.setNombre(doc.getString("object_name"));
                 datos.setValor(doc.getString("r_object_id"));
                 datos.setTipoobjeto(doc.getString("r_object_type"));
-                ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
-                if (resultado.size() > 0) {
-                    datos.setFechacreacion(resultado.get(0).toString());
-                    if (doc.getString("r_object_type").equals("map_t_doc_extranjeria")) {
-                        resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_aplicacion");
-                        if (resultado.size() > 0) {
-                            datos.setAplicacion(resultado.get(0).toString());
+                ventanapadre.EtiquetaEstado.setText(doc.getString("object_name"));
+                ventanapadre.getBarradocum().labelMensa.setText("Registro(s): " + conta);
+                if (ventanapadre.getBarradocum().PARAR) {
+                    seguir = false;
+                    ventanapadre.getBarradocum().setPARAR(false);
+                }
+                ArrayList<AtributosDocumentum> atris = DameTodosAtributos(doc.getString("r_object_id"));
+                if (atris.size() > 0) {
+                    for (int n = 0; n < atris.size(); n++) {
+                        if (atris.get(n).getNombre().equalsIgnoreCase("owner_name")) {
+                            // datos[n][1] = atributos.get(n).getValor();
+                            datos.setUsuario(atris.get(n).getValor());
                         }
-                        resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_usuario");
-                        if (resultado.size() > 0) {
-                            datos.setUsuario(resultado.get(0).toString());
+                        if (atris.get(n).getNombre().equalsIgnoreCase("r_creation_date")) {
+                            // datos[n][1] = atributos.get(n).getValor();
+                            datos.setFechacreacion(atris.get(n).getValor());
                         }
                     }
                     datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
                     listaficheros.add(datos);
                 }
+//                ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
+//                if (resultado.size() > 0) {
+//                    datos.setFechacreacion(resultado.get(0).toString());
+//                    datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
+//                    listaficheros.add(datos);
+//                }
             }
 
         } catch (Exception ex) {
@@ -1017,20 +1049,44 @@ public class UtilidadesDocumentum {
                 IDfFolder myFolder = sesion.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
                 ficheros = myFolder.getContents(null);
             }
-            while (ficheros.next()) {
+            int conta = 0;
+            Boolean seguir = true;
+            while (ficheros.next() && seguir) {
+                conta++;
                 AtributosDocumentum datos = new AtributosDocumentum();
                 IDfTypedObject doc = ficheros.getTypedObject();
 //                Utilidades.escribeLog(doc.getString("object_name") + " - " + doc.getString("r_object_id"));
                 datos.setNombre(doc.getString("object_name"));
                 datos.setValor(doc.getString("r_object_id"));
                 datos.setTipoobjeto(doc.getString("r_object_type"));
-                ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
-                if (resultado.size() > 0) {
-                    String fechacreacion = resultado.get(0).toString();
-                    datos.setFechacreacion(fechacreacion);
+                ventanapadre.EtiquetaEstado.setText(doc.getString("object_name"));
+                ventanapadre.getBarradocum().labelMensa.setText("Registro(s): " + conta);
+                if (ventanapadre.getBarradocum().PARAR) {
+                    seguir = false;
+                    ventanapadre.getBarradocum().setPARAR(false);
+                }
+                ArrayList<AtributosDocumentum> atris = DameTodosAtributos(doc.getString("r_object_id"));
+                if (atris.size() > 0) {
+                    for (int n = 0; n < atris.size(); n++) {
+                        if (atris.get(n).getNombre().equalsIgnoreCase("owner_name")) {
+                            // datos[n][1] = atributos.get(n).getValor();
+                            datos.setUsuario(atris.get(n).getValor());
+                        }
+                        if (atris.get(n).getNombre().equalsIgnoreCase("r_creation_date")) {
+                            // datos[n][1] = atributos.get(n).getValor();
+                            datos.setFechacreacion(atris.get(n).getValor());
+                        }
+                    }
                     datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
                     listaficheros.add(datos);
                 }
+//                ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
+//                if (resultado.size() > 0) {
+//                    String fechacreacion = resultado.get(0).toString();
+//                    datos.setFechacreacion(fechacreacion);
+//                    datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
+//                    listaficheros.add(datos);
+//                }
             }
 
         } catch (Exception ex) {
@@ -1062,7 +1118,7 @@ public class UtilidadesDocumentum {
         Boolean Escarpeta = id.toLowerCase().startsWith("0b");
         Boolean Escabinet = id.toLowerCase().startsWith("0c");
         IDfCollection ficheros = null;
-        ArrayList<AtributosDocumentum> listaficheros = new ArrayList<AtributosDocumentum>();
+        ArrayList<AtributosDocumentum> listaficheros = new ArrayList<>();
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
             if (ERROR.isEmpty()) {
@@ -1095,23 +1151,28 @@ public class UtilidadesDocumentum {
                     datos.setNombre(doc.getString("object_name"));
                     datos.setValor(doc.getString("r_object_id"));
                     datos.setTipoobjeto(doc.getString("r_object_type"));
-                    ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
-                    if (resultado.size() > 0) {
-                        String fechacreacion = resultado.get(0).toString();
-                        datos.setFechacreacion(fechacreacion);
-                        if (doc.getString("r_object_type").equals("map_t_doc_extranjeria")) {
-                            resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_aplicacion");
-                            if (resultado.size() > 0) {
-                                datos.setAplicacion(resultado.get(0).toString());
+                    ArrayList<AtributosDocumentum> atris = DameTodosAtributos(doc.getString("r_object_id"));
+                    if (atris.size() > 0) {
+                        for (int n = 0; n < atris.size(); n++) {
+                            if (atris.get(n).getNombre().equalsIgnoreCase("owner_name")) {
+                                // datos[n][1] = atributos.get(n).getValor();
+                                datos.setUsuario(atris.get(n).getValor());
                             }
-                            resultado = DameAtributo(doc.getString("r_object_id"), "map_atr_usuario");
-                            if (resultado.size() > 0) {
-                                datos.setUsuario(resultado.get(0).toString());
+                            if (atris.get(n).getNombre().equalsIgnoreCase("r_creation_date")) {
+                                // datos[n][1] = atributos.get(n).getValor();
+                                datos.setFechacreacion(atris.get(n).getValor());
                             }
                         }
                         datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
                         listaficheros.add(datos);
                     }
+//                    ArrayList resultado = DameAtributo(doc.getString("r_object_id"), "r_creation_date");
+//                    if (resultado.size() > 0) {
+//                        String fechacreacion = resultado.get(0).toString();
+//                        datos.setFechacreacion(fechacreacion);
+//                        datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
+//                        listaficheros.add(datos);
+//                    }
                     if (!Escarpeta && !Escabinet) {
                         break;
                     }
@@ -1121,7 +1182,7 @@ public class UtilidadesDocumentum {
         } catch (Exception ex) {
             Utilidades.escribeLog("Error al buscar por el id " + id + "  - Error: " + ex.getMessage());
             ERROR = "Error al buscar por el id " + id + " (ListarFicherosID) - Error: " + ex.getMessage();
-            return new ArrayList<AtributosDocumentum>();
+            return new ArrayList<>();
         }
 
         try {
@@ -1129,7 +1190,7 @@ public class UtilidadesDocumentum {
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum (ListarFicherosID)  - Error: " + ex.getMessage();
-            return new ArrayList<AtributosDocumentum>();
+            return new ArrayList<>();
         }
         return listaficheros;
     }
@@ -1160,7 +1221,7 @@ public class UtilidadesDocumentum {
                     != directorio.length() - 1
                     && directorio.lastIndexOf("\\")
                     != directorio.length() - 1) {
-                directorio += "/";
+                directorio += util.separador();
             }
 
             // Formato y extensión del documento
@@ -1253,9 +1314,9 @@ public class UtilidadesDocumentum {
                 resultado = ("Checkout failed.");
             }
 
-        } catch (Exception ex) {
-            Utilidades.escribeLog("Error al hacer checkout de "+objectId+" - Error: "+ ex.getMessage());
-            return "Error al hacer checkout de "+objectId+" - Error: "+ ex.getMessage();
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al hacer checkout de " + objectId + " - Error: " + ex.getMessage());
+            return "Error al hacer checkout de " + objectId + " - Error: " + ex.getMessage();
         }
 
         return resultado;
@@ -1351,7 +1412,6 @@ public class UtilidadesDocumentum {
     }
 
     public static void main(String s[]) {
-
         //    prueba();
         Utilidades util = new Utilidades();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
@@ -1359,11 +1419,20 @@ public class UtilidadesDocumentum {
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-        } catch (Exception ex) {
+        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
         UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "D_A1_CYC", "vilcs470.dcsi.adif", "1489");
+        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
+
+        ArrayList renditions = ed.dameRenditions(sesion, "09000816802c8d48");
+
+        for (int n = 0; n < renditions.size(); n++) {
+            ArrayList datos = (ArrayList) renditions.get(n);
+            for (int i = 0; i < datos.size(); i++) {
+                System.out.println(datos.get(i));
+            }
+        }
 
         String resul = "";
         try {
@@ -1530,6 +1599,64 @@ public class UtilidadesDocumentum {
             extension = "";
         }
         return extension;
+    }
+
+    public ArrayList dameRenditions(IDfSession sesion, String r_object_id) {
+        createFolder(dir);
+
+        ArrayList lista = new ArrayList();
+        try {
+            IDfSysObject doc = (IDfSysObject) sesion.getObject(new DfId(r_object_id));
+            IDfCollection myColl = doc.getRenditions("full_format,r_object_id");
+            while (myColl.next()) {
+                IDfFormat myFormat = sesion.getFormat(myColl.getString("full_format"));
+//                System.out.println("Rendition format: " + myFormat.getDescription() + "   -   " + myFormat.getName());
+//                System.out.println("Object id: " + myColl.getString("r_object_id"));
+                IDfPersistentObject rendDoc = (IDfPersistentObject) sesion.getObject(new DfId(myColl.getString("r_object_id")));
+                int pageNbr = rendDoc.getInt("page");
+                String pageModifier = rendDoc.getString("page_modifier");
+                String nombre = doc.getFileEx2(dir + "rendition-" + r_object_id + "-" + myFormat.getName() + "-" + rendDoc.getString("page_modifier") + "." + myFormat.getDOSExtension(), myFormat.getName(), pageNbr, pageModifier, false);
+//                System.out.println("Nombre: " + nombre);
+//                System.out.println("Tamaño del fichero: " + rendDoc.getString("full_content_size"));
+//                System.out.println("Fecha modificación: " + rendDoc.getString("set_time"));
+//                System.out.println(rendDoc.getString("storage_id"));
+//                System.out.println("Filestore: " + dameFilestore(sesion, rendDoc.getString("storage_id")));
+                ArrayList datos = new ArrayList();
+                datos.add(myFormat.getDescription());
+                datos.add(myFormat.getName());
+                datos.add(myColl.getString("r_object_id"));
+                datos.add(nombre);
+                datos.add(rendDoc.getString("full_content_size"));
+                datos.add(rendDoc.getString("set_time"));
+                datos.add(dameFilestore(sesion, rendDoc.getString("storage_id")));
+                lista.add(datos);
+            }
+        } catch (DfException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return lista;
+
+        /*
+        
+              for (int n = 0; n < renditions.size(); n++) {
+            ArrayList datos = (ArrayList) renditions.get(n);
+            for (int i = 0; i < datos.size(); i++) {
+                System.out.println(datos.get(i));
+            }
+        }
+         */
+    }
+
+    public String dameFilestore(IDfSession sesion, String r_object_id) {
+        String filestore = "";
+        IDfCollection resultado = ejecutarDql("select name from dm_filestore where r_object_id='" + r_object_id + "'", sesion);
+        try {
+            resultado.next();
+            filestore = resultado.getString("name");
+        } catch (DfException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return filestore;
     }
 
     public static String desencriptarPassword(String clave) {

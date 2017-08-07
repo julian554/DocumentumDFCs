@@ -60,7 +60,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     PrintStream out;
     String dirdfc = "";
     static Logger logger = Logger.getLogger(PantallaDocumentum.class);
-    PantallaBarra barradocum = null;
+    PantallaBarra barradocum = new PantallaBarra(PantallaDocumentum.this, false);
+
+    public PantallaBarra getBarradocum() {
+        return barradocum;
+    }
+
+    public void setBarradocum(PantallaBarra barradocum) {
+        this.barradocum = barradocum;
+    }
     Color colornoconex = new Color(255, 200, 200);
     Color colorconex = new Color(200, 255, 200);
     Color coloradmin = new Color(200, 200, 255);
@@ -134,6 +142,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionCopiarNombre = new javax.swing.JMenuItem();
         opcionCopiarIDDocumentum = new javax.swing.JMenuItem();
         opcionDumpAtributos = new javax.swing.JMenuItem();
+        opcionRenditions = new javax.swing.JMenuItem();
         opcionExportarDocumentosExcel = new javax.swing.JMenuItem();
         popupEditar = new javax.swing.JPopupMenu();
         opcionCopiar = new javax.swing.JMenuItem();
@@ -276,6 +285,14 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
         popupDocumentos.add(opcionDumpAtributos);
+
+        opcionRenditions.setText("Ver Renditions");
+        opcionRenditions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionRenditionsActionPerformed(evt);
+            }
+        });
+        popupDocumentos.add(opcionRenditions);
 
         opcionExportarDocumentosExcel.setText("Exportar lista de Documentos a Excel");
         opcionExportarDocumentosExcel.setActionCommand("ExportarDocumentosExcel");
@@ -425,7 +442,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         EtiquetaEstado.setToolTipText("");
         EtiquetaEstado.setAutoscrolls(true);
         EtiquetaEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        EtiquetaEstado.setMaximumSize(new java.awt.Dimension(800, 4));
+        EtiquetaEstado.setMaximumSize(new java.awt.Dimension(panelEstado.getHeight() - EtiquetaDocbroker.getHeight() - EtiquetaRepositorio.getHeight(), EtiquetaEstado.getWidth()));
         EtiquetaEstado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 EtiquetaEstadoMouseEntered(evt);
@@ -451,20 +468,21 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         panelEstadoLayout.setHorizontalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEstadoLayout.createSequentialGroup()
-                .addComponent(EtiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(EtiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(EtiquetaDocbroker, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addComponent(EtiquetaDocbroker, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                 .addGap(2, 2, 2)
-                .addComponent(EtiquetaRepositorio, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
+                .addComponent(EtiquetaRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelEstadoLayout.setVerticalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(EtiquetaDocbroker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEstadoLayout.createSequentialGroup()
+            .addGroup(panelEstadoLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(EtiquetaRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EtiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(EtiquetaDocbroker, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(EtiquetaRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(EtiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         javax.swing.GroupLayout panelDocumentosLayout = new javax.swing.GroupLayout(panelDocumentos);
@@ -472,7 +490,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         panelDocumentosLayout.setHorizontalGroup(
             panelDocumentosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelEstado, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, 1018, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, 1018, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.CENTER)
             .addComponent(scrollGrid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelDocumentosLayout.setVerticalGroup(
@@ -610,7 +628,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     .addGroup(panelEntradaLayout.createSequentialGroup()
                         .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textoIdDocumentum, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textoCarpeta, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))
+                            .addComponent(textoCarpeta))
                         .addGap(35, 35, 35)
                         .addComponent(botonBuscar)
                         .addGap(18, 18, 18)
@@ -990,10 +1008,12 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     private void botonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConectarActionPerformed
         ConexionDocumentum();
+        LimpiarPantalla();
     }//GEN-LAST:event_botonConectarActionPerformed
 
     private void opcionConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionConectarActionPerformed
         ConexionDocumentum();
+        LimpiarPantalla();
     }//GEN-LAST:event_opcionConectarActionPerformed
 
     private void opcionBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionBuscarActionPerformed
@@ -1475,6 +1495,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         pantallaComandoRemoto.setUsuario(usuario);
         pantallaComandoRemoto.setClave(clave);
         pantallaComandoRemoto.setServidor(docbroker);
+        pantallaComandoRemoto.setTextoServidor(docbroker);
+        pantallaComandoRemoto.setTextoUsuario(usuario);
+        pantallaComandoRemoto.setTextoClave(clave);
         pantallaComandoRemoto.setVisible(true);
     }//GEN-LAST:event_opcionEjecutarComandoSSOOActionPerformed
 
@@ -1491,7 +1514,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 EtiquetaEstado.setText(resultado);
             } else {
                 int fila = tablaDocumentos.getSelectedRow();
-                int columna = 6;
+                int columna = 5;
                 java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/bloqueado.gif");
                 ImageIcon iconoCheckout = new ImageIcon(imgURL);
                 tablaDocumentos.getModel().setValueAt(iconoCheckout, fila, columna);
@@ -1527,9 +1550,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             if (resultado) {
                 utilDocum.checkinDoc(r_object_id, sesion, fichero, version, descripcion, indexar);
                 int fila = tablaDocumentos.getSelectedRow();
-                int columna = 6;
-                java.net.URL imgURL = PantallaDocumentum.class
-                        .getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
+                int columna = 5;
+                java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
                 ImageIcon iconoCheckin = new ImageIcon(imgURL);
                 tablaDocumentos.getModel().setValueAt(iconoCheckin, fila, columna);
                 // tablaDocumentos.getModel().setValueAt(" ", fila, columna);
@@ -1552,9 +1574,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         try {
             utilDocum.cancelCheckout(r_object_id, sesion);
             int fila = tablaDocumentos.getSelectedRow();
-            int columna = 6;
-            java.net.URL imgURL = PantallaDocumentum.class
-                    .getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
+            int columna = 5;
+            java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
             ImageIcon iconoCheckin = new ImageIcon(imgURL);
             tablaDocumentos.getModel().setValueAt(iconoCheckin, fila, columna);
             // tablaDocumentos.getModel().setValueAt(" ", fila, columna);
@@ -1583,6 +1604,16 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             BuscarEnDocumentum();
         }
     }//GEN-LAST:event_textoIdDocumentumKeyPressed
+
+    private void opcionRenditionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionRenditionsActionPerformed
+        String r_object_id = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString();
+        String nombre = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
+        PantallaRenditions pantallaRenditions = new PantallaRenditions(this, true);
+        pantallaRenditions.setTitle("Renditions del fichero " + r_object_id);
+        pantallaRenditions.setIdDocumentum(r_object_id + " - " + nombre);
+        pantallaRenditions.cargarRenditions(r_object_id);
+        pantallaRenditions.setVisible(true);
+    }//GEN-LAST:event_opcionRenditionsActionPerformed
 
     public void mostrarAcercade() {
         Acercade about = new Acercade(this, true);
@@ -1613,7 +1644,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Acercade;
     public javax.swing.JLabel EtiquetaDocbroker;
-    private javax.swing.JLabel EtiquetaEstado;
+    public javax.swing.JLabel EtiquetaEstado;
     public javax.swing.JLabel EtiquetaRepositorio;
     private javax.swing.JMenuBar MenuDocumentum;
     private javax.swing.JButton botonArribaDir;
@@ -1665,6 +1696,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem opcionRBPorDefecto;
     private javax.swing.JRadioButtonMenuItem opcionRBWindows;
     private javax.swing.JRadioButtonMenuItem opcionRBWindowsClassic;
+    private javax.swing.JMenuItem opcionRenditions;
     private javax.swing.JMenuItem opcionSalir;
     private javax.swing.JMenu opcionUtilidades;
     private javax.swing.JPanel panelDocumentos;
@@ -1752,9 +1784,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 columna.sizeWidthToFit();
                 tablaAtributos.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
                 tablaAtributos.doLayout();
-                EtiquetaEstado.setText(mensajeborrado);
-                EtiquetaEstado.setForeground(colormensaje);
-                EtiquetaEstado.validate();
+                if (!mensajeborrado.isEmpty()) {
+                    EtiquetaEstado.setText(mensajeborrado);
+                    EtiquetaEstado.setForeground(colormensaje);
+                    EtiquetaEstado.validate();
+                }
 
             }
         }.start();
@@ -1776,10 +1810,10 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     EtiquetaEstado.setText("");
                     return;
                 }
-                barradocum = new PantallaBarra(PantallaDocumentum.this, false);
+                
                 barradocum.setTitle("Consultando en Documentum ...");
                 barradocum.barra.setIndeterminate(true);
-                barradocum.botonParar.setVisible(false);
+                barradocum.botonParar.setVisible(true);
                 barradocum.setLabelMensa("");
                 barradocum.barra.setOpaque(true);
                 barradocum.barra.setStringPainted(false);
@@ -1788,6 +1822,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
                 utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
                 ArrayList<AtributosDocumentum> documentos = new ArrayList<AtributosDocumentum>();
+                utilDocum.setVentanapadre(PantallaDocumentum.this);
                 if (tipo.toLowerCase().equals("carpeta")) {
                     documentos = utilDocum.ListarFicheros(carpeta);
                 } else if (tipo.toLowerCase().equals("ruta")) {
@@ -1808,23 +1843,19 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 }
                 try {
                     Object[][] datos = new Object[documentos.size()][7];
-                    Object[] cabecera = {"Nombre ", "ID Documentum (r_object_id)", "Tipo Documental", "Usuario", "Aplicación", "Fecha Creación", "Check Out"};
-                    java.net.URL imgURL = PantallaDocumentum.class
-                            .getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
+                    Object[] cabecera = {"Nombre ", "ID Documentum (r_object_id)", "Tipo Documental", "Fecha Creación", "Usuario", "Check Out"};
+                    java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
                     ImageIcon iconoCheckin = new ImageIcon(imgURL);
-                    imgURL
-                            = PantallaDocumentum.class
-                                    .getClassLoader().getResource("es/documentum/imagenes/bloqueado.gif");
+                    imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/bloqueado.gif");
                     ImageIcon iconoCheckout = new ImageIcon(imgURL);
                     for (int n = 0; n < documentos.size(); n++) {
                         datos[n][0] = documentos.get(n).getNombre();
                         datos[n][1] = documentos.get(n).getValor();
                         datos[n][2] = documentos.get(n).getTipoobjeto();
-                        datos[n][3] = documentos.get(n).getUsuario();
-                        datos[n][4] = documentos.get(n).getAplicacion();
-                        datos[n][5] = documentos.get(n).getFechacreacion();
-                        //  datos[n][6] = documentos.get(n).isCheckin() ? " " : "*";
-                        datos[n][6] = documentos.get(n).isCheckin() ? iconoCheckin : iconoCheckout;
+                        datos[n][3] = documentos.get(n).getFechacreacion();
+                        datos[n][4] = documentos.get(n).getUsuario();
+                        //  datos[n][5] = documentos.get(n).isCheckin() ? " " : "*";
+                        datos[n][5] = documentos.get(n).isCheckin() ? iconoCheckin : iconoCheckout;
                     }
 
                     if (datos.length > 0) {
@@ -1906,6 +1937,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             opcionCheckin.setVisible(true);
                             opcionCancelCheckout.setVisible(true);
                             opcionCheckout.setVisible(false);
+                        }
+                        if (r_object_id.startsWith("09")) {
+                            opcionRenditions.setVisible(true);
+                        } else {
+                            opcionRenditions.setVisible(false);
                         }
                         popupDocumentos.show(evt.getComponent(), evt.getX(), evt.getY());
                     }
@@ -2073,8 +2109,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             textoRutaDocumentum.setText("");
             EtiquetaEstado.setText("Buscando contenido de la carpeta de Documentum " + textoCarpeta.getText());
             panelEstado.revalidate();
+            utilDocum.setVentanapadre(this);
             cargarDocumentos(textoCarpeta.getText(), "carpeta");
-
         } else if (!textoRutaDocumentum.getText().isEmpty()) {
             cargarAtributos("");
             //  textoRutaDocumentum.setText("");
@@ -2128,7 +2164,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 EtiquetaEstado.setText("Sólo aplicable a Documentos");
                 return;
             }
-            String directorio = dirdfc + util.separador() + "export";
+            String directorio = dirdfc + "export";
             utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
             String resultado = utilDocum.GuardarFichero(nombre, directorio);
             EtiquetaEstado.setText(resultado);
@@ -2415,6 +2451,19 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }.start();
 //        barradocum.setVisible(false);
 //        barradocum.dispose();
+    }
+
+    private void LimpiarPantalla() {
+        TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
+        try {
+            tablaDocumentos.setModel(modeloLotes);
+            tablaAtributos.setModel(modeloLotes);
+        } catch (Exception ex) {
+        }
+        textoIdDocumentum.setText("");
+        textoCarpeta.setText("");
+        textoRutaDocumentum.setText("");
+        EtiquetaEstado.setText("");
     }
 
 }

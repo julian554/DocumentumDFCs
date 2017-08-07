@@ -13,6 +13,14 @@ public class PantallaBarra extends javax.swing.JDialog {
     java.awt.Frame ventanapadre = null;
     public Boolean PARAR = false;
 
+    public Boolean getPARAR() {
+        return PARAR;
+    }
+
+    public void setPARAR(Boolean PARAR) {
+        this.PARAR = PARAR;
+    }
+
     public PantallaBarra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanapadre = parent;
@@ -106,7 +114,7 @@ public class PantallaBarra extends javax.swing.JDialog {
     }//GEN-LAST:event_formComponentShown
 
     private void botonPararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPararActionPerformed
-        PARAR = true;
+        setPARAR(true);
     }//GEN-LAST:event_botonPararActionPerformed
 
     /**
@@ -161,7 +169,7 @@ public class PantallaBarra extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JProgressBar barra;
     public javax.swing.JButton botonParar;
-    private javax.swing.JLabel labelMensa;
+    public javax.swing.JLabel labelMensa;
     // End of variables declaration//GEN-END:variables
 
     private void asignarIconos() {

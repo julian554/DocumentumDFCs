@@ -39,11 +39,12 @@ import javax.swing.table.TableColumn;
 public class PantallaDql extends javax.swing.JFrame {
 
     Utilidades util = new Utilidades();
+    UtilidadesDocumentum utildocum = new UtilidadesDocumentum();
     PantallaBarra barradocum = null;
     Boolean botonderecho = false;
     String componente = "";
     public static PantallaDocumentum ventanapadre = null;
-    IDfSession sesion = null;
+    IDfSession sesion = sesionDocumentum();
 
     public PantallaDql(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
@@ -519,17 +520,7 @@ public class PantallaDql extends javax.swing.JFrame {
                 TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
                 tablaResultados.setModel(modeloLotes);
                 String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-                try {
-                    ClassPathUpdater.add(dirdfc);
-                    ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-                } catch (Exception ex) {
-                    Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-                }
-                UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-
-                sesion = utildocum.conectarDocumentum();
-
-                barradocum = new PantallaBarra(PantallaDql.this, false);
+                 barradocum = new PantallaBarra(PantallaDql.this, false);
                 barradocum.setTitle("Consultando en Documentum ...");
                 barradocum.barra.setIndeterminate(true);
                 barradocum.botonParar.setVisible(false);
@@ -737,5 +728,18 @@ public class PantallaDql extends javax.swing.JFrame {
                 popupHistorial.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
+    }
+    
+        private IDfSession sesionDocumentum() {
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        try {
+            ClassPathUpdater.add(dirdfc);
+            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
+        }
+        UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+        IDfSession nuevasesion = utildocum.conectarDocumentum();
+        return nuevasesion;
     }
 }

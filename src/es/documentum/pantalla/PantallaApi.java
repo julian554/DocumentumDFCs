@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.documentum.pantalla;
 
 import com.documentum.fc.client.IDfSession;
@@ -29,10 +25,13 @@ import javax.swing.JTable;
 public class PantallaApi extends javax.swing.JFrame {
 
     Utilidades util = new Utilidades();
+    UtilidadesDocumentum utildocum = new UtilidadesDocumentum();
     PantallaBarra barradocum = null;
     Boolean botonderecho = false;
     String componente = "";
     String idControl = "";
+    IDfSession sesion = sesionDocumentum();
+    
     public static PantallaDocumentum ventanapadre = null;
 
     public PantallaApi(PantallaDocumentum parent, boolean modal) {
@@ -47,6 +46,7 @@ public class PantallaApi extends javax.swing.JFrame {
         pintarMulti(checkMulti.isSelected());
         setLocationRelativeTo(null);
         cargarComboHistorial();
+        
     }
 
     protected static Image getLogo() {
@@ -539,14 +539,14 @@ public class PantallaApi extends javax.swing.JFrame {
 
     private void ejecutarAPI(String ComandoApi, String datosApi) {
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-        try {
-            ClassPathUpdater.add(dirdfc);
-            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-        } catch (Exception ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        }
-        UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        IDfSession sesion = utildocum.conectarDocumentum();
+//        try {
+//            ClassPathUpdater.add(dirdfc);
+//            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
+//        } catch (Exception ex) {
+//            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
+//        }
+//        UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+//        IDfSession sesion = utildocum.conectarDocumentum();
 
         Properties promensajes = new Properties();
 
@@ -757,6 +757,7 @@ public class PantallaApi extends javax.swing.JFrame {
             resultsBuf.append(lastResults);
             output = resultsBuf.toString();
             textoLog.setText(output);
+            textoLog.setCaretPosition(0);
             if (!BuscarEnComboHistorial(textoAPI.getText())) {
                 try {
                     FileOutputStream historial = new FileOutputStream(new File(dirdfc + "historial-api.log"), true);
@@ -808,6 +809,19 @@ public class PantallaApi extends javax.swing.JFrame {
             textoDatosApi.setVisible(true);
             checkMostrarSQL.setVisible(true);
         }
+    }
+
+    private IDfSession sesionDocumentum() {
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        try {
+            ClassPathUpdater.add(dirdfc);
+            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
+        }
+        UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+        IDfSession nuevasesion = utildocum.conectarDocumentum();
+        return nuevasesion;
     }
 
 }

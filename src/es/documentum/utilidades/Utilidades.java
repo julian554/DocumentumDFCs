@@ -34,6 +34,7 @@ import java.util.zip.ZipInputStream;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -112,16 +113,62 @@ public class Utilidades {
         String ficheros[] = dir.list();
         Boolean resultado = true;
 
-        if (nombre.startsWith("*")) {
-            nombre = nombre.substring(1, nombre.length());
-        }
-
         for (int i = 0; i < ficheros.length; i++) {
-            if (ficheros[i].endsWith(nombre)) {
+            if (nombre.equals("*")) {
                 File fich = new File(directorio + this.separador() + ficheros[i]);
                 resultado = fich.delete();
                 if (!resultado) {
                     return resultado;
+                }
+            } else if (nombre.startsWith("*") && StringUtils.countMatches(nombre, "*") == 1) {
+                if (ficheros[i].endsWith(nombre.substring(1, nombre.length()))) {
+                    File fich = new File(directorio + this.separador() + ficheros[i]);
+                    resultado = fich.delete();
+                    if (!resultado) {
+                        return resultado;
+                    }
+                }
+            } else if (nombre.endsWith("*") && StringUtils.countMatches(nombre, "*") == 1) {
+                if (ficheros[i].startsWith(nombre.substring(0, nombre.length() - 1))) {
+                    File fich = new File(directorio + this.separador() + ficheros[i]);
+                    resultado = fich.delete();
+                    if (!resultado) {
+                        return resultado;
+                    }
+                }
+            } else if (nombre.contains("*")) {
+                if (nombre.indexOf("*") == nombre.lastIndexOf("*")) {
+                    String inicio = nombre.substring(0, nombre.indexOf("*"));
+                    String fin = nombre.substring((nombre.indexOf("*") + 1), nombre.length());
+                    if (ficheros[i].startsWith(inicio) && ficheros[i].endsWith(fin)) {
+                        File fich = new File(directorio + this.separador() + ficheros[i]);
+                        resultado = fich.delete();
+                        if (!resultado) {
+                            return resultado;
+                        }
+                    }
+                } else {
+                    String condicion=nombre;
+                    if (nombre.startsWith("*")) {
+                        condicion = nombre.substring(1, nombre.length());
+                    }
+                    String[] cachos = condicion.split("\\*");
+                    Boolean encontrado = true;
+                    for (int n = 0; n < cachos.length && encontrado; n++) {
+                        if (!cachos[n].isEmpty()) {
+                            if (!ficheros[i].contains(cachos[n])) {
+                                encontrado = false;
+                            }
+                        }
+                    }
+                    if (encontrado) {
+                        File fich = new File(directorio + this.separador() + ficheros[i]);
+                        resultado = fich.delete();
+                        if (!resultado) {
+                            return resultado;
+                        }
+                    }
+
                 }
             }
         }
@@ -199,7 +246,7 @@ public class Utilidades {
         } else {
             dirbase = usuarioHome() + separador + "DocumentumDFCs";
         }
-        */
+         */
         return dirbase;
     }
 
@@ -997,11 +1044,16 @@ public class Utilidades {
 
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
+        /*
         util.cambiarPermisoRemoto("tx0655.correos.es", "s000232", "eCvaLL05v", "/home/s000232/borrado/borrado1/*.sh", OctalToDecimal("744"));
         List<String> resultado = util.comandoRemoto("tx0655.correos.es", "s000232", "eCvaLL05v", "ls -l /home/s000232/borrado/borrado1");
         for (int x = 0; x < resultado.size(); x++) {
             System.out.println(resultado.get(x));
         }
+         */
+
+        util.borrarFichero("C:\\Users\\E274399\\documentumdcfs\\renditions", "**.xml*");
+
     }
 }
 
