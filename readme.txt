@@ -49,3 +49,9 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     Añadido en la pantalla de DQLs el número de registros a mostrar
 	
     Añadidas funciones varias para Documentum
+    
+    Búsqueda en la pantalla principal al pulsar "Intro"
+    
+    Opción para ver las renditions de un documento
+    
+    Posibilidad de parar las búquedas por directorio o ruta de Documentum
