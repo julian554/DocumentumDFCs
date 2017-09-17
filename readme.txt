@@ -55,3 +55,5 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     Opción para ver las renditions de un documento
     
     Posibilidad de parar las búquedas por directorio o ruta de Documentum
+	
+	Pantalla para manejar los jobs del repositorio
