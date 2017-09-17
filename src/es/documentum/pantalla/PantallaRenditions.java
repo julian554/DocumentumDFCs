@@ -2,7 +2,6 @@ package es.documentum.pantalla;
 
 import com.documentum.fc.client.IDfSession;
 import static es.documentum.pantalla.PantallaDocumentum.getLogo;
-import es.documentum.utilidades.TablaSinEditarCol;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Desktop;
@@ -22,7 +21,7 @@ import javax.swing.table.TableColumn;
  * @author julian
  */
 public class PantallaRenditions extends javax.swing.JFrame {
-    
+
     UtilidadesDocumentum utilDocum = new UtilidadesDocumentum();
     Utilidades util = new Utilidades();
     PantallaBarra barradocum = null;
@@ -35,16 +34,16 @@ public class PantallaRenditions extends javax.swing.JFrame {
     private Boolean botonderecho = false;
     private String componente = "";
     private String idDocumentum = "";
-    
+
     public String getIdDocumentum() {
         return idDocumentum;
     }
-    
+
     public void setIdDocumentum(String idDocumentum) {
         this.idDocumentum = idDocumentum;
         textoIdDocumentum.setText(idDocumentum);
     }
-    
+
     public PantallaRenditions(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
         initComponents();
@@ -52,7 +51,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
         inicializar();
         //    setVisible(true);
     }
-    
+
     private void inicializar() {
         try {
             setIconImage(new ImageIcon(getLogo()).getImage());
@@ -213,7 +212,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
             popupmenu(evt);
         }
     }//GEN-LAST:event_tablaRenditionsMousePressed
-    
+
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
             botonderecho = false;
@@ -226,18 +225,18 @@ public class PantallaRenditions extends javax.swing.JFrame {
                 if (!source.isRowSelected(row)) {
                     source.changeSelection(row, column, false, false);
                 }
-                
+
                 if (componente.equals("tablaRenditions")) {
                     if (row >= 0 && column >= 0 && tablaRenditions.getModel().getRowCount() > 0) {
                         popupAtributos.show(evt.getComponent(), evt.getX(), evt.getY());
                     }
                 }
-                
+
             }
-            
+
         }
     }
-    
+
 
     private void textoIdDocumentumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoIdDocumentumActionPerformed
         // TODO add your handling code here:
@@ -267,7 +266,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
             AbrirRendition();
         }
     }//GEN-LAST:event_tablaRenditionsMouseClicked
-    
+
     public static void main(String args[]) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -294,18 +293,20 @@ public class PantallaRenditions extends javax.swing.JFrame {
         final String r_object_id = pr_object_id;
         new Thread() {
             public void run() {
-                DefaultTableModel modeloLotes = new DefaultTableModel();
+                DefaultTableModel modeloLotes = new DefaultTableModel() {
+                    @Override
+                    public boolean isCellEditable(int fila, int columna) {
+                        return false;
+                    }
+                };
                 utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-                if (!esadmin) {
-                    modeloLotes = (DefaultTableModel) new TablaSinEditarCol();
-                }
                 if (r_object_id.isEmpty()) {
                     tablaRenditions.setModel(modeloLotes);
                     return;
                 }
-                
+
                 IDfSession sesion = utilDocum.conectarDocumentum();
-                
+
                 barradocum = new PantallaBarra(PantallaRenditions.this, false);
                 barradocum.setTitle("Renditions de " + getIdDocumentum());
                 barradocum.barra.setIndeterminate(true);
@@ -315,17 +316,17 @@ public class PantallaRenditions extends javax.swing.JFrame {
                 barradocum.barra.setStringPainted(false);
                 barradocum.validate();
                 barradocum.setVisible(true);
-                
+
                 renditions = utilDocum.dameRenditions(sesion, r_object_id);
                 if (renditions.size() <= 0) {
                     tablaRenditions.setModel(modeloLotes);
                     barradocum.dispose();
                     return;
                 }
-                
+
                 Object[][] datos = new Object[renditions.size()][5];
                 Object[] cabecera = {"Formato", "Tamaño", "Fecha modificación", "Filestore", "Ruta"};
-                
+
                 for (int n = 0; n < renditions.size(); n++) {
                     ArrayList valores = (ArrayList) renditions.get(n);
 //                    for (int i = 0; i < valores.size(); i++) {
@@ -339,17 +340,31 @@ public class PantallaRenditions extends javax.swing.JFrame {
                     datos[n][4] = valores.get(3);
                     barradocum.labelMensa.setText((String) valores.get(3));
                 }
-                
+
                 if (datos.length > 0) {
                     if (!esadmin) {
-                        modeloLotes = new TablaSinEditarCol(datos, cabecera);
-                        //  modeloLotes = new DefaultTableModel(datos, cabecera);
+                        modeloLotes = new DefaultTableModel(datos, cabecera) {
+                            @Override
+                            public boolean isCellEditable(int fila, int columna) {
+                                return false;
+                            }
+                        };
                     } else {
-                        modeloLotes = new DefaultTableModel(datos, cabecera);
+                        modeloLotes = new DefaultTableModel(datos, cabecera) {
+                            @Override
+                            public boolean isCellEditable(int fila, int columna) {
+                                return false;
+                            }
+                        };
                     }
-                    
+
                 } else {
-                    modeloLotes = new TablaSinEditarCol();
+                    modeloLotes = new DefaultTableModel() {
+                        @Override
+                        public boolean isCellEditable(int fila, int columna) {
+                            return false;
+                        }
+                    };
                 }
                 tablaRenditions.setModel(modeloLotes);
                 TableColumn columna = tablaRenditions.getColumnModel().getColumn(0);
@@ -369,13 +384,13 @@ public class PantallaRenditions extends javax.swing.JFrame {
         }.start();
         System.gc();
     }
-    
+
     private void salir() {
         this.dispose();
         util.borrarFichero(dir, "rendition*");
         System.gc();
     }
-    
+
     private void AbrirRendition() {
         String resultado = tablaRenditions.getModel().getValueAt(tablaRenditions.convertRowIndexToModel(tablaRenditions.getSelectedRow()), 4).toString();
         try {
@@ -385,7 +400,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
             Utilidades.escribeLog("Error al abrir el archivo (" + resultado + ") - Error " + ex.getMessage());
         }
     }
-    
+
     private void ExportarAtributosExcel() {
         if (tablaRenditions.getModel().getRowCount() > 0) {
             String fichero = "";
@@ -404,6 +419,6 @@ public class PantallaRenditions extends javax.swing.JFrame {
             }
             System.gc();
         }
-        
+
     }
 }

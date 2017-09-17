@@ -2,11 +2,9 @@ package es.documentum.pantalla;
 
 import es.documentum.Beans.AtributosDocumentum;
 import static es.documentum.pantalla.PantallaDocumentum.getLogo;
-import es.documentum.utilidades.TablaSinEditarCol;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -29,7 +27,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
     public static PantallaDocumentum ventanapadre = null;
     private Boolean botonderecho = false;
     private String componente = "";
-    private String idDocumentum="";
+    private String idDocumentum = "";
 
     public String getIdDocumentum() {
         return idDocumentum;
@@ -39,7 +37,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
         this.idDocumentum = idDocumentum;
         textoIdDocumentum.setText(idDocumentum);
     }
-    
+
     public PantallaAtributos(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
         initComponents();
@@ -310,11 +308,13 @@ public class PantallaAtributos extends javax.swing.JFrame {
             public void run() {
                 String mensajeborrado = "";
                 Color colormensaje = Color.BLACK;
-                DefaultTableModel modeloLotes = new DefaultTableModel();
+                DefaultTableModel modeloLotes = new DefaultTableModel() {
+                    @Override
+                    public boolean isCellEditable(int fila, int columna) {
+                        return false;
+                    }
+                };;
                 utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-                if (!esadmin) {
-                    modeloLotes = (DefaultTableModel) new TablaSinEditarCol();
-                }
                 if (r_object_id.isEmpty()) {
                     tablaAtributos.setModel(modeloLotes);
                     EtiquetaEstado.setText("");
@@ -357,14 +357,22 @@ public class PantallaAtributos extends javax.swing.JFrame {
 
                 if (datos.length > 0) {
                     if (!esadmin) {
-                        modeloLotes = new TablaSinEditarCol(datos, cabecera);
-                        //  modeloLotes = new DefaultTableModel(datos, cabecera);
+                        modeloLotes = new DefaultTableModel(datos, cabecera) {
+                            @Override
+                            public boolean isCellEditable(int fila, int columna) {
+                                return false;
+                            }
+                        };
                     } else {
-                        modeloLotes = new DefaultTableModel(datos, cabecera);
+                        modeloLotes = new DefaultTableModel(datos, cabecera) {
+                            @Override
+                            public boolean isCellEditable(int fila, int columna) {
+                                return false;
+                            }
+                        };
                     }
 
                 } else {
-                    modeloLotes = new TablaSinEditarCol();
                     EtiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
                 }
                 tablaAtributos.setModel(modeloLotes);

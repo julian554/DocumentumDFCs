@@ -56,7 +56,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         this.servidor = servidor;
     }
 
-        public void setTextoServidor(String servidor) {
+    public void setTextoServidor(String servidor) {
         TextoServidor.setText(servidor);
     }
 
@@ -67,7 +67,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     public void setTextoClave(String clave) {
         TextoClave.setText(clave);
     }
-    
+
     public PantallaEjecutarComandoRemoto(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
         initComponents();
@@ -184,6 +184,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         popupEditar = new javax.swing.JPopupMenu();
         opcionCopiar = new javax.swing.JMenuItem();
         opcionPegar = new javax.swing.JMenuItem();
+        opcionCopiarTodo = new javax.swing.JMenuItem();
         botonCerrar = new javax.swing.JButton();
         TextoComando = new javax.swing.JTextField();
         LabelComando = new javax.swing.JLabel();
@@ -222,6 +223,14 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             }
         });
         popupEditar.add(opcionPegar);
+
+        opcionCopiarTodo.setText("Copiar Todo");
+        opcionCopiarTodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionCopiarTodoActionPerformed(evt);
+            }
+        });
+        popupEditar.add(opcionCopiarTodo);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ejecutar Comandos SSH en remoto");
@@ -639,6 +648,15 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             setServidor(TextoServidor.getText());
         }
     }//GEN-LAST:event_TextoServidorInputMethodTextChanged
+
+    private void opcionCopiarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarTodoActionPerformed
+        String textocompleto = "";
+        for (int i = 0; i < Texto.getModel().getSize(); i++) {
+//    System.out.println(Texto.getModel().getElementAt(i));
+            textocompleto = textocompleto + Texto.getModel().getElementAt(i) + "\n";
+        }
+        Utilidades.copiarTextoPortapapeles(textocompleto);
+    }//GEN-LAST:event_opcionCopiarTodoActionPerformed
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
             botonderecho = false;
@@ -761,6 +779,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     private javax.swing.JMenu opcionApariencia;
     private javax.swing.JMenuItem opcionCerrar;
     private javax.swing.JMenuItem opcionCopiar;
+    private javax.swing.JMenuItem opcionCopiarTodo;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JRadioButtonMenuItem opcionRBMetal;
     private javax.swing.JRadioButtonMenuItem opcionRBNimbus;

@@ -26,7 +26,7 @@ public class UtilidadesDocumentum {
 
     Utilidades util = new Utilidades();
     Properties pro = new Properties();
-
+    String idControl = "";
     public PantallaDocumentum ventanapadre = null;
 
     public PantallaDocumentum getVentanapadre() {
@@ -114,16 +114,25 @@ public class UtilidadesDocumentum {
         }
 
         try {
+            //         IDfClient client = DfClient.getLocalClient();
+            //         IDfTypedObject config = client.getClientConfig();
+            //         config.setString("primary_host", docbroker);
+            //         config.setInt("primary_port", Integer.parseInt(puerto));
+            //         IDfLoginInfo loginInfoObj = new DfLoginInfo();
+            //         loginInfoObj.setUser(usuario);
+            //         loginInfoObj.setPassword(password);
+            //         //sesion = client.newSession(docbase, loginInfoObj);
+            //         docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
+
             IDfClient client = DfClient.getLocalClient();
-            IDfTypedObject config = client.getClientConfig();
-            config.setString("primary_host", docbroker);
-            config.setInt("primary_port", Integer.parseInt(puerto));
-            IDfLoginInfo loginInfoObj = new DfLoginInfo();
-            loginInfoObj.setUser(usuario);
-            loginInfoObj.setPassword(password);
-            //sesion = client.newSession(docbase, loginInfoObj);
+            IDfSessionManager sesMgr = client.newSessionManager();
+            IDfLoginInfo loginInfo = new DfLoginInfo();
+            loginInfo.setUser(usuario);
+            loginInfo.setPassword(password);
+            sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
-            sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
+            sesion = sesMgr.getSession(docbase);
+            //     sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
             if (!sesion.isConnected()) {
                 ERROR = "No se pudo obtener sesión de Documentum (conectarDocumentum)";
                 return null;
@@ -152,6 +161,7 @@ public class UtilidadesDocumentum {
         }
 
         try {
+            /*
             IDfClient client = DfClient.getLocalClient();
             IDfTypedObject config = client.getClientConfig();
             config.setString("primary_host", docbroker);
@@ -159,13 +169,27 @@ public class UtilidadesDocumentum {
             IDfLoginInfo loginInfoObj = new DfLoginInfo();
             loginInfoObj.setUser(usuario);
             loginInfoObj.setPassword(password);
-            //sesion = client.newSession(docbase, loginInfoObj);
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
             sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
+
+             */
+
+            Utilidades.escribeLog("Obteniendo sesión ... " + Utilidades.today() + " - " + Utilidades.now());
+            Utilidades.escribeLog("Repositorio: " + docbase + " - Docbroker: " + docbroker + " - Puerto: " + puerto);
+            IDfClient client = DfClient.getLocalClient();
+            IDfSessionManager sesMgr = client.newSessionManager();
+            IDfLoginInfo loginInfo = new DfLoginInfo();
+            loginInfo.setUser(usuario);
+            loginInfo.setPassword(password);
+            sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
+            docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
+            sesion = sesMgr.getSession(docbase);
+            // sesion = sesMgr.getSession(docbase + "@" + docbroker);
             if (!sesion.isConnected()) {
                 ERROR = "No se pudo obtener sesión de Documentum (conectarDocumentum)";
                 return null;
             }
+            Utilidades.escribeLog("Sesión obtenida... " + Utilidades.today() + " - " + Utilidades.now());
         } catch (DfException dfe) {
             Utilidades.escribeLog("Error al conectar con Documentum (conectarDocumentum): " + dfe.toString());
             ERROR = "Error al conectar con Documentum (conectarDocumentum): " + dfe.toString();
@@ -864,7 +888,6 @@ public class UtilidadesDocumentum {
                     break;
             }
             Documento.save();
-            sesion.disconnect();
         } catch (Exception ex) {
             resultado = "Error al actualizar atributo " + nombre + " (ActualizarAtributo) - Error " + ex.getMessage();
         }
@@ -889,17 +912,7 @@ public class UtilidadesDocumentum {
         IDfCollection coleccion = ejecutarDql("Select user_privileges From dm_user where user_name='" + usuario + "' ");
         String valor = "0";
 
-//        IDfSession sesion = conectarDocumentum();
-//        if (sesion == null) {
-//            if (ERROR.isEmpty()) {
-//                ERROR = "Error al crear sesión en Documentum (EsUsuarioAdmin)";
-//            }
-//            return false;
-//        }
         try {
-//            IDfId idObj = sesion.getIdByQualification("dm_user where user_name='" + usuario + "' ");
-//            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
-//            valor = sysObj.getValue("user_privileges").toString();
             coleccion.next();
             valor = "" + coleccion.getInt("user_privileges");
         } catch (Exception ex) {
@@ -908,13 +921,31 @@ public class UtilidadesDocumentum {
         }
 
         resultado = valor.equals("16");
+        return resultado;
+    }
 
-//        try {
-//            sesion.disconnect();
-//        } catch (DfException ex) {
-//            Utilidades.escribeLog("Error al desconectar la sesión en Documentum (EsUsuarioAdmin)  - Error: " + ex.getMessage());
-//            ERROR = "Error al desconectar la sesión en Documentum (EsUsuarioAdmin)  - Error: " + ex.getMessage();
-//        }
+    public boolean estaJobArrancado(String nombre) {
+        boolean resultado = false;
+
+        if (nombre.isEmpty()) {
+            return resultado;
+        }
+
+        IDfCollection coleccion = ejecutarDql("select count(*) as cont from dm_job where object_name ='" + nombre + "' and ( run_now = 1 or a_current_status = 'STARTED')");
+        if (coleccion == null) {
+            return resultado;
+        }
+        try {
+            coleccion.next();
+            int valor = coleccion.getInt("cont");
+            if (valor > 0) {
+                return true;
+            }
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al comprobar Job running: " + ex.getMessage());
+            ERROR = "Error al comprobar Job running: " + ex.getMessage();
+        }
+
         return resultado;
     }
 
@@ -1051,6 +1082,10 @@ public class UtilidadesDocumentum {
             }
             int conta = 0;
             Boolean seguir = true;
+
+            Long valor = numeroObjetosDirectorio(sesion, ruta);
+            String numficheros = String.valueOf(valor);
+
             while (ficheros.next() && seguir) {
                 conta++;
                 AtributosDocumentum datos = new AtributosDocumentum();
@@ -1060,7 +1095,9 @@ public class UtilidadesDocumentum {
                 datos.setValor(doc.getString("r_object_id"));
                 datos.setTipoobjeto(doc.getString("r_object_type"));
                 ventanapadre.EtiquetaEstado.setText(doc.getString("object_name"));
-                ventanapadre.getBarradocum().labelMensa.setText("Registro(s): " + conta);
+                //   String textocuenta = numficheros.equals("0") ? "Registro(s): " + conta : "Registro(s): " + conta + " de " + numficheros;
+                String textocuenta = "Registro(s): " + conta + " de " + numficheros;
+                ventanapadre.getBarradocum().labelMensa.setText(textocuenta);
                 if (ventanapadre.getBarradocum().PARAR) {
                     seguir = false;
                     ventanapadre.getBarradocum().setPARAR(false);
@@ -1423,7 +1460,10 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
         UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
+        //  IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
+        IDfSession sesion = ed.conectarDocumentum("sisdoc01", "docu01", "cyt_agora_pro", "pla707.correos.es", "1489");
+
+        Long valor = ed.numeroObjetosDirectorio(sesion, "/Archivo Digital/Documentacion Administrativa/CEDICO/Giros/2017/08/19");
 
         ArrayList renditions = ed.dameRenditions(sesion, "09000816802c8d48");
 
@@ -1631,6 +1671,7 @@ public class UtilidadesDocumentum {
                 datos.add(dameFilestore(sesion, rendDoc.getString("storage_id")));
                 lista.add(datos);
             }
+            myColl.close();
         } catch (DfException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
@@ -1647,6 +1688,32 @@ public class UtilidadesDocumentum {
          */
     }
 
+    public ArrayList dameJobs(IDfSession sesion) {
+        ArrayList lista = new ArrayList();
+        try {
+            String dql = "select object_name,subject,title,a_last_completion,is_inactive,a_current_status,r_object_id from dm_job_sp order by object_name";
+            IDfCollection myColl = ejecutarDql(dql, sesion);
+            if (myColl == null) {
+                return lista;
+            }
+            while (myColl.next()) {
+                ArrayList datos = new ArrayList();
+                datos.add(myColl.getString("object_name"));
+                datos.add(myColl.getString("subject"));
+                datos.add(myColl.getString("title"));
+                datos.add(myColl.getString("a_last_completion").equals("nulldate") ? "" : myColl.getString("a_last_completion"));
+                datos.add(myColl.getString("is_inactive").equals("0") ? "Activo" : "Inactivo");
+                datos.add(myColl.getString("a_current_status"));
+                datos.add(myColl.getString("r_object_id"));
+                lista.add(datos);
+            }
+            myColl.close();
+        } catch (DfException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return lista;
+    }
+
     public String dameFilestore(IDfSession sesion, String r_object_id) {
         String filestore = "";
         IDfCollection resultado = ejecutarDql("select name from dm_filestore where r_object_id='" + r_object_id + "'", sesion);
@@ -1657,6 +1724,126 @@ public class UtilidadesDocumentum {
             System.out.println("Error: " + ex.getMessage());
         }
         return filestore;
+    }
+
+    public Long numeroObjetosDirectorio(IDfSession sesion, String dir) {
+        Long valor = 0L;
+        Long valordir = 0L;
+        String dql = "SELECT count(*) as numero FROM dm_sysobject WHERE FOLDER('" + dir + "')";
+//        String dql = "SELECT count(r_object_id) as numero FROM dm_document(all) WHERE FOLDER('" + dir + "')";
+        if (dir.equals("/")) {
+            dql = "select count(*) as numero From dm_sysobject where r_object_type='dm_cabinet'";
+        }
+        IDfCollection resultado = ejecutarDql(dql, sesion);
+        try {
+            resultado.next();
+            valor = Long.parseLong(resultado.getString("numero"));
+        } catch (DfException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+//        String dql2 = "SELECT count(r_object_id) as numero FROM dm_folder(all) WHERE FOLDER('" + dir + "')";
+//        if (dir.equals("/")) {
+//            dql2 = "select count(*) as numero From dm_sysobject where r_object_type='dm_cabinet'";
+//        }
+//        IDfCollection resultado2 = ejecutarDql(dql2, sesion);
+//        try {
+//            resultado2.next();
+//            valordir = Long.parseLong(resultado2.getString("numero"));
+//        } catch (DfException ex) {
+//            System.out.println("Error: " + ex.getMessage());
+//        }
+        valor = valor + valordir;
+        return valor;
+    }
+
+    public Boolean convierteDocumento(IDfSession sesion, String r_object_id, String formato) {
+        Boolean resultado = true;
+        try {
+
+            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(new DfId(r_object_id));
+
+            IDfId RenderedQueueID = sysObj.queue("dm_autorender_win31", "rendition", 0, false, new com.documentum.fc.common.DfTime("nulldate"), "rendition_req_ps_pdf");
+
+            if (RenderedQueueID.isNull()) {
+                resultado = false;
+            }
+
+        } catch (DfException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return resultado;
+    }
+
+    public Boolean hayADTS() {
+        try {
+            IDfCollection col = ejecutarDql("select status from cts_instance_info");
+            if (col == null) {
+                return false;
+            }
+
+            col.next();
+            IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
+            IDfValue attrValue = row.getValue("status");
+            String valor = getDfObjectValue(attrValue).toString();
+            if (valor == null || !valor.equals("1")) {
+                return false;
+            }
+        } catch (Exception Ex) {
+            return false;
+        }
+        return true;
+    }
+
+    public String dameFTIndex(IDfSession sesion) {
+        String nombre = "";
+        IDfCollection col = ejecutarDql("select index_name from dm_fulltext_index", sesion);
+        try {
+            while (col.next()) {
+                nombre = col.getValue(col.getAttr(0).getName()).toString();
+            }
+            col.close();
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al consultar el FTIndex name. (dameFTIndex) Error: " + ex.getMessage());
+        }
+
+        return nombre;
+    }
+
+    public String dameIndexAgent(IDfSession sesion) {
+        String nombre = "";
+        IDfCollection col = ejecutarDql("select object_name from dm_ftindex_agent_config", sesion);
+        try {
+            while (col.next()) {
+                nombre = col.getValue(col.getAttr(0).getName()).toString();
+            }
+            col.close();
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al consultar el FTIndex name. (dameFTIndex) Error: " + ex.getMessage());
+        }
+
+        return nombre;
+    }
+
+    public ArrayList relanzarTareasFallidasIndexador(IDfSession sesion) {
+        IDfCollection col = ejecutarDql("select item_id from dmi_queue_item where name = 'dm_fulltext_index_user' and  task_state='failed'", sesion);
+        ArrayList salida = new ArrayList();
+        if (col == null) {
+            return salida;
+        }
+        try {
+            while (col.next()) {
+                IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
+                String r_object_id = row.getValueAt(0).asString();
+                //  System.out.println("r_object_id: " + r_object_id);
+                salida.add("r_object_id: " + r_object_id);
+                String dql = "update dmi_queue_item objects set task_state ='' where name = 'dm_fulltext_index_user' and task_state = 'failed' and item_id='" + r_object_id + "'";
+                ejecutarDql(dql, sesion);
+            }
+            col.close();
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al relanzar tareas del indexador - Error: " + ex.getMessage());
+        }
+        return salida;
     }
 
     public static String desencriptarPassword(String clave) {
@@ -2130,6 +2317,197 @@ public class UtilidadesDocumentum {
         } catch (DfException ex) {
             Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
         }
+    }
+
+    public String ejecutarAPI(String ComandoApi, String datosApi, IDfSession sesion) {
+        Properties promensajes = new Properties();
+
+        try {
+            InputStream in = UtilidadesDocumentum.class.getClassLoader().getResourceAsStream("es/documentum/utilidades/mensajes-api.properties");
+            if (in == null) {
+                Utilidades.escribeLog("Error al cargar el fichero de propiedades de Documentum (cargarConfiguraciones)");
+            }
+            promensajes = new java.util.Properties();
+            promensajes.load(in);
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al cargar el fichero de propiedades. (cargarConfiguraciones) Error: " + ex.getMessage());
+        }
+
+        String apiCommand = ComandoApi;
+        String apiDataCtl = datosApi;
+        String batchStr = null;
+        boolean abortScript = false;
+
+        batchStr = apiCommand;
+        //   String idControl = null;
+        String lastId = null;
+        String methodStr = null;
+        String methodData = null;
+        String status = null;
+        String cmdResult = null;
+        boolean b_result = false;
+        String dummy = null;
+        String dummyC = ",c,";
+        String dummyCurrent = ",current,";
+
+        int cmdId = 0;
+        int cmdCallType = 0;
+        int cmdSession = 0;
+
+        int getCounter = 0;
+        int execCounter = 0;
+        int setCounter = 0;
+
+        String currToken = null;
+
+        StringBuilder resultsBuf = new StringBuilder(1024);
+        try {
+            //  lastId = idControl;
+            if ((lastId != null) && (lastId.length() > 0)) {
+                b_result = sesion.apiExec("fetch", lastId);
+            }
+        } catch (DfException exp) {
+        }
+        if ((batchStr != null) && (batchStr.length() != 0)) {
+            StringTokenizer batchTokener = new StringTokenizer(batchStr, "\n\r");
+            while ((batchTokener.hasMoreTokens()) && (abortScript != true)) {
+                methodStr = batchTokener.nextToken();
+                if ((methodStr == null) && (batchTokener.hasMoreTokens())) {
+                    methodStr = batchTokener.nextToken();
+                }
+                StringTokenizer lineTokener = new StringTokenizer(methodStr, ",");
+
+                String methodStr1 = lineTokener.nextToken();
+                if ((methodStr1.equals("connect")) || (methodStr1.indexOf(" ") > -1)) {
+                    /*
+                    resultsBuf.append(promensajes.getProperty("MSG_API") + methodStr1);
+                    if (methodStr1.equals("connect")) {
+                        resultsBuf.append("\n...\n" + promensajes.getProperty("MSG_NO_CONNECT") + "\n");
+                    } else {
+                        resultsBuf.append("\n...\n" + promensajes.getProperty("MSG_API_NOT_VALID") + "\n");
+                    }
+                     */
+                } else {
+                    String methodStr2 = null;
+                    if (lineTokener.hasMoreTokens()) {
+                        dummy = lineTokener.nextToken();
+                        if (lineTokener.hasMoreTokens()) {
+                            if ((dummy != null) && (dummy.length() > 0)) {
+                                int index = 0;
+                                if (dummy.equalsIgnoreCase("current")) {
+                                    index = methodStr.toLowerCase().indexOf(dummyCurrent);
+                                } else if (dummy.equalsIgnoreCase("c")) {
+                                    index = methodStr.toLowerCase().indexOf(dummyC);
+                                }
+                                methodStr2 = methodStr.substring(index + dummy.length() + 2);
+                            }
+                        }
+                    }
+                    //      resultsBuf.append(promensajes.getProperty("MSG_API") + methodStr);
+                    try {
+                        IDfList list = sesion.apiDesc(methodStr1 + ",c,");
+                        status = list.getString(0);
+                        cmdId = list.getInt(1);
+                        cmdCallType = list.getInt(2);
+                        cmdSession = list.getInt(3);
+                        switch (cmdCallType) {
+                            case 0:
+                                if ((methodStr1.equals("getservermap")) || (methodStr1.equals("getdocbasemap"))) {
+                                    StringTokenizer tokenizer = null;
+                                    if ((methodStr2 != null) && (methodStr2.length() > 0)) {
+                                        tokenizer = new StringTokenizer(methodStr2, ",");
+                                    }
+                                    if ((tokenizer == null) || (tokenizer.countTokens() <= 1)) {
+                                        String strDocbroker = DameDocbroker();
+                                        String docbrokerPort = DamePuertoDocbroker();
+                                        StringBuffer additionalParamBuffer = new StringBuffer();
+                                        if ((methodStr2 != null) && (methodStr2.length() > 0)) {
+                                            additionalParamBuffer.append(",");
+                                        }
+                                        additionalParamBuffer.append(",");
+                                        additionalParamBuffer.append(strDocbroker);
+                                        additionalParamBuffer.append(",");
+                                        additionalParamBuffer.append(docbrokerPort);
+                                        if ((methodStr2 != null) && (methodStr2.length() > 0)) {
+                                            methodStr2 = methodStr2 + additionalParamBuffer.toString();
+                                        } else {
+                                            methodStr2 = additionalParamBuffer.toString();
+                                        }
+                                    }
+                                }
+                                cmdResult = sesion.apiGet(methodStr1, methodStr2);
+                                if ((methodStr1.equals("create")) || (methodStr1.equals("checkin")) || (methodStr1.equals("retrieve")) || (methodStr1.equals("id")) || (methodStr1.equals("getdocbasemap")) || (methodStr1.equals("getservermap")) || (methodStr1.equals("getdocbrokermap"))) {
+                                    if (cmdResult != null) {
+                                        if (cmdResult.length() != 16) {
+                                            abortScript = true;
+                                            lastId = "";
+                                        } else {
+                                            if ((setCounter + execCounter > 0) && (!methodStr1.equals("checkin"))) {
+                                            }
+                                            lastId = cmdResult;
+                                            idControl = cmdResult;
+                                        }
+                                        execCounter = 0;
+                                        setCounter = 0;
+                                    } else {
+                                        String errorMessage = sesion.apiGet("getmessage", null);
+                                        //        resultsBuf.append(errorMessage);
+                                    }
+                                }
+                                getCounter++;
+                                break;
+                            case 1:
+
+                                methodData = apiDataCtl;
+
+                                b_result = sesion.apiSet(methodStr1, methodStr2, methodData);
+
+                                //      resultsBuf.append("\n" + promensajes.getProperty("MSG_SET") + methodData);
+                                if (b_result) {
+                                    cmdResult = promensajes.getProperty("MSG_OK");
+                                    setCounter++;
+                                } else {
+                                    abortScript = true;
+                                    setCounter = 0;
+                                }
+                                break;
+                            case 2:
+                                b_result = sesion.apiExec(methodStr1, methodStr2);
+                                if (b_result) {
+                                    if (methodStr1.equals("fetch")) {
+                                        lastId = methodStr2;
+                                        idControl = methodStr2;
+                                    }
+                                    cmdResult = promensajes.getProperty("MSG_OK");
+                                    if (methodStr1.equals("save")) {
+                                        execCounter = 0;
+                                        setCounter = 0;
+                                    } else {
+                                        execCounter++;
+                                    }
+                                } else {
+                                    abortScript = true;
+                                    execCounter = 0;
+                                    setCounter = 0;
+                                }
+                                break;
+                        }
+                        b_result = false;
+                    } catch (Exception exp) {
+                        cmdResult = promensajes.getProperty("MSG_ERROR_PROCESSING") + exp.toString();
+                        abortScript = true;
+                    } finally {
+                        //      resultsBuf.append("\n...\n" + cmdResult + "\n");
+                        resultsBuf.append(cmdResult);
+                    }
+                }
+            }
+            if (setCounter + execCounter > 0) {
+            }
+            String output = resultsBuf.toString();
+
+        }
+        return resultsBuf.toString();
     }
 
 }

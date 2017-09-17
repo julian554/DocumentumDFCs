@@ -178,11 +178,11 @@
                                   </Group>
                                   <EmptySpace min="28" pref="28" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="botonSalir" max="32767" attributes="0"/>
-                                      <Component id="botonConsultar" max="32767" attributes="0"/>
-                                      <Component id="checkDameSQL" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jLabel3" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="TextoNumReg" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="botonSalir" min="-2" pref="141" max="-2" attributes="0"/>
+                                      <Component id="botonConsultar" min="-2" pref="141" max="-2" attributes="0"/>
+                                      <Component id="checkDameSQL" alignment="0" min="-2" pref="141" max="-2" attributes="0"/>
+                                      <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="TextoNumReg" alignment="0" min="-2" pref="141" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
