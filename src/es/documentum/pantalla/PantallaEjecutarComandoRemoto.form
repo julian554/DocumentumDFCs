@@ -24,6 +24,17 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionPegarActionPerformed"/>
           </Events>
         </MenuItem>
+<<<<<<< HEAD
+        <MenuItem class="javax.swing.JMenuItem" name="opcionCopiarTodo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Copiar Todo"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionCopiarTodoActionPerformed"/>
+          </Events>
+        </MenuItem>
+=======
+>>>>>>> origin/master
       </SubComponents>
     </Container>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">

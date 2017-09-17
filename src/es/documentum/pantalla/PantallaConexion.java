@@ -32,6 +32,19 @@ public class PantallaConexion extends javax.swing.JDialog {
     public static String usuario = "";
     public static String clave = "";
 
+<<<<<<< HEAD
+    public IDfSession idsesion;
+
+    public IDfSession getIdsesion() {
+        return idsesion;
+    }
+
+    public void setIdsesion(IDfSession idsesion) {
+        this.idsesion = idsesion;
+    }
+
+=======
+>>>>>>> origin/master
     private String dirdfc = "";
     private Utilidades util = new Utilidades();
     public static PantallaDocumentum ventanapadre = null;
@@ -434,7 +447,11 @@ public class PantallaConexion extends javax.swing.JDialog {
                 botonTestConex.setEnabled(true);
             }
 
+<<<<<<< HEAD
+            idsesion = utildocum.conectarDocumentum(textoUsuario.getText(), new String(textoPassword.getPassword()),
+=======
             IDfSession idsesion = utildocum.conectarDocumentum(textoUsuario.getText(), new String(textoPassword.getPassword()),
+>>>>>>> origin/master
                     textoRepositorio.getText(), textoDocbroker.getText(), textoPuerto.getText());
 
             if (idsesion == null) {
@@ -453,11 +470,20 @@ public class PantallaConexion extends javax.swing.JDialog {
                 usuario = textoUsuario.getText();
                 try {
                     IDfDocbaseMap dfDocbaseMap = idsesion.getClient().getDocbaseMap();
+<<<<<<< HEAD
+                    System.out.println("Repositorios disponibles (" + docbroker + " - " + puerto + "): ");
+                    for (int i = 0; i < dfDocbaseMap.getDocbaseCount(); i++) {
+                        String docbaseName = dfDocbaseMap.getDocbaseName(i);
+                        String docbaseDescription = dfDocbaseMap.getDocbaseDescription(i);
+                        String docbaseid = dfDocbaseMap.getDocbaseId(i);
+                        System.out.println(docbaseName + "\t " + docbaseid + "(" + Integer.toHexString(Integer.parseInt(docbaseid)) + ")\t->\t" + docbaseDescription);
+=======
 
                     for (int i = 0; i < dfDocbaseMap.getDocbaseCount(); i++) {
                         String docbaseName = dfDocbaseMap.getDocbaseName(i);
                         String docbaseDescription = dfDocbaseMap.getDocbaseDescription(i);
                         System.out.println(docbaseName + " | " + docbaseDescription);
+>>>>>>> origin/master
                     }
                 } catch (Exception ex) {
 
@@ -586,7 +612,11 @@ public class PantallaConexion extends javax.swing.JDialog {
         prop.setProperty("password", new String(textoPassword.getPassword()));
         util.escribirProperties(dirdfc + "dfc.properties", prop);
         valor = "SELECION";
+<<<<<<< HEAD
+        clave = new String(textoPassword.getPassword());
+=======
         clave=new String(textoPassword.getPassword());
+>>>>>>> origin/master
         docbroker = textoDocbroker.getText();
         repositorio = textoRepositorio.getText();
 

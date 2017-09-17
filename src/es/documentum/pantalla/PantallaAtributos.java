@@ -2,11 +2,17 @@ package es.documentum.pantalla;
 
 import es.documentum.Beans.AtributosDocumentum;
 import static es.documentum.pantalla.PantallaDocumentum.getLogo;
+<<<<<<< HEAD
+import es.documentum.utilidades.Utilidades;
+import es.documentum.utilidades.UtilidadesDocumentum;
+import java.awt.Color;
+=======
 import es.documentum.utilidades.TablaSinEditarCol;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Color;
 import java.awt.Image;
+>>>>>>> origin/master
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -29,7 +35,11 @@ public class PantallaAtributos extends javax.swing.JFrame {
     public static PantallaDocumentum ventanapadre = null;
     private Boolean botonderecho = false;
     private String componente = "";
+<<<<<<< HEAD
+    private String idDocumentum = "";
+=======
     private String idDocumentum="";
+>>>>>>> origin/master
 
     public String getIdDocumentum() {
         return idDocumentum;
@@ -39,7 +49,11 @@ public class PantallaAtributos extends javax.swing.JFrame {
         this.idDocumentum = idDocumentum;
         textoIdDocumentum.setText(idDocumentum);
     }
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> origin/master
     public PantallaAtributos(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
         initComponents();
@@ -310,11 +324,21 @@ public class PantallaAtributos extends javax.swing.JFrame {
             public void run() {
                 String mensajeborrado = "";
                 Color colormensaje = Color.BLACK;
+<<<<<<< HEAD
+                DefaultTableModel modeloLotes = new DefaultTableModel() {
+                    @Override
+                    public boolean isCellEditable(int fila, int columna) {
+                        return false;
+                    }
+                };;
+                utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+=======
                 DefaultTableModel modeloLotes = new DefaultTableModel();
                 utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
                 if (!esadmin) {
                     modeloLotes = (DefaultTableModel) new TablaSinEditarCol();
                 }
+>>>>>>> origin/master
                 if (r_object_id.isEmpty()) {
                     tablaAtributos.setModel(modeloLotes);
                     EtiquetaEstado.setText("");
@@ -357,6 +381,24 @@ public class PantallaAtributos extends javax.swing.JFrame {
 
                 if (datos.length > 0) {
                     if (!esadmin) {
+<<<<<<< HEAD
+                        modeloLotes = new DefaultTableModel(datos, cabecera) {
+                            @Override
+                            public boolean isCellEditable(int fila, int columna) {
+                                return false;
+                            }
+                        };
+                    } else {
+                        modeloLotes = new DefaultTableModel(datos, cabecera) {
+                            @Override
+                            public boolean isCellEditable(int fila, int columna) {
+                                return false;
+                            }
+                        };
+                    }
+
+                } else {
+=======
                         modeloLotes = new TablaSinEditarCol(datos, cabecera);
                         //  modeloLotes = new DefaultTableModel(datos, cabecera);
                     } else {
@@ -365,6 +407,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
 
                 } else {
                     modeloLotes = new TablaSinEditarCol();
+>>>>>>> origin/master
                     EtiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
                 }
                 tablaAtributos.setModel(modeloLotes);
