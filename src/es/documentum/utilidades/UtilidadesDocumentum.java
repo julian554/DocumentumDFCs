@@ -912,7 +912,17 @@ public class UtilidadesDocumentum {
         IDfCollection coleccion = ejecutarDql("Select user_privileges From dm_user where user_name='" + usuario + "' ");
         String valor = "0";
 
+//        IDfSession sesion = conectarDocumentum();
+//        if (sesion == null) {
+//            if (ERROR.isEmpty()) {
+//                ERROR = "Error al crear sesión en Documentum (EsUsuarioAdmin)";
+//            }
+//            return false;
+//        }
         try {
+//            IDfId idObj = sesion.getIdByQualification("dm_user where user_name='" + usuario + "' ");
+//            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
+//            valor = sysObj.getValue("user_privileges").toString();
             coleccion.next();
             valor = "" + coleccion.getInt("user_privileges");
         } catch (Exception ex) {
@@ -921,31 +931,13 @@ public class UtilidadesDocumentum {
         }
 
         resultado = valor.equals("16");
-        return resultado;
-    }
 
-    public boolean estaJobArrancado(String nombre) {
-        boolean resultado = false;
-
-        if (nombre.isEmpty()) {
-            return resultado;
-        }
-
-        IDfCollection coleccion = ejecutarDql("select count(*) as cont from dm_job where object_name ='" + nombre + "' and ( run_now = 1 or a_current_status = 'STARTED')");
-        if (coleccion == null) {
-            return resultado;
-        }
-        try {
-            coleccion.next();
-            int valor = coleccion.getInt("cont");
-            if (valor > 0) {
-                return true;
-            }
-        } catch (Exception ex) {
-            Utilidades.escribeLog("Error al comprobar Job running: " + ex.getMessage());
-            ERROR = "Error al comprobar Job running: " + ex.getMessage();
-        }
-
+//        try {
+//            sesion.disconnect();
+//        } catch (DfException ex) {
+//            Utilidades.escribeLog("Error al desconectar la sesión en Documentum (EsUsuarioAdmin)  - Error: " + ex.getMessage());
+//            ERROR = "Error al desconectar la sesión en Documentum (EsUsuarioAdmin)  - Error: " + ex.getMessage();
+//        }
         return resultado;
     }
 
@@ -2510,4 +2502,16 @@ public class UtilidadesDocumentum {
         return resultsBuf.toString();
     }
 
+    public static boolean isWindowsServer(IDfSession dfSession) {
+        try {
+            IDfTypedObject serverConfigObject = dfSession.getServerConfig();
+            String serverVersion = serverConfigObject.getString("r_server_version");
+            if (serverVersion.contains("Win")) {
+                return true;
+            }
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al comprobar si el servidor es Windows. (isWindowsServer) Error: " + ex.getMessage());
+        }
+        return false;
+    }
 }

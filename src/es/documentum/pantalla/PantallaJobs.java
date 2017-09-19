@@ -1,6 +1,10 @@
 package es.documentum.pantalla;
 
+import com.documentum.fc.client.IDfFolder;
 import com.documentum.fc.client.IDfSession;
+import com.documentum.fc.client.IDfSysObject;
+import com.documentum.fc.common.DfException;
+import com.documentum.fc.common.IDfId;
 import static es.documentum.pantalla.PantallaDocumentum.getLogo;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
@@ -8,7 +12,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
@@ -72,6 +83,7 @@ public class PantallaJobs extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         opcionRunJob = new javax.swing.JMenuItem();
         opcionStopJob = new javax.swing.JMenuItem();
+        opcionJobLog = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         opcionExportarJobsExcel = new javax.swing.JMenuItem();
         botonSalir = new javax.swing.JButton();
@@ -105,6 +117,15 @@ public class PantallaJobs extends javax.swing.JFrame {
             }
         });
         popupAtributos.add(opcionStopJob);
+
+        opcionJobLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/documento-log.png"))); // NOI18N
+        opcionJobLog.setText("Ver fichero de log");
+        opcionJobLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionJobLogActionPerformed(evt);
+            }
+        });
+        popupAtributos.add(opcionJobLog);
         popupAtributos.add(jSeparator2);
 
         opcionExportarJobsExcel.setText("Exportar lista de Jobs a Excel");
@@ -261,6 +282,11 @@ public class PantallaJobs extends javax.swing.JFrame {
         utilDocum.ejecutarDql(dql, sesion);
     }//GEN-LAST:event_opcionStopJobActionPerformed
 
+    private void opcionJobLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionJobLogActionPerformed
+        String nombre = tablaJobs.getModel().getValueAt(tablaJobs.convertRowIndexToModel(tablaJobs.getSelectedRow()), 0).toString();
+        verJobReport(nombre);
+    }//GEN-LAST:event_opcionJobLogActionPerformed
+
     public static void main(String args[]) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -277,6 +303,7 @@ public class PantallaJobs extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenuItem opcionCopiarValor;
     private javax.swing.JMenuItem opcionExportarJobsExcel;
+    private javax.swing.JMenuItem opcionJobLog;
     private javax.swing.JMenuItem opcionRunJob;
     private javax.swing.JMenuItem opcionStopJob;
     private javax.swing.JPanel panelDocumentos;
@@ -456,6 +483,73 @@ public class PantallaJobs extends javax.swing.JFrame {
             System.gc();
         }
 
+    }
+
+    private void verJobReport(String job) {
+        try {
+            String jobName = job;
+            if (jobName.startsWith("dm_")) {
+                jobName = jobName.substring(3);
+            }
+            IDfSession sesion = utilDocum.conectarDocumentum();
+            IDfFolder folderObject = sesion.getFolderByPath("/System/Sysadmin/Reports");
+
+            String folderId = folderObject.getObjectId().getId();
+            StringBuilder qualificationClause = new StringBuilder(512);
+            qualificationClause.append("dm_document ");
+            qualificationClause.append("WHERE object_name = '");
+            qualificationClause.append(jobName);
+            qualificationClause.append("'");
+            qualificationClause.append(" AND ANY i_folder_id = '");
+            qualificationClause.append(folderId);
+            qualificationClause.append("'");
+            IDfSysObject reportObject = (IDfSysObject) sesion.getObjectByQualification(qualificationClause.toString());
+            if ((reportObject != null) && (!reportObject.getString("i_contents_id").equals("0000000000000000"))) {
+                String reportContent = visualizarFicheroLogJob(reportObject);
+            }
+
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al recuperar report del Job. (verReport) Error: " + ex.getMessage());
+        }
+    }
+
+    protected String visualizarFicheroLogJob(IDfSysObject object) {
+        String fileName = "";
+        String jobReportFileContent = "";
+        try {
+            String completeFilePath = dirbase + File.separator + "JobReports";
+            File temp = new File(completeFilePath);
+            if (!temp.exists()) {
+                temp.mkdirs();
+            }
+            fileName = completeFilePath + File.separator + object.getObjectName();
+
+            Long tam = object.getContentSize();
+            // Máximo tamaño 50 MB
+            if (tam > 52428800) {
+                PantallaMensaje mensa = new PantallaMensaje(this, true);
+                mensa.setMensaje("\nEl tamaño del fichero de log supera los 50 MB\nNo se muestra el contenido del fichero");
+                mensa.setTitle("Log del job " + object.getObjectName());
+                mensa.setVisible(true);
+            } else {
+                fileName = object.getFileEx2(fileName, "", 0, "", false);
+                if ((fileName != null) && (!fileName.equals(""))) {
+                    PantallaLeerFichero lee = new PantallaLeerFichero(this, true);
+                    lee.CargarFichero(fileName);
+                    lee.setTitle("Log de la ejecución del job " + object.getObjectName());
+                    lee.setVisible(true);
+
+                }
+            }
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al recuperar report del Job. (verReport) Error: " + ex.getMessage());
+        } finally {
+            util.borrarFichero(fileName);
+        }
+        if (!jobReportFileContent.equals("")) {
+            return jobReportFileContent;
+        }
+        return "";
     }
 
     public class TableHeaderMouseListener extends MouseAdapter {
