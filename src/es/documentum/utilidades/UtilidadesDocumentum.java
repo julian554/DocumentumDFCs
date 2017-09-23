@@ -23,28 +23,24 @@ import java.util.logging.Logger;
 import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class UtilidadesDocumentum {
-
+    
     Utilidades util = new Utilidades();
     Properties pro = new Properties();
-<<<<<<< HEAD
     String idControl = "";
-=======
-
->>>>>>> origin/master
     public PantallaDocumentum ventanapadre = null;
-
+    
     public PantallaDocumentum getVentanapadre() {
         return ventanapadre;
     }
-
+    
     public void setVentanapadre(PantallaDocumentum ventanapadre) {
         this.ventanapadre = ventanapadre;
     }
-
+    
     public Properties getPro() {
         return pro;
     }
-
+    
     public void setPro(Properties pro) {
         this.pro = pro;
     }
@@ -54,20 +50,20 @@ public class UtilidadesDocumentum {
     String ficheropropiedades = "";
     String ERROR = "";
     String dir = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "renditions" + util.separador();
-
-    private Set m_childIds = new HashSet(5);
-
+    
+    private final Set m_childIds = new HashSet(5);
+    
     public String dameError() {
         return ERROR;
     }
-
+    
     public UtilidadesDocumentum() {
     }
-
+    
     public UtilidadesDocumentum(String fichero) {
         ficheropropiedades = fichero;
     }
-
+    
     public void cargarConfiguraciones() {
         ERROR = "";
         if (!ficheropropiedades.isEmpty()) {
@@ -79,7 +75,7 @@ public class UtilidadesDocumentum {
                 }
                 pro = new java.util.Properties();
                 pro.load(in);
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 Utilidades.escribeLog("Error al cargar el fichero de propiedades. (cargarConfiguraciones) Error: " + ex.getMessage());
                 ERROR = "Error al cargar el fichero de propiedades. (cargarConfiguraciones) Error: " + ex.getMessage();
             }
@@ -92,14 +88,14 @@ public class UtilidadesDocumentum {
                 }
                 pro = new java.util.Properties();
                 pro.load(in);
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 Utilidades.escribeLog("Error al cargar el fichero de propiedades. (cargarConfiguraciones) Error: " + ex.getMessage());
                 ERROR = "Error al cargar el fichero de propiedades. (cargarConfiguraciones) Error: " + ex.getMessage();
             }
         }
-
+        
     }
-
+    
     public IDfSession conectarDocumentum() {
         cargarConfiguraciones();
         usuario = pro.getProperty("usuario");
@@ -111,14 +107,13 @@ public class UtilidadesDocumentum {
 
         ERROR = "";
         IDfSession sesion = null;
-
+        
         if (puerto == null || docbroker == null || puerto.isEmpty() || docbroker.isEmpty()) {
             ERROR = "No hay datos de conexión";
             return null;
         }
-
+        
         try {
-<<<<<<< HEAD
             //         IDfClient client = DfClient.getLocalClient();
             //         IDfTypedObject config = client.getClientConfig();
             //         config.setString("primary_host", docbroker);
@@ -138,18 +133,6 @@ public class UtilidadesDocumentum {
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
             sesion = sesMgr.getSession(docbase);
             //     sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
-=======
-            IDfClient client = DfClient.getLocalClient();
-            IDfTypedObject config = client.getClientConfig();
-            config.setString("primary_host", docbroker);
-            config.setInt("primary_port", Integer.parseInt(puerto));
-            IDfLoginInfo loginInfoObj = new DfLoginInfo();
-            loginInfoObj.setUser(usuario);
-            loginInfoObj.setPassword(password);
-            //sesion = client.newSession(docbase, loginInfoObj);
-            docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
-            sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
->>>>>>> origin/master
             if (!sesion.isConnected()) {
                 ERROR = "No se pudo obtener sesión de Documentum (conectarDocumentum)";
                 return null;
@@ -160,7 +143,7 @@ public class UtilidadesDocumentum {
         }
         return sesion;
     }
-
+    
     public IDfSession conectarDocumentum(String usu, String clave, String repo, String server, String port) {
         usuario = usu;
         password = clave;
@@ -171,17 +154,14 @@ public class UtilidadesDocumentum {
 
         ERROR = "";
         IDfSession sesion = null;
-
+        
         if (puerto == null || docbroker == null || puerto.isEmpty() || docbroker.isEmpty()) {
             ERROR = "No hay datos de conexión";
             return null;
         }
-
+        
         try {
-<<<<<<< HEAD
             /*
-=======
->>>>>>> origin/master
             IDfClient client = DfClient.getLocalClient();
             IDfTypedObject config = client.getClientConfig();
             config.setString("primary_host", docbroker);
@@ -189,12 +169,11 @@ public class UtilidadesDocumentum {
             IDfLoginInfo loginInfoObj = new DfLoginInfo();
             loginInfoObj.setUser(usuario);
             loginInfoObj.setPassword(password);
-<<<<<<< HEAD
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
             sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
 
              */
-
+            
             Utilidades.escribeLog("Obteniendo sesión ... " + Utilidades.today() + " - " + Utilidades.now());
             Utilidades.escribeLog("Repositorio: " + docbase + " - Docbroker: " + docbroker + " - Puerto: " + puerto);
             IDfClient client = DfClient.getLocalClient();
@@ -206,26 +185,18 @@ public class UtilidadesDocumentum {
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
             sesion = sesMgr.getSession(docbase);
             // sesion = sesMgr.getSession(docbase + "@" + docbroker);
-=======
-            //sesion = client.newSession(docbase, loginInfoObj);
-            docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
-            sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
->>>>>>> origin/master
             if (!sesion.isConnected()) {
                 ERROR = "No se pudo obtener sesión de Documentum (conectarDocumentum)";
                 return null;
             }
-<<<<<<< HEAD
             Utilidades.escribeLog("Sesión obtenida... " + Utilidades.today() + " - " + Utilidades.now());
-=======
->>>>>>> origin/master
         } catch (DfException dfe) {
             Utilidades.escribeLog("Error al conectar con Documentum (conectarDocumentum): " + dfe.toString());
             ERROR = "Error al conectar con Documentum (conectarDocumentum): " + dfe.toString();
         }
         return sesion;
     }
-
+    
     public IDfCollection ejecutarDql(String dql) {
         IDfCollection coleccion = null;
         IDfSession sesion = conectarDocumentum();
@@ -239,16 +210,16 @@ public class UtilidadesDocumentum {
         query.setDQL(dql);
         try {
             coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
-        } catch (Exception ex) {
+        } catch (DfException ex) {
             ERROR = "Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage();
             Utilidades.escribeLog("Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage());
             return coleccion;
         }
-
+        
         ERROR = "";
         return coleccion;
     }
-
+    
     public IDfCollection ejecutarDql(String dql, IDfSession sesion) {
         IDfCollection coleccion = null;
         if (sesion == null) {
@@ -261,16 +232,16 @@ public class UtilidadesDocumentum {
         query.setDQL(dql);
         try {
             coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
-        } catch (Exception ex) {
+        } catch (DfException ex) {
             ERROR = "Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage();
             Utilidades.escribeLog("Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage() + " - " + getStackTrace(ex));
             return coleccion;
         }
-
+        
         ERROR = "";
         return coleccion;
     }
-
+    
     public String dameSql(IDfSession sesion) {
         String sqlResult = null;
         try {
@@ -281,15 +252,14 @@ public class UtilidadesDocumentum {
                 sqlResult = session.apiGet("get", collId + ",result");
                 session.apiExec("close", collId);
             }
-        } catch (Exception ex) {
+        } catch (DfException ex) {
             ERROR = "Error al obtener SQL (getSqlQuery) - Error: " + ex.getMessage();
             Utilidades.escribeLog("Error al obtener SQL (getSqlQuery) - Error: " + ex.getMessage() + " - " + getStackTrace(ex));
         }
         return sqlResult;
     }
-
+    
     public ArrayList<ResultadoGDBean> subirDocumentosDocumentum(String rutacarpetadocumentum, String rutacarpeta) {
-
         ArrayList listaresultados = new ArrayList();
         ResultadoGDBean resultadogd = new ResultadoGDBean();
         IDfSession sesion = conectarDocumentum();
@@ -302,7 +272,7 @@ public class UtilidadesDocumentum {
         }
         ERROR = "";
         IDfFolder carpeta = dameCarpeta(rutacarpetadocumentum);
-
+        
         if (carpeta == null) {
             listaresultados.add(resultadogd);
             ERROR = "No existe la carpeta en Documentum " + rutacarpetadocumentum;
@@ -313,7 +283,7 @@ public class UtilidadesDocumentum {
         String ficheros[] = dir.list();
         int numficheros = ficheros.length;
         listaresultados.ensureCapacity(numficheros);
-
+        
         for (int i = 0; i < numficheros; i++) {
             resultadogd = new ResultadoGDBean();
             String resultado = "";
@@ -321,10 +291,10 @@ public class UtilidadesDocumentum {
             try {
                 ruta = subirDocumento(sesion, rutacarpeta + ficheros[i], rutacarpetadocumentum);
                 resultado = "OK";
-            } catch (Exception ex) {
+            } catch (DfException ex) {
                 resultado = "Error al subir fichero a Documentum - " + ex.getMessage();
                 Utilidades.escribeLog(ex.getMessage());
-                ERROR = "Error al subir fichero a Documentum - " + ex.getMessage();;
+                ERROR = "Error al subir fichero a Documentum - " + ex.getMessage();
             }
             resultadogd.setFichero(rutacarpeta + ficheros[i]);
             resultadogd.setId(ruta);
@@ -340,7 +310,7 @@ public class UtilidadesDocumentum {
         }
         return listaresultados;
     }
-
+    
     public String importarADocumentum(String nombrefichero, String rutafichero, String carpetadocumentum, String tipodocumental) {
         IDfSession sesion = conectarDocumentum();
         Utilidades pc = new Utilidades();
@@ -379,22 +349,22 @@ public class UtilidadesDocumentum {
         }
         return ERROR;
     }
-
+    
     public String subirDocumento(IDfSession sesion, String srcFileOrDir, String destFolderPath)
             throws DfException {
         IDfClientX clientx = new DfClientX();
         IDfImportOperation operation = clientx.getImportOperation();
         operation.setSession(sesion);
-        IDfFolder folder = null;
+        IDfFolder folder;
         folder = sesion.getFolderByPath(destFolderPath);
-
+        
         if (folder == null) {
             Utilidades.escribeLog("No existe la carpeta " + destFolderPath + " en la Docbase. Se crea.");
             folder = dameCarpeta(destFolderPath);
         }
         operation.setDestinationFolderId(folder.getObjectId());
         IDfFile myFile = clientx.getFile(srcFileOrDir);
-
+        
         if (myFile.exists() == false) {
             Utilidades.escribeLog("No existe el fichero o directorio " + srcFileOrDir);
             return "";
@@ -402,14 +372,14 @@ public class UtilidadesDocumentum {
         operation.disableRegistryUpdates(true);
 //add the file or directory to the operation
         IDfImportNode node = (IDfImportNode) operation.add(srcFileOrDir);
-
+        
         executeOperation(operation);
-
+        
         IDfList myNodes = operation.getNodes();
         int iCount = myNodes.getCount();
 //        Utilidades.escribeLog("Número de nodos: " + iCount);
         String id = "";
-
+        
         for (int i = 0; i < iCount; ++i) {
             IDfImportNode aNode = (IDfImportNode) myNodes.get(i);
             System.out.print("r_object_id: " + aNode.getNewObjectId().toString() + " ");
@@ -419,11 +389,11 @@ public class UtilidadesDocumentum {
             id = aNode.getNewObjectId().toString();
         }
         return id;
-
+        
     }
-
+    
     public IDfFolder dameCarpeta(String nombre) {
-
+        
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
             if (ERROR.isEmpty()) {
@@ -449,10 +419,10 @@ public class UtilidadesDocumentum {
                 try {
                     sesion.disconnect();
                 } catch (DfException ex1) {
-                    Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
-                    ERROR = "Error al desconectar la sesión en Documentum (dameCarpeta) " + " - " + ex.getMessage();
+                    Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex1.getMessage());
+                    ERROR = "Error al desconectar la sesión en Documentum (dameCarpeta) " + " - " + ex1.getMessage();
                 }
-
+                
                 return null;
             }
             dir = path.nextElement().toString();
@@ -478,12 +448,15 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum  (dameCarpeta). - " + ex.getMessage();
         }
-
+        
         return carpeta;
     }
-
+    
     public Boolean existeCarpeta(String nombre) {
         Boolean respuesta = false;
+        if (nombre.equals("/")) {
+            return true;
+        }
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
             if (ERROR.isEmpty()) {
@@ -502,41 +475,43 @@ public class UtilidadesDocumentum {
         if (carpeta != null) {
             return true;
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum (existeCarpeta). - " + ex.getMessage();
         }
-
+        
         return respuesta;
     }
-
-    public static void executeOperation(IDfOperation operation)
-            throws DfException {
-        // Execute the operation
-        boolean executeFlag = operation.execute();
-        // Check if any errors occured during the execution of the operation
-        if (executeFlag == false) {
-            // Get the list of errors
-            IDfList errorList = operation.getErrors();
-            String message = "";
-            IDfOperationError error = null;
-            // Iterate through the errors and concatenate the error messages
-            for (int i = 0; i < errorList.getCount(); i++) {
-                error = (IDfOperationError) errorList.get(i);
-                message += error.getMessage();
+    
+    public static void executeOperation(IDfOperation operation) {
+        try {
+            boolean executeFlag = operation.execute();
+            // Check if any errors occured during the execution of the operation
+            if (executeFlag == false) {
+                // Get the list of errors
+                IDfList errorList = operation.getErrors();
+                String message = "";
+                IDfOperationError error;
+                // Iterate through the errors and concatenate the error messages
+                for (int i = 0; i < errorList.getCount(); i++) {
+                    error = (IDfOperationError) errorList.get(i);
+                    message += error.getMessage();
+                }
+                Utilidades.escribeLog("Errores: " + message);
             }
-            Utilidades.escribeLog("Errores: " + message);
+        } catch (DfException ex) {
+            
         }
     }
-
+    
     public String DumpAtributos(String r_object_id) {
         String resultado = "";
-
+        
         IDfSession sesion = conectarDocumentum();
-
+        
         if (sesion == null) {
             if (ERROR.isEmpty()) {
                 ERROR = "Error al crear sesión en Documentum (DumpAtributos)";
@@ -550,7 +525,7 @@ public class UtilidadesDocumentum {
             //     IDfId idObj = new DfId(r_object_id);   
 
             DfId dfId = new DfId(r_object_id);
-
+            
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(dfId);
 
 // Instantiate an object from the ID.
@@ -570,27 +545,27 @@ public class UtilidadesDocumentum {
                 }
             }
             resultado = sysObj.dump();
-
-        } catch (Exception ex) {
+            
+        } catch (DfException ex) {
             ERROR = "Error al hacer dump de " + r_object_id + " (DumpAtributos) - Error: " + ex.getMessage();
             return "";
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum  (DumpAtributos). - " + ex.getMessage();
         }
-
+        
         return resultado;
     }
-
+    
     public String DameVersionDocumentum() {
         String resultado = "";
-
+        
         IDfSession sesion = conectarDocumentum();
-
+        
         if (sesion == null) {
             if (ERROR.isEmpty()) {
                 ERROR = "Error al crear sesión en Documentum (DameVersionDocumentum)";
@@ -604,22 +579,22 @@ public class UtilidadesDocumentum {
             // Instantiate an object from the ID.
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
             resultado = sysObj.getValue("r_server_version").toString();
-
-        } catch (Exception ex) {
+            
+        } catch (DfException ex) {
             ERROR = "Error al obtener versión de Documentum (DameVersionDocumentum) - Error: " + ex.getMessage();
             return "";
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum  (DameVersionDocumentum). - " + ex.getMessage();
         }
-
+        
         return resultado;
     }
-
+    
     public String DameVersionDFC() {
         String version = "";
         try {
@@ -630,12 +605,12 @@ public class UtilidadesDocumentum {
         }
         return version;
     }
-
+    
     public String DameIdRepositorio() {
         String resultado = "";
-
+        
         IDfSession sesion = conectarDocumentum();
-
+        
         if (sesion == null) {
             if (ERROR.isEmpty()) {
                 ERROR = "Error al crear sesión en Documentum (DameIdRepositorio)";
@@ -643,22 +618,22 @@ public class UtilidadesDocumentum {
             return resultado;
         }
         ERROR = "";
-
+        
         try {
             IDfTypedObject config = sesion.getDocbaseConfig();
             resultado = config.getValue("r_docbase_id").asString();
             // resultado = sesion.getDocbaseId();
-        } catch (Exception ex) {
+        } catch (DfException ex) {
             ERROR = "Error al obtener versión de Documentum (DameIdRepositorio) - Error: " + ex.getMessage();
             return "";
         }
         return resultado;
     }
-
+    
     public String DameDocbroker() {
         String resultado = "";
         try {
-
+            
             IDfSession sesion = conectarDocumentum();
             if (sesion == null) {
                 if (ERROR.isEmpty()) {
@@ -668,19 +643,19 @@ public class UtilidadesDocumentum {
             }
             ERROR = "";
             resultado = sesion.getClientConfig().getString("primary_host");
-
+            
         } catch (DfException ex) {
             ERROR = "Error al obtener Docbroker (DameDocbroker) - Error: " + ex.getMessage();
         }
-
+        
         return resultado;
-
+        
     }
-
+    
     public String DamePuertoDocbroker() {
         String resultado = "";
         try {
-
+            
             IDfSession sesion = conectarDocumentum();
             if (sesion == null) {
                 if (ERROR.isEmpty()) {
@@ -690,18 +665,18 @@ public class UtilidadesDocumentum {
             }
             ERROR = "";
             resultado = sesion.getClientConfig().getInt("primary_port") + "";
-
+            
         } catch (DfException ex) {
             ERROR = "Error al obtener Docbroker (DameDocbroker) - Error: " + ex.getMessage();
         }
-
+        
         return resultado;
     }
-
+    
     public ArrayList<AtributosDocumentum> DameTodosAtributos(String r_object_id) {
-        ArrayList<AtributosDocumentum> resultado = new ArrayList<AtributosDocumentum>();
+        ArrayList<AtributosDocumentum> resultado = new ArrayList<>();
         IDfSession sesion = conectarDocumentum();
-
+        
         if (sesion == null) {
             if (ERROR.isEmpty()) {
                 ERROR = "Error al crear sesión en Documentum (DameTodosAtributos)";
@@ -760,11 +735,11 @@ public class UtilidadesDocumentum {
                     resultado.add(atri);
                 }
             }
-        } catch (Exception ex) {
+        } catch (DfException ex) {
             ERROR = "Error al recuperar atributos de " + r_object_id + " (DameTodosAtributos) - Error: " + ex.getMessage();
-            return new ArrayList<AtributosDocumentum>();
+            return new ArrayList<>();
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
@@ -773,7 +748,7 @@ public class UtilidadesDocumentum {
         }
         return resultado;
     }
-
+    
     public ArrayList DameAtributo(String r_object_id, String atributo) {
         IDfSession sesion = conectarDocumentum();
         ArrayList resultado = new ArrayList();
@@ -784,13 +759,13 @@ public class UtilidadesDocumentum {
             return resultado;
         }
         ERROR = "";
-
+        
         try {
             //object ID based on the object ID string.
             IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + r_object_id + "'");
             // Instantiate an object from the ID.
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
-
+            
             if (atributo.toLowerCase().equals("r_folder_path")) {
                 idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + sysObj.getRepeatingString("i_folder_id", 0) + "'");
                 sysObj = (IDfSysObject) sesion.getObject(idObj);
@@ -811,33 +786,12 @@ public class UtilidadesDocumentum {
 //                    Utilidades.escribeLog(atributo + "[" + i + "]: " + valores);
                 }
             }
-
-//            Utilidades.escribeLog("r_object_id: " + r_object_id);
-//            Utilidades.escribeLog("Nombre: " + sysObj.getObjectName());
-//            Utilidades.escribeLog("Subject: " + sysObj.getSubject());
-//            Utilidades.escribeLog("Title: " + sysObj.getTitle());
-//            StringBuffer atributos = new StringBuffer("");
-//            atributos.append(sysObj.dump());
-//            Utilidades.escribeLog("Atributos: " + atributos.toString());
-//            Utilidades.escribeLog("MAP_ATR_NUM_EXP: " + sysObj.getValue("MAP_ATR_NUM_EXP".toLowerCase()).toString());
-//
-//            for (int i = 0; i < sysObj.getValueCount("map_atr_estado"); i++) {
-//                String valores = sysObj.getRepeatingString("map_atr_estado", i);
-//                Utilidades.escribeLog("map_atr_estado[" + i + "]: " + valores);
-//            }
-//
-//            idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + sysObj.getRepeatingString("i_folder_id", 0) + "'");
-//            sysObj = (IDfSysObject) sesion.getObject(idObj);
-//            atributos = new StringBuffer("");
-//            atributos.append(sysObj.dump());
-//            //  Utilidades.escribeLog("Atributos: " + atributos.toString());
-//            Utilidades.escribeLog("Carpeta: " + sysObj.getRepeatingString("r_folder_path", 0));
-        } catch (Exception ex) {
+        } catch (DfException ex) {
             Utilidades.escribeLog("Error al leer atributos: " + ex.getMessage());
             ERROR = "Error al leer el atributo " + atributo + " (DameAtributo): " + ex.getMessage();
             return new ArrayList();
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
@@ -845,13 +799,13 @@ public class UtilidadesDocumentum {
             ERROR = "Error al cerrar la sesión (DameAtributo) - " + ex.getMessage();
             return new ArrayList();
         }
-
+        
         return resultado;
     }
-
+    
     public String ActualizarAtributo(int tipo, String r_object_id, String nombre, String valor, int pos) {
         String resultado = "";
-
+        
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
             if (ERROR.isEmpty()) {
@@ -859,7 +813,7 @@ public class UtilidadesDocumentum {
             }
             return ERROR;
         }
-
+        
         try {
             IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + r_object_id + "'");
             IDfDocument Documento = (IDfDocument) sesion.getObject(idObj);
@@ -917,15 +871,11 @@ public class UtilidadesDocumentum {
                     break;
             }
             Documento.save();
-<<<<<<< HEAD
-=======
-            sesion.disconnect();
->>>>>>> origin/master
-        } catch (Exception ex) {
+        } catch (DfException | NumberFormatException ex) {
             resultado = "Error al actualizar atributo " + nombre + " (ActualizarAtributo) - Error " + ex.getMessage();
         }
         ERROR = resultado;
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
@@ -934,78 +884,61 @@ public class UtilidadesDocumentum {
         }
         return resultado;
     }
-
+    
+    public IDfFolder crearCarpeta(IDfSession session, String path) {
+        IDfFolder folder = null;
+        try {
+            folder = session.getFolderByPath(path);
+            if (folder != null) {
+                return folder;
+            }
+            
+            int slashIndex = path.lastIndexOf('/');
+            String name = path.substring(slashIndex + 1);
+            String parent = path.substring(0, slashIndex);
+            synchronized (("lock-" + path).intern()) {
+                folder = session.getFolderByPath(path);
+                if (folder != null) {
+                    return folder;
+                }
+                if ("".equals(parent) || "/".equals(parent)) {
+                    folder = (IDfFolder) session.newObject("dm_cabinet");
+                    folder.setObjectName(name);
+                    folder.save();
+                } else {
+                    crearCarpeta(session, parent);
+                    folder = (IDfFolder) session.newObject("dm_folder");
+                    folder.setObjectName(name);
+                    folder.link(parent);
+                    folder.save();
+                }
+            }
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al crear carpeta en Documentum () - Error: " + ex.getMessage());
+        }
+        return folder;
+    }
+    
     public boolean EsUsuarioAdmin(String usuario) {
         boolean resultado = false;
-
+        
         if (usuario.isEmpty()) {
             return resultado;
         }
-
+        
         IDfCollection coleccion = ejecutarDql("Select user_privileges From dm_user where user_name='" + usuario + "' ");
         String valor = "0";
-
-<<<<<<< HEAD
         try {
-=======
-//        IDfSession sesion = conectarDocumentum();
-//        if (sesion == null) {
-//            if (ERROR.isEmpty()) {
-//                ERROR = "Error al crear sesión en Documentum (EsUsuarioAdmin)";
-//            }
-//            return false;
-//        }
-        try {
-//            IDfId idObj = sesion.getIdByQualification("dm_user where user_name='" + usuario + "' ");
-//            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
-//            valor = sysObj.getValue("user_privileges").toString();
->>>>>>> origin/master
             coleccion.next();
             valor = "" + coleccion.getInt("user_privileges");
-        } catch (Exception ex) {
+        } catch (DfException ex) {
             Utilidades.escribeLog("Error al comprobar usuario Administrador (EsUsuarioAdmin): " + ex.getMessage());
             ERROR = "Error al comprobar si " + usuario + " es Administrador (EsUsuarioAdmin): " + ex.getMessage();
         }
-
         resultado = valor.equals("16");
-<<<<<<< HEAD
         return resultado;
     }
-
-    public boolean estaJobArrancado(String nombre) {
-        boolean resultado = false;
-
-        if (nombre.isEmpty()) {
-            return resultado;
-        }
-
-        IDfCollection coleccion = ejecutarDql("select count(*) as cont from dm_job where object_name ='" + nombre + "' and ( run_now = 1 or a_current_status = 'STARTED')");
-        if (coleccion == null) {
-            return resultado;
-        }
-        try {
-            coleccion.next();
-            int valor = coleccion.getInt("cont");
-            if (valor > 0) {
-                return true;
-            }
-        } catch (Exception ex) {
-            Utilidades.escribeLog("Error al comprobar Job running: " + ex.getMessage());
-            ERROR = "Error al comprobar Job running: " + ex.getMessage();
-        }
-
-=======
-
-//        try {
-//            sesion.disconnect();
-//        } catch (DfException ex) {
-//            Utilidades.escribeLog("Error al desconectar la sesión en Documentum (EsUsuarioAdmin)  - Error: " + ex.getMessage());
-//            ERROR = "Error al desconectar la sesión en Documentum (EsUsuarioAdmin)  - Error: " + ex.getMessage();
-//        }
->>>>>>> origin/master
-        return resultado;
-    }
-
+    
     public boolean BorrarDocumento(String r_object_id) {
         boolean resultado = true;
         IDfSession sesion = conectarDocumentum();
@@ -1019,12 +952,12 @@ public class UtilidadesDocumentum {
             IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + r_object_id + "'");
             IDfDocument Documento = (IDfDocument) sesion.getObject(idObj);
             Documento.destroyAllVersions();
-        } catch (Exception ex) {
+        } catch (DfException ex) {
             ERROR = "Error al Borrar el documento con ID: " + r_object_id + " - Error: " + ex.getMessage();
             Utilidades.escribeLog(ERROR);
             return false;
         }
-
+        
         ERROR = "";
         try {
             sesion.disconnect();
@@ -1034,10 +967,10 @@ public class UtilidadesDocumentum {
         }
         return resultado;
     }
-
+    
     public ArrayList<AtributosDocumentum> ListarFicheros(String carpeta) {
-        IDfCollection ficheros = null;
-        ArrayList<AtributosDocumentum> listaficheros = new ArrayList<AtributosDocumentum>();
+        IDfCollection ficheros;
+        ArrayList<AtributosDocumentum> listaficheros = new ArrayList<>();
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
             if (ERROR.isEmpty()) {
@@ -1051,7 +984,7 @@ public class UtilidadesDocumentum {
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
             IDfFolder myFolder = sesion.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
             ficheros = myFolder.getContents(null);
-
+            
             int conta = 0;
             Boolean seguir = true;
             while (ficheros.next() && seguir) {
@@ -1090,8 +1023,8 @@ public class UtilidadesDocumentum {
 //                    listaficheros.add(datos);
 //                }
             }
-
-        } catch (Exception ex) {
+            
+        } catch (DfException ex) {
             if (!ex.getMessage().contains("Bad ID given: 0000000000000000")) {
                 Utilidades.escribeLog("Error al listar directorio: " + ex.getMessage());
                 ERROR = "Error al listar directorio " + carpeta + " (ListarFicheros) - Error: " + ex.getMessage();
@@ -1099,22 +1032,22 @@ public class UtilidadesDocumentum {
                 Utilidades.escribeLog("No existe la carpeta " + carpeta + " en Documentum");
                 ERROR = "No existe la carpeta " + carpeta + " en Documentum";
             }
-            return new ArrayList<AtributosDocumentum>();
+            return new ArrayList<>();
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum (ListarFicheros)  - Error: " + ex.getMessage();
-            return new ArrayList<AtributosDocumentum>();
+            return new ArrayList<>();
         }
         return listaficheros;
     }
-
+    
     public ArrayList<AtributosDocumentum> ListarFicherosRuta(String ruta) {
-        IDfCollection ficheros = null;
-        ArrayList<AtributosDocumentum> listaficheros = new ArrayList<AtributosDocumentum>();
+        IDfCollection ficheros;
+        ArrayList<AtributosDocumentum> listaficheros = new ArrayList<>();
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
             if (ERROR.isEmpty()) {
@@ -1124,7 +1057,7 @@ public class UtilidadesDocumentum {
         }
         ERROR = "";
         try {
-            String dql = "";
+            String dql;
             if (ruta.equals("/")) {
                 dql = "select * From dm_sysobject where r_object_type='dm_cabinet'";
                 ficheros = ejecutarDql(dql);
@@ -1139,13 +1072,10 @@ public class UtilidadesDocumentum {
             }
             int conta = 0;
             Boolean seguir = true;
-<<<<<<< HEAD
-
+            
             Long valor = numeroObjetosDirectorio(sesion, ruta);
             String numficheros = String.valueOf(valor);
-
-=======
->>>>>>> origin/master
+            
             while (ficheros.next() && seguir) {
                 conta++;
                 AtributosDocumentum datos = new AtributosDocumentum();
@@ -1155,13 +1085,9 @@ public class UtilidadesDocumentum {
                 datos.setValor(doc.getString("r_object_id"));
                 datos.setTipoobjeto(doc.getString("r_object_type"));
                 ventanapadre.EtiquetaEstado.setText(doc.getString("object_name"));
-<<<<<<< HEAD
                 //   String textocuenta = numficheros.equals("0") ? "Registro(s): " + conta : "Registro(s): " + conta + " de " + numficheros;
                 String textocuenta = "Registro(s): " + conta + " de " + numficheros;
                 ventanapadre.getBarradocum().labelMensa.setText(textocuenta);
-=======
-                ventanapadre.getBarradocum().labelMensa.setText("Registro(s): " + conta);
->>>>>>> origin/master
                 if (ventanapadre.getBarradocum().PARAR) {
                     seguir = false;
                     ventanapadre.getBarradocum().setPARAR(false);
@@ -1189,8 +1115,8 @@ public class UtilidadesDocumentum {
 //                    listaficheros.add(datos);
 //                }
             }
-
-        } catch (Exception ex) {
+            
+        } catch (DfException ex) {
             Utilidades.escribeLog("Error al listar directorio " + ruta + " (ListarFicherosRuta) - Error: " + ex.getMessage());
             if (ex.getMessage() != null) {
                 ERROR = "Error al listar directorio " + ruta + " (ListarFicherosRuta) - Error: " + ex.getMessage();
@@ -1201,24 +1127,24 @@ public class UtilidadesDocumentum {
             } else {
                 ERROR = "Ruta " + ruta + " no encontrada en Documentum.";
             }
-            return new ArrayList<AtributosDocumentum>();
+            return new ArrayList<>();
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum (ListarFicherosRuta) - Error: " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum (ListarFicherosRuta) - Error: " + ex.getMessage();
-            return new ArrayList<AtributosDocumentum>();
+            return new ArrayList<>();
         }
-
+        
         return listaficheros;
     }
-
+    
     public ArrayList<AtributosDocumentum> ListarFicherosId(String id) {
         Boolean Escarpeta = id.toLowerCase().startsWith("0b");
         Boolean Escabinet = id.toLowerCase().startsWith("0c");
-        IDfCollection ficheros = null;
+        IDfCollection ficheros;
         ArrayList<AtributosDocumentum> listaficheros = new ArrayList<>();
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
@@ -1231,7 +1157,7 @@ public class UtilidadesDocumentum {
         try {
             IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + id + "'");
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
-            IDfFolder myFolder = null;
+            IDfFolder myFolder;
             if (Escarpeta) {
                 myFolder = sesion.getFolderBySpecification(id);
             } else if (Escabinet) {
@@ -1240,13 +1166,13 @@ public class UtilidadesDocumentum {
                 myFolder = sesion.getFolderBySpecification(sysObj.getRepeatingString("i_folder_id", 0));
             }
             ficheros = myFolder.getContents(null);
-
+            
             while (ficheros.next()) {
                 AtributosDocumentum datos = new AtributosDocumentum();
                 IDfTypedObject doc = ficheros.getTypedObject();
-
+                
                 if (!doc.getString("r_object_id").equals(id) && !Escarpeta && !Escabinet) {
-                    continue;
+                    //     continue;
                 } else {
 //                Utilidades.escribeLog(doc.getString("object_name") + " - " + doc.getString("r_object_id"));
                     datos.setNombre(doc.getString("object_name"));
@@ -1279,13 +1205,13 @@ public class UtilidadesDocumentum {
                     }
                 }
             }
-
-        } catch (Exception ex) {
+            
+        } catch (DfException ex) {
             Utilidades.escribeLog("Error al buscar por el id " + id + "  - Error: " + ex.getMessage());
             ERROR = "Error al buscar por el id " + id + " (ListarFicherosID) - Error: " + ex.getMessage();
             return new ArrayList<>();
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
@@ -1295,7 +1221,7 @@ public class UtilidadesDocumentum {
         }
         return listaficheros;
     }
-
+    
     public String GuardarFichero(String r_object_id, String directorio) {
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
@@ -1352,14 +1278,14 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error al exportar de Documentum - Error: " + ex.getMessage());
             ERROR = "Error al exportar de Documentum (GuardarFichero) - Error: " + ex.getMessage();
         }
-
+        
         try {
             sesion.disconnect();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum (GuardarFichero) " + " - " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum (GuardarFichero) " + " - " + ex.getMessage();
         }
-
+        
         return "Exportado de Documentum";
     }
 
@@ -1383,7 +1309,7 @@ public class UtilidadesDocumentum {
 //        }
 //    }
     public String checkoutDoc(String objectId, IDfSession sesion) {
-        String resultado = "";
+        String resultado;
         try {
             IDfClientX clientx = new DfClientX();
 // Use the factory method to create a checkout operation object.
@@ -1404,7 +1330,7 @@ public class UtilidadesDocumentum {
             } else {
                 coNode = (IDfCheckoutNode) coOp.add(doc);
             }
-
+            
             if (coNode == null) {
                 resultado = ("coNode is null");
             }
@@ -1414,15 +1340,15 @@ public class UtilidadesDocumentum {
             } else {
                 resultado = ("Checkout failed.");
             }
-
+            
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al hacer checkout de " + objectId + " - Error: " + ex.getMessage());
             return "Error al hacer checkout de " + objectId + " - Error: " + ex.getMessage();
         }
-
+        
         return resultado;
     }
-
+    
     public String cancelCheckout(String objectId, IDfSession sesion) {
         String resultado = "";
         try {
@@ -1445,7 +1371,7 @@ public class UtilidadesDocumentum {
         }
         return resultado;
     }
-
+    
     public String checkinDoc(String objectId, IDfSession sesion, String fichero, String version, String descripcion, Boolean indexar) {
         String resultado = "";
         try {
@@ -1458,7 +1384,7 @@ public class UtilidadesDocumentum {
                 IDfClientX clientx = new DfClientX();
                 IDfCheckinOperation operation = clientx.getCheckinOperation();
                 IDfCheckinNode node;
-
+                
                 if (sysObject.isVirtualDocument()) {
                     IDfVirtualDocument vDoc = sysObject.asVirtualDocument("CURRENT", false);
                     node = (IDfCheckinNode) operation.add(vDoc);
@@ -1494,12 +1420,12 @@ public class UtilidadesDocumentum {
         }
         return resultado;
     }
-
+    
     public boolean estaCheckin(String r_object_id) {
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
             Utilidades.escribeLog("No se pudo obtener sesión de Documentum (estaCheckin)");
-
+            
         }
         try {
             IDfSysObject sysObject = (IDfSysObject) sesion.getObject(new DfId(r_object_id));
@@ -1511,12 +1437,12 @@ public class UtilidadesDocumentum {
         }
         return true;
     }
-
+    
     public static void main(String s[]) {
         //    prueba();
         Utilidades util = new Utilidades();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-
+        
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
@@ -1524,28 +1450,24 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
         UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-<<<<<<< HEAD
         //  IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
         IDfSession sesion = ed.conectarDocumentum("sisdoc01", "docu01", "cyt_agora_pro", "pla707.correos.es", "1489");
-
+        
         Long valor = ed.numeroObjetosDirectorio(sesion, "/Archivo Digital/Documentacion Administrativa/CEDICO/Giros/2017/08/19");
-=======
-        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
->>>>>>> origin/master
-
+        
         ArrayList renditions = ed.dameRenditions(sesion, "09000816802c8d48");
-
+        
         for (int n = 0; n < renditions.size(); n++) {
             ArrayList datos = (ArrayList) renditions.get(n);
             for (int i = 0; i < datos.size(); i++) {
                 System.out.println(datos.get(i));
             }
         }
-
+        
         String resul = "";
         try {
             resul = ed.estadoIndexAgent(sesion);
-
+            
         } catch (DfException ex) {
             Logger.getLogger(UtilidadesDocumentum.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -1569,9 +1491,9 @@ public class UtilidadesDocumentum {
         try {
             String desencriptarPassword;
             desencriptarPassword = desencriptarPassword("GrRNPhLJrkoTDAZE0RGJow\\=\\=");
-
+            
         } catch (Exception ex) {
-
+            
         }
 
 //        String fulldir = "C:\\Users\\julian\\digita\\pendientes\\20120825-124031-192168001027\\";
@@ -1590,17 +1512,17 @@ public class UtilidadesDocumentum {
 
             //   ed.LeerDocumento("0901e3758006f7f8");
             Utilidades.escribeLog(ed.DameVersionDocumentum());
-
+            
             ArrayList resultado = ed.DameAtributo("090fa3598000511c", "title");
             for (int i = 0; i < resultado.size(); i++) {
                 Utilidades.escribeLog((String) resultado.get(i));
             }
-
+            
             resultado = ed.DameAtributo("090fa3598000511c", "r_folder_path");
             for (int i = 0; i < resultado.size(); i++) {
                 Utilidades.escribeLog((String) resultado.get(i));
             }
-
+            
             ArrayList<AtributosDocumentum> atri = ed.DameTodosAtributos("090fa3598000511c");
             Utilidades.escribeLog(ed.DumpAtributos("090fa3598000511c"));
             System.out.println(util.codificaBase64(util.asciiToHex("21thcfox")));
@@ -1612,7 +1534,7 @@ public class UtilidadesDocumentum {
             while (col.next()) {
                 filas.add(col.getTypedObject());
             }
-
+            
             int cont = filas.size();
             IDfTypedObject primerafila = (IDfTypedObject) filas.get(0);
             int tam = primerafila.getAttrCount();
@@ -1621,29 +1543,29 @@ public class UtilidadesDocumentum {
             for (int l = 0; l < tam; l++) {
                 cabecera[l] = primerafila.getAttr(l).getName();
             }
-
+            
             for (int i = 0; i < cont; i++) {
                 IDfTypedObject row = (IDfTypedObject) filas.get(i);
-
+                
                 for (int n = 0; n < row.getAttrCount(); n++) {
                     IDfAttr attr = row.getAttr(n);
                     IDfValue attrValue = row.getValue(attr.getName());
-
+                    
                     datos[i][n] = getDfObjectValue(attrValue);
                 }
-
+                
             }
-
+            
             col.close();
-
+            
             sesion.disconnect();
-
-        } catch (Exception ex) {
+            
+        } catch (DfException ex) {
             Utilidades.escribeLog("Error al ejecutar 'subirDocumentosDocumentum' " + " - " + ex.getMessage());
         } finally {
         }
     }
-
+    
     public static Object getDfObjectValue(IDfValue value) {
         // Sanity check
         if (value == null) {
@@ -1655,33 +1577,32 @@ public class UtilidadesDocumentum {
         switch (value.getDataType()) {
             case IDfValue.DF_BOOLEAN:
                 return value.asBoolean() ? "true" : "false";
-
+            
             case IDfValue.DF_DOUBLE:
                 return new Double(value.asDouble()).toString();
-
+            
             case IDfValue.DF_ID:
                 return value.asId().toString();
-
+            
             case IDfValue.DF_INTEGER:
                 return new Integer(value.asInteger()).toString();
-
+            
             case IDfValue.DF_STRING:
                 return value.asString();
-
+            
             case IDfValue.DF_TIME:
                 return value.asTime().toString();
-
+            
             case IDfValue.DF_UNDEFINED:
                 return value;
-
+            
             default:
                 return value;
         }
     }
-
+    
     private String dameTipo(String fichero) {
-
-        String tipo = "";
+        String tipo;
         String extension = Files.getFileExtension(fichero);
         try {
             IDfCollection col = ejecutarDql("SELECT name from dm_format WHERE dos_extension = lower('" + extension + "')");
@@ -1689,12 +1610,12 @@ public class UtilidadesDocumentum {
             IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
             IDfValue attrValue = row.getValue("name");
             tipo = getDfObjectValue(attrValue).toString();
-        } catch (Exception e) {
+        } catch (DfException e) {
             tipo = "-1";
         }
         return tipo;
     }
-
+    
     private String dameExtension(String tipo) {
         String extension = "";
         try {
@@ -1708,10 +1629,10 @@ public class UtilidadesDocumentum {
         }
         return extension;
     }
-
+    
     public ArrayList dameRenditions(IDfSession sesion, String r_object_id) {
         createFolder(dir);
-
+        
         ArrayList lista = new ArrayList();
         try {
             IDfSysObject doc = (IDfSysObject) sesion.getObject(new DfId(r_object_id));
@@ -1739,10 +1660,7 @@ public class UtilidadesDocumentum {
                 datos.add(dameFilestore(sesion, rendDoc.getString("storage_id")));
                 lista.add(datos);
             }
-<<<<<<< HEAD
             myColl.close();
-=======
->>>>>>> origin/master
         } catch (DfException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
@@ -1758,8 +1676,7 @@ public class UtilidadesDocumentum {
         }
          */
     }
-
-<<<<<<< HEAD
+    
     public ArrayList dameJobs(IDfSession sesion) {
         ArrayList lista = new ArrayList();
         try {
@@ -1785,9 +1702,7 @@ public class UtilidadesDocumentum {
         }
         return lista;
     }
-
-=======
->>>>>>> origin/master
+    
     public String dameFilestore(IDfSession sesion, String r_object_id) {
         String filestore = "";
         IDfCollection resultado = ejecutarDql("select name from dm_filestore where r_object_id='" + r_object_id + "'", sesion);
@@ -1799,8 +1714,7 @@ public class UtilidadesDocumentum {
         }
         return filestore;
     }
-
-<<<<<<< HEAD
+    
     public Long numeroObjetosDirectorio(IDfSession sesion, String dir) {
         Long valor = 0L;
         Long valordir = 0L;
@@ -1830,32 +1744,28 @@ public class UtilidadesDocumentum {
         valor = valor + valordir;
         return valor;
     }
-
+    
     public Boolean convierteDocumento(IDfSession sesion, String r_object_id, String formato) {
         Boolean resultado = true;
         try {
-
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(new DfId(r_object_id));
-
             IDfId RenderedQueueID = sysObj.queue("dm_autorender_win31", "rendition", 0, false, new com.documentum.fc.common.DfTime("nulldate"), "rendition_req_ps_pdf");
-
+            
             if (RenderedQueueID.isNull()) {
                 resultado = false;
             }
-
         } catch (DfException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
         return resultado;
     }
-
+    
     public Boolean hayADTS() {
         try {
             IDfCollection col = ejecutarDql("select status from cts_instance_info");
             if (col == null) {
                 return false;
             }
-
             col.next();
             IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
             IDfValue attrValue = row.getValue("status");
@@ -1863,12 +1773,12 @@ public class UtilidadesDocumentum {
             if (valor == null || !valor.equals("1")) {
                 return false;
             }
-        } catch (Exception Ex) {
+        } catch (DfException Ex) {
             return false;
         }
         return true;
     }
-
+    
     public String dameFTIndex(IDfSession sesion) {
         String nombre = "";
         IDfCollection col = ejecutarDql("select index_name from dm_fulltext_index", sesion);
@@ -1880,10 +1790,10 @@ public class UtilidadesDocumentum {
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al consultar el FTIndex name. (dameFTIndex) Error: " + ex.getMessage());
         }
-
+        
         return nombre;
     }
-
+    
     public String dameIndexAgent(IDfSession sesion) {
         String nombre = "";
         IDfCollection col = ejecutarDql("select object_name from dm_ftindex_agent_config", sesion);
@@ -1895,10 +1805,10 @@ public class UtilidadesDocumentum {
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al consultar el FTIndex name. (dameFTIndex) Error: " + ex.getMessage());
         }
-
+        
         return nombre;
     }
-
+    
     public ArrayList relanzarTareasFallidasIndexador(IDfSession sesion) {
         IDfCollection col = ejecutarDql("select item_id from dmi_queue_item where name = 'dm_fulltext_index_user' and  task_state='failed'", sesion);
         ArrayList salida = new ArrayList();
@@ -1920,28 +1830,20 @@ public class UtilidadesDocumentum {
         }
         return salida;
     }
-
-=======
->>>>>>> origin/master
+    
     public static String desencriptarPassword(String clave) {
         String valor = "";
         try {
             valor = com.documentum.fc.tools.RegistryPasswordUtils.decrypt(clave);
             System.out.println(valor);
-        } catch (Exception e) {
-        }
-        // try decrypting with API - longer, dm_encrypt_password passwords
-        try {
             valor = com.documentum.dmcl.impl.DmclApi.getInstance().get("decrypttext,c,DM_ENCR_TEXT=" + clave);
             System.out.println(valor);
-        } catch (Exception e) {
+        } catch (DfException e) {
         }
         return valor;
     }
-
-    public void setLdapPassword(String password)
-            throws DfException {
-
+    
+    public void setLdapPassword(String password) {
         IDfSession session = conectarDocumentum();
         if (session == null) {
             if (ERROR.isEmpty()) {
@@ -1949,66 +1851,61 @@ public class UtilidadesDocumentum {
             }
         }
         ERROR = "";
-        String ldapId = "";
+        String ldapId;
         try {
             IDfCollection col = ejecutarDql("SELECT r_object_id  from dm_sysobject WHERE r_object_type='dm_ldap_config'");
             col.next();
             IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
             IDfValue attrValue = row.getValue("r_object_id");
             ldapId = getDfObjectValue(attrValue).toString();
+
+            //   String ldapId = session.apiGet("retrieve", "dm_ldap_config");
+            IDfLocation location = (IDfLocation) session.getObjectByQualification("dm_location where object_name='config'");
+            String serverVersion = session.getServerVersion();
+            String pathSeparator;
+            if (serverVersion.contains("Win")) {
+                pathSeparator = "\\";
+            } else {
+                pathSeparator = "/";
+            }
+            
+            String argumento = "mkfile_encrypt_text " + "documentum" + " "
+                    + location.getFileSystemPath() + pathSeparator
+                    + session.getDocbaseName() + pathSeparator + "ldap_"
+                    + ldapId + ".cnt";
+            IDfApplyDoMethod cmd = (IDfApplyDoMethod) DfAdminCommand
+                    .getCommand(IDfAdminCommand.APPLY_DO_METHOD);
+            cmd.setLaunchAsync(false);
+            cmd.setMethod("replicate_setup_methods");
+            cmd.setArguments(argumento);
+            cmd.execute(session);
         } catch (DfException dfException) {
         }
-
-        //   String ldapId = session.apiGet("retrieve", "dm_ldap_config");
-        IDfLocation location = (IDfLocation) session
-                .getObjectByQualification("dm_location where object_name='config'");
-        if (location == null) {
-            throw new DfException(
-                    "Unable to find dm_location with object_name='config'");
-        }
-        String serverVersion = session.getServerVersion();
-        String pathSeparator;
-        if (serverVersion.contains("Win")) {
-            pathSeparator = "\\";
-        } else {
-            pathSeparator = "/";
-        }
-
-        String argumento = "mkfile_encrypt_text " + "documentum" + " "
-                + location.getFileSystemPath() + pathSeparator
-                + session.getDocbaseName() + pathSeparator + "ldap_"
-                + ldapId + ".cnt";
-        IDfApplyDoMethod cmd = (IDfApplyDoMethod) DfAdminCommand
-                .getCommand(IDfAdminCommand.APPLY_DO_METHOD);
-        cmd.setLaunchAsync(false);
-        cmd.setMethod("replicate_setup_methods");
-        cmd.setArguments(argumento);
-        cmd.execute(session);
     }
-
+    
     public void createFolderPath(String myFilesystemDirectory) {
-        File dir = new File(myFilesystemDirectory);
-        boolean res = dir.mkdirs();
+        File directorio = new File(myFilesystemDirectory);
+        boolean res = directorio.mkdirs();
         if (!res) {
-            if (dir.exists()) {
+            if (directorio.exists()) {
                 Utilidades.escribeLog("La carpeta de destino " + myFilesystemDirectory + " ya existe");
             } else {
                 Utilidades.escribeLog("Error al crear la ruta de la carpeta: " + myFilesystemDirectory);
             }
         }
         StringBuilder bufFolderPath = new StringBuilder(64);
-
+        
         String pathSeparator = System.getProperty("file.separator");
         java.util.StringTokenizer st
                 = new java.util.StringTokenizer(myFilesystemDirectory, pathSeparator);
-
+        
         while (st.hasMoreTokens()) {
             bufFolderPath.append(st.nextToken());
             bufFolderPath.append(pathSeparator);
             createFolder(bufFolderPath.toString());
         }
     }
-
+    
     private void createFolder(String myFilesystemDirectory) {
         //if the directory doesn't exist, make it
 
@@ -2022,30 +1919,30 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error al crear carpeta: " + e.getMessage());
         }
     }
-
+    
     public void doExport(
             IDfSession sess,
             IDfFolder exportFolder,
             String myFilesystemDirectory)
             throws DfException {
         IDfCollection col = null;
-
+        
         try {
-
+            
             IDfClientX m_clientx = new DfClientX();
             IDfExportOperation operation = m_clientx.getExportOperation();
-
+            
             operation.setDestinationDirectory(myFilesystemDirectory);
 
             // Do not need to call createFolderPath, just createFolder as we know that the rest 
             // of the path will already be there already.
             createFolder(myFilesystemDirectory);
-
+            
             String qualification
                     = "select * from dm_document where FOLDER(ID('"
                     + exportFolder.getObjectId()
                     + "'))";
-
+            
             IDfQuery q = m_clientx.getQuery(); //Create query object
             q.setDQL(qualification); //Give it the query
             col = q.execute(sess, IDfQuery.DF_READ_QUERY); //Execute synchronously
@@ -2059,7 +1956,7 @@ public class UtilidadesDocumentum {
                     String id = col.getString("r_object_id");
                     IDfId idObj = m_clientx.getId(id);
                     IDfSysObject myObj = (IDfSysObject) sess.getObject(idObj);
-
+                    
                     if (!m_childIds.contains(idObj.getId())) //do not export children of vDocs
                     {
                         // add the IDfSysObject to the operation
@@ -2074,13 +1971,13 @@ public class UtilidadesDocumentum {
             if (col != null) {
                 col.close();
             }
-
+            
         }
     }
-
+    
     public IDfCollection execQuery(IDfSession sess, String queryString)
             throws DfException {
-        IDfCollection col = null; //For the result
+        IDfCollection col; //For the result
 
         IDfQuery q = new DfQuery(); //Create query object
         q.setDQL(queryString); //Give it the query
@@ -2088,30 +1985,30 @@ public class UtilidadesDocumentum {
 
         return col;
     }
-
+    
     public void doVirtualDocExport(
             IDfSession sess,
             IDfFolder exportFolder,
             String myFilesystemDirectory)
             throws DfException {
         IDfCollection col = null;
-
+        
         try {
-
+            
             IDfClientX m_clientx = new DfClientX();
             IDfExportOperation operation = m_clientx.getExportOperation();
-
+            
             operation.setDestinationDirectory(myFilesystemDirectory);
 
             // Do not need to call createFolderPath, just createFolder as we know that the rest 
             // of the path will already be there already.
             createFolder(myFilesystemDirectory);
-
+            
             String qualification
                     = "select * from dm_document where FOLDER(ID('"
                     + exportFolder.getObjectId()
                     + "')) AND ( (r_is_virtual_doc = 1) OR (r_link_cnt > 0))";
-
+            
             IDfQuery q = m_clientx.getQuery(); //Create query object
             q.setDQL(qualification); //Give it the query
             col = q.execute(sess, IDfQuery.DF_READ_QUERY); //Execute synchronously
@@ -2139,7 +2036,7 @@ public class UtilidadesDocumentum {
                             m_childIds.add(childId.getId());
                         }
                     }
-
+                    
                 }
             }
 
@@ -2149,11 +2046,11 @@ public class UtilidadesDocumentum {
             if (col != null) {
                 col.close();
             }
-
+            
         }
-
+        
     }
-
+    
     public IDfClient dameCliente() {
         IDfClient cliente = null;
         try {
@@ -2175,25 +2072,25 @@ public class UtilidadesDocumentum {
         }
         return cliente;
     }
-
+    
     public static void prueba() {
         try {
             //  IDfClient dfClient = new DfClientX().getLocalClient();
             IDfClient dfClient = DfClient.getLocalClient();
-
+            
             IDfDocbaseMap dfDocbaseMap = dfClient.getDocbaseMap();
             for (int i = 0; i < dfDocbaseMap.getDocbaseCount(); i++) {
                 String docbaseName = dfDocbaseMap.getDocbaseName(i);
                 String docbaseDescription = dfDocbaseMap.getDocbaseDescription(i);
                 System.out.println(docbaseName + " | " + docbaseDescription);
-
+                
             }
         } catch (DfException ex) {
             Logger.getLogger(UtilidadesDocumentum.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void FolderNavigate(String usu, String clave, String repo, String server, String port, String folderPath) {
         try {
             // call function to generate XML content
@@ -2201,7 +2098,7 @@ public class UtilidadesDocumentum {
         } catch (DfException ex) {
             Utilidades.escribeLog("Error navegar por carpeta: " + ex.getMessage());
         }
-
+        
     }
 
     /**
@@ -2216,7 +2113,7 @@ public class UtilidadesDocumentum {
      */
     public void navigate(String rootPath, String indent, IDfSession session)
             throws DfException {
-
+        
         IDfId idObj = session.getIdByQualification("dm_sysobject where object_name='" + rootPath + "'");
         IDfSysObject sysObj = (IDfSysObject) session.getObject(idObj);
         IDfFolder root = session.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
@@ -2284,13 +2181,13 @@ public class UtilidadesDocumentum {
                         relementName
                 )
         );
-
+        
     } // navigate
 
     // resolves a DCTM type to a name
     public String resolveElementName(String id, String type) {
         // resolve element name
-        String elementName = "";
+        String elementName;
         if (id.startsWith("0c")) {
             elementName = "cabinet";
         } else if (id.startsWith("0b")) {
@@ -2325,7 +2222,7 @@ public class UtilidadesDocumentum {
         sbuf.append("name=\"").append(name).append("\" />");
         return sbuf.toString();
     }
-
+    
     public void arrancarIndexAgent(IDfSession sesion) throws DfException {
         IDfPersistentObject FTIndexObj = (IDfPersistentObject) sesion.getObjectByQualification("dm_fulltext_index where is_standby = false ");
         String indexName = FTIndexObj.getString("index_name");
@@ -2342,7 +2239,7 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
         }
     }
-
+    
     public String estadoIndexAgent(IDfSession sesion) throws DfException {
         IDfPersistentObject FTIndexObj = (IDfPersistentObject) sesion.getObjectByQualification("dm_fulltext_index where is_standby = false ");
         String indexName = FTIndexObj.getString("index_name");
@@ -2357,7 +2254,7 @@ public class UtilidadesDocumentum {
             col.next();
             String status = col.getRepeatingString("status", 0);
             String indexAgentName = col.getRepeatingString("name", 0);
-
+            
             switch (Integer.parseInt(status)) {
                 case 200:
                     resultado = "No hay respuesta de la intancia de index agent '" + indexAgentName + "'";
@@ -2372,13 +2269,13 @@ public class UtilidadesDocumentum {
                     System.out.println("La instancia de index agent '" + indexAgentName + "' está en ejecución");
                     break;
             }
-
+            
         } catch (DfException ex) {
             Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
         }
         return resultado;
     }
-
+    
     public void pararIndexAgent(IDfSession sesion) throws DfException {
         IDfPersistentObject FTIndexObj = (IDfPersistentObject) sesion.getObjectByQualification("dm_fulltext_index where is_standby = false ");
         String indexName = FTIndexObj.getString("index_name");
@@ -2395,11 +2292,10 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());;
         }
     }
-
-<<<<<<< HEAD
+    
     public String ejecutarAPI(String ComandoApi, String datosApi, IDfSession sesion) {
         Properties promensajes = new Properties();
-
+        
         try {
             InputStream in = UtilidadesDocumentum.class.getClassLoader().getResourceAsStream("es/documentum/utilidades/mensajes-api.properties");
             if (in == null) {
@@ -2407,37 +2303,37 @@ public class UtilidadesDocumentum {
             }
             promensajes = new java.util.Properties();
             promensajes.load(in);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             Utilidades.escribeLog("Error al cargar el fichero de propiedades. (cargarConfiguraciones) Error: " + ex.getMessage());
         }
-
+        
         String apiCommand = ComandoApi;
         String apiDataCtl = datosApi;
-        String batchStr = null;
+        String batchStr;
         boolean abortScript = false;
-
+        
         batchStr = apiCommand;
         //   String idControl = null;
         String lastId = null;
-        String methodStr = null;
-        String methodData = null;
-        String status = null;
+        String methodStr;
+        String methodData;
+        String status;
         String cmdResult = null;
         boolean b_result = false;
-        String dummy = null;
+        String dummy;
         String dummyC = ",c,";
         String dummyCurrent = ",current,";
-
+        
         int cmdId = 0;
         int cmdCallType = 0;
         int cmdSession = 0;
-
+        
         int getCounter = 0;
         int execCounter = 0;
         int setCounter = 0;
-
-        String currToken = null;
-
+        
+        String currToken;
+        
         StringBuilder resultsBuf = new StringBuilder(1024);
         try {
             //  lastId = idControl;
@@ -2454,9 +2350,9 @@ public class UtilidadesDocumentum {
                     methodStr = batchTokener.nextToken();
                 }
                 StringTokenizer lineTokener = new StringTokenizer(methodStr, ",");
-
+                
                 String methodStr1 = lineTokener.nextToken();
-                if ((methodStr1.equals("connect")) || (methodStr1.indexOf(" ") > -1)) {
+                if ((methodStr1.equals("connect")) || (methodStr1.contains(" "))) {
                     /*
                     resultsBuf.append(promensajes.getProperty("MSG_API") + methodStr1);
                     if (methodStr1.equals("connect")) {
@@ -2498,7 +2394,7 @@ public class UtilidadesDocumentum {
                                     if ((tokenizer == null) || (tokenizer.countTokens() <= 1)) {
                                         String strDocbroker = DameDocbroker();
                                         String docbrokerPort = DamePuertoDocbroker();
-                                        StringBuffer additionalParamBuffer = new StringBuffer();
+                                        StringBuilder additionalParamBuffer = new StringBuilder();
                                         if ((methodStr2 != null) && (methodStr2.length() > 0)) {
                                             additionalParamBuffer.append(",");
                                         }
@@ -2535,9 +2431,9 @@ public class UtilidadesDocumentum {
                                 getCounter++;
                                 break;
                             case 1:
-
+                                
                                 methodData = apiDataCtl;
-
+                                
                                 b_result = sesion.apiSet(methodStr1, methodStr2, methodData);
 
                                 //      resultsBuf.append("\n" + promensajes.getProperty("MSG_SET") + methodData);
@@ -2571,7 +2467,7 @@ public class UtilidadesDocumentum {
                                 break;
                         }
                         b_result = false;
-                    } catch (Exception exp) {
+                    } catch (DfException exp) {
                         cmdResult = promensajes.getProperty("MSG_ERROR_PROCESSING") + exp.toString();
                         abortScript = true;
                     } finally {
@@ -2583,11 +2479,21 @@ public class UtilidadesDocumentum {
             if (setCounter + execCounter > 0) {
             }
             String output = resultsBuf.toString();
-
+            
         }
         return resultsBuf.toString();
     }
-
-=======
->>>>>>> origin/master
+    
+    public static boolean isWindowsServer(IDfSession dfSession) {
+        try {
+            IDfTypedObject serverConfigObject = dfSession.getServerConfig();
+            String serverVersion = serverConfigObject.getString("r_server_version");
+            if (serverVersion.contains("Win")) {
+                return true;
+            }
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al comprobar si el servidor es Windows. (isWindowsServer) Error: " + ex.getMessage());
+        }
+        return false;
+    }
 }

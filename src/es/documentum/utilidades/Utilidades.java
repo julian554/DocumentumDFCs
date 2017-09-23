@@ -89,7 +89,7 @@ public class Utilidades {
 
     public String crearDirBase() {
         String separador = separador();
-        String dirbase = "";
+        String dirbase ;
         dirbase = usuarioHome() + separador + "DocumentumDFCs";
         // Siempre tiene que existir la ruta "DocumentumDFCs" en el "home" del usuario
         crearDirectorio(dirbase);
@@ -287,7 +287,7 @@ public class Utilidades {
     }
 
     public Boolean copiarFichero(String origen, String destino) {
-        String comando = "";
+        String comando ;
 
         if (so().toLowerCase().startsWith("windows")) {
             comando = "cmd /c copy /Y \"" + origen + "\"" + " \"" + destino + "\"";
@@ -299,7 +299,7 @@ public class Utilidades {
     }
 
     public Boolean renombrarFichero(String origen, String destino) {
-        String comando = "";
+        String comando ;
 
         if (so().toLowerCase().startsWith("windows")) {
             comando = "ren \"" + origen + "\"" + " \"" + destino + "\"";
@@ -318,7 +318,7 @@ public class Utilidades {
         FileOutputStream dest;
         try {
             //Nuestro InputStream
-            BufferedInputStream origen = null;
+            BufferedInputStream origen ;
             dest = new FileOutputStream(archivozip);
             //Indicamos que será un archivo ZIP
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
@@ -348,7 +348,7 @@ public class Utilidades {
                 }
             }
             out.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al crear el fichero ZIP -zipArchivos- '" + archivozip + "'. Error - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
             return false;
@@ -363,7 +363,7 @@ public class Utilidades {
         FileOutputStream dest;
         try {
             //Nuestro InputStream
-            BufferedInputStream origen = null;
+            BufferedInputStream origen ;
             dest = new FileOutputStream(archivozip);
             //Indicamos que será un archivo ZIP
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
@@ -382,7 +382,7 @@ public class Utilidades {
             }
             origen.close();
             out.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al crear el fichero ZIP -zipArchivo- '" + archivozip + "'. Error - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
             return false;
@@ -394,7 +394,7 @@ public class Utilidades {
     public void unzip(String zipFilePath, String destDirectory) {
         DIGIERROR = "";
         try {
-            ZipInputStream zipIn = null;
+            ZipInputStream zipIn ;
             File destDir = new File(destDirectory);
             if (!destDir.exists()) {
                 destDir.mkdir();
@@ -416,7 +416,7 @@ public class Utilidades {
                 entry = zipIn.getNextEntry();
             }
             zipIn.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al extraer -unzip- del fichero ZIP " + zipFilePath + " - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -425,7 +425,7 @@ public class Utilidades {
     public void unzip(String zipFilePath, String destDirectory, String fichero) {
         DIGIERROR = "";
         try {
-            ZipInputStream zipIn = null;
+            ZipInputStream zipIn ;
             File destDir = new File(destDirectory);
             if (!destDir.exists()) {
                 destDir.mkdir();
@@ -451,7 +451,7 @@ public class Utilidades {
                 }
             }
             zipIn.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al extraer " + fichero + " -unzip- del fichero ZIP " + zipFilePath + " - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -459,7 +459,7 @@ public class Utilidades {
 
     private void extractFile(ZipInputStream zipIn, String filePath) {
         DIGIERROR = "";
-        BufferedOutputStream bos = null;
+        BufferedOutputStream bos;
         try {
             bos = new BufferedOutputStream(new FileOutputStream(filePath));
             byte[] bytesIn = new byte[BUFFER_SIZE];
@@ -483,7 +483,7 @@ public class Utilidades {
             props = new Properties();
             props.load(ini);
             ini.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al leer el fichero de propiedades " + archivo + " - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -500,7 +500,7 @@ public class Utilidades {
             props.store(ops, "\n");
             ops.flush();
             ops.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al escribir en el fichero de propiedades " + archivo + " - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -635,7 +635,7 @@ public class Utilidades {
             in.close();
             out.close();
 
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog(ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -782,7 +782,7 @@ public class Utilidades {
                 props = new java.util.Properties();
                 props.load(in);
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al cargar el fichero de propiedades " + ruta + ". Error: " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -877,7 +877,7 @@ public class Utilidades {
     }
 
     public List<String> comandoRemoto(String servidor, String usuario, String clave, String comando, int puerto) {
-        List<String> resultado = new ArrayList<String>();
+        List<String> resultado = new ArrayList<>();
         try {
             JSch jsch = new JSch();
             Session sesion = jsch.getSession(usuario, servidor, puerto);
@@ -967,7 +967,7 @@ public class Utilidades {
     }
 
     public ArrayList<String> listaTextoSinDuplicados(ArrayList<String> lista) {
-        ArrayList<String> listasin = new ArrayList<String>(new HashSet<String>(lista));
+        ArrayList<String> listasin = new ArrayList<>(new HashSet<>(lista));
         Collections.sort(listasin);
         return listasin;
     }
@@ -1053,12 +1053,10 @@ public class Utilidades {
          */
 
         util.borrarFichero("C:\\Users\\E274399\\documentumdcfs\\renditions", "**.xml*");
-
     }
 }
 
 class EvaluaExtension implements FilenameFilter {
-
     @Override
     public boolean accept(File dir, String extension) {
         return dir.getName().endsWith(extension);
