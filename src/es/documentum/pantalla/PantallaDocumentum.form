@@ -102,7 +102,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionRenditionsActionPerformed"/>
           </Events>
         </MenuItem>
-<<<<<<< HEAD
         <MenuItem class="javax.swing.JMenuItem" name="opcionConvertir">
           <Properties>
             <Property name="text" type="java.lang.String" value="Convertir a PDF (ADTS)"/>
@@ -111,8 +110,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionConvertirActionPerformed"/>
           </Events>
         </MenuItem>
-=======
->>>>>>> origin/master
         <MenuItem class="javax.swing.JMenuItem" name="opcionExportarDocumentosExcel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Exportar lista de Documentos a Excel"/>
@@ -314,18 +311,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionAPIActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="Separador1">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="importarADocumentum">
+            <MenuItem class="javax.swing.JMenuItem" name="opcionCrearCarpeta">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Alt+I"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Importar a Documentum"/>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="text" type="java.lang.String" value="Crear carpeta en Repositorio"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importarADocumentumActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionCrearCarpetaActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionExportarCarpeta">
@@ -336,7 +329,19 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionExportarCarpetaActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
+            <MenuItem class="javax.swing.JMenuItem" name="opcionImportarADocumentum">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Alt+I"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Importar a Documentum"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionImportarADocumentumActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="Separador2">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionLeerLog">
               <Properties>
@@ -355,7 +360,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionPasswordLDAPActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="Separador3">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionEstadisticasRepos">
               <Properties>
@@ -365,7 +370,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionEstadisticasReposActionPerformed"/>
               </Events>
             </MenuItem>
-<<<<<<< HEAD
             <MenuItem class="javax.swing.JMenuItem" name="opcionIndexador">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Indexador"/>
@@ -382,9 +386,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionJobsActionPerformed"/>
               </Events>
             </MenuItem>
-=======
->>>>>>> origin/master
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator5">
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="Separador4">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionEjecutarComandoSSOO">
               <Properties>
@@ -838,10 +840,6 @@
           </AccessibilityProperties>
           <Events>
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textoRutaDocumentumMousePressed"/>
-<<<<<<< HEAD
-=======
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoRutaDocumentumActionPerformed"/>
->>>>>>> origin/master
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textoRutaDocumentumKeyPressed"/>
           </Events>
         </Component>

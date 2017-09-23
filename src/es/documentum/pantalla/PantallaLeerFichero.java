@@ -1,6 +1,7 @@
 package es.documentum.pantalla;
 
 import es.documentum.utilidades.Utilidades;
+import java.awt.Font;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -210,6 +211,9 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
             }
         }
         Texto.setCaretPosition(Texto.getDocument().getLength());
+        int fontPoints = 14
+                ; 
+        Texto.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontPoints));
     }
 
     public Boolean CargarLista(List<String> lista) {
