@@ -15,7 +15,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -89,7 +88,7 @@ public class Utilidades {
 
     public String crearDirBase() {
         String separador = separador();
-        String dirbase ;
+        String dirbase;
         dirbase = usuarioHome() + separador + "DocumentumDFCs";
         // Siempre tiene que existir la ruta "DocumentumDFCs" en el "home" del usuario
         crearDirectorio(dirbase);
@@ -148,7 +147,7 @@ public class Utilidades {
                         }
                     }
                 } else {
-                    String condicion=nombre;
+                    String condicion = nombre;
                     if (nombre.startsWith("*")) {
                         condicion = nombre.substring(1, nombre.length());
                     }
@@ -205,13 +204,12 @@ public class Utilidades {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         //odd: the Object param of getContents is not currently used
         Transferable contents = clipboard.getContents(null);
-        boolean hasTransferableText
-                = (contents != null)
+        boolean hasTransferableText = (contents != null)
                 && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
         if (hasTransferableText) {
             try {
                 resultado = (String) contents.getTransferData(DataFlavor.stringFlavor);
-            } catch (UnsupportedFlavorException | IOException ex) {
+            } catch (Exception ex) {
                 System.out.println(ex);
             }
         }
@@ -287,7 +285,7 @@ public class Utilidades {
     }
 
     public Boolean copiarFichero(String origen, String destino) {
-        String comando ;
+        String comando;
 
         if (so().toLowerCase().startsWith("windows")) {
             comando = "cmd /c copy /Y \"" + origen + "\"" + " \"" + destino + "\"";
@@ -299,7 +297,7 @@ public class Utilidades {
     }
 
     public Boolean renombrarFichero(String origen, String destino) {
-        String comando ;
+        String comando;
 
         if (so().toLowerCase().startsWith("windows")) {
             comando = "ren \"" + origen + "\"" + " \"" + destino + "\"";
@@ -318,7 +316,7 @@ public class Utilidades {
         FileOutputStream dest;
         try {
             //Nuestro InputStream
-            BufferedInputStream origen ;
+            BufferedInputStream origen;
             dest = new FileOutputStream(archivozip);
             //Indicamos que será un archivo ZIP
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
@@ -363,7 +361,7 @@ public class Utilidades {
         FileOutputStream dest;
         try {
             //Nuestro InputStream
-            BufferedInputStream origen ;
+            BufferedInputStream origen;
             dest = new FileOutputStream(archivozip);
             //Indicamos que será un archivo ZIP
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
@@ -394,7 +392,7 @@ public class Utilidades {
     public void unzip(String zipFilePath, String destDirectory) {
         DIGIERROR = "";
         try {
-            ZipInputStream zipIn ;
+            ZipInputStream zipIn;
             File destDir = new File(destDirectory);
             if (!destDir.exists()) {
                 destDir.mkdir();
@@ -425,7 +423,7 @@ public class Utilidades {
     public void unzip(String zipFilePath, String destDirectory, String fichero) {
         DIGIERROR = "";
         try {
-            ZipInputStream zipIn ;
+            ZipInputStream zipIn;
             File destDir = new File(destDirectory);
             if (!destDir.exists()) {
                 destDir.mkdir();
@@ -562,20 +560,19 @@ public class Utilidades {
         return System.getProperty("user.dir");
     }
 
-    public String wsServidor() {
-        Utilidades util = new Utilidades();
-        Properties prop = util.leerConfiguracion("es/seap/minhap/ws/propiedades/ws-servidor.properties");
-        String servidor = prop.getProperty("servidor");
-        return servidor;
-    }
-
-    public String wsUrl() {
-        Utilidades util = new Utilidades();
-        Properties prop = util.leerConfiguracion("es/seap/minhap/ws/propiedades/ws-servidor.properties");
-        String wsurl = prop.getProperty("wsurl");
-        return wsurl;
-    }
-
+//    public String wsServidor() {
+//        Utilidades util = new Utilidades();
+//        Properties prop = util.leerConfiguracion("es/seap/minhap/ws/propiedades/ws-servidor.properties");
+//        String servidor = prop.getProperty("servidor");
+//        return servidor;
+//    }
+//
+//    public String wsUrl() {
+//        Utilidades util = new Utilidades();
+//        Properties prop = util.leerConfiguracion("es/seap/minhap/ws/propiedades/ws-servidor.properties");
+//        String wsurl = prop.getProperty("wsurl");
+//        return wsurl;
+//    }
     public String versionJavaBits() {
         return System.getProperty("os.arch");
     }
@@ -586,7 +583,7 @@ public class Utilidades {
         try {
             //     InetAddress address = InetAddress.getByName("localhost");
             InetAddress address = InetAddress.getLocalHost();
-            address = InetAddress.getLocalHost();
+            //     address = InetAddress.getLocalHost();
             // Coge la dirección ip como un array de bytes
             byte[] bytes = address.getAddress();
             // Convierte los bytes de la dirección ip a valores sin
@@ -901,6 +898,15 @@ public class Utilidades {
                 resultado.add(line);
             }
 
+            if (readererro.ready()) {
+                System.out.println("Salida de error ...");
+                resultado.add("Salida de error ...");
+                while ((line = readererro.readLine()) != null) {
+                    System.out.println(line);
+                    resultado.add(line);
+                }
+            }
+
             canalexec.disconnect();
             sesion.disconnect();
 //            return canalexec.getExitStatus() == 0;
@@ -1057,6 +1063,7 @@ public class Utilidades {
 }
 
 class EvaluaExtension implements FilenameFilter {
+
     @Override
     public boolean accept(File dir, String extension) {
         return dir.getName().endsWith(extension);
