@@ -4,14 +4,15 @@ import es.documentum.utilidades.Utilidades;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-/**
- *
- * @author julian.collado
- */
+
 public class PantallaBarra extends javax.swing.JDialog {
 
     java.awt.Frame ventanapadre = null;
     public Boolean PARAR = false;
+
+    public String getlabelMensa() {
+        return labelMensa.getText();
+    }
 
     public Boolean getPARAR() {
         return PARAR;
@@ -65,6 +66,7 @@ public class PantallaBarra extends javax.swing.JDialog {
         labelMensa.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelMensa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelMensa.setText(" ");
+        labelMensa.setAutoscrolls(true);
 
         botonParar.setText("Cancelar");
         botonParar.addActionListener(new java.awt.event.ActionListener() {
@@ -81,16 +83,14 @@ public class PantallaBarra extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(labelMensa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(labelMensa, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(72, 72, 72)
-                        .addComponent(barra, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 72, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(177, 177, 177)
-                .addComponent(botonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(169, Short.MAX_VALUE))
+                        .addComponent(barra, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
+                        .addComponent(botonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

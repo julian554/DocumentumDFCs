@@ -164,10 +164,10 @@ public class Acercade extends javax.swing.JDialog {
         jLabel6.setText("Runtime Java:");
 
         labelVersion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        labelVersion.setForeground(new java.awt.Color(0, 51, 153));
+        labelVersion.setForeground(new java.awt.Color(51, 102, 255));
         labelVersion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelVersion.setText("DocumentumDFCs v1.0");
-        labelVersion.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        labelVersion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 153, 255), 1, true));
         labelVersion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         labelVersion.setName("labelVersion"); // NOI18N
         labelVersion.setOpaque(true);
@@ -248,6 +248,10 @@ public class Acercade extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(274, 274, 274))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -296,13 +300,9 @@ public class Acercade extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(labelVersionDFCs, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
-                        .addComponent(labelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(196, 196, 196)
+                        .addComponent(labelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(274, 274, 274))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel6, jLabel7, jLabel8});
@@ -312,9 +312,9 @@ public class Acercade extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(labelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(labelPC))

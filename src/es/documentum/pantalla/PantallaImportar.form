@@ -138,7 +138,7 @@
               <Component id="botonEjecutar" min="-2" pref="115" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="302" max="-2" attributes="0"/>
               <Component id="botonSalir" min="-2" pref="115" max="-2" attributes="0"/>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
+              <EmptySpace pref="33" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -177,18 +177,18 @@
                           <Component id="jLabel2" min="-2" pref="251" max="-2" attributes="0"/>
                           <Component id="TextoCarpetaDocumentum" alignment="0" max="32767" attributes="0"/>
                           <Component id="comboTipoDocumental" alignment="0" pref="532" max="32767" attributes="0"/>
-                          <Component id="jLabel3" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="TextoFichero" min="-2" pref="495" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="botonSelFichero" min="-2" pref="27" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jLabel3" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                          <Component id="jLabel4" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                       </Group>
                       <Component id="jLabel5" alignment="0" min="-2" pref="251" max="-2" attributes="0"/>
                       <Component id="TextoNombreFichero" alignment="0" min="-2" pref="495" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="31" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -302,6 +302,7 @@
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
           <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textoLogMousePressed"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoLogActionPerformed"/>
           </Events>
         </Component>

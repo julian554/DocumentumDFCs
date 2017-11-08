@@ -4,7 +4,6 @@ import com.documentum.fc.client.IDfFolder;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.common.DfException;
-import com.documentum.fc.common.IDfId;
 import static es.documentum.pantalla.PantallaDocumentum.getLogo;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
@@ -12,14 +11,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
@@ -223,24 +216,19 @@ public class PantallaJobs extends javax.swing.JFrame {
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
             botonderecho = false;
-            int row = 0;
-            int column = 0;
             if (evt.getSource().getClass().getName().equals("javax.swing.JTable")) {
                 JTable source = (JTable) evt.getSource();
-                row = source.rowAtPoint(evt.getPoint());
-                column = source.columnAtPoint(evt.getPoint());
+                int row = source.rowAtPoint(evt.getPoint());
+                int column = source.columnAtPoint(evt.getPoint());
                 if (!source.isRowSelected(row)) {
                     source.changeSelection(row, column, false, false);
                 }
-
                 if (componente.equals("tablaJobs")) {
                     if (row >= 0 && column >= 0 && tablaJobs.getModel().getRowCount() > 0) {
                         popupAtributos.show(evt.getComponent(), evt.getX(), evt.getY());
                     }
                 }
-
             }
-
         }
     }
 
@@ -280,6 +268,14 @@ public class PantallaJobs extends javax.swing.JFrame {
         utilDocum.ejecutarAPI("unlock,c," + r_object_id, "", sesion);
         String dql = "update dm_job object set is_inactive = 1, set a_special_app = '' where r_object_id ='" + r_object_id + "'";
         utilDocum.ejecutarDql(dql, sesion);
+        try {
+            if (sesion.isConnected()) {
+                sesion.disconnect();
+            }
+        } catch (DfException ex) {
+
+        }
+
     }//GEN-LAST:event_opcionStopJobActionPerformed
 
     private void opcionJobLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionJobLogActionPerformed
@@ -360,7 +356,7 @@ public class PantallaJobs extends javax.swing.JFrame {
                         public boolean isCellEditable(int fila, int columna) {
                             return false;
                         }
-                    };;
+                    };
 
                 } else {
                     modeloLotes = new DefaultTableModel() {
@@ -368,7 +364,7 @@ public class PantallaJobs extends javax.swing.JFrame {
                         public boolean isCellEditable(int fila, int columna) {
                             return false;
                         }
-                    };;
+                    };
                 }
                 tablaJobs.setModel(modeloLotes);
                 tablaJobs.setShowHorizontalLines(true);
@@ -402,6 +398,13 @@ public class PantallaJobs extends javax.swing.JFrame {
                 pintarTabla();
                 JTableHeader header = tablaJobs.getTableHeader();
                 header.addMouseListener(new TableHeaderMouseListener(tablaJobs));
+                try {
+                    if (sesion.isConnected()) {
+                        sesion.disconnect();
+                    }
+                } catch (DfException ex) {
+
+                }
                 barradocum.dispose();
             }
         }.start();
@@ -466,17 +469,18 @@ public class PantallaJobs extends javax.swing.JFrame {
 
     private void ExportarAtributosExcel() {
         if (tablaJobs.getModel().getRowCount() > 0) {
-            String fichero = "";
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));
             chooser.setDialogTitle("Seleccionar directorio y nombre de fichero");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                fichero = chooser.getSelectedFile().toString();
+                String fichero = chooser.getSelectedFile().toString();
                 if (!fichero.toLowerCase().endsWith(".xls")) {
                     fichero = fichero + ".xls";
                 }
-                util.exportaExcel(tablaJobs, fichero);
+                if (!fichero.isEmpty()) {
+                    util.exportaExcel(tablaJobs, fichero);
+                }
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
             }
@@ -506,6 +510,10 @@ public class PantallaJobs extends javax.swing.JFrame {
             IDfSysObject reportObject = (IDfSysObject) sesion.getObjectByQualification(qualificationClause.toString());
             if ((reportObject != null) && (!reportObject.getString("i_contents_id").equals("0000000000000000"))) {
                 String reportContent = visualizarFicheroLogJob(reportObject);
+            }
+
+            if (sesion.isConnected()) {
+                sesion.disconnect();
             }
 
         } catch (DfException ex) {
@@ -554,12 +562,13 @@ public class PantallaJobs extends javax.swing.JFrame {
 
     public class TableHeaderMouseListener extends MouseAdapter {
 
-        private JTable table;
+        private final JTable table;
 
         public TableHeaderMouseListener(JTable table) {
             this.table = table;
         }
 
+        @Override
         public void mouseClicked(MouseEvent event) {
             pintarTabla();
         }

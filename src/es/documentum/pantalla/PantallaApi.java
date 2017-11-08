@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -30,8 +31,12 @@ public class PantallaApi extends javax.swing.JFrame {
     Boolean botonderecho = false;
     String componente = "";
     String idControl = "";
-    IDfSession sesion = sesionDocumentum();
-    
+    IDfSession sesion;
+
+    public void setSesion(IDfSession sesion) {
+        this.sesion = sesion;
+    }
+
     public static PantallaDocumentum ventanapadre = null;
 
     public PantallaApi(PantallaDocumentum parent, boolean modal) {
@@ -46,7 +51,7 @@ public class PantallaApi extends javax.swing.JFrame {
         pintarMulti(checkMulti.isSelected());
         setLocationRelativeTo(null);
         cargarComboHistorial();
-        
+
     }
 
     protected static Image getLogo() {
@@ -230,13 +235,13 @@ public class PantallaApi extends javax.swing.JFrame {
                             .addComponent(comboHistorial, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAPILayout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 646, Short.MAX_VALUE)
                                 .addComponent(BotonBorrarSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(scrollMultiAPI, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAPILayout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 617, Short.MAX_VALUE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(checkMulti))
                             .addComponent(textoAPI, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textoDatosApi))
@@ -509,6 +514,14 @@ public class PantallaApi extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void salir() {
+        if (sesion != null) {
+            try {
+                if (sesion.isConnected()) {
+                    sesion.disconnect();
+                }
+            } catch (DfException ex) {
+            }
+        }
         this.dispose();
         System.gc();
     }
@@ -557,24 +570,24 @@ public class PantallaApi extends javax.swing.JFrame {
             }
             promensajes = new java.util.Properties();
             promensajes.load(in);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             Utilidades.escribeLog("Error al cargar el fichero de propiedades. (cargarConfiguraciones) Error: " + ex.getMessage());
         }
 
         String apiCommand = ComandoApi;
         String apiDataCtl = datosApi;
-        String batchStr = null;
+        String batchStr ;
         boolean abortScript = false;
 
         batchStr = apiCommand;
         //   String idControl = null;
-        String lastId = null;
-        String methodStr = null;
-        String methodData = null;
-        String status = null;
+        String lastId ;
+        String methodStr ;
+        String methodData = null ;
+        String status ;
         String cmdResult = null;
         boolean b_result = false;
-        String dummy = null;
+        String dummy ;
         String dummyC = ",c,";
         String dummyCurrent = ",current,";
 
@@ -586,7 +599,7 @@ public class PantallaApi extends javax.swing.JFrame {
         int execCounter = 0;
         int setCounter = 0;
 
-        String currToken = null;
+        String currToken ;
 
         StringBuilder resultsBuf = new StringBuilder(1024);
         try {
@@ -689,7 +702,6 @@ public class PantallaApi extends javax.swing.JFrame {
                             case 1:
                                 if (checkMulti.isSelected()) {
                                     if (batchTokener.hasMoreTokens()) {
-                                        methodData = null;
                                         methodData = batchTokener.nextToken();
                                     }
                                 } else {
@@ -735,7 +747,7 @@ public class PantallaApi extends javax.swing.JFrame {
                                 break;
                         }
                         b_result = false;
-                    } catch (Exception exp) {
+                    } catch (DfException exp) {
                         cmdResult = promensajes.getProperty("MSG_ERROR_PROCESSING") + exp.toString();
                         abortScript = true;
                         if (checkMulti.isSelected()) {
@@ -764,7 +776,7 @@ public class PantallaApi extends javax.swing.JFrame {
                     historial.write(("\n" + textoAPI.getText().replaceAll("(\r\n|\n)", " ")).getBytes());
                     historial.close();
                     cargarComboHistorial();
-                } catch (Exception ex) {
+                } catch (IOException ex) {
                 }
             }
         }
@@ -811,17 +823,5 @@ public class PantallaApi extends javax.swing.JFrame {
         }
     }
 
-    private IDfSession sesionDocumentum() {
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-        try {
-            ClassPathUpdater.add(dirdfc);
-            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-        } catch (Exception ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        }
-        UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        IDfSession nuevasesion = utildocum.conectarDocumentum();
-        return nuevasesion;
-    }
 
 }

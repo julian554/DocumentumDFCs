@@ -1,22 +1,12 @@
-<<<<<<< HEAD
-=======
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
->>>>>>> origin/master
 package es.documentum.pantalla;
 
 import com.documentum.fc.client.IDfCollection;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfTypedObject;
+import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.IDfAttr;
 import com.documentum.fc.common.IDfValue;
 import es.documentum.utilidades.ClassPathUpdater;
-<<<<<<< HEAD
-=======
-import es.documentum.utilidades.TablaSinEditarCol;
->>>>>>> origin/master
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
@@ -32,14 +22,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
-<<<<<<< HEAD
 import javax.swing.table.DefaultTableModel;
-=======
->>>>>>> origin/master
 import javax.swing.table.TableColumn;
 
 /**
@@ -65,16 +54,12 @@ public class PantallaDql extends javax.swing.JFrame {
             Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
         }
 
-<<<<<<< HEAD
         DefaultTableModel modeloLotes = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
                 return false;
             }
         };;
-=======
-        TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
->>>>>>> origin/master
         tablaResultados.setModel(modeloLotes);
         tablaResultados.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tablaResultados.setAutoscrolls(true);
@@ -277,19 +262,11 @@ public class PantallaDql extends javax.swing.JFrame {
                                     .addComponent(comboHistorial, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(28, 28, 28)
                                 .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< HEAD
                                     .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(botonConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(checkDameSQL, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(TextoNumReg, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
-=======
-                                    .addComponent(botonSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(botonConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(checkDameSQL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(TextoNumReg))))
->>>>>>> origin/master
                         .addGap(33, 33, 33))))
         );
         panelDqlLayout.setVerticalGroup(
@@ -537,23 +514,18 @@ public class PantallaDql extends javax.swing.JFrame {
             sqlfinal = sqlfinal + " enable (return_top " + numreg + ")";
         }
         final String dql = sqlfinal;
-<<<<<<< HEAD
         DefaultTableModel modeloLotes = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
                 return false;
             }
         };
-=======
-        TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
->>>>>>> origin/master
         tablaResultados.setModel(modeloLotes);
         EtiquetaEstado.setText("");
         textoLog.setText("");
 
         new Thread() {
             public void run() {
-<<<<<<< HEAD
                 DefaultTableModel modeloLotes = new DefaultTableModel() {
                     @Override
                     public boolean isCellEditable(int fila, int columna) {
@@ -563,12 +535,6 @@ public class PantallaDql extends javax.swing.JFrame {
                 tablaResultados.setModel(modeloLotes);
                 String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
                 barradocum = new PantallaBarra(PantallaDql.this, false);
-=======
-                TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
-                tablaResultados.setModel(modeloLotes);
-                String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-                 barradocum = new PantallaBarra(PantallaDql.this, false);
->>>>>>> origin/master
                 barradocum.setTitle("Consultando en Documentum ...");
                 barradocum.barra.setIndeterminate(true);
                 barradocum.botonParar.setVisible(false);
@@ -600,10 +566,6 @@ public class PantallaDql extends javax.swing.JFrame {
                     }
                     col.close();
 
-<<<<<<< HEAD
-=======
-                   
->>>>>>> origin/master
                     if (filas.size() <= 0) {
                         EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
                         textoLog.setText("0 Registro(s) encontrado(s) ");
@@ -640,16 +602,12 @@ public class PantallaDql extends javax.swing.JFrame {
                     }
 
                     if (datos.length > 0) {
-<<<<<<< HEAD
                         modeloLotes = new DefaultTableModel(datos, cabecera) {
                             @Override
                             public boolean isCellEditable(int fila, int columna) {
                                 return false;
                             }
                         };
-=======
-                        modeloLotes = new TablaSinEditarCol(datos, cabecera);
->>>>>>> origin/master
                     }
 
                     modeloLotes.setRowCount(cont);
@@ -754,18 +712,21 @@ public class PantallaDql extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void salir() {
-<<<<<<< HEAD
         DefaultTableModel modeloLotes = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
                 return false;
             }
         };
-=======
-        TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
->>>>>>> origin/master
         tablaResultados.setModel(modeloLotes);
         System.gc();
+        if (sesion.isConnected()) {
+            try {
+                sesion.disconnect();
+            } catch (DfException ex) {
+                Utilidades.escribeLog("Error al desconecta la sesión de Documentum (PantallaDql)  - Error: " + ex.getMessage());
+            }
+        }
         this.dispose();
     }
 
@@ -798,13 +759,8 @@ public class PantallaDql extends javax.swing.JFrame {
             }
         }
     }
-<<<<<<< HEAD
 
     private IDfSession sesionDocumentum() {
-=======
-    
-        private IDfSession sesionDocumentum() {
->>>>>>> origin/master
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
         try {
             ClassPathUpdater.add(dirdfc);

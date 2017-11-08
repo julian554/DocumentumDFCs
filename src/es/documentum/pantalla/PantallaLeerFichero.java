@@ -211,8 +211,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
             }
         }
         Texto.setCaretPosition(Texto.getDocument().getLength());
-        int fontPoints = 14
-                ; 
+        int fontPoints = 14;
         Texto.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontPoints));
     }
 

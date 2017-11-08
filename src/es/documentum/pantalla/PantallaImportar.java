@@ -13,6 +13,7 @@ import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -188,15 +189,15 @@ public class PantallaImportar extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(TextoCarpetaDocumentum)
                         .addComponent(comboTipoDocumental, 0, 532, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(panelDqlLayout.createSequentialGroup()
                             .addComponent(TextoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(botonSelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(botonSelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TextoNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         panelDqlLayout.setVerticalGroup(
             panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,6 +226,11 @@ public class PantallaImportar extends javax.swing.JFrame {
         panelEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         textoLog.setEditable(false);
+        textoLog.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                textoLogMousePressed(evt);
+            }
+        });
         textoLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textoLogActionPerformed(evt);
@@ -299,7 +305,7 @@ public class PantallaImportar extends javax.swing.JFrame {
                 .addComponent(botonEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(302, 302, 302)
                 .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,11 +327,15 @@ public class PantallaImportar extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSalirActionPerformed
 
     private void botonEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEjecutarActionPerformed
-        subirADocumentum();
+        if (ComprobarValores()) {
+            subirADocumentum();
+        }
     }//GEN-LAST:event_botonEjecutarActionPerformed
 
     private void opcionEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionEjecutarActionPerformed
-        subirADocumentum();
+        if (ComprobarValores()) {
+            subirADocumentum();
+        }
     }//GEN-LAST:event_opcionEjecutarActionPerformed
 
     private void opcionSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionSalirActionPerformed
@@ -333,12 +343,16 @@ public class PantallaImportar extends javax.swing.JFrame {
     }//GEN-LAST:event_opcionSalirActionPerformed
 
     private void opcionCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarActionPerformed
-
+        if (componente.equals("textoLog")) {
+            if (textoLog.getSelectedText() == null) {
+                Utilidades.copiarTextoPortapapeles(textoLog.getText());
+            } else {
+                Utilidades.copiarTextoPortapapeles(textoLog.getSelectedText());
+            }
+        }
     }//GEN-LAST:event_opcionCopiarActionPerformed
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
-
-
     }//GEN-LAST:event_opcionPegarActionPerformed
 
     private void opcionCopiarValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarValorActionPerformed
@@ -387,6 +401,54 @@ public class PantallaImportar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_textoLogActionPerformed
 
+    private void textoLogMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoLogMousePressed
+                if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            botonderecho = true;
+            componente = "textoLog";
+            popupmenu(evt);
+        }
+
+    }//GEN-LAST:event_textoLogMousePressed
+   private void popupmenu(MouseEvent evt) {
+        if (evt.isPopupTrigger() || botonderecho) {
+            botonderecho = false;
+
+            if (evt.getSource() == textoLog) {
+                opcionPegar.setEnabled(false);
+                popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }
+
+   private Boolean ComprobarValores() {
+        Boolean correcto = true;
+
+        if (TextoFichero.getText().isEmpty()) {
+            textoLog.setText("Debe indicar el fichero a importar");
+            TextoFichero.requestFocus();
+            return false;
+        }
+
+        if (TextoNombreFichero.getText().isEmpty()) {
+            textoLog.setText("Debe indicar un nombre de fichero");
+            TextoNombreFichero.requestFocus();
+            return false;
+        }
+
+        if (TextoCarpetaDocumentum.getText().isEmpty()) {
+            textoLog.setText("Debe indicar una carpeta de destino en Documentum");
+            TextoCarpetaDocumentum.requestFocus();
+            return false;
+        }
+
+        if (ventanapadre.utilDocum.existeCarpeta(TextoCarpetaDocumentum.getText()) == false) {
+            textoLog.setText("La carpeta indicada parece que no existe en Documentum");
+            TextoCarpetaDocumentum.requestFocus();
+            return false;
+        }
+        return correcto;
+    }
+
     private void cargarComboTipos() {
         ArrayList comboBoxItems = new ArrayList();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
@@ -403,11 +465,10 @@ public class PantallaImportar extends javax.swing.JFrame {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
         UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        int posicion=0;
-        
+        int posicion = 0;
+
         try {
             //            IDfCollection col = utildocum.ejecutarDql("select name from dm_type where  super_name in ('dm_document') or name in ('dm_document') order by name");
-
             IDfCollection col = utildocum.ejecutarDql("select name from dm_type order by name");
             if (!utildocum.dameError().equals("")) {
                 textoLog.setText(utildocum.dameError());
@@ -419,8 +480,8 @@ public class PantallaImportar extends javax.swing.JFrame {
                 IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
                 IDfValue attrValue = row.getValue("name");
                 comboBoxItems.add(getDfObjectValue(attrValue));
-                if (getDfObjectValue(attrValue).equals("dm_document")){
-                    posicion=comboBoxItems.size()-1;
+                if (getDfObjectValue(attrValue).equals("dm_document")) {
+                    posicion = comboBoxItems.size() - 1;
                 }
             }
 
@@ -510,13 +571,7 @@ public class PantallaImportar extends javax.swing.JFrame {
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-        } catch (IOException ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        } catch (IllegalAccessException ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        } catch (NoSuchMethodException ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        } catch (InvocationTargetException ex) {
+        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
         UtilidadesDocumentum utilidadesdocumentum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
