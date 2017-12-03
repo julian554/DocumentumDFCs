@@ -14,6 +14,7 @@ import es.documentum.utilidades.UtilidadesDocumentum;
 import es.documentum.utilidades.ClassPathUpdater;
 import es.documentum.utilidades.Correo;
 import es.documentum.utilidades.CorreoPropiedades;
+import es.documentum.utilidades.MiProperties;
 import es.documentum.utilidades.Utilidades;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Color;
@@ -34,6 +35,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -41,6 +43,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import org.apache.log4j.Logger;
@@ -57,7 +60,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     File ficherolog = null;
     FileOutputStream fis;
     PrintStream out;
-    String dirdfc = "";
+    String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
     static Logger logger = Logger.getLogger(PantallaDocumentum.class);
     public PantallaBarra barradocum = new PantallaBarra(PantallaDocumentum.this, false);
 
@@ -128,6 +131,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionAbrirDocumento = new javax.swing.JMenuItem();
         opcionExportar = new javax.swing.JMenuItem();
         opcionBorrarDocumento = new javax.swing.JMenuItem();
+        opcionBorrarDir = new javax.swing.JMenuItem();
         opcionBorradoLogico = new javax.swing.JMenuItem();
         opcionCheckin = new javax.swing.JMenuItem();
         opcionCancelCheckout = new javax.swing.JMenuItem();
@@ -218,14 +222,22 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         popupDocumentos.add(opcionExportar);
 
-        opcionBorrarDocumento.setText("Borrar Documento");
-        opcionBorrarDocumento.setToolTipText("Borrar todas las versiones de un Documento");
+        opcionBorrarDocumento.setText("Borrar Documentos");
+        opcionBorrarDocumento.setToolTipText("Borrar todas las versiones de los Documentos seleccionados");
         opcionBorrarDocumento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcionBorrarDocumentoActionPerformed(evt);
             }
         });
         popupDocumentos.add(opcionBorrarDocumento);
+
+        opcionBorrarDir.setText("Borrar directorio y su contenido");
+        opcionBorrarDir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionBorrarDirActionPerformed(evt);
+            }
+        });
+        popupDocumentos.add(opcionBorrarDir);
 
         opcionBorradoLogico.setText("Borrado Lógico del Documento");
         opcionBorradoLogico.setEnabled(false);
@@ -1189,7 +1201,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             SwingUtilities.updateComponentTreeUI(this);
             this.pack();
             System.gc();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             Utilidades.escribeLog("Error al cambiar Aspecto Visual a Metal - " + ex.getMessage());
         }
     }//GEN-LAST:event_opcionRBMetalActionPerformed
@@ -1210,7 +1222,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             SwingUtilities.updateComponentTreeUI(this);
             this.pack();
             System.gc();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             Utilidades.escribeLog("Error al cambiar Aspecto Visual a Nimbus - " + ex.getMessage());
         }
     }//GEN-LAST:event_opcionRBNimbusActionPerformed
@@ -1231,7 +1243,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             SwingUtilities.updateComponentTreeUI(this);
             this.pack();
             System.gc();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             Utilidades.escribeLog("Error al cambiar Aspecto Visual a Windows - " + ex.getMessage());
         }
     }//GEN-LAST:event_opcionRBWindowsActionPerformed
@@ -1252,7 +1264,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             SwingUtilities.updateComponentTreeUI(this);
             this.pack();
             System.gc();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             Utilidades.escribeLog("Error al cambiar Aspecto Visual a Windows Classic - " + ex.getMessage());
         }
     }//GEN-LAST:event_opcionRBWindowsClassicActionPerformed
@@ -1306,18 +1318,42 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     }//GEN-LAST:event_opcionActualizarAtributoActionPerformed
 
     private void opcionBorrarDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionBorrarDocumentoActionPerformed
-        PantallaConfirmaDialogo confirma = new PantallaConfirmaDialogo(this, true);
-        confirma.setTitle("Borrar Documento de Documentum");
-        confirma.etiqueta.setText("¿Desea realmente borrar el Documento con ID " + tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString() + "?");
-        confirma.etiqueta.setOpaque(false);
-        confirma.etiqueta.setBorder(BorderFactory.createEmptyBorder());
-        confirma.etiqueta.setBackground(new Color(0, 0, 0, 0));
+        if (this.tablaDocumentos.getSelectedRowCount() == 1) {
+            PantallaConfirmaDialogo confirma = new PantallaConfirmaDialogo(this, true);
+            confirma.setTitle("Borrar Documento de Documentum");
+            confirma.etiqueta.setText("¿Desea realmente borrar el Documento con ID " + this.tablaDocumentos.getModel().getValueAt(this.tablaDocumentos.convertRowIndexToModel(this.tablaDocumentos.getSelectedRow()), 1).toString() + "?");
+            confirma.etiqueta.setOpaque(false);
+            confirma.etiqueta.setBorder(BorderFactory.createEmptyBorder());
+            confirma.etiqueta.setBackground(new Color(0, 0, 0, 0));
 
-        confirma.repaint();
-        confirma.setVisible(true);
-        Boolean resultado = confirma.respuesta();
-        if (resultado) {
-            BorrarDocumento();
+            confirma.repaint();
+            confirma.setVisible(true);
+            Boolean resultado = Boolean.valueOf(confirma.respuesta());
+            String r_object_id = this.tablaDocumentos.getModel().getValueAt(this.tablaDocumentos.convertRowIndexToModel(this.tablaDocumentos.getSelectedRow()), 1).toString();
+            if (resultado) {
+                BorrarDocumento(r_object_id);
+                BuscarEnDocumentum();
+            }
+        } else if ((this.tablaDocumentos.getRowCount() > 0)
+                && (this.tablaDocumentos.getSelectedRowCount() > 0)) {
+            PantallaConfirmaDialogo confirma = new PantallaConfirmaDialogo(this, true);
+            confirma.setTitle("Borrar Documentos de Documentum");
+            confirma.etiqueta.setText("¿Desea realmente borrar los Documentos seleccionados?");
+            confirma.etiqueta.setOpaque(false);
+            confirma.etiqueta.setBorder(BorderFactory.createEmptyBorder());
+            confirma.etiqueta.setBackground(new Color(0, 0, 0, 0));
+
+            confirma.repaint();
+            confirma.setVisible(true);
+            Boolean resultado = confirma.respuesta();
+            if (resultado) {
+                int[] selectedRow = this.tablaDocumentos.getSelectedRows();
+                for (int i : selectedRow) {
+                    String id = this.tablaDocumentos.getModel().getValueAt(this.tablaDocumentos.convertRowIndexToModel(i), 1).toString();
+                    BorrarDocumento(id);
+                }
+                BuscarEnDocumentum();
+            }
         }
     }//GEN-LAST:event_opcionBorrarDocumentoActionPerformed
 
@@ -1341,6 +1377,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         if (botonBuscar.isEnabled()) {
             PantallaImportar pantallaimportar = new PantallaImportar(this, true);
             pantallaimportar.setLocationRelativeTo(this);
+            if (!textoRutaDocumentum.getText().isEmpty()) {
+                pantallaimportar.setRutadcm(textoRutaDocumentum.getText());
+            }
             pantallaimportar.setVisible(true);
         } else {
             EtiquetaEstado.setText("Debe seleccionar antes una conexión.");
@@ -1448,6 +1487,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
 
         new Thread() {
+            @Override
             public void run() {
                 barradocum = new PantallaBarra(PantallaDocumentum.this, false);
                 barradocum.setTitle("Calculando estadísticas de repositorios ...");
@@ -1499,7 +1539,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             DecimalFormat formateador = new DecimalFormat("###,###");
                             datos[lNumeroLineas][2] = formateador.format(Double.parseDouble(resultado));
                             System.out.println(repositorio + " - Ficheros: " + formateador.format(Double.parseDouble(resultado)));
-                        } catch (Exception Ex) {
+                        } catch (DfException | NumberFormatException Ex) {
                             System.out.println(Ex.getMessage());
                         }
 
@@ -1516,7 +1556,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             Double resultado = Double.parseDouble((String) getDfObjectValue(attrValue));
                             datos[lNumeroLineas][3] = util.humanReadableByteCount(Math.round(resultado), false);
                             System.out.println(repositorio + " - Tamaño de los Ficheros: " + util.humanReadableByteCount(Math.round(resultado), false));
-                        } catch (Exception Ex) {
+                        } catch (DfException | NumberFormatException Ex) {
                             System.out.println(Ex.getMessage());
                         }
                         lNumeroLineas++;
@@ -1806,7 +1846,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 String id = "";
                 try {
                     id = folder.getObjectId().toString();
-                } catch (Exception ex) {
+                } catch (DfException ex) {
 
                 }
                 EtiquetaEstado.setText("Creada carpeta " + carpeta + " con el id '" + id + "' en la ruta " + ruta);
@@ -1816,6 +1856,32 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_opcionCrearCarpetaActionPerformed
+
+    private void opcionBorrarDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionBorrarDirActionPerformed
+
+        PantallaConfirmaDialogo confirma = new PantallaConfirmaDialogo(this, true);
+        confirma.setTitle("Borrado de directorio y su contenido en Documentum");
+        String nombreDir = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
+        confirma.etiqueta.setText("¿Desea realmente borrar el Directorio y su contenido?");
+        confirma.etiqueta.setOpaque(false);
+        confirma.etiqueta.setBorder(BorderFactory.createEmptyBorder());
+        confirma.etiqueta.setBackground(new Color(0, 0, 0, 0));
+
+        confirma.repaint();
+        confirma.setVisible(true);
+        Boolean resultado = confirma.respuesta();
+        if (resultado) {
+            try {
+                String ruta = textoRutaDocumentum.getText() + "/" + tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
+                IDfSession sesion = utilDocum.conectarDocumentum();
+                IDfFolder carpeta = (IDfFolder) sesion.getObjectByPath(ruta);
+                utilDocum.BorrarRuta(carpeta);
+                BuscarEnDocumentum();
+            } catch (DfException ex) {
+                java.util.logging.Logger.getLogger(PantallaDocumentum.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_opcionBorrarDirActionPerformed
 
     public void mostrarAcercade() {
         Acercade about = new Acercade(this, true);
@@ -1868,6 +1934,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionActualizarAtributo;
     private javax.swing.JMenu opcionApariencia;
     private javax.swing.JMenuItem opcionBorradoLogico;
+    private javax.swing.JMenuItem opcionBorrarDir;
     private javax.swing.JMenuItem opcionBorrarDocumento;
     private javax.swing.JMenuItem opcionBuscar;
     private javax.swing.JMenuItem opcionCancelCheckout;
@@ -1925,6 +1992,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private void cargarAtributos(String pr_object_id) {
         final String r_object_id = pr_object_id;
         new Thread() {
+            @Override
             public void run() {
                 String mensajeborrado = "";
                 Color colormensaje = Color.BLACK;
@@ -2044,6 +2112,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         final String tipo = ptipo;
 
         new Thread() {
+            @Override
             public void run() {
                 DefaultTableModel modeloLotes = (DefaultTableModel) tablaDocumentos.getModel();
                 try {
@@ -2317,7 +2386,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         if (!fi.exists()) {
             util.sacarArchivoJar("/es/documentum/propiedades/dfc.properties", dirdfc + "dfc.properties");
         }
-        Properties prop = util.leerPropeties(dirdfc + "dfc.properties");
+        MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
         prop.setProperty("dfc.data.dir", dirdfc);
         util.escribirProperties(dirdfc + "dfc.properties", prop);
 
@@ -2444,7 +2513,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     }
 
-    private void BuscarEnDocumentum() {
+    public void BuscarEnDocumentum() {
         if (!textoIdDocumentum.getText().isEmpty()) {
             if (textoIdDocumentum.getText().length() == 16) {
                 EtiquetaEstado.setText("Buscando atributos en Documentum para el ID de Documentum " + textoIdDocumentum.getText());
@@ -2580,7 +2649,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         String r_object_id = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString();
 
         if (!r_object_id.startsWith("09")) {
-            EtiquetaEstado.setText("Sólo aplicable a Documentos");
+            EtiquetaEstado.setText("Solo aplicable a Documentos");
             return;
         }
         utilDocum.BorrarDocumento(r_object_id);
@@ -2593,6 +2662,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 cargarAtributos("");
             }
         }
+    }
+
+    private void BorrarDocumento(String r_object_id) {
+        this.utilDocum = new UtilidadesDocumentum(this.dirdfc + "dfc.properties");
+        if (!r_object_id.startsWith("09")) {
+            this.EtiquetaEstado.setText("Solo aplicable a Documentos");
+            return;
+        }
+        this.utilDocum.BorrarDocumento(r_object_id);
     }
 
     private void BorradoLogicoDocumento() {
@@ -2729,7 +2807,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     try {
                         ClassPathUpdater.add(dirdfc);
                         ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-                    } catch (Exception ex) {
+                    } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                         Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
                     }
                     UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");

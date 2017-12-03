@@ -472,13 +472,13 @@ public class Utilidades {
         }
     }
 
-    public Properties leerPropeties(String archivo) {
+    public MiProperties leerPropeties(String archivo) {
         DIGIERROR = "";
-        Properties props = null;
+        MiProperties props = null;
         try {
             //Cargamos el archivo 
             FileInputStream ini = new FileInputStream(archivo);
-            props = new Properties();
+            props = new MiProperties();
             props.load(ini);
             ini.close();
         } catch (IOException ex) {
@@ -488,7 +488,7 @@ public class Utilidades {
         return props;
     }
 
-    public void escribirProperties(String archivo, Properties props) {
+    public void escribirProperties(String archivo, MiProperties props) {
         DIGIERROR = "";
         try {
             //Cargamos el archivo 
@@ -507,7 +507,7 @@ public class Utilidades {
 
     public String separador() {
         String SO = so();
-        String separador = "\\";
+        String separador = "/";
         if (!SO.toLowerCase().contains("windows")) {
             separador = "/";
         }
@@ -553,11 +553,11 @@ public class Utilidades {
     }
 
     public String usuarioHome() {
-        return System.getProperty("user.home");
+        return System.getProperty("user.home").replace("\\", "/");
     }
 
     public String usuarioDir() {
-        return System.getProperty("user.dir");
+        return System.getProperty("user.dir").replace("\\", "/");
     }
 
 //    public String wsServidor() {
@@ -766,8 +766,8 @@ public class Utilidades {
         return bytes;
     }
 
-    public Properties leerConfiguracion(String ruta) {
-        Properties props = new Properties();
+    public MiProperties leerConfiguracion(String ruta) {
+        MiProperties props = new MiProperties();
 
         DIGIERROR = "";
         try {
@@ -776,7 +776,7 @@ public class Utilidades {
             if (in == null) {
                 escribeLog("Error al cargar el fichero de propiedades: " + ruta);
             } else {
-                props = new java.util.Properties();
+                props = new MiProperties();
                 props.load(in);
             }
         } catch (IOException ex) {
@@ -1048,6 +1048,20 @@ public class Utilidades {
         return number;
     }
 
+    public static void recorrerDir(String ruta) {
+        File dir = new File(ruta);
+        File listFile[] = dir.listFiles();
+        if (listFile != null) {
+            for (int i = 0; i < listFile.length; i++) {
+                if (listFile[i].isDirectory()) {
+                    recorrerDir(listFile[i].getPath());
+                } else {
+                    System.out.println(listFile[i].getPath());
+                }
+            }
+        }
+    }
+
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
         /*
@@ -1058,7 +1072,8 @@ public class Utilidades {
         }
          */
 
-        util.borrarFichero("C:\\Users\\E274399\\documentumdcfs\\renditions", "**.xml*");
+       // util.borrarFichero("C:/Users/E274399/documentumdcfs/renditions", "**.xml*");
+       util.recorrerDir("c:/tmp");
     }
 }
 

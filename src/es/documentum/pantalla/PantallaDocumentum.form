@@ -28,11 +28,19 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="opcionBorrarDocumento">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Borrar Documento"/>
-            <Property name="toolTipText" type="java.lang.String" value="Borrar todas las versiones de un Documento"/>
+            <Property name="text" type="java.lang.String" value="Borrar Documentos"/>
+            <Property name="toolTipText" type="java.lang.String" value="Borrar todas las versiones de los Documentos seleccionados"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionBorrarDocumentoActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="opcionBorrarDir">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Borrar directorio y su contenido"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionBorrarDirActionPerformed"/>
           </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="opcionBorradoLogico">

@@ -5,12 +5,12 @@ import com.documentum.fc.client.IDfDocbaseMap;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.impl.util.RegistryPasswordUtils;
+import es.documentum.utilidades.MiProperties;
 import es.documentum.utilidades.Utilidades;
 import static es.documentum.utilidades.Utilidades.escribeLog;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Color;
 import java.io.File;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -27,7 +27,6 @@ public class PantallaConexion extends javax.swing.JDialog {
     public static String repositorio = "";
     public static String versiondocumentum = "";
     public static String idrepositorio = "";
-
     public static String puerto = "";
     public static String usuario = "";
     public static String clave = "";
@@ -42,14 +41,15 @@ public class PantallaConexion extends javax.swing.JDialog {
         this.idsesion = idsesion;
     }
 
-    private String dirdfc = "";
-    private Utilidades util = new Utilidades();
+    private final Utilidades util = new Utilidades();
     public static PantallaDocumentum ventanapadre = null;
     Color colornoconex = new Color(255, 200, 200);
     Color colorconex = new Color(200, 255, 200);
     public Boolean conexionOK = false;
     String boton = "";
-
+    String dirbase = util.usuarioHome() + util.separador() + "dcmfilestore";
+    String dirdfc = dirbase + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+    
     public static String getValor() {
         return valor;
     }
@@ -99,7 +99,7 @@ public class PantallaConexion extends javax.swing.JDialog {
         ventanapadre = parent;
         dirdfc = ventanapadre.dirdfc;
         initComponents();
-        setTitle("Conexión a Documentum");
+        setTitle("Tipos Documentales / Filestores");
         cargarLista();
         setLocationRelativeTo(ventanapadre);
         setVisible(true);
@@ -266,30 +266,26 @@ public class PantallaConexion extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(PanelSeleccion)
+                        .addGap(33, 33, 33))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(botonTestConex, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(botonSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                        .addComponent(botonTestConex, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(PanelSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(138, 138, 138)
-                                .addComponent(botonConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(textoDocbroker, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -297,17 +293,29 @@ public class PantallaConexion extends javax.swing.JDialog {
                                     .addComponent(textoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(textoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(comboRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textoRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                                    .addComponent(textoRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(botonSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(botonConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67))))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(EtiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(2, 2, 2))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {botonGuardar, botonSalir, botonSelecionar, botonTestConex});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PanelSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -323,22 +331,20 @@ public class PantallaConexion extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(textoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
                         .addComponent(botonConectar)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(comboRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))
-                    .addComponent(PanelSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addComponent(textoRepositorio, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(botonGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(botonGuardar)
                     .addComponent(botonSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonSalir, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(botonSalir)
                     .addComponent(botonTestConex))
                 .addGap(18, 18, 18)
                 .addComponent(EtiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -348,6 +354,8 @@ public class PantallaConexion extends javax.swing.JDialog {
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {botonGuardar, botonSalir, botonSelecionar, botonTestConex});
 
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel5, textoPassword, textoUsuario});
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -355,7 +363,7 @@ public class PantallaConexion extends javax.swing.JDialog {
         String directorio = dirdfc + "repos" + util.separador() + textoDocbroker.getText() + util.separador();
         util.crearDirectorio(directorio);
         util.copiarFichero(dirdfc + "dfc.properties", directorio + "dfc.properties");
-        Properties prop = util.leerPropeties(dirdfc + "dfc.properties");
+        MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
         prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
         prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
         prop.setProperty("usuario", textoUsuario.getText());
@@ -409,7 +417,7 @@ public class PantallaConexion extends javax.swing.JDialog {
             if (ListaSeleccion.getSelectedIndex() >= 0) {
                 String directoriodfc = ListaSeleccion.getModel().getElementAt(ListaSeleccion.getSelectedIndex()).toString();
                 String directorio = dirdfc + "repos" + util.separador() + directoriodfc + util.separador();
-                Properties prop = util.leerPropeties(directorio + "dfc.properties");
+                MiProperties prop = util.leerPropeties(directorio + "dfc.properties");
                 textoDocbroker.setText(prop.getProperty("dfc.docbroker.host[0]"));
                 textoPuerto.setText(prop.getProperty("dfc.docbroker.port[0]"));
                 textoRepositorio.setText(prop.getProperty("repositorio"));
@@ -429,7 +437,7 @@ public class PantallaConexion extends javax.swing.JDialog {
         if (ComprobarValores()) {
             botonTestConex.setEnabled(false);
             EtiquetaPanel.setText("Estableciendo Conexión con Documentum ...");
-            Properties prop = util.leerPropeties(dirdfc + "dfc.properties");
+            MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
             prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
             prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
             prop.setProperty("usuario", textoUsuario.getText());
@@ -470,7 +478,7 @@ public class PantallaConexion extends javax.swing.JDialog {
                         String docbaseid = dfDocbaseMap.getDocbaseId(i);
                         System.out.println(docbaseName + "\t " + docbaseid + "(" + Integer.toHexString(Integer.parseInt(docbaseid)) + ")\t->\t" + docbaseDescription);
                     }
-                } catch (Exception ex) {
+                } catch (DfException | NumberFormatException ex) {
 
                 }
 
@@ -485,7 +493,7 @@ public class PantallaConexion extends javax.swing.JDialog {
 
     private void ListaSeleccionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaSeleccionMousePressed
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && ListaSeleccion.getModel().getSize() > 0) {
-            popupmenu.show(evt.getComponent(), evt.getX(), evt.getY());;
+            popupmenu.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_ListaSeleccionMousePressed
 
@@ -524,6 +532,7 @@ public class PantallaConexion extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 PantallaConexion dialog = new PantallaConexion(ventanapadre, true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -589,7 +598,7 @@ public class PantallaConexion extends javax.swing.JDialog {
                 directorio = directorio + "repos" + util.separador() + ListaSeleccion.getModel().getElementAt(ListaSeleccion.getSelectedIndex()) + util.separador();
             }
         }
-        Properties prop = util.leerPropeties(directorio + "dfc.properties");
+        MiProperties prop = util.leerPropeties(directorio + "dfc.properties");
         prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
         prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
         prop.setProperty("repositorio", textoRepositorio.getText());
@@ -641,7 +650,7 @@ public class PantallaConexion extends javax.swing.JDialog {
     private IDfClient conectar_bocbroker() {
         comboRepositorio.removeAllItems();
         if (ComprobarValores()) {
-            Properties prop = util.leerPropeties(dirdfc + "dfc.properties");
+            MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
             prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
             prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
             prop.setProperty("usuario", textoUsuario.getText());

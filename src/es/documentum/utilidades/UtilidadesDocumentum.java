@@ -931,6 +931,48 @@ public class UtilidadesDocumentum {
         return folder;
     }
 
+    public IDfFolder crearCarpeta(String path) {
+        IDfSession session = conectarDocumentum();
+        if (session == null) {
+            if (ERROR.isEmpty()) {
+                ERROR = "Error al crear sesión en Documentum (crearCarpeta)";
+            }
+            return null;
+        }
+
+        IDfFolder folder = null;
+        try {
+            folder = session.getFolderByPath(path);
+            if (folder != null) {
+                return folder;
+            }
+
+            int slashIndex = path.lastIndexOf('/');
+            String name = path.substring(slashIndex + 1);
+            String parent = path.substring(0, slashIndex);
+            synchronized (("lock-" + path).intern()) {
+                folder = session.getFolderByPath(path);
+                if (folder != null) {
+                    return folder;
+                }
+                if ("".equals(parent) || "/".equals(parent)) {
+                    folder = (IDfFolder) session.newObject("dm_cabinet");
+                    folder.setObjectName(name);
+                    folder.save();
+                } else {
+                    crearCarpeta(session, parent);
+                    folder = (IDfFolder) session.newObject("dm_folder");
+                    folder.setObjectName(name);
+                    folder.link(parent);
+                    folder.save();
+                }
+            }
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al crear carpeta en Documentum () - Error: " + ex.getMessage());
+        }
+        return folder;
+    }
+
     public boolean EsUsuarioAdmin(String usuario) {
         boolean resultado = false;
 
@@ -955,8 +997,8 @@ public class UtilidadesDocumentum {
         boolean resultado = true;
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
-            if (ERROR.isEmpty()) {
-                ERROR = "Error al crear sesión en Documentum (BorrarDocumento)";
+            if (this.ERROR.isEmpty()) {
+                this.ERROR = "Error al crear sesi�n en Documentum (BorrarDocumento)";
             }
             return false;
         }
@@ -965,17 +1007,16 @@ public class UtilidadesDocumentum {
             IDfDocument Documento = (IDfDocument) sesion.getObject(idObj);
             Documento.destroyAllVersions();
         } catch (DfException ex) {
-            ERROR = "Error al Borrar el documento con ID: " + r_object_id + " - Error: " + ex.getMessage();
-            Utilidades.escribeLog(ERROR);
+            this.ERROR = ("Error al Borrar el documento con ID: " + r_object_id + " - Error: " + ex.getMessage());
+            Utilidades.escribeLog(this.ERROR);
             return false;
         }
-
-        ERROR = "";
+        this.ERROR = "";
         try {
             sesion.disconnect();
         } catch (DfException ex) {
-            Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
-            ERROR = "Error al desconectar la sesión en Documentum  (BorrarDocumento). - " + ex.getMessage();
+            Utilidades.escribeLog("Error al desconectar la sesi�n en Documentum  - " + ex.getMessage());
+            this.ERROR = ("Error al desconectar la sesi�n en Documentum  (BorrarDocumento). - " + ex.getMessage());
         }
         return resultado;
     }
@@ -1103,6 +1144,7 @@ public class UtilidadesDocumentum {
                 if (ventanapadre.getBarradocum().PARAR) {
                     seguir = false;
                     ventanapadre.getBarradocum().setPARAR(false);
+                    ventanapadre.getBarradocum().dispose();
                 }
                 ArrayList<AtributosDocumentum> atris = DameTodosAtributos(doc.getString("r_object_id"));
                 if (atris.size() > 0) {
@@ -1676,8 +1718,8 @@ public class UtilidadesDocumentum {
                     IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
                     IDfValue attrValue = row.getValue("name");
                     tipo = getDfObjectValue(attrValue).toString();
-                } catch (DfException e) {
-                    tipo = "-1";
+                } catch (Exception e) {
+                    tipo = "unknown";
                 }
         }
         return tipo;
@@ -2570,5 +2612,22 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error al comprobar si el servidor es Windows. (isWindowsServer) Error: " + ex.getMessage());
         }
         return false;
+    }
+
+    public Boolean BorrarRuta(IDfSysObject sysObj) {
+        boolean resultado = true;
+        try {
+            IDfClientX clientx = new DfClientX();
+            IDfDeleteOperation deleteOperation = clientx.getDeleteOperation();
+            deleteOperation.setVersionDeletionPolicy(IDfDeleteOperation.ALL_VERSIONS);
+            deleteOperation.enablePopulateWithReferences(true);
+            deleteOperation.add(sysObj);
+            sysObj.getSession().getMessage(2);
+            resultado = deleteOperation.execute();
+        } catch (DfException e) {
+
+        }
+
+        return resultado;
     }
 }

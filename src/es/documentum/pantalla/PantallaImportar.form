@@ -132,33 +132,33 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="panelEstado" max="32767" attributes="0"/>
-          <Component id="panelDql" alignment="0" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-              <Component id="botonEjecutar" min="-2" pref="115" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="302" max="-2" attributes="0"/>
-              <Component id="botonSalir" min="-2" pref="115" max="-2" attributes="0"/>
-              <EmptySpace pref="33" max="32767" attributes="0"/>
+              <Component id="botonEjecutar" linkSize="1" min="-2" pref="115" max="-2" attributes="0"/>
+              <EmptySpace pref="403" max="32767" attributes="0"/>
+              <Component id="botonSalir" linkSize="1" min="-2" pref="115" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Component id="panelImportar" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="panelDql" max="32767" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="panelImportar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="botonEjecutar" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-                  <Component id="botonSalir" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                  <Component id="botonEjecutar" linkSize="2" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
+                  <Component id="botonSalir" linkSize="2" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="panelEstado" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="panelDql">
+    <Container class="javax.swing.JPanel" name="panelImportar">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -170,25 +170,33 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel2" min="-2" pref="251" max="-2" attributes="0"/>
                           <Component id="TextoCarpetaDocumentum" alignment="0" max="32767" attributes="0"/>
-                          <Component id="comboTipoDocumental" alignment="0" pref="532" max="32767" attributes="0"/>
+                          <Component id="comboTipoDocumental" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel3" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
+                          <Component id="jLabel4" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="TextoFichero" min="-2" pref="495" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="LabelFicheroImportar" min="-2" pref="251" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                                      <Component id="RBFichero" min="-2" pref="86" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="RBDirectorio" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="TextoFichero" min="-2" pref="495" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="botonSelFichero" min="-2" pref="27" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jLabel3" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jLabel5" alignment="0" min="-2" pref="251" max="-2" attributes="0"/>
+                      <Component id="LabelNombreFichero" alignment="0" min="-2" pref="251" max="-2" attributes="0"/>
                       <Component id="TextoNombreFichero" alignment="0" min="-2" pref="495" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="31" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -196,14 +204,18 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="LabelFicheroImportar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="RBFichero" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="RBDirectorio" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="TextoFichero" min="-2" max="-2" attributes="0"/>
                       <Component id="botonSelFichero" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <Component id="LabelNombreFichero" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="TextoNombreFichero" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -220,7 +232,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="LabelFicheroImportar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fichero a Importar"/>
           </Properties>
@@ -263,7 +275,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonSelFicheroActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel5">
+        <Component class="javax.swing.JLabel" name="LabelNombreFichero">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nombre del fichero"/>
           </Properties>
@@ -271,6 +283,22 @@
         <Component class="javax.swing.JTextField" name="TextoNombreFichero">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextoNombreFicheroActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="RBFichero">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fichero"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RBFicheroActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="RBDirectorio">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Directorio"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RBDirectorioActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -292,7 +320,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="textoLog" alignment="1" pref="31" max="32767" attributes="0"/>
+              <Component id="textoLog" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -300,6 +328,12 @@
         <Component class="javax.swing.JTextField" name="textoLog">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial" size="12" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="33" red="0" type="rgb"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textoLogMousePressed"/>
