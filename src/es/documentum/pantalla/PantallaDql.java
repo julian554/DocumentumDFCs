@@ -3,6 +3,7 @@ package es.documentum.pantalla;
 import com.documentum.fc.client.IDfCollection;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfTypedObject;
+import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.IDfAttr;
 import com.documentum.fc.common.IDfValue;
 import es.documentum.utilidades.ClassPathUpdater;
@@ -21,6 +22,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -717,6 +720,13 @@ public class PantallaDql extends javax.swing.JFrame {
         };
         tablaResultados.setModel(modeloLotes);
         System.gc();
+        if (sesion.isConnected()) {
+            try {
+                sesion.disconnect();
+            } catch (DfException ex) {
+                Utilidades.escribeLog("Error al desconecta la sesión de Documentum (PantallaDql)  - Error: " + ex.getMessage());
+            }
+        }
         this.dispose();
     }
 

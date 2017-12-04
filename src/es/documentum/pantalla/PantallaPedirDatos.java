@@ -2,35 +2,50 @@ package es.documentum.pantalla;
 
 import es.documentum.utilidades.Utilidades;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 
 public class PantallaPedirDatos extends javax.swing.JDialog {
-    
-    public String carpeta = "";
-    public String ruta = "";
+
+    public String carpeta;
+    public String ruta;
+    public String textoEtiquetaCarpeta;
+    public String textoEtiquetaRuta;
+    private String accion;
     public static PantallaDocumentum ventanapadre = null;
-    
+
     public String getCarpeta() {
         return carpeta;
     }
-    
+
     public String getRuta() {
         return ruta;
     }
-    
+
     public void setCarpeta(String valor) {
         carpeta = valor;
     }
-    
+
     public void setRuta(String valor) {
         ruta = valor;
     }
-    
+
+    public void setEtiquetaCarpeta(String etiquetaCarpeta) {
+        this.etiquetaCarpeta.setText(etiquetaCarpeta);
+    }
+
+    public void setEtiquetaRuta(String etiquetaRuta) {
+        this.etiquetaRuta.setText(etiquetaRuta);
+    }
+
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
+
     public PantallaPedirDatos(PantallaDocumentum parent, boolean modal) {
         super(parent, modal);
         ventanapadre = parent;
         initComponents();
         setLocationRelativeTo(ventanapadre);
-        
     }
 
     /**
@@ -45,9 +60,9 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         popupmenu = new javax.swing.JPopupMenu();
         opcionPegar = new javax.swing.JMenuItem();
         botonAceptar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        etiquetaCarpeta = new javax.swing.JLabel();
         textoCarpeta = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        etiquetaRuta = new javax.swing.JLabel();
         textoRutaSO = new javax.swing.JTextField();
         botonCancelar = new javax.swing.JButton();
         EtiquetaPanel = new javax.swing.JLabel();
@@ -76,10 +91,10 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setText("Carpeta de Documentum");
-        jLabel1.setMaximumSize(new java.awt.Dimension(41, 22));
-        jLabel1.setMinimumSize(new java.awt.Dimension(41, 22));
-        jLabel1.setPreferredSize(new java.awt.Dimension(41, 22));
+        etiquetaCarpeta.setText("Carpeta de Documentum");
+        etiquetaCarpeta.setMaximumSize(new java.awt.Dimension(41, 22));
+        etiquetaCarpeta.setMinimumSize(new java.awt.Dimension(41, 22));
+        etiquetaCarpeta.setPreferredSize(new java.awt.Dimension(41, 22));
 
         textoCarpeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,7 +102,7 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("Ruta de destino del sistema de ficheros");
+        etiquetaRuta.setText("Ruta de destino del sistema de ficheros");
 
         textoRutaSO.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,6 +122,7 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         });
 
         EtiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        EtiquetaPanel.setForeground(new java.awt.Color(0, 0, 153));
         EtiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         EtiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -139,10 +155,10 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(etiquetaRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 344, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(etiquetaCarpeta, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -163,11 +179,11 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(etiquetaCarpeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(textoCarpeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(etiquetaRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textoRutaSO, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -233,7 +249,7 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         fc.setDialogTitle("Directorio de destino");
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fc.setAcceptAllFileFilterUsed(false);
-        
+
         int x = fc.showOpenDialog(this);
         if (x == JFileChooser.CANCEL_OPTION || x == JFileChooser.ERROR_OPTION) {
             return;
@@ -266,18 +282,18 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
     private javax.swing.JLabel EtiquetaPanel;
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonCancelar;
-    private javax.swing.JButton botonNavegar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    public javax.swing.JButton botonNavegar;
+    private javax.swing.JLabel etiquetaCarpeta;
+    private javax.swing.JLabel etiquetaRuta;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JPopupMenu popupmenu;
-    private javax.swing.JTextField textoCarpeta;
-    private javax.swing.JTextField textoRutaSO;
+    public javax.swing.JTextField textoCarpeta;
+    public javax.swing.JTextField textoRutaSO;
     // End of variables declaration//GEN-END:variables
 
     public void asignariconos() {
     }
-    
+
     private Boolean ComprobarValores() {
         Boolean resultado = true;
         if (textoCarpeta.getText().isEmpty()) {
@@ -290,27 +306,28 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
             textoRutaSO.requestFocus();
             return false;
         }
-        
-        if (ventanapadre.utilDocum.existeCarpeta(textoCarpeta.getText()) == false) {
-            EtiquetaPanel.setText("La carpeta indicada parece que no existe en Documentum");
-            textoCarpeta.requestFocus();
-            return false;
-        }
-        
-        if (!ventanapadre.util.existeDirectorio(textoRutaSO.getText())) {
-            if (!ventanapadre.util.crearDirectorio(textoRutaSO.getText())) {
-                EtiquetaPanel.setText("Debe indicar una ruta de destino válida");
+
+        if (accion.equals("ExportarCarpeta")) {
+            if (ventanapadre.utilDocum.existeCarpeta(textoCarpeta.getText()) == false) {
+                EtiquetaPanel.setText("La carpeta indicada parece que no existe en Documentum");
+                textoCarpeta.requestFocus();
+                return false;
+            }
+
+            if (!ventanapadre.util.existeDirectorio(textoRutaSO.getText())) {
+                if (!ventanapadre.util.crearDirectorio(textoRutaSO.getText())) {
+                    EtiquetaPanel.setText("Debe indicar una ruta de destino válida");
+                    textoRutaSO.requestFocus();
+                    return false;
+                }
+            }
+
+            if (ventanapadre.util.discoLibre(textoRutaSO.getText()) == 0) {
+                EtiquetaPanel.setText("Debe indicar una ruta con suficiente espacio disponible");
                 textoRutaSO.requestFocus();
                 return false;
             }
         }
-        
-        if (ventanapadre.util.discoLibre(textoRutaSO.getText()) == 0) {
-            EtiquetaPanel.setText("Debe indicar una ruta con suficiente espacio disponible");
-            textoRutaSO.requestFocus();
-            return false;
-        }
-        
         return resultado;
     }
 }

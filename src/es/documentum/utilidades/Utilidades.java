@@ -15,7 +15,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -89,7 +88,7 @@ public class Utilidades {
 
     public String crearDirBase() {
         String separador = separador();
-        String dirbase = "";
+        String dirbase;
         dirbase = usuarioHome() + separador + "DocumentumDFCs";
         // Siempre tiene que existir la ruta "DocumentumDFCs" en el "home" del usuario
         crearDirectorio(dirbase);
@@ -148,7 +147,7 @@ public class Utilidades {
                         }
                     }
                 } else {
-                    String condicion=nombre;
+                    String condicion = nombre;
                     if (nombre.startsWith("*")) {
                         condicion = nombre.substring(1, nombre.length());
                     }
@@ -205,13 +204,12 @@ public class Utilidades {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         //odd: the Object param of getContents is not currently used
         Transferable contents = clipboard.getContents(null);
-        boolean hasTransferableText
-                = (contents != null)
+        boolean hasTransferableText = (contents != null)
                 && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
         if (hasTransferableText) {
             try {
                 resultado = (String) contents.getTransferData(DataFlavor.stringFlavor);
-            } catch (UnsupportedFlavorException | IOException ex) {
+            } catch (Exception ex) {
                 System.out.println(ex);
             }
         }
@@ -287,7 +285,7 @@ public class Utilidades {
     }
 
     public Boolean copiarFichero(String origen, String destino) {
-        String comando = "";
+        String comando;
 
         if (so().toLowerCase().startsWith("windows")) {
             comando = "cmd /c copy /Y \"" + origen + "\"" + " \"" + destino + "\"";
@@ -299,7 +297,7 @@ public class Utilidades {
     }
 
     public Boolean renombrarFichero(String origen, String destino) {
-        String comando = "";
+        String comando;
 
         if (so().toLowerCase().startsWith("windows")) {
             comando = "ren \"" + origen + "\"" + " \"" + destino + "\"";
@@ -318,7 +316,7 @@ public class Utilidades {
         FileOutputStream dest;
         try {
             //Nuestro InputStream
-            BufferedInputStream origen = null;
+            BufferedInputStream origen;
             dest = new FileOutputStream(archivozip);
             //Indicamos que será un archivo ZIP
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
@@ -348,7 +346,7 @@ public class Utilidades {
                 }
             }
             out.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al crear el fichero ZIP -zipArchivos- '" + archivozip + "'. Error - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
             return false;
@@ -363,7 +361,7 @@ public class Utilidades {
         FileOutputStream dest;
         try {
             //Nuestro InputStream
-            BufferedInputStream origen = null;
+            BufferedInputStream origen;
             dest = new FileOutputStream(archivozip);
             //Indicamos que será un archivo ZIP
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
@@ -382,7 +380,7 @@ public class Utilidades {
             }
             origen.close();
             out.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al crear el fichero ZIP -zipArchivo- '" + archivozip + "'. Error - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
             return false;
@@ -394,7 +392,7 @@ public class Utilidades {
     public void unzip(String zipFilePath, String destDirectory) {
         DIGIERROR = "";
         try {
-            ZipInputStream zipIn = null;
+            ZipInputStream zipIn;
             File destDir = new File(destDirectory);
             if (!destDir.exists()) {
                 destDir.mkdir();
@@ -416,7 +414,7 @@ public class Utilidades {
                 entry = zipIn.getNextEntry();
             }
             zipIn.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al extraer -unzip- del fichero ZIP " + zipFilePath + " - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -425,7 +423,7 @@ public class Utilidades {
     public void unzip(String zipFilePath, String destDirectory, String fichero) {
         DIGIERROR = "";
         try {
-            ZipInputStream zipIn = null;
+            ZipInputStream zipIn;
             File destDir = new File(destDirectory);
             if (!destDir.exists()) {
                 destDir.mkdir();
@@ -451,7 +449,7 @@ public class Utilidades {
                 }
             }
             zipIn.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al extraer " + fichero + " -unzip- del fichero ZIP " + zipFilePath + " - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -459,7 +457,7 @@ public class Utilidades {
 
     private void extractFile(ZipInputStream zipIn, String filePath) {
         DIGIERROR = "";
-        BufferedOutputStream bos = null;
+        BufferedOutputStream bos;
         try {
             bos = new BufferedOutputStream(new FileOutputStream(filePath));
             byte[] bytesIn = new byte[BUFFER_SIZE];
@@ -474,23 +472,23 @@ public class Utilidades {
         }
     }
 
-    public Properties leerPropeties(String archivo) {
+    public MiProperties leerPropeties(String archivo) {
         DIGIERROR = "";
-        Properties props = null;
+        MiProperties props = null;
         try {
             //Cargamos el archivo 
             FileInputStream ini = new FileInputStream(archivo);
-            props = new Properties();
+            props = new MiProperties();
             props.load(ini);
             ini.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al leer el fichero de propiedades " + archivo + " - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
         return props;
     }
 
-    public void escribirProperties(String archivo, Properties props) {
+    public void escribirProperties(String archivo, MiProperties props) {
         DIGIERROR = "";
         try {
             //Cargamos el archivo 
@@ -500,7 +498,7 @@ public class Utilidades {
             props.store(ops, "\n");
             ops.flush();
             ops.close();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al escribir en el fichero de propiedades " + archivo + " - " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -509,7 +507,7 @@ public class Utilidades {
 
     public String separador() {
         String SO = so();
-        String separador = "\\";
+        String separador = "/";
         if (!SO.toLowerCase().contains("windows")) {
             separador = "/";
         }
@@ -555,27 +553,26 @@ public class Utilidades {
     }
 
     public String usuarioHome() {
-        return System.getProperty("user.home");
+        return System.getProperty("user.home").replace("\\", "/");
     }
 
     public String usuarioDir() {
-        return System.getProperty("user.dir");
+        return System.getProperty("user.dir").replace("\\", "/");
     }
 
-    public String wsServidor() {
-        Utilidades util = new Utilidades();
-        Properties prop = util.leerConfiguracion("es/seap/minhap/ws/propiedades/ws-servidor.properties");
-        String servidor = prop.getProperty("servidor");
-        return servidor;
-    }
-
-    public String wsUrl() {
-        Utilidades util = new Utilidades();
-        Properties prop = util.leerConfiguracion("es/seap/minhap/ws/propiedades/ws-servidor.properties");
-        String wsurl = prop.getProperty("wsurl");
-        return wsurl;
-    }
-
+//    public String wsServidor() {
+//        Utilidades util = new Utilidades();
+//        Properties prop = util.leerConfiguracion("es/seap/minhap/ws/propiedades/ws-servidor.properties");
+//        String servidor = prop.getProperty("servidor");
+//        return servidor;
+//    }
+//
+//    public String wsUrl() {
+//        Utilidades util = new Utilidades();
+//        Properties prop = util.leerConfiguracion("es/seap/minhap/ws/propiedades/ws-servidor.properties");
+//        String wsurl = prop.getProperty("wsurl");
+//        return wsurl;
+//    }
     public String versionJavaBits() {
         return System.getProperty("os.arch");
     }
@@ -586,7 +583,7 @@ public class Utilidades {
         try {
             //     InetAddress address = InetAddress.getByName("localhost");
             InetAddress address = InetAddress.getLocalHost();
-            address = InetAddress.getLocalHost();
+            //     address = InetAddress.getLocalHost();
             // Coge la dirección ip como un array de bytes
             byte[] bytes = address.getAddress();
             // Convierte los bytes de la dirección ip a valores sin
@@ -635,7 +632,7 @@ public class Utilidades {
             in.close();
             out.close();
 
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog(ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -769,8 +766,8 @@ public class Utilidades {
         return bytes;
     }
 
-    public Properties leerConfiguracion(String ruta) {
-        Properties props = new Properties();
+    public MiProperties leerConfiguracion(String ruta) {
+        MiProperties props = new MiProperties();
 
         DIGIERROR = "";
         try {
@@ -779,10 +776,10 @@ public class Utilidades {
             if (in == null) {
                 escribeLog("Error al cargar el fichero de propiedades: " + ruta);
             } else {
-                props = new java.util.Properties();
+                props = new MiProperties();
                 props.load(in);
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             escribeLog("Error al cargar el fichero de propiedades " + ruta + ". Error: " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
@@ -877,7 +874,7 @@ public class Utilidades {
     }
 
     public List<String> comandoRemoto(String servidor, String usuario, String clave, String comando, int puerto) {
-        List<String> resultado = new ArrayList<String>();
+        List<String> resultado = new ArrayList<>();
         try {
             JSch jsch = new JSch();
             Session sesion = jsch.getSession(usuario, servidor, puerto);
@@ -899,6 +896,15 @@ public class Utilidades {
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
                 resultado.add(line);
+            }
+
+            if (readererro.ready()) {
+                System.out.println("Salida de error ...");
+                resultado.add("Salida de error ...");
+                while ((line = readererro.readLine()) != null) {
+                    System.out.println(line);
+                    resultado.add(line);
+                }
             }
 
             canalexec.disconnect();
@@ -967,7 +973,7 @@ public class Utilidades {
     }
 
     public ArrayList<String> listaTextoSinDuplicados(ArrayList<String> lista) {
-        ArrayList<String> listasin = new ArrayList<String>(new HashSet<String>(lista));
+        ArrayList<String> listasin = new ArrayList<>(new HashSet<>(lista));
         Collections.sort(listasin);
         return listasin;
     }
@@ -1042,6 +1048,20 @@ public class Utilidades {
         return number;
     }
 
+    public static void recorrerDir(String ruta) {
+        File dir = new File(ruta);
+        File listFile[] = dir.listFiles();
+        if (listFile != null) {
+            for (int i = 0; i < listFile.length; i++) {
+                if (listFile[i].isDirectory()) {
+                    recorrerDir(listFile[i].getPath());
+                } else {
+                    System.out.println(listFile[i].getPath());
+                }
+            }
+        }
+    }
+
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
         /*
@@ -1052,8 +1072,8 @@ public class Utilidades {
         }
          */
 
-        util.borrarFichero("C:\\Users\\E274399\\documentumdcfs\\renditions", "**.xml*");
-
+       // util.borrarFichero("C:/Users/E274399/documentumdcfs/renditions", "**.xml*");
+       util.recorrerDir("c:/tmp");
     }
 }
 
