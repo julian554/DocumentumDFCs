@@ -85,7 +85,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     String puerto = "";
     String versiondfcs = "";
     boolean esadmin = false;
-    ArrayList<AtributosDocumentum> atributos = new ArrayList<AtributosDocumentum>();
+    ArrayList<AtributosDocumentum> atributos = new ArrayList<>();
     public javax.swing.Timer timer = new javax.swing.Timer(1000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -1279,7 +1279,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             SwingUtilities.updateComponentTreeUI(this);
             System.gc();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             Utilidades.escribeLog("Error al cambiar Aspecto por Defecto - " + ex.getMessage());
         }
     }//GEN-LAST:event_opcionRBPorDefectoActionPerformed
@@ -1328,7 +1328,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
             confirma.repaint();
             confirma.setVisible(true);
-            Boolean resultado = Boolean.valueOf(confirma.respuesta());
+            Boolean resultado = confirma.respuesta();
             String r_object_id = this.tablaDocumentos.getModel().getValueAt(this.tablaDocumentos.convertRowIndexToModel(this.tablaDocumentos.getSelectedRow()), 1).toString();
             if (resultado) {
                 BorrarDocumento(r_object_id);
@@ -1568,14 +1568,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     } catch (DfException Ex) {
                         System.out.println(Ex.getMessage());
                     }
-                    String[] cabecera = {"Servidor", "Repositorio", "Nº de Ficheros", "Tamaño de los Ficheros"};
-                    DefaultTableModel modeloLotes = new DefaultTableModel() {
-                        @Override
-                        public boolean isCellEditable(int fila, int columna) {
-                            return false;
-                        }
-                    };
                     if (datos.length > 0) {
+                        String[] cabecera = {"Servidor", "Repositorio", "Nº de Ficheros", "Tamaño de los Ficheros"};
+                        DefaultTableModel modeloLotes = new DefaultTableModel() {
+                            @Override
+                            public boolean isCellEditable(int fila, int columna) {
+                                return false;
+                            }
+                        };
+
                         modeloLotes = new DefaultTableModel(datos, cabecera) {
                             @Override
                             public boolean isCellEditable(int fila, int columna) {
@@ -2399,7 +2400,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "cryptojce.jar");
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "cryptojcommon.jar");
-        } catch (Exception ex) {
+        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
 
