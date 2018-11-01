@@ -11,6 +11,7 @@ import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.IDfValue;
 import es.documentum.utilidades.ClassPathUpdater;
 import es.documentum.utilidades.Utilidades;
+import static es.documentum.utilidades.Utilidades.escribeLog;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Image;
@@ -27,7 +28,7 @@ import javax.swing.JFileChooser;
  *
  * @author julian.collado
  */
-public class PantallaImportar extends javax.swing.JFrame {
+public class PantallaImportar extends javax.swing.JDialog {
 
     Utilidades util = new Utilidades();
     PantallaBarra barradocum = null;
@@ -61,7 +62,7 @@ public class PantallaImportar extends javax.swing.JFrame {
     }
 
     private void inicializar() {
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
@@ -70,6 +71,7 @@ public class PantallaImportar extends javax.swing.JFrame {
         }
         utilidadesdocumentum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
         RBFichero.setSelected(true);
+        CheckCrearDir.setVisible(false);
     }
 
     protected static Image getLogo() {
@@ -110,6 +112,7 @@ public class PantallaImportar extends javax.swing.JFrame {
         TextoNombreFichero = new javax.swing.JTextField();
         RBFichero = new javax.swing.JRadioButton();
         RBDirectorio = new javax.swing.JRadioButton();
+        CheckCrearDir = new javax.swing.JCheckBox();
         panelEstado = new javax.swing.JPanel();
         textoLog = new javax.swing.JTextField();
         botonEjecutar = new javax.swing.JButton();
@@ -161,7 +164,6 @@ public class PantallaImportar extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Importar Archivos a Documentum");
-        setMaximumSize(new java.awt.Dimension(565, 307));
         setMinimumSize(new java.awt.Dimension(565, 307));
         setResizable(false);
 
@@ -219,12 +221,14 @@ public class PantallaImportar extends javax.swing.JFrame {
             }
         });
 
+        CheckCrearDir.setText("Crear directorio");
+
         javax.swing.GroupLayout panelImportarLayout = new javax.swing.GroupLayout(panelImportar);
         panelImportar.setLayout(panelImportarLayout);
         panelImportarLayout.setHorizontalGroup(
             panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImportarLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(83, Short.MAX_VALUE)
                 .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(TextoCarpetaDocumentum)
@@ -242,8 +246,12 @@ public class PantallaImportar extends javax.swing.JFrame {
                                 .addComponent(TextoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(botonSelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(LabelNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextoNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelImportarLayout.createSequentialGroup()
+                            .addComponent(LabelNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(54, 54, 54)
+                            .addComponent(CheckCrearDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(TextoNombreFichero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(55, 55, 55))
         );
         panelImportarLayout.setVerticalGroup(
@@ -258,9 +266,15 @@ public class PantallaImportar extends javax.swing.JFrame {
                 .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TextoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonSelFichero))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(LabelNombreFichero)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImportarLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(LabelNombreFichero)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(panelImportarLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CheckCrearDir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(TextoNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
@@ -305,6 +319,11 @@ public class PantallaImportar extends javax.swing.JFrame {
         botonEjecutar.setMaximumSize(new java.awt.Dimension(100, 40));
         botonEjecutar.setMinimumSize(new java.awt.Dimension(100, 40));
         botonEjecutar.setPreferredSize(new java.awt.Dimension(100, 40));
+        botonEjecutar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                botonEjecutarMousePressed(evt);
+            }
+        });
         botonEjecutar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonEjecutarActionPerformed(evt);
@@ -381,6 +400,7 @@ public class PantallaImportar extends javax.swing.JFrame {
 
     private void importarDirectorio() {
         new Thread() {
+            @Override
             public void run() {
                 PantallaImportar.this.dirSSOO = PantallaImportar.this.TextoFichero.getText();
                 PantallaImportar.this.panelImportar.setEnabled(false);
@@ -406,6 +426,7 @@ public class PantallaImportar extends javax.swing.JFrame {
                 PantallaImportar.this.barradocum.dispose();
                 PantallaImportar.ventanapadre.BuscarEnDocumentum();
                 PantallaImportar.this.dispose();
+                CheckCrearDir.setEnabled(true);
             }
         }.start();
     }
@@ -522,6 +543,7 @@ public class PantallaImportar extends javax.swing.JFrame {
         LabelFicheroImportar.setText("Directorio a Importar");
         LabelNombreFichero.setEnabled(false);
         TextoNombreFichero.setEnabled(false);
+        CheckCrearDir.setVisible(true);
     }//GEN-LAST:event_RBDirectorioActionPerformed
 
     private void RBFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RBFicheroActionPerformed
@@ -529,7 +551,13 @@ public class PantallaImportar extends javax.swing.JFrame {
         LabelFicheroImportar.setText("Fichero a Importar");
         LabelNombreFichero.setEnabled(true);
         TextoNombreFichero.setEnabled(true);
+        CheckCrearDir.setVisible(false);
     }//GEN-LAST:event_RBFicheroActionPerformed
+
+    private void botonEjecutarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEjecutarMousePressed
+        textoLog.setText("Importando fichero en Documentum ...");
+        textoLog.validate();
+    }//GEN-LAST:event_botonEjecutarMousePressed
 
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
@@ -581,7 +609,7 @@ public class PantallaImportar extends javax.swing.JFrame {
 
     private void cargarComboTipos() {
         ArrayList comboBoxItems = new ArrayList();
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
@@ -617,7 +645,9 @@ public class PantallaImportar extends javax.swing.JFrame {
 
         DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems.toArray());
         comboTipoDocumental.setModel(modelo);
-        comboTipoDocumental.setSelectedIndex(posicion);
+        if (modelo.getSize() > 0) {
+            comboTipoDocumental.setSelectedIndex(posicion);
+        }
     }
 
     public static void main(String args[]) {
@@ -639,7 +669,7 @@ public class PantallaImportar extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaImportar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            escribeLog("Error al establecer el estilo de la ventana. Error: " + ex.getMessage());
         }
         //</editor-fold>
 
@@ -654,6 +684,7 @@ public class PantallaImportar extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox CheckCrearDir;
     private javax.swing.JLabel LabelFicheroImportar;
     private javax.swing.JLabel LabelNombreFichero;
     private javax.swing.JRadioButton RBDirectorio;
@@ -690,50 +721,55 @@ public class PantallaImportar extends javax.swing.JFrame {
 
     private void subirADocumentum() {
         textoLog.setText(utilidadesdocumentum.importarADocumentum(TextoNombreFichero.getText(), TextoFichero.getText(), TextoCarpetaDocumentum.getText(), tipodocumental));
+        PantallaImportar.ventanapadre.ActualizarTablaDocumentos(TextoCarpetaDocumentum.getText());
     }
 
-   public void ImportarDirEnDcm(String rutaSO)
-  {
-    File dir = new File(rutaSO);
-    File[] listFile = dir.listFiles();
-    if (listFile != null) {
-      for (int i = 0; i < listFile.length; i++)
-      {
-        String ruta = listFile[i].getPath().replace("\\", "/");
-        String nombreDir = "";
-        if (listFile[i].isDirectory())
-        {
-          String nueva = ruta.substring(this.dirSSOO.length() + 1, ruta.length());
-          nombreDir = this.TextoCarpetaDocumentum.getText() + (nueva.equals("/") ? "" : new StringBuilder().append("/").append(nueva).toString());
-          
-          this.textoLog.setText("Creando carpeta " + nombreDir + " ... ");
-          this.barradocum.setLabelMensa("Creando carpeta " + nombreDir + " ... ");
-          IDfFolder folder = this.utilidadesdocumentum.crearCarpeta(nombreDir);
-          this.textoLog.setText("Creada carpeta " + nombreDir);
-          this.barradocum.setLabelMensa("Creada carpeta " + nombreDir);
-          this.panelEstado.repaint();
-          ImportarDirEnDcm(listFile[i].getPath().replace("\\", "/"));
+    public void ImportarDirEnDcm(String rutaSO) {
+        File dir = new File(rutaSO);
+        String directorio = dir.getName();
+        if (CheckCrearDir.isEnabled() && CheckCrearDir.isSelected()) {
+            TextoCarpetaDocumentum.setText(TextoCarpetaDocumentum.getText() + "/" + directorio);
+            String nuevarutaDocum = TextoCarpetaDocumentum.getText();
+            this.textoLog.setText("Creando carpeta " + nuevarutaDocum + " ... ");
+            this.barradocum.setLabelMensa("Creando carpeta " + nuevarutaDocum + " ... ");
+            IDfFolder nuevafolder = this.utilidadesdocumentum.crearCarpeta(nuevarutaDocum);
+            this.textoLog.setText("Creada carpeta " + nuevarutaDocum);
+            CheckCrearDir.setEnabled(false);
         }
-        else
-        {
-          String nombre = listFile[i].getName().replace("\\", "/");
-          String nueva = ruta.substring(this.dirSSOO.length() + 1, ruta.length() - nombre.length());
-          nueva = nueva.endsWith("/") ? nueva.substring(0, nueva.length() - 1) : nueva;
-          String rutaDocum = this.TextoCarpetaDocumentum.getText() + ((nueva.equals("/")) || (nueva.equals("")) ? "" : new StringBuilder().append("/").append(nueva).toString());
-          
-          this.barradocum.setLabelMensa("Creando documento " + nombre + " ... ");
-          this.textoLog.setText("Creando documento " + nombre + " ... ");
-          String id = this.utilidadesdocumentum.importarADocumentum(nombre, listFile[i].getPath(), rutaDocum, this.tipodocumental);
-          this.textoLog.setText("Creado documento " + nombre + " - ID: " + id);
-          this.barradocum.setLabelMensa("Creado documento " + nombre + " - ID: " + id);
-          this.panelEstado.repaint();
+        File[] listFile = dir.listFiles();
+        if (listFile != null) {
+            for (int i = 0; i < listFile.length; i++) {
+                String ruta = listFile[i].getPath().replace("\\", "/");
+                String nombreDir = "";
+                if (listFile[i].isDirectory()) {
+                    String nueva = ruta.substring(this.dirSSOO.length() + 1, ruta.length());
+                    nombreDir = this.TextoCarpetaDocumentum.getText() + (nueva.equals("/") ? "" : new StringBuilder().append("/").append(nueva).toString());
+
+                    this.textoLog.setText("Creando carpeta " + nombreDir + " ... ");
+                    this.barradocum.setLabelMensa("Creando carpeta " + nombreDir + " ... ");
+                    IDfFolder folder = this.utilidadesdocumentum.crearCarpeta(nombreDir);
+                    this.textoLog.setText("Creada carpeta " + nombreDir);
+                    this.barradocum.setLabelMensa("Creada carpeta " + nombreDir);
+                    this.panelEstado.repaint();
+                    ImportarDirEnDcm(listFile[i].getPath().replace("\\", "/"));
+                } else {
+                    String nombre = listFile[i].getName().replace("\\", "/");
+                    String nueva = ruta.substring(this.dirSSOO.length() + 1, ruta.length() - nombre.length());
+                    nueva = nueva.endsWith("/") ? nueva.substring(0, nueva.length() - 1) : nueva;
+                    String rutaDocum = this.TextoCarpetaDocumentum.getText() + ((nueva.equals("/")) || (nueva.equals("")) ? "" : new StringBuilder().append("/").append(nueva).toString());
+
+                    this.barradocum.setLabelMensa("Creando documento " + nombre + " ... ");
+                    this.textoLog.setText("Creando documento " + nombre + " ... ");
+                    String id = this.utilidadesdocumentum.importarADocumentum(nombre, listFile[i].getPath(), rutaDocum, this.tipodocumental);
+                    this.textoLog.setText("Creado documento " + nombre + " - ID: " + id);
+                    this.barradocum.setLabelMensa("Creado documento " + nombre + " - ID: " + id);
+                    this.panelEstado.repaint();
+                }
+                if (this.barradocum.getPARAR()) {
+                    this.barradocum.setPARAR(false);
+                    return;
+                }
+            }
         }
-        if (this.barradocum.getPARAR().booleanValue())
-        {
-          this.barradocum.setPARAR(Boolean.valueOf(false));
-          return;
-        }
-      }
     }
-  }
 }

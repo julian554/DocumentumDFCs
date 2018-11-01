@@ -27,9 +27,9 @@ public class PantallaRenditions extends javax.swing.JFrame {
     PantallaBarra barradocum = null;
     boolean esadmin = false;
     ArrayList renditions = new ArrayList();
-    String dirbase = util.usuarioHome() + util.separador() + "documentumdcfs";
+    String dirbase = util.usuarioHome() + util.separador() + "documentumdfcs";
     String dirdfc = dirbase + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-    String dir = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "renditions" + util.separador();
+    String dir = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "renditions" + util.separador();
     public static PantallaDocumentum ventanapadre = null;
     private Boolean botonderecho = false;
     private String componente = "";

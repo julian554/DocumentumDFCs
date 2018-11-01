@@ -22,7 +22,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
     Utilidades util = new Utilidades();
     boolean esadmin = false;
     ArrayList<AtributosDocumentum> atributos = new ArrayList<AtributosDocumentum>();
-    String dirbase = util.usuarioHome() + util.separador() + "documentumdcfs";
+    String dirbase = util.usuarioHome() + util.separador() + "documentumdfcs";
     String dirdfc = dirbase + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
     public static PantallaDocumentum ventanapadre = null;
     private Boolean botonderecho = false;

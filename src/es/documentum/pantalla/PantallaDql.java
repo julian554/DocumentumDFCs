@@ -22,8 +22,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -43,7 +41,7 @@ public class PantallaDql extends javax.swing.JFrame {
     Boolean botonderecho = false;
     String componente = "";
     public static PantallaDocumentum ventanapadre = null;
-    IDfSession sesion = sesionDocumentum();
+    IDfSession gsesion = sesionDocumentum();
 
     public PantallaDql(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
@@ -94,6 +92,7 @@ public class PantallaDql extends javax.swing.JFrame {
         popupDatos = new javax.swing.JPopupMenu();
         opcionCopiarValor = new javax.swing.JMenuItem();
         opcionExportarExcel = new javax.swing.JMenuItem();
+        opcionSeleccionarColumna = new javax.swing.JMenuItem();
         popupHistorial = new javax.swing.JPopupMenu();
         opcionVaciarHistorial = new javax.swing.JMenuItem();
         panelDql = new javax.swing.JPanel();
@@ -149,6 +148,14 @@ public class PantallaDql extends javax.swing.JFrame {
             }
         });
         popupDatos.add(opcionExportarExcel);
+
+        opcionSeleccionarColumna.setText("Seleccionar Columna");
+        opcionSeleccionarColumna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionSeleccionarColumnaActionPerformed(evt);
+            }
+        });
+        popupDatos.add(opcionSeleccionarColumna);
 
         opcionVaciarHistorial.setText("Vaciar Historial de DQL");
         opcionVaciarHistorial.addActionListener(new java.awt.event.ActionListener() {
@@ -229,6 +236,11 @@ public class PantallaDql extends javax.swing.JFrame {
         });
 
         checkDameSQL.setText("Mostrar SQL");
+        checkDameSQL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkDameSQLActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Nº de registros de salida");
 
@@ -370,9 +382,9 @@ public class PantallaDql extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelDql, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(panelResultado, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(panelEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -495,7 +507,7 @@ public class PantallaDql extends javax.swing.JFrame {
         try {
             DefaultComboBoxModel modelo = new DefaultComboBoxModel();
             comboHistorial.setModel(modelo);
-            String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
+            String dirhist = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
             BufferedWriter bw = new BufferedWriter(new FileWriter(dirhist));
             bw.write("");
             bw.close();
@@ -506,6 +518,14 @@ public class PantallaDql extends javax.swing.JFrame {
     private void TextoNumRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoNumRegActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TextoNumRegActionPerformed
+
+    private void opcionSeleccionarColumnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionSeleccionarColumnaActionPerformed
+        tablaResultados.setRowSelectionInterval(0, tablaResultados.getRowCount() - 1);
+    }//GEN-LAST:event_opcionSeleccionarColumnaActionPerformed
+
+    private void checkDameSQLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDameSQLActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkDameSQLActionPerformed
 
     private void ejecutarDql(String pdql, String numreg) {
         String sqlfinal = pdql;
@@ -533,7 +553,7 @@ public class PantallaDql extends javax.swing.JFrame {
                     }
                 };
                 tablaResultados.setModel(modeloLotes);
-                String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+                String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
                 barradocum = new PantallaBarra(PantallaDql.this, false);
                 barradocum.setTitle("Consultando en Documentum ...");
                 barradocum.barra.setIndeterminate(true);
@@ -545,7 +565,7 @@ public class PantallaDql extends javax.swing.JFrame {
                 barradocum.setVisible(true);
 
                 try {
-                    IDfCollection col = utildocum.ejecutarDql(dql, sesion);
+                    IDfCollection col = utildocum.ejecutarDql(dql, gsesion);
                     if (!utildocum.dameError().equals("")) {
                         textoLog.setText(utildocum.dameError());
                         barradocum.dispose();
@@ -631,7 +651,7 @@ public class PantallaDql extends javax.swing.JFrame {
 
                 }
                 if (checkDameSQL.isSelected()) {
-                    String textoSql = utildocum.dameSql(sesion);
+                    String textoSql = utildocum.dameSql(gsesion);
                     textoLog.setText(textoLog.getText() + "\n" + textoSql);
                 }
                 barradocum.dispose();
@@ -641,7 +661,7 @@ public class PantallaDql extends javax.swing.JFrame {
 
     private void cargarComboHistorial() {
         ArrayList comboBoxItems = new ArrayList();
-        String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
+        String dirhist = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
         BufferedReader br = null;
 
         try {
@@ -668,7 +688,21 @@ public class PantallaDql extends javax.swing.JFrame {
 
     private Boolean BuscarEnComboHistorial(String texto) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboHistorial.getModel();
-        return (model.getIndexOf(texto) > 0);
+        return (buscarEnCombo(model, texto.trim()) != -1);
+//        return (model.getIndexOf(texto.trim()) != -1);
+    }
+
+    private int buscarEnCombo(DefaultComboBoxModel modelo, String cadena) {
+        if (modelo != null) {
+            for (int i = 0; i < modelo.getSize(); i++) {
+                if (cadena.equalsIgnoreCase(modelo.getElementAt(i).toString().trim())) {
+                    return i;
+                }
+            }
+        }else{
+            return 0;
+        }
+        return -1;
     }
 
     public static void main(String args[]) {
@@ -698,6 +732,7 @@ public class PantallaDql extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionExportarExcel;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JMenuItem opcionSalir;
+    private javax.swing.JMenuItem opcionSeleccionarColumna;
     private javax.swing.JMenuItem opcionVaciarHistorial;
     private javax.swing.JMenu opciones;
     private javax.swing.JPanel panelDql;
@@ -720,9 +755,9 @@ public class PantallaDql extends javax.swing.JFrame {
         };
         tablaResultados.setModel(modeloLotes);
         System.gc();
-        if (sesion.isConnected()) {
+        if (gsesion.isConnected()) {
             try {
-                sesion.disconnect();
+                gsesion.disconnect();
             } catch (DfException ex) {
                 Utilidades.escribeLog("Error al desconecta la sesión de Documentum (PantallaDql)  - Error: " + ex.getMessage());
             }
@@ -761,7 +796,7 @@ public class PantallaDql extends javax.swing.JFrame {
     }
 
     private IDfSession sesionDocumentum() {
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");

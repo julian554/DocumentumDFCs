@@ -1,5 +1,6 @@
 package es.documentum.pantalla;
 
+import com.documentum.operations.IDfOperationError;
 import es.documentum.utilidades.Utilidades;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -79,14 +80,16 @@ public class Acercade extends javax.swing.JDialog {
         asignarIcono();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         dirdfc = docum.dirdfc;
-        repositorio = docum.repositorio;
-        versiondocumentum = docum.versiondocumentum;
-        idrepositorio = docum.idrepositorio;
-        docbroker = docum.docbroker;
-        usuario = docum.usuario;
-        puerto = docum.puerto;
-        versiondfcs = docum.versiondfcs;
-        valoresPc();
+        if (docum.Conectado) {
+            repositorio = docum.repositorio;
+            versiondocumentum = docum.versiondocumentum;
+            idrepositorio = docum.idrepositorio;
+            docbroker = docum.docbroker;
+            usuario = docum.usuario;
+            puerto = docum.puerto;
+            versiondfcs = docum.versiondfcs;
+        }
+        valoresPc(docum.Conectado);
 
     }
 
@@ -474,7 +477,7 @@ public class Acercade extends javax.swing.JDialog {
     private javax.swing.JLabel labelVersionRepositorio;
     // End of variables declaration//GEN-END:variables
 
-    private void valoresPc() {
+    private void valoresPc(Boolean Conectado) {
         Utilidades pc = new Utilidades();
         CargarConfiguraciones();
         try {
@@ -500,15 +503,17 @@ public class Acercade extends javax.swing.JDialog {
             labelDisco.setText(disco + " MB");
         }
         labelResolucion.setText(screenSize.width + " x " + screenSize.height);
-        labelDocbroker.setText(docbroker);
-        labelRepositorio.setText(repositorio);
-        labelVersionRepositorio.setText(versiondocumentum);
-        labelPuerto.setText(puerto);
-        labelUsuarioDocumentum.setText(usuario);
-        if (!idrepositorio.isEmpty()) {
-            labelIdRepositorio.setText(idrepositorio + " (" + Integer.toHexString(Integer.parseInt(idrepositorio)) + ")");
+        if (Conectado) {
+            labelDocbroker.setText(docbroker);
+            labelRepositorio.setText(repositorio);
+            labelVersionRepositorio.setText(versiondocumentum);
+            labelPuerto.setText(puerto);
+            labelUsuarioDocumentum.setText(usuario);
+            if (!idrepositorio.isEmpty()) {
+                labelIdRepositorio.setText(idrepositorio + " (" + Integer.toHexString(Integer.parseInt(idrepositorio)) + ")");
+            }
+            labelVersionDFCs.setText(versiondfcs);
         }
-        labelVersionDFCs.setText(versiondfcs);
     }
 
     public void CargarConfiguraciones() {

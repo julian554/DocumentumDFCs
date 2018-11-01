@@ -19,14 +19,18 @@
         <jar jarfile="${dist.jar}" update="true">
             <zipfileset src="${dist.jar}" includes="**/*.class" />
             <zipfileset src="dist/lib/commons-codec-1.7.jar" excludes="META-INF/*"/>
-            <zipfileset src="dist/lib/dfc.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/commons-lang-2.4.jar" excludes="META-INF/*"/>            
             <zipfileset src="dist/lib/log4j.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/dfc.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/configservice-impl.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/configservice-api.jar" excludes="META-INF/*"/>
-            <zipfileset src="dist/lib/commons-lang-2.4.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/aspectjrt.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/certj.jar" excludes="META-INF/*"/>
-            <zipfileset src="dist/lib/jsafeFIPS.jar" excludes="META-INF/*"/> 
+            <!--
+            <zipfileset src="dist/lib/cryptojce.jar" excludes="META-INF/*"/> 
+            <zipfileset src="dist/lib/cryptojcommon.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/jcmFIPS.jar" excludes="META-INF/*"/>
+            -->
             <zipfileset src="dist/lib/commons-vfs-2.0.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/jsch-0.1.41.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/zehon_file_transfer-1.1.6.jar" excludes="META-INF/*"/>

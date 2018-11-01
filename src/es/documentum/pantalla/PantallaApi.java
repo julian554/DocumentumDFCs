@@ -31,10 +31,10 @@ public class PantallaApi extends javax.swing.JFrame {
     Boolean botonderecho = false;
     String componente = "";
     String idControl = "";
-    IDfSession sesion;
+    IDfSession gsesion;
 
-    public void setSesion(IDfSession sesion) {
-        this.sesion = sesion;
+    public void setSesion(IDfSession psesion) {
+        this.gsesion = psesion;
     }
 
     public static PantallaDocumentum ventanapadre = null;
@@ -336,7 +336,7 @@ public class PantallaApi extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelAPI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(panelEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -451,7 +451,7 @@ public class PantallaApi extends javax.swing.JFrame {
 
     private void cargarComboHistorial() {
         ArrayList comboBoxItems = new ArrayList();
-        String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-api.log";
+        String dirhist = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-api.log";
         BufferedReader br = null;
 
         try {
@@ -514,10 +514,10 @@ public class PantallaApi extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void salir() {
-        if (sesion != null) {
+        if (gsesion != null) {
             try {
-                if (sesion.isConnected()) {
-                    sesion.disconnect();
+                if (gsesion.isConnected()) {
+                    gsesion.disconnect();
                 }
             } catch (DfException ex) {
             }
@@ -551,7 +551,7 @@ public class PantallaApi extends javax.swing.JFrame {
     }
 
     private void ejecutarAPI(String ComandoApi, String datosApi) {
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
 //        try {
 //            ClassPathUpdater.add(dirdfc);
 //            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
@@ -576,18 +576,18 @@ public class PantallaApi extends javax.swing.JFrame {
 
         String apiCommand = ComandoApi;
         String apiDataCtl = datosApi;
-        String batchStr ;
+        String batchStr;
         boolean abortScript = false;
 
         batchStr = apiCommand;
         //   String idControl = null;
-        String lastId ;
-        String methodStr ;
-        String methodData = null ;
-        String status ;
+        String lastId;
+        String methodStr;
+        String methodData = null;
+        String status;
         String cmdResult = null;
         boolean b_result = false;
-        String dummy ;
+        String dummy;
         String dummyC = ",c,";
         String dummyCurrent = ",current,";
 
@@ -599,13 +599,13 @@ public class PantallaApi extends javax.swing.JFrame {
         int execCounter = 0;
         int setCounter = 0;
 
-        String currToken ;
+        String currToken;
 
         StringBuilder resultsBuf = new StringBuilder(1024);
         try {
             lastId = idControl;
             if ((lastId != null) && (lastId.length() > 0)) {
-                b_result = sesion.apiExec("fetch", lastId);
+                b_result = gsesion.apiExec("fetch", lastId);
             }
         } catch (DfException exp) {
         }
@@ -644,7 +644,7 @@ public class PantallaApi extends javax.swing.JFrame {
                     }
                     resultsBuf.append(promensajes.getProperty("MSG_API") + methodStr);
                     try {
-                        IDfList list = sesion.apiDesc(methodStr1 + ",c,");
+                        IDfList list = gsesion.apiDesc(methodStr1 + ",c,");
                         status = list.getString(0);
                         cmdId = list.getInt(1);
                         cmdCallType = list.getInt(2);
@@ -674,7 +674,7 @@ public class PantallaApi extends javax.swing.JFrame {
                                         }
                                     }
                                 }
-                                cmdResult = sesion.apiGet(methodStr1, methodStr2);
+                                cmdResult = gsesion.apiGet(methodStr1, methodStr2);
                                 if ((methodStr1.equals("create")) || (methodStr1.equals("checkin")) || (methodStr1.equals("retrieve")) || (methodStr1.equals("id")) || (methodStr1.equals("getdocbasemap")) || (methodStr1.equals("getservermap")) || (methodStr1.equals("getdocbrokermap"))) {
                                     if (cmdResult != null) {
                                         if (cmdResult.length() != 16) {
@@ -693,7 +693,7 @@ public class PantallaApi extends javax.swing.JFrame {
                                         execCounter = 0;
                                         setCounter = 0;
                                     } else {
-                                        String errorMessage = sesion.apiGet("getmessage", null);
+                                        String errorMessage = gsesion.apiGet("getmessage", null);
                                         resultsBuf.append(errorMessage);
                                     }
                                 }
@@ -708,7 +708,7 @@ public class PantallaApi extends javax.swing.JFrame {
                                     methodData = apiDataCtl;
                                 }
 
-                                b_result = sesion.apiSet(methodStr1, methodStr2, methodData);
+                                b_result = gsesion.apiSet(methodStr1, methodStr2, methodData);
 
                                 resultsBuf.append("\n" + promensajes.getProperty("MSG_SET") + methodData);
                                 if (b_result) {
@@ -723,7 +723,7 @@ public class PantallaApi extends javax.swing.JFrame {
                                 }
                                 break;
                             case 2:
-                                b_result = sesion.apiExec(methodStr1, methodStr2);
+                                b_result = gsesion.apiExec(methodStr1, methodStr2);
                                 if (b_result) {
                                     if (methodStr1.equals("fetch")) {
                                         lastId = methodStr2;
@@ -747,7 +747,7 @@ public class PantallaApi extends javax.swing.JFrame {
                                 break;
                         }
                         b_result = false;
-                    } catch (DfException exp) {
+                    } catch (Exception exp) {
                         cmdResult = promensajes.getProperty("MSG_ERROR_PROCESSING") + exp.toString();
                         abortScript = true;
                         if (checkMulti.isSelected()) {
@@ -764,7 +764,7 @@ public class PantallaApi extends javax.swing.JFrame {
             String lastResults = output;
 
             if (!checkMulti.isSelected() && checkMostrarSQL.isSelected()) {
-                resultsBuf.append("\n" + promensajes.getProperty("MSG_SQL_QUERY") + "\n" + getSqlQuery(sesion) + "\n\n");
+                resultsBuf.append("\n" + promensajes.getProperty("MSG_SQL_QUERY") + "\n" + getSqlQuery(gsesion) + "\n\n");
             }
             resultsBuf.append(lastResults);
             output = resultsBuf.toString();
@@ -785,17 +785,31 @@ public class PantallaApi extends javax.swing.JFrame {
 
     private Boolean BuscarEnComboHistorial(String texto) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboHistorial.getModel();
-        return (model.getIndexOf(texto) > 0);
+//        return (model.getIndexOf(texto) > 0);
+        return (buscarEnCombo(model, texto.trim()) != -1);
     }
 
-    private String getSqlQuery(IDfSession sesion) {
+    private int buscarEnCombo(DefaultComboBoxModel modelo, String cadena) {
+        if (modelo != null) {
+            for (int i = 0; i < modelo.getSize(); i++) {
+                if (cadena.equalsIgnoreCase(modelo.getElementAt(i).toString().trim())) {
+                    return i;
+                }
+            }
+        } else {
+            return 0;
+        }
+        return -1;
+    }
+
+    private String getSqlQuery(IDfSession lsesion) {
         String sqlResult = null;
         try {
-            String collId = sesion.apiGet("apply", "NULL,GET_LAST_SQL");
+            String collId = lsesion.apiGet("apply", "NULL,GET_LAST_SQL");
             if (!collId.equals("")) {
-                sesion.apiExec("next", collId);
-                sqlResult = sesion.apiGet("get", collId + ",result");
-                sesion.apiExec("close", collId);
+                lsesion.apiExec("next", collId);
+                sqlResult = lsesion.apiGet("get", collId + ",result");
+                lsesion.apiExec("close", collId);
             }
         } catch (DfException exp) {
             ;
@@ -822,6 +836,5 @@ public class PantallaApi extends javax.swing.JFrame {
             checkMostrarSQL.setVisible(true);
         }
     }
-
 
 }

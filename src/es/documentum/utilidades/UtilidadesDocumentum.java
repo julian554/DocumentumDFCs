@@ -7,6 +7,7 @@ import com.documentum.fc.commands.admin.DfAdminCommand;
 import com.documentum.fc.commands.admin.IDfAdminCommand;
 import com.documentum.fc.commands.admin.IDfApplyDoMethod;
 import com.documentum.fc.common.*;
+import com.documentum.fc.tools.RegistryPasswordUtils;
 import com.documentum.operations.*;
 import com.documentum.xml.xdql.IDfXmlQuery;
 import com.google.common.io.Files;
@@ -52,7 +53,7 @@ public class UtilidadesDocumentum {
     String docbase = "";
     String ficheropropiedades = "";
     String ERROR = "";
-    String dir = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "renditions" + util.separador();
+    String dir = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "renditions" + util.separador();
 
     private final Set m_childIds = new HashSet(5);
 
@@ -132,7 +133,8 @@ public class UtilidadesDocumentum {
             IDfLoginInfo loginInfo = new DfLoginInfo();
             loginInfo.setUser(usuario);
             loginInfo.setPassword(password);
-            sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
+            // sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
+            sesMgr.setIdentity(IDfSessionManager.ALL_DOCBASES, loginInfo);
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
             sesion = sesMgr.getSession(docbase);
             //     sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
@@ -140,7 +142,7 @@ public class UtilidadesDocumentum {
                 ERROR = "No se pudo obtener sesión de Documentum (conectarDocumentum)";
                 return null;
             }
-        } catch (DfException dfe) {
+        } catch (Exception dfe) {
             Utilidades.escribeLog("Error al conectar con Documentum (conectarDocumentum): " + dfe.toString());
             ERROR = "Error al conectar con Documentum (conectarDocumentum): " + dfe.toString();
         }
@@ -173,8 +175,7 @@ public class UtilidadesDocumentum {
             loginInfoObj.setUser(usuario);
             loginInfoObj.setPassword(password);
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
-            sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
-
+            sesion = client.newSession(docbase , loginInfoObj);
              */
 
             Utilidades.escribeLog("Obteniendo sesión ... " + Utilidades.today() + " - " + Utilidades.now());
@@ -184,9 +185,11 @@ public class UtilidadesDocumentum {
             IDfLoginInfo loginInfo = new DfLoginInfo();
             loginInfo.setUser(usuario);
             loginInfo.setPassword(password);
-            sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
+            // sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
+            sesMgr.setIdentity(IDfSessionManager.ALL_DOCBASES, loginInfo);
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
             sesion = sesMgr.getSession(docbase);
+
             // sesion = sesMgr.getSession(docbase + "@" + docbroker);
             if (!sesion.isConnected()) {
                 ERROR = "No se pudo obtener sesión de Documentum (conectarDocumentum)";
@@ -259,9 +262,9 @@ public class UtilidadesDocumentum {
                 sqlResult = session.apiGet("get", collId + ",result");
                 session.apiExec("close", collId);
             }
-            if (session.isConnected()) {
-                session.disconnect();
-            }
+//            if (session.isConnected()) {
+//                session.disconnect();
+//            }
         } catch (DfException ex) {
             ERROR = "Error al obtener SQL (getSqlQuery) - Error: " + ex.getMessage();
             Utilidades.escribeLog("Error al obtener SQL (getSqlQuery) - Error: " + ex.getMessage() + " - " + getStackTrace(ex));
@@ -390,18 +393,17 @@ public class UtilidadesDocumentum {
             IDfImportNode aNode = (IDfImportNode) myNodes.get(i);
             System.out.print("r_object_id: " + aNode.getNewObjectId().toString() + " ");
             Utilidades.escribeLog(" - Nombre: " + aNode.getNewObject().getObjectName());
-            Utilidades.escribeLog("Carpeta: " + pro.getProperty("DIRECTORIO_BASE") + "/" + destFolderPath);
+            //     Utilidades.escribeLog("Carpeta: " + pro.getProperty("DIRECTORIO_BASE") + "/" + destFolderPath);
             Utilidades.escribeLog("Storage: " + aNode.getNewObject().getStorageType());
             id = aNode.getNewObjectId().toString();
         }
 
-        try {
-            if (sesion.isConnected()) {
-                sesion.disconnect();
-            }
-        } catch (DfException ex) {
-        }
-
+//        try {
+//            if (sesion.isConnected()) {
+//                sesion.disconnect();
+//            }
+//        } catch (DfException ex) {
+//        }
         return id;
     }
 
@@ -415,7 +417,8 @@ public class UtilidadesDocumentum {
         }
         ERROR = "";
         IDfFolder carpeta = null;
-        String dirbase = pro.getProperty("DIRECTORIO_BASE");
+        //       String dirbase = pro.getProperty("DIRECTORIO_BASE");
+        String dirbase = "";
         if (dirbase == null) {
             dirbase = "";
         }
@@ -799,7 +802,7 @@ public class UtilidadesDocumentum {
                 }
             }
         } catch (DfException ex) {
-            Utilidades.escribeLog("Error al leer atributos: " + ex.getMessage());
+            Utilidades.escribeLog("Error al leer atributos (" + r_object_id + " - " + atributo + "): " + ex.getMessage());
             ERROR = "Error al leer el atributo " + atributo + " (DameAtributo): " + ex.getMessage();
             return new ArrayList();
         }
@@ -944,6 +947,7 @@ public class UtilidadesDocumentum {
         try {
             folder = session.getFolderByPath(path);
             if (folder != null) {
+                session.disconnect();
                 return folder;
             }
 
@@ -953,6 +957,7 @@ public class UtilidadesDocumentum {
             synchronized (("lock-" + path).intern()) {
                 folder = session.getFolderByPath(path);
                 if (folder != null) {
+                    session.disconnect();
                     return folder;
                 }
                 if ("".equals(parent) || "/".equals(parent)) {
@@ -966,10 +971,14 @@ public class UtilidadesDocumentum {
                     folder.link(parent);
                     folder.save();
                 }
+                if (session.isConnected()) {
+                    session.disconnect();
+                }
             }
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al crear carpeta en Documentum () - Error: " + ex.getMessage());
         }
+
         return folder;
     }
 
@@ -1504,17 +1513,40 @@ public class UtilidadesDocumentum {
     public static void main(String s[]) {
         //    prueba();
         Utilidades util = new Utilidades();
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        String clave = "";
         try {
+            clave = RegistryPasswordUtils.encrypt("dm_bof_registry");
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
+            System.out.println("Encriptado (dm_bof_registry) :" + clave);
+            System.out.println("Desencriptado: " + RegistryPasswordUtils.decrypt(clave));
+            System.out.println("Desencriptado de AAAAEDTO1gR1FkBjTjXeAgcuyWkdJowaHnWB9Bq8BYZNTBzm --> " + RegistryPasswordUtils.decrypt("AAAAEDTO1gR1FkBjTjXeAgcuyWkdJowaHnWB9Bq8BYZNTBzm"));
+            String desencriptarPassword = desencriptarPassword("AAAAEDTO1gR1FkBjTjXeAgcuyWkdJowaHnWB9Bq8BYZNTBzm");
         } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
+        } catch (DfException ex) {
+            Logger.getLogger(UtilidadesDocumentum.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        //  IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
-        IDfSession sesion = ed.conectarDocumentum("sisdoc01", "docu01", "cyt_agora_pro", "pla707.correos.es", "1489");
+        //IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
+        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "prudcm1", "vilcs405", "1489");
+
+        Map<String, String> relaciones = new HashMap<>();
+
+        //     relaciones = ed.DameRelation("0900d8ff8000aac7", sesion);
+        System.out.println(relaciones.get("Tipo"));
+        System.out.println(relaciones.get("NombreRelacion"));
+        System.out.println(relaciones.get("IdRelacion"));
+        System.out.println(relaciones.get("IdPadre"));
+        System.out.println(relaciones.get("IdHijo"));
+        System.out.println(relaciones.get("RutaPadreDocumentum"));
+        System.out.println(relaciones.get("RutaHijoDocumentum"));
+        System.out.println(relaciones.get("RutaPadreSSOO"));
+        System.out.println(relaciones.get("RutaHijoSSOO"));
+
+        /*
 
         Long valor = ed.numeroObjetosDirectorio(sesion, "/Archivo Digital/Documentacion Administrativa/CEDICO/Giros/2017/08/19");
 
@@ -1532,10 +1564,9 @@ public class UtilidadesDocumentum {
             resul = ed.estadoIndexAgent(sesion);
 
         } catch (DfException ex) {
-            Logger.getLogger(UtilidadesDocumentum.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UtilidadesDocumentum.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+         */
         //    ed.exportarCarpeta("/System", "f:\\tmp");
         /*
         IDfFolder carpeta = null;
@@ -1551,14 +1582,13 @@ public class UtilidadesDocumentum {
             Utilidades.escribeLog("Error exportar carpeta - Error: " + ex.getMessage());
         }
          */
-        try {
-            String desencriptarPassword;
-            desencriptarPassword = desencriptarPassword("GrRNPhLJrkoTDAZE0RGJow\\=\\=");
-
-        } catch (Exception ex) {
-
-        }
-
+//        try {
+//            String desencriptarPassword;
+//            desencriptarPassword = desencriptarPassword("GrRNPhLJrkoTDAZE0RGJow\\=\\=");
+//
+//        } catch (Exception ex) {
+//
+//        }
 //        String fulldir = "C:\\Users\\julian\\digita\\pendientes\\20120825-124031-192168001027\\";
 //        String filename = "Comunicados_Recepción.pdf";
 //        String fullPath = fulldir + filename;
@@ -1875,11 +1905,15 @@ public class UtilidadesDocumentum {
             if (col == null) {
                 return false;
             }
-            col.next();
-            IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
-            IDfValue attrValue = row.getValue("status");
-            String valor = getDfObjectValue(attrValue).toString();
-            if (valor == null || !valor.equals("1")) {
+            String valor = "";
+
+            while (col.next()) {
+                IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
+                IDfValue attrValue = row.getValue("status");
+                valor = getDfObjectValue(attrValue).toString();
+            }
+            col.close();
+            if (valor.equals("") || !valor.equals("1")) {
                 return false;
             }
         } catch (DfException Ex) {
@@ -1945,9 +1979,10 @@ public class UtilidadesDocumentum {
         try {
             valor = com.documentum.fc.tools.RegistryPasswordUtils.decrypt(clave);
             System.out.println(valor);
-            valor = com.documentum.dmcl.impl.DmclApi.getInstance().get("decrypttext,c,DM_ENCR_TEXT=" + clave);
-            System.out.println(valor);
+//            valor = com.documentum.dmcl.impl.DmclApi.getInstance().get("decrypttext,c,DM_ENCR_TEXT=" + clave);
+//            System.out.println(valor);
         } catch (DfException e) {
+            System.out.println("Error al dessencriptar (desencriptarPassword): " + e.getMessage());
         }
         return valor;
     }
@@ -2183,7 +2218,7 @@ public class UtilidadesDocumentum {
             IDfLoginInfo loginInfoObj = new DfLoginInfo();
             loginInfoObj.setUser(usuario);
             loginInfoObj.setPassword(password);
-        } catch (DfException ex) {
+        } catch (Exception ex) {
             Utilidades.escribeLog("Error al solicitar cliente a Documentum: " + ex.getMessage());
         }
         return cliente;
@@ -2202,8 +2237,7 @@ public class UtilidadesDocumentum {
 
             }
         } catch (DfException ex) {
-            Logger.getLogger(UtilidadesDocumentum.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UtilidadesDocumentum.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -2630,4 +2664,132 @@ public class UtilidadesDocumentum {
 
         return resultado;
     }
+
+    public String DameTipoDocumental(String r_object_id) {
+        String tipodocumental = "";
+        tipodocumental = DameAtributo(r_object_id, "r_object_type").get(0).toString();
+        return tipodocumental;
+    }
+
+    public Boolean CambiarTipoDocumental(String r_object_id, String tipodocumentalnuevo) {
+        Boolean respuesta = false;
+        String tipodocumentalactual = DameTipoDocumental(r_object_id);
+
+        if (tipodocumentalactual.isEmpty()) {
+            return respuesta;
+        }
+
+        String dql = "CHANGE " + tipodocumentalactual + " OBJECT TO " + tipodocumentalnuevo + " WHERE r_object_id = '" + r_object_id + "'";
+        try {
+            IDfCollection resultado = ejecutarDql(dql);
+
+            if (resultado != null) {
+                resultado.next();
+                if (resultado.getInt("objects_changed") == 1) {
+                    respuesta = true;
+                }
+            } else {
+
+            }
+        } catch (DfException ex) {
+            ERROR = ex.getMessage();
+        }
+        return respuesta;
+    }
+
+    public ArrayList<Map<String, String>> DameRelation(String r_object_id, IDfSession sesion) {
+        ArrayList<Map<String, String>> listarelaciones = new ArrayList<Map<String, String>>();
+        Boolean esHijo = false;
+        String dqlrelahijo = "select child_id, r_object_id, relation_name from dm_relation where parent_id ='" + r_object_id + "'";
+        IDfCollection colrelahijo = ejecutarDql(dqlrelahijo, sesion);
+        try {
+            while (colrelahijo.next()) {
+                esHijo = true;
+                IDfTypedObject rowrela = (IDfTypedObject) colrelahijo.getTypedObject();
+                String child_id = rowrela.getValueAt(0).asString();
+                String r_object_id_rela = rowrela.getValueAt(1).asString();
+                String relation_name = rowrela.getValueAt(2).asString();
+                String rutahijo = dameRutaDocumentum(child_id, sesion);
+                String resultadoAPIhijo = dameRutaSO(child_id, sesion);
+                String rutapadre = dameRutaDocumentum(r_object_id, sesion);
+                String resultadoAPIpadre = dameRutaSO(r_object_id, sesion);
+                Map<String, String> relaciones = new HashMap<>();
+//                System.out.println(child_id + " - " + rutahijo + "/" + " - " + resultadoAPIhijo);
+//                System.out.println(r_object_id + " - " + rutapadre + "/" + " - " + resultadoAPIpadre);
+                relaciones.put("Tipo", "Padre (" + r_object_id + ") -> Hijo (" + child_id + ")");
+                relaciones.put("NombreRelacion", relation_name);
+                relaciones.put("IdRelacion", r_object_id_rela);
+                relaciones.put("IdPadre", r_object_id);
+                relaciones.put("IdHijo", child_id);
+                relaciones.put("RutaPadreDocumentum", rutapadre);
+                relaciones.put("RutaHijoDocumentum", rutahijo);
+                relaciones.put("RutaPadreSSOO", resultadoAPIpadre.contains("DM_SYSOBJECT_E_INVALID_PAGE_NUM") ? "" : resultadoAPIpadre);
+                relaciones.put("RutaHijoSSOO", resultadoAPIhijo.contains("DM_SYSOBJECT_E_INVALID_PAGE_NUM") ? "" : resultadoAPIhijo);
+                listarelaciones.add(relaciones);
+            }
+            colrelahijo.close();
+        } catch (DfException exhijo) {
+        }
+
+        if (!esHijo) {
+            try {
+                String dqlrelapadre = "select parent_id, r_object_id, relation_name from dm_relation where child_id ='" + r_object_id + "'";
+                IDfCollection colrelapadre = ejecutarDql(dqlrelapadre, sesion);
+                if (colrelapadre != null) {
+                    while (colrelapadre.next()) {
+                        IDfTypedObject rowrela = (IDfTypedObject) colrelapadre.getTypedObject();
+                        String parent_id = rowrela.getValueAt(0).asString();
+                        String r_object_id_rela = rowrela.getValueAt(1).asString();
+                        String relation_name = rowrela.getValueAt(2).asString();
+                        String rutahijo = dameRutaDocumentum(r_object_id, sesion);
+                        String resultadoAPIhijo = dameRutaSO(r_object_id, sesion);
+                        String rutapadre = dameRutaDocumentum(parent_id, sesion);
+                        String resultadoAPIpadre = dameRutaSO(parent_id, sesion);
+                        Map<String, String> relaciones = new HashMap<>();
+//                        System.out.println(parent_id + " - " + rutahijo + "/" + " - " + resultadoAPIhijo);
+//                        System.out.println(r_object_id + " - " + rutapadre + "/" + " - " + resultadoAPIpadre);
+                        relaciones.put("Tipo", "Hijo (" + r_object_id + ") <- Padre (" + parent_id + ")");
+                        relaciones.put("NombreRelacion", relation_name);
+                        relaciones.put("IdRelacion", r_object_id_rela);
+                        relaciones.put("IdPadre", parent_id);
+                        relaciones.put("IdHijo", r_object_id);
+                        relaciones.put("RutaPadreDocumentum", rutapadre);
+                        relaciones.put("RutaHijoDocumentum", rutahijo);
+                        relaciones.put("RutaPadreSSOO", resultadoAPIpadre.contains("DM_SYSOBJECT_E_INVALID_PAGE_NUM") ? "" : resultadoAPIpadre);
+                        relaciones.put("RutaHijoSSOO", resultadoAPIhijo.contains("DM_SYSOBJECT_E_INVALID_PAGE_NUM") ? "" : resultadoAPIhijo);
+                        listarelaciones.add(relaciones);
+                    }
+                }
+                colrelapadre.close();
+            } catch (DfException ex) {
+            }
+        }
+
+        return listarelaciones;
+    }
+
+    public String dameRutaDocumentum(String r_object_id, IDfSession sesion) {
+        String ruta = "";
+        IDfCollection colruta = ejecutarDql("select r_folder_path from dm_folder_r where r_object_id in (select i_folder_id from dm_sysobject_r where i_position=-1 and r_object_id='" + r_object_id + "') and i_position=-1", sesion);
+        if (colruta != null) {
+            try {
+                colruta.next();
+                IDfTypedObject rowruta = (IDfTypedObject) colruta.getTypedObject();
+                ruta = rowruta.getValueAt(0).asString();
+                colruta.close();
+            } catch (Exception ex) {
+                System.out.println("Error al recuperar la ruta al r_object_id " + r_object_id + " - " + ex.getMessage());
+            }
+        }
+        return ruta;
+    }
+
+    public String dameRutaSO(String r_object_id, IDfSession sesion) {
+        String ruta = "";
+        if (r_object_id.startsWith("09")) {
+            ruta = ejecutarAPI("getpath,c," + r_object_id, "", sesion);
+        }
+        return ruta;
+    }
+
 }

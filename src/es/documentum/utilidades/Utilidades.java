@@ -508,7 +508,7 @@ public class Utilidades {
     public String separador() {
         String SO = so();
         String separador = "/";
-        if (!SO.toLowerCase().contains("windows")) {
+        if (SO.toLowerCase().contains("windows")) {
             separador = "/";
         }
         return separador;
@@ -636,7 +636,6 @@ public class Utilidades {
             escribeLog(ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
-
     }
     // Carga Una DLL, en este caso la coge del directorio "drivers" del "home" del usuario
 
@@ -1072,7 +1071,7 @@ public class Utilidades {
         }
          */
 
-       // util.borrarFichero("C:/Users/E274399/documentumdcfs/renditions", "**.xml*");
+       // util.borrarFichero("C:/Users/E274399/documentumdfcs/renditions", "**.xml*");
        util.recorrerDir("c:/tmp");
     }
 }

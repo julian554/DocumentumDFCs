@@ -1,0 +1,270 @@
+2018-03-06 16:45:49 DfPreferences [WARN] [DFC_PREFERENCE_UNKNOWN_NAME] "repositorio" is not a recognized preference name
+com.documentum.fc.impl.util.ThrowableStack
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnOnceAboutUnknownPreference(TypedPreferences.java:420)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnAboutUnknownPreferences(TypedPreferences.java:411)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.loadProperties(TypedPreferences.java:335)
+	at com.documentum.fc.common.DfPreferences.loadProperties(DfPreferences.java:377)
+	at com.documentum.fc.common.impl.preferences.PreferencesManager.<init>(PreferencesManager.java:38)
+	at com.documentum.fc.common.DfPreferences.initialize(DfPreferences.java:64)
+	at com.documentum.fc.common.DfPreferences.getInstance(DfPreferences.java:43)
+	at com.documentum.fc.client.DfSimpleDbor.getDefaultDbor(DfSimpleDbor.java:78)
+	at com.documentum.fc.client.DfSimpleDbor.<init>(DfSimpleDbor.java:66)
+	at com.documentum.fc.client.DfClient$ClientImpl.<init>(DfClient.java:350)
+	at com.documentum.fc.client.DfClient.<clinit>(DfClient.java:766)
+	at com.documentum.com.DfClientX.getDFCVersion(DfClientX.java:304)
+	at es.documentum.utilidades.UtilidadesDocumentum.DameVersionDFC(UtilidadesDocumentum.java:617)
+	at es.documentum.pantalla.PantallaDocumentum.inicializar(PantallaDocumentum.java:2439)
+	at es.documentum.pantalla.PantallaDocumentum.<init>(PantallaDocumentum.java:114)
+	at es.documentum.pantalla.PantallaDocumentum$61.run(PantallaDocumentum.java:1935)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+2018-03-06 16:45:49 DfPreferences [WARN] [DFC_PREFERENCE_UNKNOWN_NAME] "usuario" is not a recognized preference name
+com.documentum.fc.impl.util.ThrowableStack
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnOnceAboutUnknownPreference(TypedPreferences.java:420)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnAboutUnknownPreferences(TypedPreferences.java:411)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.loadProperties(TypedPreferences.java:335)
+	at com.documentum.fc.common.DfPreferences.loadProperties(DfPreferences.java:377)
+	at com.documentum.fc.common.impl.preferences.PreferencesManager.<init>(PreferencesManager.java:38)
+	at com.documentum.fc.common.DfPreferences.initialize(DfPreferences.java:64)
+	at com.documentum.fc.common.DfPreferences.getInstance(DfPreferences.java:43)
+	at com.documentum.fc.client.DfSimpleDbor.getDefaultDbor(DfSimpleDbor.java:78)
+	at com.documentum.fc.client.DfSimpleDbor.<init>(DfSimpleDbor.java:66)
+	at com.documentum.fc.client.DfClient$ClientImpl.<init>(DfClient.java:350)
+	at com.documentum.fc.client.DfClient.<clinit>(DfClient.java:766)
+	at com.documentum.com.DfClientX.getDFCVersion(DfClientX.java:304)
+	at es.documentum.utilidades.UtilidadesDocumentum.DameVersionDFC(UtilidadesDocumentum.java:617)
+	at es.documentum.pantalla.PantallaDocumentum.inicializar(PantallaDocumentum.java:2439)
+	at es.documentum.pantalla.PantallaDocumentum.<init>(PantallaDocumentum.java:114)
+	at es.documentum.pantalla.PantallaDocumentum$61.run(PantallaDocumentum.java:1935)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+2018-03-06 16:45:49 DfPreferences [WARN] [DFC_PREFERENCE_UNKNOWN_NAME] "password" is not a recognized preference name
+com.documentum.fc.impl.util.ThrowableStack
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnOnceAboutUnknownPreference(TypedPreferences.java:420)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnAboutUnknownPreferences(TypedPreferences.java:411)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.loadProperties(TypedPreferences.java:335)
+	at com.documentum.fc.common.DfPreferences.loadProperties(DfPreferences.java:377)
+	at com.documentum.fc.common.impl.preferences.PreferencesManager.<init>(PreferencesManager.java:38)
+	at com.documentum.fc.common.DfPreferences.initialize(DfPreferences.java:64)
+	at com.documentum.fc.common.DfPreferences.getInstance(DfPreferences.java:43)
+	at com.documentum.fc.client.DfSimpleDbor.getDefaultDbor(DfSimpleDbor.java:78)
+	at com.documentum.fc.client.DfSimpleDbor.<init>(DfSimpleDbor.java:66)
+	at com.documentum.fc.client.DfClient$ClientImpl.<init>(DfClient.java:350)
+	at com.documentum.fc.client.DfClient.<clinit>(DfClient.java:766)
+	at com.documentum.com.DfClientX.getDFCVersion(DfClientX.java:304)
+	at es.documentum.utilidades.UtilidadesDocumentum.DameVersionDFC(UtilidadesDocumentum.java:617)
+	at es.documentum.pantalla.PantallaDocumentum.inicializar(PantallaDocumentum.java:2439)
+	at es.documentum.pantalla.PantallaDocumentum.<init>(PantallaDocumentum.java:114)
+	at es.documentum.pantalla.PantallaDocumentum$61.run(PantallaDocumentum.java:1935)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+2018-03-06 16:45:50 DfPreferences [WARN] [DFC_PREFERENCE_UNKNOWN_NAME] "repositorio" is not a recognized preference name
+com.documentum.fc.impl.util.ThrowableStack
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnOnceAboutUnknownPreference(TypedPreferences.java:420)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnAboutUnknownPreferences(TypedPreferences.java:411)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.loadProperties(TypedPreferences.java:335)
+	at com.documentum.fc.common.DfPreferences.loadProperties(DfPreferences.java:377)
+	at com.documentum.fc.common.impl.preferences.PreferencesManager.<init>(PreferencesManager.java:39)
+	at com.documentum.fc.common.DfPreferences.initialize(DfPreferences.java:64)
+	at com.documentum.fc.common.DfPreferences.getInstance(DfPreferences.java:43)
+	at com.documentum.fc.client.DfSimpleDbor.getDefaultDbor(DfSimpleDbor.java:78)
+	at com.documentum.fc.client.DfSimpleDbor.<init>(DfSimpleDbor.java:66)
+	at com.documentum.fc.client.DfClient$ClientImpl.<init>(DfClient.java:350)
+	at com.documentum.fc.client.DfClient.<clinit>(DfClient.java:766)
+	at com.documentum.com.DfClientX.getDFCVersion(DfClientX.java:304)
+	at es.documentum.utilidades.UtilidadesDocumentum.DameVersionDFC(UtilidadesDocumentum.java:617)
+	at es.documentum.pantalla.PantallaDocumentum.inicializar(PantallaDocumentum.java:2439)
+	at es.documentum.pantalla.PantallaDocumentum.<init>(PantallaDocumentum.java:114)
+	at es.documentum.pantalla.PantallaDocumentum$61.run(PantallaDocumentum.java:1935)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+2018-03-06 16:45:50 DfPreferences [WARN] [DFC_PREFERENCE_UNKNOWN_NAME] "usuario" is not a recognized preference name
+com.documentum.fc.impl.util.ThrowableStack
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnOnceAboutUnknownPreference(TypedPreferences.java:420)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnAboutUnknownPreferences(TypedPreferences.java:411)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.loadProperties(TypedPreferences.java:335)
+	at com.documentum.fc.common.DfPreferences.loadProperties(DfPreferences.java:377)
+	at com.documentum.fc.common.impl.preferences.PreferencesManager.<init>(PreferencesManager.java:39)
+	at com.documentum.fc.common.DfPreferences.initialize(DfPreferences.java:64)
+	at com.documentum.fc.common.DfPreferences.getInstance(DfPreferences.java:43)
+	at com.documentum.fc.client.DfSimpleDbor.getDefaultDbor(DfSimpleDbor.java:78)
+	at com.documentum.fc.client.DfSimpleDbor.<init>(DfSimpleDbor.java:66)
+	at com.documentum.fc.client.DfClient$ClientImpl.<init>(DfClient.java:350)
+	at com.documentum.fc.client.DfClient.<clinit>(DfClient.java:766)
+	at com.documentum.com.DfClientX.getDFCVersion(DfClientX.java:304)
+	at es.documentum.utilidades.UtilidadesDocumentum.DameVersionDFC(UtilidadesDocumentum.java:617)
+	at es.documentum.pantalla.PantallaDocumentum.inicializar(PantallaDocumentum.java:2439)
+	at es.documentum.pantalla.PantallaDocumentum.<init>(PantallaDocumentum.java:114)
+	at es.documentum.pantalla.PantallaDocumentum$61.run(PantallaDocumentum.java:1935)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+2018-03-06 16:45:50 DfPreferences [WARN] [DFC_PREFERENCE_UNKNOWN_NAME] "password" is not a recognized preference name
+com.documentum.fc.impl.util.ThrowableStack
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnOnceAboutUnknownPreference(TypedPreferences.java:420)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.warnAboutUnknownPreferences(TypedPreferences.java:411)
+	at com.documentum.fc.common.impl.preferences.TypedPreferences.loadProperties(TypedPreferences.java:335)
+	at com.documentum.fc.common.DfPreferences.loadProperties(DfPreferences.java:377)
+	at com.documentum.fc.common.impl.preferences.PreferencesManager.<init>(PreferencesManager.java:39)
+	at com.documentum.fc.common.DfPreferences.initialize(DfPreferences.java:64)
+	at com.documentum.fc.common.DfPreferences.getInstance(DfPreferences.java:43)
+	at com.documentum.fc.client.DfSimpleDbor.getDefaultDbor(DfSimpleDbor.java:78)
+	at com.documentum.fc.client.DfSimpleDbor.<init>(DfSimpleDbor.java:66)
+	at com.documentum.fc.client.DfClient$ClientImpl.<init>(DfClient.java:350)
+	at com.documentum.fc.client.DfClient.<clinit>(DfClient.java:766)
+	at com.documentum.com.DfClientX.getDFCVersion(DfClientX.java:304)
+	at es.documentum.utilidades.UtilidadesDocumentum.DameVersionDFC(UtilidadesDocumentum.java:617)
+	at es.documentum.pantalla.PantallaDocumentum.inicializar(PantallaDocumentum.java:2439)
+	at es.documentum.pantalla.PantallaDocumentum.<init>(PantallaDocumentum.java:114)
+	at es.documentum.pantalla.PantallaDocumentum$61.run(PantallaDocumentum.java:1935)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+2018-03-06 16:45:50 JKSKeystoreUtilForDfc [INFO] keystore file name is C:\Users\E274399\documentumdfcs\documentum\shared\dfc.keystore
+2018-03-06 16:45:50 InitializeKeystoreForDfc [INFO] [DFC_SECURITY_IDENTITY_LOADED] Loaded identity from keystore, DFC alias=dfc, identity=dfc_2PnZjQ9u10GXPY2T2qX8bZdJI7oa
+2018-03-06 16:45:50 AuthenticationMgrForDfc [INFO] identity for authentication is dfc_2PnZjQ9u10GXPY2T2qX8bZdJI7oa
+2018-03-06 16:45:55 RuntimeContext [INFO] DFC Version is 7.2.0000.0054
+2018-03-06 16:46:36 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:46:36 AuthenticationMgr [INFO] new identity bundle <dfc_2PnZjQ9u10GXPY2T2qX8bZdJI7oa	1520351196	JCA-multi		s4gelXj4nDPAzu1eshQ9uL6aLZZPxHROyRZWQJkoF/tSDEAI+2XydYNuRwzfrUnuTju62SPQbkvdpzg9BMi63NJYKSp9iKAgkTeYMGlp+j0WfqGefrY+rxgxri2P5IEF/TGaVKS7J1TVbMfhR3sxusfns7kCnQXfCNOm1J+DJj4=>
+2018-03-06 16:46:37 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:46:37 ClassCacheManager$CacheCleanupTask [INFO] [DFC_BOF_RUNNING_CLEANUP] Running class cache cleanup task
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c4e.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c56.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c5e.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c66.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c6e.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c78.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c80.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c88.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c90.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80496c4c.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498544.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498548.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc8049854c.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498550.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498554.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498558.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc8049855c.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498560.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498564.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498568.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc8049856e.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498572.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498576.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc8049857a.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc8049857e.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498582.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498586.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc8049853e.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:37 CacheManifest [INFO] [DFC_BOF_FILE_REMOVED] File C:\Users\E274399\documentumdfcs\documentum\shared\cache\7.2.0000.0054\bof\D_A1_CYC\090003fc80498542.jar was deleted from the file system since it is no longer in use.
+2018-03-06 16:46:38 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:46:39 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:46:39 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:46:39 DfPreferences [WARN] [DFC_PREFERENCE_NOT_DYNAMIC] Persistent change for preference "dfc.data.dir" will not take effect until the next restart
+2018-03-06 16:46:39 DfPreferences [WARN] [DFC_PREFERENCE_NOT_DYNAMIC] Persistent change for preference "dfc.security.keystore.file" will not take effect until the next restart
+2018-03-06 16:46:42 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:46:51 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:46:51 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:10 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:12 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:28 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:29 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:29 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:30 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:35 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:36 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:36 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:36 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:37 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:42 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:47:45 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:48:05 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:48:05 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:48:05 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:48:05 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:48:06 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:48:06 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:48:48 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:49:42 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:49:43 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:49:44 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:30 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:31 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:32 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:33 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:34 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:34 dfc [INFO] [DFC_ACS_LOG_CACHE_LOAD_DOCBASE_CONFIG] ACS config objects are read from docbaseId="1020" docbaseName="D_A1_CYC"
+2018-03-06 16:50:41 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:43 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:43 DocbaseConnection [INFO] Object protocol version 2
+2018-03-06 16:50:45 DocbaseConnection [INFO] Object protocol version 2

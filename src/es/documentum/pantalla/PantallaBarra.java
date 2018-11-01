@@ -4,7 +4,6 @@ import es.documentum.utilidades.Utilidades;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-
 public class PantallaBarra extends javax.swing.JDialog {
 
     java.awt.Frame ventanapadre = null;
@@ -27,6 +26,16 @@ public class PantallaBarra extends javax.swing.JDialog {
         ventanapadre = parent;
         initComponents();
         setLocationRelativeTo(ventanapadre);
+        barra.setIndeterminate(true);
+        barra.setVisible(true);
+        asignarIconos();
+        repaint();
+    }
+
+    public PantallaBarra(java.awt.Dialog parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
         barra.setIndeterminate(true);
         barra.setVisible(true);
         asignarIconos();
@@ -176,5 +185,5 @@ public class PantallaBarra extends javax.swing.JDialog {
         java.net.URL imgURL = PantallaBarra.class.getClassLoader().getResource("es/documentum/imagenes/parar.png");
         Icon imgicon = new ImageIcon(imgURL);
         this.botonParar.setIcon(imgicon);
-    }    
+    }
 }
