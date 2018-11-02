@@ -212,20 +212,68 @@ public class UtilidadesDocumentum {
             }
             return coleccion;
         }
-        IDfQuery query = new DfClientX().getQuery();
-        query.setDQL(dql);
-        try {
-            coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
+
+        ERROR = "";
+        if (dql.toLowerCase().startsWith("describe ")) {
+            coleccion = ejecutarDescribe(dql, sesion);
+        } else {
+            IDfQuery query = new DfClientX().getQuery();
+            query.setDQL(dql);
+            try {
+                coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
 //            if (sesion.isConnected()) {
 //                sesion.disconnect();
 //            }
-        } catch (DfException ex) {
-            ERROR = "Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage();
-            Utilidades.escribeLog("Error al ejecutar DQL '" + dql + "' (ejecutarDql) - Error: " + ex.getMessage());
-            return coleccion;
+            } catch (DfException ex) {
+                ERROR = "Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage();
+                Utilidades.escribeLog("Error al ejecutar DQL '" + dql + "' (ejecutarDql) - Error: " + ex.getMessage());
+                return coleccion;
+            }
         }
 
-        ERROR = "";
+        return coleccion;
+    }
+
+    private IDfCollection ejecutarDescribe(String dql, IDfSession sesion) {
+        IDfCollection coleccion = null;
+
+        StringTokenizer param = new StringTokenizer(dql.trim(), " ");
+
+        String comando = param.nextElement().toString();
+
+        if (dql.toLowerCase().contains(" table ")) {
+            param.nextElement();
+            String tabla = param.nextElement().toString();
+            coleccion = describeTabla(tabla, sesion);
+        } else {
+            String tipo = param.nextElement().toString();
+            if (tipo.toLowerCase().equalsIgnoreCase("type")) {
+                tipo = param.nextElement().toString();
+            }
+            coleccion = describeTipo(tipo, sesion);
+        }
+        return coleccion;
+    }
+
+    public IDfCollection describeTabla(String tabla, IDfSession sesion) {
+        IDfCollection coleccion = null;
+
+        if (esTablaRegistrada(tabla)) {
+
+        }
+
+        return coleccion;
+    }
+
+    public Boolean esTablaRegistrada(String tabla) {
+        Boolean registrada = false;
+
+        return registrada;
+    }
+
+    public IDfCollection describeTipo(String tipo, IDfSession sesion) {
+        IDfCollection coleccion = null;
+
         return coleccion;
     }
 
