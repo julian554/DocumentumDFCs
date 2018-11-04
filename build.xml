@@ -37,6 +37,13 @@
             <zipfileset src="dist/lib/guava-11.0.2.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/LGoodDatePicker-2.4.2-core.jar" excludes="META-INF/*"/>
             <zipfileset src="dist/lib/javax.mail-1.5.2.jar" excludes="META-INF/*"/>
+            
+            <zipfileset src="dist/lib/commons-collections4-4.2.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/commons-compress-1.18.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/poi-4.0.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/poi-ooxml-4.0.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/poi-ooxml-schemas-4.0.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/xmlbeans-3.0.1.jar" excludes="META-INF/*"/>
             <manifest>
                 <attribute name="Main-Class" value="${main.class}"/>
                 <attribute name="Class-Path" value=". / META-INF/services"/>

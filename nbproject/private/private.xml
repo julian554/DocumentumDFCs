@@ -5,7 +5,9 @@
         <group>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/utilidades/UtilidadesDocumentum.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaRelations.java</file>
+            <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaTipoAtributos.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaArbolTipos.java</file>
+            <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDql.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDocumentum.java</file>
         </group>
     </open-files>

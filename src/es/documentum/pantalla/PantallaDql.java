@@ -23,8 +23,11 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -46,6 +49,7 @@ public class PantallaDql extends javax.swing.JFrame {
     String componente = "";
     public static PantallaDocumentum ventanapadre = null;
     IDfSession gsesion = sesionDocumentum();
+    String ERROR = "";
 
     public PantallaDql(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
@@ -473,10 +477,19 @@ public class PantallaDql extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 fichero = chooser.getSelectedFile().toString();
-                if (!fichero.toLowerCase().endsWith(".xls")) {
-                    fichero = fichero + ".xls";
+                if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                    fichero = fichero + ".xlsx";
                 }
-                util.exportaExcel(tablaResultados, fichero);
+                //    util.exportaExcel(tablaResultados, fichero);
+                String hoja = "Consulta - DQL";
+                if (textoDql.getText().trim().toLowerCase().startsWith("describe")) {
+                    if (textoDql.getText().trim().toLowerCase().contains(" table ")) {
+                        hoja = "DQL - Describe tabla";
+                    } else {
+                        hoja = "DQL - Describe tipo";
+                    }
+                }
+                util.writeToExcel(tablaResultados, fichero, hoja);
 //                EtiquetaEstado.setText(resultado);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
@@ -539,6 +552,8 @@ public class PantallaDql extends javax.swing.JFrame {
         tablaResultados.setModel(modeloLotes);
         EtiquetaEstado.setText("");
         textoLog.setText("");
+        ERROR = "";
+        textoLog.setForeground(Color.BLACK);
 
         new Thread() {
             public void run() {
@@ -548,6 +563,7 @@ public class PantallaDql extends javax.swing.JFrame {
                         return false;
                     }
                 };
+
                 tablaResultados.setModel(modeloLotes);
                 String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
                 barradocum = new PantallaBarra(PantallaDql.this, false);
@@ -578,7 +594,23 @@ public class PantallaDql extends javax.swing.JFrame {
                         col.close();
                         if (filas.size() <= 0) {
                             EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
-                            textoLog.setText("0 Registro(s) encontrado(s) ");
+                            if (esTipo) {
+                                try {
+                                    StringTokenizer param = new StringTokenizer(dql.trim(), " ");
+                                    param.nextElement().toString();
+                                    String tipo = param.nextElement().toString();
+                                    if (tipo.toLowerCase().equalsIgnoreCase("type")) {
+                                        tipo = param.nextElement().toString();
+                                    }
+                                    ERROR = "El tipo " + tipo + " no es un tipo documental en el repositorio " + gsesion.getDocbaseName();
+                                } catch (DfException ex) {
+
+                                }
+                                textoLog.setForeground(Color.RED);
+                                textoLog.setText(ERROR);
+                            } else {
+                                textoLog.setText("0 Registro(s) encontrado(s) ");
+                            }
                             barradocum.dispose();
                             return;
                         }
@@ -755,13 +787,24 @@ public class PantallaDql extends javax.swing.JFrame {
                     pintarTabla();
 
                     tablaResultados.doLayout();
-                    
-                    setVisible(false); 
+
+                    setVisible(false);
                     setVisible(true);
                     EtiquetaEstado.setText(cont + " Registro(s) encontrado(s) ");
-                    textoLog.setText(cont + " Registro(s) encontrado(s) ");
+                    if (ERROR.isEmpty()) {
+                        textoLog.setText(cont + " Registro(s) encontrado(s) ");
+                    } else {
+                        textoLog.setText(ERROR);
+                        textoLog.setForeground(Color.RED);
+                    }
                 } catch (Exception ex) {
-                    textoLog.setText(ex.getMessage());
+                    if (ERROR.isEmpty()) {
+                        textoLog.setText(ex.getMessage());
+                    } else {
+                        textoLog.setText(ERROR);
+                        textoLog.setForeground(Color.RED);
+                        EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
+                    }
 
                 }
                 if (checkDameSQL.isSelected()) {
@@ -856,6 +899,12 @@ public class PantallaDql extends javax.swing.JFrame {
                     + " where  cab.r_object_id=lineas.r_object_id and lower(cab.table_name)='" + nombre + "' order by 3";
 
             coleccion = utildocum.ejecutarDql(dql, sesion);
+        } else {
+            try {
+                ERROR = "La tabla " + tabla + " no es una tabla registrada en el repositorio " + sesion.getDocbaseName();
+            } catch (DfException ex) {
+
+            }
         }
         return coleccion;
     }
@@ -866,6 +915,7 @@ public class PantallaDql extends javax.swing.JFrame {
                 + "from dm_type_r lineas, dm_type_s cab where cab.r_object_id=lineas.r_object_id and cab.name= '"
                 + tipo + "' order by attr_identifier";
         coleccion = utildocum.ejecutarDql(dql, sesion);
+
         return coleccion;
     }
 

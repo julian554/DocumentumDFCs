@@ -1,2 +1,2 @@
-version=1.5 050
+version=1.6 000
 nombre=DocumentumDFCs
