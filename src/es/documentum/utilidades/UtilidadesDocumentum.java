@@ -214,67 +214,54 @@ public class UtilidadesDocumentum {
         }
 
         ERROR = "";
-        if (dql.toLowerCase().startsWith("describe ")) {
-            coleccion = ejecutarDescribe(dql, sesion);
-        } else {
-            IDfQuery query = new DfClientX().getQuery();
-            query.setDQL(dql);
-            try {
-                coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
+
+        IDfQuery query = new DfClientX().getQuery();
+        query.setDQL(dql);
+        try {
+            coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
 //            if (sesion.isConnected()) {
 //                sesion.disconnect();
 //            }
-            } catch (DfException ex) {
-                ERROR = "Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage();
-                Utilidades.escribeLog("Error al ejecutar DQL '" + dql + "' (ejecutarDql) - Error: " + ex.getMessage());
-                return coleccion;
+        } catch (DfException ex) {
+            ERROR = "Error al ejecutar DQL (ejecutarDql) - Error: " + ex.getMessage();
+            Utilidades.escribeLog("Error al ejecutar DQL '" + dql + "' (ejecutarDql) - Error: " + ex.getMessage());
+            return coleccion;
+        }
+
+        return coleccion;
+    }
+
+    public String DameSupeTipo(String nombre, IDfSession sesion) {
+        String supertipo = "";
+        try {
+            String dql = "Select super_name from dm_type where name='" + nombre + "'";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    supertipo = r.getValueAt(0).asString();
+                }
             }
+        } catch (DfException ex) {
         }
-
-        return coleccion;
+        return supertipo;
     }
 
-    private IDfCollection ejecutarDescribe(String dql, IDfSession sesion) {
-        IDfCollection coleccion = null;
-
-        StringTokenizer param = new StringTokenizer(dql.trim(), " ");
-
-        String comando = param.nextElement().toString();
-
-        if (dql.toLowerCase().contains(" table ")) {
-            param.nextElement();
-            String tabla = param.nextElement().toString();
-            coleccion = describeTabla(tabla, sesion);
-        } else {
-            String tipo = param.nextElement().toString();
-            if (tipo.toLowerCase().equalsIgnoreCase("type")) {
-                tipo = param.nextElement().toString();
-            }
-            coleccion = describeTipo(tipo, sesion);
-        }
-        return coleccion;
-    }
-
-    public IDfCollection describeTabla(String tabla, IDfSession sesion) {
-        IDfCollection coleccion = null;
-
-        if (esTablaRegistrada(tabla)) {
-
-        }
-
-        return coleccion;
-    }
-
-    public Boolean esTablaRegistrada(String tabla) {
+    public Boolean esTablaRegistrada(String tabla, IDfSession sesion) {
         Boolean registrada = false;
-
+        String dql = "select table_name from dm_registered where lower(table_name)='" + tabla.toLowerCase() + "'";
+        IDfCollection coleccion = ejecutarDql(dql, sesion);
+        if (coleccion != null) {
+            try {
+                coleccion.next();
+                String valor = coleccion.getString("table_name");
+                if (valor.equalsIgnoreCase(tabla)) {
+                    registrada = true;
+                }
+            } catch (Exception ex) {
+            }
+        }
         return registrada;
-    }
-
-    public IDfCollection describeTipo(String tipo, IDfSession sesion) {
-        IDfCollection coleccion = null;
-
-        return coleccion;
     }
 
     public IDfCollection ejecutarDql(String dql, IDfSession sesion) {
@@ -1579,7 +1566,10 @@ public class UtilidadesDocumentum {
 
         UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
         //IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
-        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "prudcm1", "vilcs405", "1489");
+//        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "prudcm1", "vilcs405", "1489");
+        IDfSession sesion = ed.conectarDocumentum("dmadmin", "password", "MyRepo", "demo-server", "1489");
+
+        Boolean es = ed.esTablaRegistrada("xxxtblxxx_39015038", sesion);
 
         Map<String, String> relaciones = new HashMap<>();
 
