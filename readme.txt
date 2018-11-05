@@ -65,3 +65,4 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     Export a excel xlsx de las DQLs usando librería de Apache POI
     
     Añadido el comando "describe" en la Pantalla de DQL
+
