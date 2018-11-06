@@ -483,12 +483,9 @@ public class PantallaDql extends javax.swing.JFrame {
                 //    util.exportaExcel(tablaResultados, fichero);
                 String hoja = "Consulta - DQL";
                 if (textoDql.getText().trim().toLowerCase().startsWith("describe")) {
-                    if (textoDql.getText().trim().toLowerCase().contains(" table ")) {
-                        hoja = "DQL - Describe tabla";
-                    } else {
-                        hoja = "DQL - Describe tipo";
-                    }
+                    hoja = textoDql.getText().trim();
                 }
+
                 util.writeToExcel(tablaResultados, fichero, hoja);
 //                EtiquetaEstado.setText(resultado);
             } else {
@@ -655,14 +652,19 @@ public class PantallaDql extends javax.swing.JFrame {
                             String supertipo = utildocum.DameSupeTipo(nombre_tipo, gsesion);
                             datos[0][0] = "Type Name:";
                             datos[0][1] = nombre_tipo;
+                            datos[0][2] = "";
                             datos[1][0] = "SuperType Name:";
                             datos[1][1] = supertipo;
+                            datos[1][2] = "";
                             datos[2][0] = "";
                             datos[2][1] = "";
+                            datos[2][2] = "";
                             datos[3][0] = "Attributes:";
                             datos[3][1] = cont;
+                            datos[3][2] = "";
                             datos[4][0] = "";
                             datos[4][1] = "";
+                            datos[4][2] = "";
                             cabecera[0] = "";
                             cabecera[1] = "";
                             cabecera[2] = "";
@@ -896,7 +898,7 @@ public class PantallaDql extends javax.swing.JFrame {
         if (utildocum.esTablaRegistrada(nombre, sesion)) {
             String dql = "select cab.table_name,cab.table_owner,lineas.column_name,lineas.column_datatype,lineas.column_length "
                     + " from dm_registered_r lineas, dm_registered_s cab "
-                    + " where  cab.r_object_id=lineas.r_object_id and lower(cab.table_name)='" + nombre + "' order by 3";
+                    + " where  cab.r_object_id=lineas.r_object_id and lower(cab.table_name)='" + nombre.toLowerCase() + "' order by 3";
 
             coleccion = utildocum.ejecutarDql(dql, sesion);
         } else {
@@ -912,8 +914,8 @@ public class PantallaDql extends javax.swing.JFrame {
     public IDfCollection describeTipo(String tipo, IDfSession sesion) {
         IDfCollection coleccion = null;
         String dql = "select cab.name,lineas.attr_name,lineas.attr_length, attr_repeating, lineas.attr_type "
-                + "from dm_type_r lineas, dm_type_s cab where cab.r_object_id=lineas.r_object_id and cab.name= '"
-                + tipo + "' order by attr_identifier";
+                + "from dm_type_r lineas, dm_type_s cab where cab.r_object_id=lineas.r_object_id and lower(cab.name)= '"
+                + tipo.toLowerCase() + "' order by attr_identifier";
         coleccion = utildocum.ejecutarDql(dql, sesion);
 
         return coleccion;
