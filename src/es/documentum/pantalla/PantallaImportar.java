@@ -5,15 +5,18 @@
 package es.documentum.pantalla;
 
 import com.documentum.fc.client.IDfCollection;
+import com.documentum.fc.client.IDfFolder;
 import com.documentum.fc.client.IDfTypedObject;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.IDfValue;
 import es.documentum.utilidades.ClassPathUpdater;
 import es.documentum.utilidades.Utilidades;
+import static es.documentum.utilidades.Utilidades.escribeLog;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -25,13 +28,24 @@ import javax.swing.JFileChooser;
  *
  * @author julian.collado
  */
-public class PantallaImportar extends javax.swing.JFrame {
+public class PantallaImportar extends javax.swing.JDialog {
 
     Utilidades util = new Utilidades();
     PantallaBarra barradocum = null;
     Boolean botonderecho = false;
     String componente = "";
     String tipodocumental = "dm_document";
+    UtilidadesDocumentum utilidadesdocumentum;
+    String dirSSOO = "";
+    String rutadcm;
+
+    public String getRutadcm() {
+        return this.TextoCarpetaDocumentum.getText();
+    }
+
+    public void setRutadcm(String rutadcm) {
+        this.TextoCarpetaDocumentum.setText(rutadcm);
+    }
     public static PantallaDocumentum ventanapadre = null;
 
     public PantallaImportar(PantallaDocumentum parent, boolean modal) {
@@ -42,9 +56,22 @@ public class PantallaImportar extends javax.swing.JFrame {
         } catch (NullPointerException e) {
             Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
         }
-
+        inicializar();
         setLocationRelativeTo(null);
         cargarComboTipos();
+    }
+
+    private void inicializar() {
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        try {
+            ClassPathUpdater.add(dirdfc);
+            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
+        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
+        }
+        utilidadesdocumentum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+        RBFichero.setSelected(true);
+        CheckCrearDir.setVisible(false);
     }
 
     protected static Image getLogo() {
@@ -73,16 +100,19 @@ public class PantallaImportar extends javax.swing.JFrame {
         opcionExportarExcel = new javax.swing.JMenuItem();
         popupHistorial = new javax.swing.JPopupMenu();
         opcionVaciarHistorial = new javax.swing.JMenuItem();
-        panelDql = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        panelImportar = new javax.swing.JPanel();
+        LabelFicheroImportar = new javax.swing.JLabel();
         comboTipoDocumental = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         TextoFichero = new javax.swing.JTextField();
         TextoCarpetaDocumentum = new javax.swing.JTextField();
         botonSelFichero = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        LabelNombreFichero = new javax.swing.JLabel();
         TextoNombreFichero = new javax.swing.JTextField();
+        RBFichero = new javax.swing.JRadioButton();
+        RBDirectorio = new javax.swing.JRadioButton();
+        CheckCrearDir = new javax.swing.JCheckBox();
         panelEstado = new javax.swing.JPanel();
         textoLog = new javax.swing.JTextField();
         botonEjecutar = new javax.swing.JButton();
@@ -134,13 +164,12 @@ public class PantallaImportar extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Importar Archivos a Documentum");
-        setMaximumSize(new java.awt.Dimension(565, 307));
         setMinimumSize(new java.awt.Dimension(565, 307));
         setResizable(false);
 
-        panelDql.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelImportar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel2.setText("Fichero a Importar");
+        LabelFicheroImportar.setText("Fichero a Importar");
 
         comboTipoDocumental.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -170,7 +199,7 @@ public class PantallaImportar extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Nombre del fichero");
+        LabelNombreFichero.setText("Nombre del fichero");
 
         TextoNombreFichero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,39 +207,74 @@ public class PantallaImportar extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout panelDqlLayout = new javax.swing.GroupLayout(panelDql);
-        panelDql.setLayout(panelDqlLayout);
-        panelDqlLayout.setHorizontalGroup(
-            panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelDqlLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+        RBFichero.setText("Fichero");
+        RBFichero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RBFicheroActionPerformed(evt);
+            }
+        });
+
+        RBDirectorio.setText("Directorio");
+        RBDirectorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RBDirectorioActionPerformed(evt);
+            }
+        });
+
+        CheckCrearDir.setText("Crear directorio");
+
+        javax.swing.GroupLayout panelImportarLayout = new javax.swing.GroupLayout(panelImportar);
+        panelImportar.setLayout(panelImportarLayout);
+        panelImportarLayout.setHorizontalGroup(
+            panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImportarLayout.createSequentialGroup()
+                .addContainerGap(83, Short.MAX_VALUE)
+                .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(TextoCarpetaDocumentum)
-                        .addComponent(comboTipoDocumental, 0, 532, Short.MAX_VALUE)
-                        .addGroup(panelDqlLayout.createSequentialGroup()
-                            .addComponent(TextoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(botonSelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(comboTipoDocumental, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextoNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelImportarLayout.createSequentialGroup()
+                            .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(panelImportarLayout.createSequentialGroup()
+                                    .addComponent(LabelFicheroImportar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(53, 53, 53)
+                                    .addComponent(RBFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(RBDirectorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(TextoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(botonSelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelImportarLayout.createSequentialGroup()
+                            .addComponent(LabelNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(54, 54, 54)
+                            .addComponent(CheckCrearDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(TextoNombreFichero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(55, 55, 55))
         );
-        panelDqlLayout.setVerticalGroup(
-            panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelDqlLayout.createSequentialGroup()
+        panelImportarLayout.setVerticalGroup(
+            panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImportarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelFicheroImportar)
+                    .addComponent(RBFichero)
+                    .addComponent(RBDirectorio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TextoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonSelFichero))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImportarLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(LabelNombreFichero)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(panelImportarLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CheckCrearDir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(TextoNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
@@ -226,6 +290,8 @@ public class PantallaImportar extends javax.swing.JFrame {
         panelEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         textoLog.setEditable(false);
+        textoLog.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        textoLog.setForeground(new java.awt.Color(0, 51, 204));
         textoLog.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 textoLogMousePressed(evt);
@@ -245,7 +311,7 @@ public class PantallaImportar extends javax.swing.JFrame {
         );
         panelEstadoLayout.setVerticalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(textoLog, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+            .addComponent(textoLog, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         botonEjecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar_peq.png"))); // NOI18N
@@ -253,6 +319,11 @@ public class PantallaImportar extends javax.swing.JFrame {
         botonEjecutar.setMaximumSize(new java.awt.Dimension(100, 40));
         botonEjecutar.setMinimumSize(new java.awt.Dimension(100, 40));
         botonEjecutar.setPreferredSize(new java.awt.Dimension(100, 40));
+        botonEjecutar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                botonEjecutarMousePressed(evt);
+            }
+        });
         botonEjecutar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonEjecutarActionPerformed(evt);
@@ -299,28 +370,67 @@ public class PantallaImportar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelDql, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(botonEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(302, 302, 302)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 403, Short.MAX_VALUE)
                 .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap())
+            .addComponent(panelImportar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {botonEjecutar, botonSalir});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panelDql, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(panelImportar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {botonEjecutar, botonSalir});
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void importarDirectorio() {
+        new Thread() {
+            @Override
+            public void run() {
+                PantallaImportar.this.dirSSOO = PantallaImportar.this.TextoFichero.getText();
+                PantallaImportar.this.panelImportar.setEnabled(false);
+                PantallaImportar.this.botonEjecutar.setEnabled(false);
+                PantallaImportar.this.botonSalir.setEnabled(false);
+                PantallaImportar.this.opcionEjecutar.setEnabled(false);
+                PantallaImportar.this.opcionSalir.setEnabled(false);
+                PantallaImportar.this.barradocum = new PantallaBarra(PantallaImportar.this, false);
+                PantallaImportar.this.barradocum.setTitle("Importando en Documentum ...");
+                PantallaBarra.barra.setIndeterminate(true);
+                PantallaImportar.this.barradocum.botonParar.setVisible(true);
+                PantallaImportar.this.barradocum.setLabelMensa("");
+                PantallaBarra.barra.setOpaque(true);
+                PantallaBarra.barra.setStringPainted(false);
+                PantallaImportar.this.barradocum.validate();
+                PantallaImportar.this.barradocum.setVisible(true);
+                PantallaImportar.this.ImportarDirEnDcm(PantallaImportar.this.dirSSOO);
+                PantallaImportar.this.panelImportar.setEnabled(true);
+                PantallaImportar.this.botonEjecutar.setEnabled(true);
+                PantallaImportar.this.botonSalir.setEnabled(true);
+                PantallaImportar.this.opcionEjecutar.setEnabled(true);
+                PantallaImportar.this.opcionSalir.setEnabled(true);
+                PantallaImportar.this.barradocum.dispose();
+                PantallaImportar.ventanapadre.BuscarEnDocumentum();
+                PantallaImportar.this.dispose();
+                CheckCrearDir.setEnabled(true);
+            }
+        }.start();
+    }
+
 
     private void botonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSalirActionPerformed
         salir();
@@ -328,13 +438,21 @@ public class PantallaImportar extends javax.swing.JFrame {
 
     private void botonEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEjecutarActionPerformed
         if (ComprobarValores()) {
-            subirADocumentum();
+            if (this.RBFichero.isSelected()) {
+                subirADocumentum();
+            } else {
+                importarDirectorio();
+            }
         }
     }//GEN-LAST:event_botonEjecutarActionPerformed
 
     private void opcionEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionEjecutarActionPerformed
         if (ComprobarValores()) {
-            subirADocumentum();
+            if (this.RBFichero.isSelected()) {
+                subirADocumentum();
+            } else {
+                importarDirectorio();
+            }
         }
     }//GEN-LAST:event_opcionEjecutarActionPerformed
 
@@ -382,14 +500,24 @@ public class PantallaImportar extends javax.swing.JFrame {
 
     private void botonSelFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSelFicheroActionPerformed
         JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setDialogTitle("Seleccionar directorio y nombre de fichero");
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            TextoFichero.setText(chooser.getSelectedFile().toString());
-            TextoNombreFichero.setText(chooser.getSelectedFile().getName().toString());
+        chooser.setCurrentDirectory(new java.io.File("/"));
+        if (RBFichero.isSelected()) {
+            chooser.setDialogTitle("Seleccionar fichero a importar");
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                TextoFichero.setText(chooser.getSelectedFile().toString());
+                TextoNombreFichero.setText(chooser.getSelectedFile().getName());
+            } else {
+                Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
+            }
         } else {
-            Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
+            chooser.setDialogTitle("Seleccionar Directorio a importar");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                TextoFichero.setText(chooser.getSelectedFile().toString());
+            } else {
+                Utilidades.escribeLog("No se ha seleccionado el directorio a importar");
+            }
         }
     }//GEN-LAST:event_botonSelFicheroActionPerformed
 
@@ -402,14 +530,36 @@ public class PantallaImportar extends javax.swing.JFrame {
     }//GEN-LAST:event_textoLogActionPerformed
 
     private void textoLogMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoLogMousePressed
-                if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
             botonderecho = true;
             componente = "textoLog";
             popupmenu(evt);
         }
 
     }//GEN-LAST:event_textoLogMousePressed
-   private void popupmenu(MouseEvent evt) {
+
+    private void RBDirectorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RBDirectorioActionPerformed
+        RBFichero.setSelected(false);
+        LabelFicheroImportar.setText("Directorio a Importar");
+        LabelNombreFichero.setEnabled(false);
+        TextoNombreFichero.setEnabled(false);
+        CheckCrearDir.setVisible(true);
+    }//GEN-LAST:event_RBDirectorioActionPerformed
+
+    private void RBFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RBFicheroActionPerformed
+        RBDirectorio.setSelected(false);
+        LabelFicheroImportar.setText("Fichero a Importar");
+        LabelNombreFichero.setEnabled(true);
+        TextoNombreFichero.setEnabled(true);
+        CheckCrearDir.setVisible(false);
+    }//GEN-LAST:event_RBFicheroActionPerformed
+
+    private void botonEjecutarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEjecutarMousePressed
+        textoLog.setText("Importando fichero en Documentum ...");
+        textoLog.validate();
+    }//GEN-LAST:event_botonEjecutarMousePressed
+
+    private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
             botonderecho = false;
 
@@ -420,19 +570,27 @@ public class PantallaImportar extends javax.swing.JFrame {
         }
     }
 
-   private Boolean ComprobarValores() {
+    private Boolean ComprobarValores() {
         Boolean correcto = true;
 
-        if (TextoFichero.getText().isEmpty()) {
-            textoLog.setText("Debe indicar el fichero a importar");
-            TextoFichero.requestFocus();
-            return false;
-        }
+        if (RBFichero.isSelected()) {
+            if (TextoFichero.getText().isEmpty()) {
+                textoLog.setText("Debe indicar el fichero a importar");
+                TextoFichero.requestFocus();
+                return false;
+            }
 
-        if (TextoNombreFichero.getText().isEmpty()) {
-            textoLog.setText("Debe indicar un nombre de fichero");
-            TextoNombreFichero.requestFocus();
-            return false;
+            if (TextoNombreFichero.getText().isEmpty()) {
+                textoLog.setText("Debe indicar un nombre de fichero");
+                TextoNombreFichero.requestFocus();
+                return false;
+            }
+        } else {
+            if (TextoFichero.getText().isEmpty()) {
+                textoLog.setText("Debe indicar el directorio del Sistema Operativo a importar");
+                TextoFichero.requestFocus();
+                return false;
+            }
         }
 
         if (TextoCarpetaDocumentum.getText().isEmpty()) {
@@ -451,17 +609,11 @@ public class PantallaImportar extends javax.swing.JFrame {
 
     private void cargarComboTipos() {
         ArrayList comboBoxItems = new ArrayList();
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-        } catch (IOException ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        } catch (IllegalAccessException ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        } catch (NoSuchMethodException ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        } catch (InvocationTargetException ex) {
+        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
         UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
@@ -493,14 +645,20 @@ public class PantallaImportar extends javax.swing.JFrame {
 
         DefaultComboBoxModel modelo = new DefaultComboBoxModel(comboBoxItems.toArray());
         comboTipoDocumental.setModel(modelo);
-        comboTipoDocumental.setSelectedIndex(posicion);
+        if (modelo.getSize() > 0) {
+            comboTipoDocumental.setSelectedIndex(posicion);
+        }
     }
 
     public static void main(String args[]) {
+        PantallaImportar panta = new PantallaImportar(ventanapadre, true);
+        panta.TextoCarpetaDocumentum.setText("/dmadmin/prueba");
+        panta.tipodocumental = "car_doc_trabajo_salida";
+        panta.ImportarDirEnDcm("D:\\Adif\\Documentum\\D_A1_DCD");
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -510,19 +668,11 @@ public class PantallaImportar extends javax.swing.JFrame {
 
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaImportar.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaImportar.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaImportar.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaImportar.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            escribeLog("Error al establecer el estilo de la ventana. Error: " + ex.getMessage());
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -534,6 +684,11 @@ public class PantallaImportar extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox CheckCrearDir;
+    private javax.swing.JLabel LabelFicheroImportar;
+    private javax.swing.JLabel LabelNombreFichero;
+    private javax.swing.JRadioButton RBDirectorio;
+    private javax.swing.JRadioButton RBFichero;
     private javax.swing.JTextField TextoCarpetaDocumentum;
     private javax.swing.JTextField TextoFichero;
     private javax.swing.JTextField TextoNombreFichero;
@@ -541,10 +696,8 @@ public class PantallaImportar extends javax.swing.JFrame {
     private javax.swing.JButton botonSalir;
     private javax.swing.JButton botonSelFichero;
     private javax.swing.JComboBox comboTipoDocumental;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem opcionCopiar;
     private javax.swing.JMenuItem opcionCopiarValor;
@@ -554,8 +707,8 @@ public class PantallaImportar extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionSalir;
     private javax.swing.JMenuItem opcionVaciarHistorial;
     private javax.swing.JMenu opciones;
-    private javax.swing.JPanel panelDql;
     private javax.swing.JPanel panelEstado;
+    private javax.swing.JPanel panelImportar;
     private javax.swing.JPopupMenu popupDatos;
     private javax.swing.JPopupMenu popupEditar;
     private javax.swing.JPopupMenu popupHistorial;
@@ -567,15 +720,56 @@ public class PantallaImportar extends javax.swing.JFrame {
     }
 
     private void subirADocumentum() {
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-        try {
-            ClassPathUpdater.add(dirdfc);
-            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        }
-        UtilidadesDocumentum utilidadesdocumentum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
         textoLog.setText(utilidadesdocumentum.importarADocumentum(TextoNombreFichero.getText(), TextoFichero.getText(), TextoCarpetaDocumentum.getText(), tipodocumental));
+        PantallaImportar.ventanapadre.ActualizarTablaDocumentos(TextoCarpetaDocumentum.getText());
     }
 
+    public void ImportarDirEnDcm(String rutaSO) {
+        File dir = new File(rutaSO);
+        String directorio = dir.getName();
+        if (CheckCrearDir.isEnabled() && CheckCrearDir.isSelected()) {
+            TextoCarpetaDocumentum.setText(TextoCarpetaDocumentum.getText() + "/" + directorio);
+            String nuevarutaDocum = TextoCarpetaDocumentum.getText();
+            this.textoLog.setText("Creando carpeta " + nuevarutaDocum + " ... ");
+            this.barradocum.setLabelMensa("Creando carpeta " + nuevarutaDocum + " ... ");
+            IDfFolder nuevafolder = this.utilidadesdocumentum.crearCarpeta(nuevarutaDocum);
+            this.textoLog.setText("Creada carpeta " + nuevarutaDocum);
+            CheckCrearDir.setEnabled(false);
+        }
+        File[] listFile = dir.listFiles();
+        if (listFile != null) {
+            for (int i = 0; i < listFile.length; i++) {
+                String ruta = listFile[i].getPath().replace("\\", "/");
+                String nombreDir = "";
+                if (listFile[i].isDirectory()) {
+                    String nueva = ruta.substring(this.dirSSOO.length() + 1, ruta.length());
+                    nombreDir = this.TextoCarpetaDocumentum.getText() + (nueva.equals("/") ? "" : new StringBuilder().append("/").append(nueva).toString());
+
+                    this.textoLog.setText("Creando carpeta " + nombreDir + " ... ");
+                    this.barradocum.setLabelMensa("Creando carpeta " + nombreDir + " ... ");
+                    IDfFolder folder = this.utilidadesdocumentum.crearCarpeta(nombreDir);
+                    this.textoLog.setText("Creada carpeta " + nombreDir);
+                    this.barradocum.setLabelMensa("Creada carpeta " + nombreDir);
+                    this.panelEstado.repaint();
+                    ImportarDirEnDcm(listFile[i].getPath().replace("\\", "/"));
+                } else {
+                    String nombre = listFile[i].getName().replace("\\", "/");
+                    String nueva = ruta.substring(this.dirSSOO.length() + 1, ruta.length() - nombre.length());
+                    nueva = nueva.endsWith("/") ? nueva.substring(0, nueva.length() - 1) : nueva;
+                    String rutaDocum = this.TextoCarpetaDocumentum.getText() + ((nueva.equals("/")) || (nueva.equals("")) ? "" : new StringBuilder().append("/").append(nueva).toString());
+
+                    this.barradocum.setLabelMensa("Creando documento " + nombre + " ... ");
+                    this.textoLog.setText("Creando documento " + nombre + " ... ");
+                    String id = this.utilidadesdocumentum.importarADocumentum(nombre, listFile[i].getPath(), rutaDocum, this.tipodocumental);
+                    this.textoLog.setText("Creado documento " + nombre + " - ID: " + id);
+                    this.barradocum.setLabelMensa("Creado documento " + nombre + " - ID: " + id);
+                    this.panelEstado.repaint();
+                }
+                if (this.barradocum.getPARAR()) {
+                    this.barradocum.setPARAR(false);
+                    return;
+                }
+            }
+        }
+    }
 }

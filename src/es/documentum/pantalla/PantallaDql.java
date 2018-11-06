@@ -10,6 +10,8 @@ import es.documentum.utilidades.ClassPathUpdater;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Image;
@@ -21,13 +23,16 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -43,7 +48,8 @@ public class PantallaDql extends javax.swing.JFrame {
     Boolean botonderecho = false;
     String componente = "";
     public static PantallaDocumentum ventanapadre = null;
-    IDfSession sesion = sesionDocumentum();
+    IDfSession gsesion = sesionDocumentum();
+    String ERROR = "";
 
     public PantallaDql(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
@@ -94,6 +100,7 @@ public class PantallaDql extends javax.swing.JFrame {
         popupDatos = new javax.swing.JPopupMenu();
         opcionCopiarValor = new javax.swing.JMenuItem();
         opcionExportarExcel = new javax.swing.JMenuItem();
+        opcionSeleccionarColumna = new javax.swing.JMenuItem();
         popupHistorial = new javax.swing.JPopupMenu();
         opcionVaciarHistorial = new javax.swing.JMenuItem();
         panelDql = new javax.swing.JPanel();
@@ -149,6 +156,14 @@ public class PantallaDql extends javax.swing.JFrame {
             }
         });
         popupDatos.add(opcionExportarExcel);
+
+        opcionSeleccionarColumna.setText("Seleccionar Columna");
+        opcionSeleccionarColumna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionSeleccionarColumnaActionPerformed(evt);
+            }
+        });
+        popupDatos.add(opcionSeleccionarColumna);
 
         opcionVaciarHistorial.setText("Vaciar Historial de DQL");
         opcionVaciarHistorial.addActionListener(new java.awt.event.ActionListener() {
@@ -229,16 +244,16 @@ public class PantallaDql extends javax.swing.JFrame {
         });
 
         checkDameSQL.setText("Mostrar SQL");
+        checkDameSQL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkDameSQLActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Nº de registros de salida");
 
         TextoNumReg.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#"))));
         TextoNumReg.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        TextoNumReg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoNumRegActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout panelDqlLayout = new javax.swing.GroupLayout(panelDql);
         panelDql.setLayout(panelDqlLayout);
@@ -370,9 +385,9 @@ public class PantallaDql extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelDql, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(panelResultado, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(panelEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -462,10 +477,19 @@ public class PantallaDql extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 fichero = chooser.getSelectedFile().toString();
-                if (!fichero.toLowerCase().endsWith(".xls")) {
-                    fichero = fichero + ".xls";
+                if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                    fichero = fichero + ".xlsx";
                 }
-                util.exportaExcel(tablaResultados, fichero);
+                //    util.exportaExcel(tablaResultados, fichero);
+                String hoja = "Consulta - DQL";
+                if (textoDql.getText().trim().toLowerCase().startsWith("describe")) {
+                    if (textoDql.getText().trim().toLowerCase().contains(" table ")) {
+                        hoja = "DQL - Describe tabla";
+                    } else {
+                        hoja = "DQL - Describe tipo";
+                    }
+                }
+                util.writeToExcel(tablaResultados, fichero, hoja);
 //                EtiquetaEstado.setText(resultado);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
@@ -495,7 +519,7 @@ public class PantallaDql extends javax.swing.JFrame {
         try {
             DefaultComboBoxModel modelo = new DefaultComboBoxModel();
             comboHistorial.setModel(modelo);
-            String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
+            String dirhist = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
             BufferedWriter bw = new BufferedWriter(new FileWriter(dirhist));
             bw.write("");
             bw.close();
@@ -503,9 +527,13 @@ public class PantallaDql extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionVaciarHistorialActionPerformed
 
-    private void TextoNumRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoNumRegActionPerformed
+    private void opcionSeleccionarColumnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionSeleccionarColumnaActionPerformed
+        tablaResultados.setRowSelectionInterval(1, tablaResultados.getRowCount() - 1);
+    }//GEN-LAST:event_opcionSeleccionarColumnaActionPerformed
+
+    private void checkDameSQLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDameSQLActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextoNumRegActionPerformed
+    }//GEN-LAST:event_checkDameSQLActionPerformed
 
     private void ejecutarDql(String pdql, String numreg) {
         String sqlfinal = pdql;
@@ -520,9 +548,12 @@ public class PantallaDql extends javax.swing.JFrame {
                 return false;
             }
         };
+
         tablaResultados.setModel(modeloLotes);
         EtiquetaEstado.setText("");
         textoLog.setText("");
+        ERROR = "";
+        textoLog.setForeground(Color.BLACK);
 
         new Thread() {
             public void run() {
@@ -532,8 +563,9 @@ public class PantallaDql extends javax.swing.JFrame {
                         return false;
                     }
                 };
+
                 tablaResultados.setModel(modeloLotes);
-                String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+                String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
                 barradocum = new PantallaBarra(PantallaDql.this, false);
                 barradocum.setTitle("Consultando en Documentum ...");
                 barradocum.barra.setIndeterminate(true);
@@ -543,14 +575,160 @@ public class PantallaDql extends javax.swing.JFrame {
                 barradocum.barra.setStringPainted(false);
                 barradocum.validate();
                 barradocum.setVisible(true);
+                Boolean esTabla = dql.toLowerCase().contains(" table ");
+                Boolean esTipo = dql.toLowerCase().trim().startsWith("describe") && !esTabla;
 
                 try {
-                    IDfCollection col = utildocum.ejecutarDql(dql, sesion);
-                    if (!utildocum.dameError().equals("")) {
-                        textoLog.setText(utildocum.dameError());
-                        barradocum.dispose();
-                        return;
+                    Object[][] datos = new Object[0][0];
+                    Object[] cabecera = new Object[0];
+                    Integer[] tamcabecera = new Integer[0];
+                    int cont = 0;
+
+                    if (dql.toLowerCase().startsWith("describe ")) {
+                        IDfCollection col = ejecutarDescribe(dql, gsesion);
+
+                        ArrayList filas = new ArrayList();
+                        while (col.next()) {
+                            filas.add(col.getTypedObject());
+                        }
+                        col.close();
+                        if (filas.size() <= 0) {
+                            EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
+                            if (esTipo) {
+                                try {
+                                    StringTokenizer param = new StringTokenizer(dql.trim(), " ");
+                                    param.nextElement().toString();
+                                    String tipo = param.nextElement().toString();
+                                    if (tipo.toLowerCase().equalsIgnoreCase("type")) {
+                                        tipo = param.nextElement().toString();
+                                    }
+                                    ERROR = "El tipo " + tipo + " no es un tipo documental en el repositorio " + gsesion.getDocbaseName();
+                                } catch (DfException ex) {
+
+                                }
+                                textoLog.setForeground(Color.RED);
+                                textoLog.setText(ERROR);
+                            } else {
+                                textoLog.setText("0 Registro(s) encontrado(s) ");
+                            }
+                            barradocum.dispose();
+                            return;
+                        }
+
+                        cont = filas.size();
+                        int tam = 0;
+
+                        if (esTabla) {
+                            tam = 2;
+                            cabecera = new Object[tam];
+                            tamcabecera = new Integer[tam];
+                            datos = new Object[cont + 4][tam];
+                            IDfTypedObject row = (IDfTypedObject) filas.get(0);
+                            String owner_tabla = row.getString("table_owner");
+                            String nombre_tabla = row.getString("table_name");
+                            datos[0][0] = "Table Name:";
+                            datos[0][1] = owner_tabla + "." + nombre_tabla;
+                            datos[1][0] = "";
+                            datos[1][1] = "";
+                            datos[2][0] = "Columns:";
+                            datos[2][1] = cont;
+                            datos[3][0] = "";
+                            datos[3][1] = "";
+                            cabecera[0] = "";
+                            cabecera[1] = "";
+
+                            for (int i = 0; i < cont; i++) {
+                                row = (IDfTypedObject) filas.get(i);
+                                String nombre_columna = row.getString("column_name");
+                                String tipo_columna = row.getString("column_datatype");
+                                int tam_columna = row.getInt("column_length");
+                                datos[i + 4][0] = nombre_columna;
+                                datos[i + 4][1] = (tipo_columna.equalsIgnoreCase("String")) ? "CHAR" + " (" + tam_columna + ")" : tipo_columna.toUpperCase();
+                            }
+                        } else {
+                            tam = 3;
+                            cabecera = new Object[tam];
+                            tamcabecera = new Integer[tam];
+                            datos = new Object[cont + 5][tam];
+                            IDfTypedObject row = (IDfTypedObject) filas.get(0);
+                            String nombre_tipo = row.getString("name");
+                            String supertipo = utildocum.DameSupeTipo(nombre_tipo, gsesion);
+                            datos[0][0] = "Type Name:";
+                            datos[0][1] = nombre_tipo;
+                            datos[1][0] = "SuperType Name:";
+                            datos[1][1] = supertipo;
+                            datos[2][0] = "";
+                            datos[2][1] = "";
+                            datos[3][0] = "Attributes:";
+                            datos[3][1] = cont;
+                            datos[4][0] = "";
+                            datos[4][1] = "";
+                            cabecera[0] = "";
+                            cabecera[1] = "";
+                            cabecera[2] = "";
+
+                            for (int i = 0; i < cont; i++) {
+                                row = (IDfTypedObject) filas.get(i);
+                                String nombre_attr = row.getString("attr_name");
+                                int tipo_attr = row.getInt("attr_type");
+                                int tam_attr = row.getInt("attr_length");
+                                int repeat = row.getInt("attr_repeating");
+                                datos[i + 5][0] = nombre_attr;
+                                datos[i + 5][1] = DameDescTipo(tipo_attr).equalsIgnoreCase("String") ? "CHAR" + " (" + tam_attr + ")" : DameDescTipo(tipo_attr).toUpperCase();
+                                datos[i + 5][2] = repeat == 1 ? "REPEATING" : "";
+                            }
+                        }
+
+                    } else {
+                        IDfCollection col = utildocum.ejecutarDql(dql, gsesion);
+                        if (!utildocum.dameError().equals("")) {
+                            textoLog.setText(utildocum.dameError());
+                            barradocum.dispose();
+                            return;
+                        }
+
+                        ArrayList filas = new ArrayList();
+                        while (col.next()) {
+                            filas.add(col.getTypedObject());
+                        }
+                        col.close();
+
+                        if (filas.size() <= 0) {
+                            EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
+                            textoLog.setText("0 Registro(s) encontrado(s) ");
+                            barradocum.dispose();
+                            return;
+                        }
+
+                        cont = filas.size();
+                        IDfTypedObject primerafila = (IDfTypedObject) filas.get(0);
+                        int tam = primerafila.getAttrCount();
+                        cabecera = new Object[tam];
+                        tamcabecera = new Integer[tam];
+                        datos = new Object[cont][tam];
+                        for (int l = 0; l < tam; l++) {
+                            cabecera[l] = primerafila.getAttr(l).getName();
+                            tamcabecera[l] = 0;
+                        }
+
+                        for (int i = 0; i < cont; i++) {
+                            IDfTypedObject row = (IDfTypedObject) filas.get(i);
+
+                            for (int n = 0; n < row.getAttrCount(); n++) {
+                                IDfAttr attr = row.getAttr(n);
+                                IDfValue attrValue = row.getValue(attr.getName());
+
+                                datos[i][n] = getDfObjectValue(attrValue);
+                                if (getDfObjectValue(attrValue).toString().length() > tamcabecera[n]) {
+                                    tamcabecera[n] = getDfObjectValue(attrValue).toString().length();
+                                }
+                                if (tamcabecera[n] < attr.getName().length()) {
+                                    tamcabecera[n] = attr.getName().length();
+                                }
+                            }
+                        }
                     }
+
                     if (!BuscarEnComboHistorial(textoDql.getText())) {
                         try {
                             FileOutputStream historial = new FileOutputStream(new File(dirdfc + "historial-dql.log"), true);
@@ -558,46 +736,6 @@ public class PantallaDql extends javax.swing.JFrame {
                             historial.close();
                             cargarComboHistorial();
                         } catch (Exception ex) {
-                        }
-                    }
-                    ArrayList filas = new ArrayList();
-                    while (col.next()) {
-                        filas.add(col.getTypedObject());
-                    }
-                    col.close();
-
-                    if (filas.size() <= 0) {
-                        EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
-                        textoLog.setText("0 Registro(s) encontrado(s) ");
-                        barradocum.dispose();
-                        return;
-                    }
-
-                    int cont = filas.size();
-                    IDfTypedObject primerafila = (IDfTypedObject) filas.get(0);
-                    int tam = primerafila.getAttrCount();
-                    Object[] cabecera = new Object[tam];
-                    Integer[] tamcabecera = new Integer[tam];
-                    Object[][] datos = new Object[cont][tam];
-                    for (int l = 0; l < tam; l++) {
-                        cabecera[l] = primerafila.getAttr(l).getName();
-                        tamcabecera[l] = 0;
-                    }
-
-                    for (int i = 0; i < cont; i++) {
-                        IDfTypedObject row = (IDfTypedObject) filas.get(i);
-
-                        for (int n = 0; n < row.getAttrCount(); n++) {
-                            IDfAttr attr = row.getAttr(n);
-                            IDfValue attrValue = row.getValue(attr.getName());
-
-                            datos[i][n] = getDfObjectValue(attrValue);
-                            if (getDfObjectValue(attrValue).toString().length() > tamcabecera[n]) {
-                                tamcabecera[n] = getDfObjectValue(attrValue).toString().length();
-                            }
-                            if (tamcabecera[n] < attr.getName().length()) {
-                                tamcabecera[n] = attr.getName().length();
-                            }
                         }
                     }
 
@@ -608,30 +746,69 @@ public class PantallaDql extends javax.swing.JFrame {
                                 return false;
                             }
                         };
-                    }
 
-                    modeloLotes.setRowCount(cont);
+                        modeloLotes.setRowCount(datos.length);
+
+                    }
                     tablaResultados.setModel(modeloLotes);
 
-                    Font font = tablaResultados.getFont();
-                    FontMetrics fm = getFontMetrics(font);
-                    char c = "B".charAt(0);
-                    int tampixel = fm.charWidth(c);
+                    if (esTabla) {
+                        TableColumn columna = tablaResultados.getColumnModel().getColumn(0);
+                        columna.setPreferredWidth(150);
+                        columna.setMinWidth(150);
+                        columna = tablaResultados.getColumnModel().getColumn(1);
+                        columna.setPreferredWidth(350);
+                        columna.setMinWidth(250);
+                        tablaResultados.setShowGrid(false);
+                        tablaResultados.getTableHeader().setVisible(false);
+                    } else if (esTipo) {
+                        TableColumn columna = tablaResultados.getColumnModel().getColumn(0);
+                        columna.setPreferredWidth(250);
+                        columna.setMinWidth(250);
+                        columna = tablaResultados.getColumnModel().getColumn(1);
+                        columna.setPreferredWidth(150);
+                        columna.setMinWidth(150);
+                        tablaResultados.setShowGrid(false);
+                        tablaResultados.getTableHeader().setVisible(false);
+                    } else {
+                        Font font = tablaResultados.getFont();
+                        FontMetrics fm = getFontMetrics(font);
+                        char c = "B".charAt(0);
+                        int tampixel = fm.charWidth(c);
 
-                    for (int i = 0; i < modeloLotes.getColumnCount(); i++) {
-                        TableColumn columna = tablaResultados.getColumnModel().getColumn(i);
-                        columna.setPreferredWidth(tamcabecera[i] * tampixel);
-                        columna.setMinWidth(tamcabecera[i] * tampixel);
+                        for (int i = 0; i < modeloLotes.getColumnCount(); i++) {
+                            TableColumn columna = tablaResultados.getColumnModel().getColumn(i);
+                            columna.setPreferredWidth(tamcabecera[i] * tampixel);
+                            columna.setMinWidth(tamcabecera[i] * tampixel);
+                        }
+                        tablaResultados.setShowGrid(true);
+                        tablaResultados.getTableHeader().setVisible(true);
                     }
+                    pintarTabla();
+
                     tablaResultados.doLayout();
+
+                    setVisible(false);
+                    setVisible(true);
                     EtiquetaEstado.setText(cont + " Registro(s) encontrado(s) ");
-                    textoLog.setText(cont + " Registro(s) encontrado(s) ");
+                    if (ERROR.isEmpty()) {
+                        textoLog.setText(cont + " Registro(s) encontrado(s) ");
+                    } else {
+                        textoLog.setText(ERROR);
+                        textoLog.setForeground(Color.RED);
+                    }
                 } catch (Exception ex) {
-                    textoLog.setText(ex.getMessage());
+                    if (ERROR.isEmpty()) {
+                        textoLog.setText(ex.getMessage());
+                    } else {
+                        textoLog.setText(ERROR);
+                        textoLog.setForeground(Color.RED);
+                        EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
+                    }
 
                 }
                 if (checkDameSQL.isSelected()) {
-                    String textoSql = utildocum.dameSql(sesion);
+                    String textoSql = utildocum.dameSql(gsesion);
                     textoLog.setText(textoLog.getText() + "\n" + textoSql);
                 }
                 barradocum.dispose();
@@ -639,9 +816,112 @@ public class PantallaDql extends javax.swing.JFrame {
         }.start();
     }
 
+    private void pintarTabla() {
+        tablaResultados.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                setOpaque(true);
+                setForeground(Color.BLACK);
+                //  setBackground(new Color(245, 245, 245)); // gris claro
+                if (table.getTableHeader().isVisible()) {
+                    setBackground(Color.WHITE);
+                } else {
+                    setBackground(botonConsultar.getBackground());
+                }
+                String nombre = (String) table.getValueAt(row, 0);
+                if (nombre.equals("Super Tipo")) {
+                    //   setOpaque(true);
+                    setForeground(Color.BLUE);
+                }
+                if (nombre.equals("Table Name:") || nombre.equals("Type Name:")) {
+                    setForeground(Color.BLUE);
+                    setFont(getFont().deriveFont(Font.BOLD));
+                }
+                return this;
+            }
+        });
+    }
+
+    private String DameDescTipo(int tipo) {
+        String valor = "";
+        switch (tipo) {
+            case 0:
+                valor = "Boolean";
+                break;
+            case 1:
+                valor = "Integer";
+                break;
+            case 2:
+                valor = "String";
+                break;
+            case 3:
+                valor = "ID";
+                break;
+            case 4:
+                valor = "Date and Time";
+                break;
+            case 5:
+                valor = "Double";
+        }
+        return valor;
+    }
+
+    private IDfCollection ejecutarDescribe(String dql, IDfSession sesion) {
+        IDfCollection coleccion = null;
+
+        StringTokenizer param = new StringTokenizer(dql.trim(), " ");
+
+        String comando = param.nextElement().toString();
+
+        if (dql.toLowerCase().contains(" table ")) {
+            param.nextElement();
+            String tabla = param.nextElement().toString();
+            coleccion = describeTabla(tabla, sesion);
+        } else {
+            String tipo = param.nextElement().toString();
+            if (tipo.toLowerCase().equalsIgnoreCase("type")) {
+                tipo = param.nextElement().toString();
+            }
+            coleccion = describeTipo(tipo, sesion);
+        }
+        return coleccion;
+    }
+
+    public IDfCollection describeTabla(String tabla, IDfSession sesion) {
+        IDfCollection coleccion = null;
+        String nombre = tabla.toLowerCase().startsWith("dm_dbo") ? tabla.substring(7, tabla.length()) : tabla;
+        if (utildocum.esTablaRegistrada(nombre, sesion)) {
+            String dql = "select cab.table_name,cab.table_owner,lineas.column_name,lineas.column_datatype,lineas.column_length "
+                    + " from dm_registered_r lineas, dm_registered_s cab "
+                    + " where  cab.r_object_id=lineas.r_object_id and lower(cab.table_name)='" + nombre + "' order by 3";
+
+            coleccion = utildocum.ejecutarDql(dql, sesion);
+        } else {
+            try {
+                ERROR = "La tabla " + tabla + " no es una tabla registrada en el repositorio " + sesion.getDocbaseName();
+            } catch (DfException ex) {
+
+            }
+        }
+        return coleccion;
+    }
+
+    public IDfCollection describeTipo(String tipo, IDfSession sesion) {
+        IDfCollection coleccion = null;
+        String dql = "select cab.name,lineas.attr_name,lineas.attr_length, attr_repeating, lineas.attr_type "
+                + "from dm_type_r lineas, dm_type_s cab where cab.r_object_id=lineas.r_object_id and cab.name= '"
+                + tipo + "' order by attr_identifier";
+        coleccion = utildocum.ejecutarDql(dql, sesion);
+
+        return coleccion;
+    }
+
     private void cargarComboHistorial() {
         ArrayList comboBoxItems = new ArrayList();
-        String dirhist = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
+        String dirhist = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
         BufferedReader br = null;
 
         try {
@@ -668,7 +948,21 @@ public class PantallaDql extends javax.swing.JFrame {
 
     private Boolean BuscarEnComboHistorial(String texto) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboHistorial.getModel();
-        return (model.getIndexOf(texto) > 0);
+        return (buscarEnCombo(model, texto.trim()) != -1);
+//        return (model.getIndexOf(texto.trim()) != -1);
+    }
+
+    private int buscarEnCombo(DefaultComboBoxModel modelo, String cadena) {
+        if (modelo != null) {
+            for (int i = 0; i < modelo.getSize(); i++) {
+                if (cadena.equalsIgnoreCase(modelo.getElementAt(i).toString().trim())) {
+                    return i;
+                }
+            }
+        } else {
+            return 0;
+        }
+        return -1;
     }
 
     public static void main(String args[]) {
@@ -698,6 +992,7 @@ public class PantallaDql extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionExportarExcel;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JMenuItem opcionSalir;
+    private javax.swing.JMenuItem opcionSeleccionarColumna;
     private javax.swing.JMenuItem opcionVaciarHistorial;
     private javax.swing.JMenu opciones;
     private javax.swing.JPanel panelDql;
@@ -720,9 +1015,9 @@ public class PantallaDql extends javax.swing.JFrame {
         };
         tablaResultados.setModel(modeloLotes);
         System.gc();
-        if (sesion.isConnected()) {
+        if (gsesion.isConnected()) {
             try {
-                sesion.disconnect();
+                gsesion.disconnect();
             } catch (DfException ex) {
                 Utilidades.escribeLog("Error al desconecta la sesión de Documentum (PantallaDql)  - Error: " + ex.getMessage());
             }
@@ -761,7 +1056,7 @@ public class PantallaDql extends javax.swing.JFrame {
     }
 
     private IDfSession sesionDocumentum() {
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdcfs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
         try {
             ClassPathUpdater.add(dirdfc);
             ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");

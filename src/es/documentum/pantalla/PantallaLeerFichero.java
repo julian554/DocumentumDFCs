@@ -1,17 +1,23 @@
 package es.documentum.pantalla;
 
 import es.documentum.utilidades.Utilidades;
+import static es.documentum.utilidades.Utilidades.escribeLog;
 import java.awt.Font;
 import java.awt.Image;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.text.DefaultCaret;
+
 
 public class PantallaLeerFichero extends javax.swing.JFrame {
 
@@ -40,7 +46,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
             }
 
         });
-
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     private void formWindowLostFocus(java.awt.event.WindowEvent evt) {
@@ -66,6 +72,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
 
         Texto.setEditable(false);
         Texto.setColumns(20);
+        Texto.setForeground(new java.awt.Color(0, 0, 102));
         Texto.setLineWrap(true);
         Texto.setRows(5);
         jScrollPane1.setViewportView(Texto);
@@ -149,15 +156,11 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaLeerFichero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaLeerFichero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaLeerFichero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaLeerFichero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            escribeLog("Error al establecer el estilo de la ventana. Error: " + ex.getMessage());
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -194,8 +197,14 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
         DefaultCaret caret = (DefaultCaret) Texto.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         BufferedReader br = null;
+        Utilidades util = new Utilidades();
         try {
-            br = new BufferedReader(new FileReader(fichero));
+            //     br = new BufferedReader(new FileReader(fichero));
+            Locale locale = new Locale(System.getProperty("user.language"), System.getProperty("user.country"));
+            String idioma=locale.getLanguage()+"-"+locale.getCountry();
+            String os = util.so();
+            String encoding = System.getProperty("file.encoding");
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(fichero), (idioma.equals("es-ES") && os.toLowerCase().contains("windows")) ? "8859_1" : encoding));
             Texto.read(br, null);
         } catch (FileNotFoundException ex) {
             Utilidades.escribeLog("Fichero de log " + fichero + " no encontrado - Error " + ex.getMessage());
@@ -211,7 +220,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
             }
         }
         Texto.setCaretPosition(Texto.getDocument().getLength());
-        int fontPoints = 14;
+        int fontPoints = 13;
         Texto.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontPoints));
     }
 

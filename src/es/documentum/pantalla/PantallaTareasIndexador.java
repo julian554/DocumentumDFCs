@@ -21,16 +21,16 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
     boolean botonderecho;
     String componente;
     UtilidadesDocumentum utilDocu = new UtilidadesDocumentum();
-    IDfSession sesion;
+    IDfSession gsesion;
     String docbase;
     String docbroker = utilDocu.DameDocbroker();
 
     public IDfSession getSesion() {
-        return sesion;
+        return gsesion;
     }
 
     public void setSesion(IDfSession sesion) {
-        this.sesion = sesion;
+        this.gsesion = sesion;
     }
 
     public String getDocbase() {
@@ -141,13 +141,17 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         tablaResultados.setAutoCreateRowSorter(true);
         tablaResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
         tablaResultados.setColumnSelectionAllowed(true);
+        tablaResultados.setMaximumSize(new java.awt.Dimension(2147483647, 20));
+        tablaResultados.setMinimumSize(new java.awt.Dimension(75, 20));
+        tablaResultados.setPreferredSize(new java.awt.Dimension(375, 20));
+        tablaResultados.setRowHeight(20);
         tablaResultados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tablaResultadosMousePressed(evt);
@@ -161,6 +165,8 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
 
         textoLog.setEditable(false);
         textoLog.setColumns(20);
+        textoLog.setFont(new java.awt.Font("Monospaced", 1, 12)); // NOI18N
+        textoLog.setForeground(new java.awt.Color(0, 0, 102));
         textoLog.setLineWrap(true);
         textoLog.setRows(2);
         textoLog.setWrapStyleWord(true);
@@ -270,7 +276,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
     }//GEN-LAST:event_panelResultadoMousePressed
 
     private void opcionRelanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionRelanzarActionPerformed
-        ArrayList salida = utilDocu.relanzarTareasFallidasIndexador(sesion);
+        ArrayList salida = utilDocu.relanzarTareasFallidasIndexador(getSesion());
         if (salida.size() > 0) {
             textoLog.append("Relanzando tareas fallidas del indexador de " + docbase + "\n");
         }
@@ -299,9 +305,9 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRecargarActionPerformed
 
     private void OpcionSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpcionSalirActionPerformed
-        if (sesion.isConnected()) {
+        if (gsesion.isConnected()) {
             try {
-                sesion.disconnect();
+                gsesion.disconnect();
             } catch (DfException ex) {
                 Utilidades.escribeLog("Error al cerra sesión - PantallaTareasIndexador - Error: " + ex.getMessage());
             }
@@ -401,7 +407,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
     private void recargarFila(int fila, String repo, String servidor) {
         try {
             String tareas = null;
-            IDfCollection col = utilDocu.ejecutarDql("select '" + servidor + "' as Servidor,'" + repo + "' as Repositorio, count(*)  from dmi_queue_item where name = 'dm_fulltext_index_user' and task_state='failed'", sesion);
+            IDfCollection col = utilDocu.ejecutarDql("select '" + servidor + "' as Servidor,'" + repo + "' as Repositorio, count(*)  from dmi_queue_item where name = 'dm_fulltext_index_user' and task_state='failed'", getSesion());
             if (col == null) {
                 return;
             }
@@ -410,13 +416,13 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
                 tareas = col.getValue(col.getAttr(2).getName()).toString();
             }
 
-            String comandoAPI = "apply,c,,FTINDEX_AGENT_ADMIN,NAME,S," + utilDocu.dameFTIndex(sesion)
-                    + ",AGENT_INSTANCE_NAME,S," + utilDocu.dameIndexAgent(sesion) + ",ACTION,S,status";
-            String resul = utilDocu.ejecutarAPI(comandoAPI, "", sesion);
+            String comandoAPI = "apply,c,,FTINDEX_AGENT_ADMIN,NAME,S," + utilDocu.dameFTIndex(getSesion())
+                    + ",AGENT_INSTANCE_NAME,S," + utilDocu.dameIndexAgent(getSesion()) + ",ACTION,S,status";
+            String resul = utilDocu.ejecutarAPI(comandoAPI, "", getSesion());
             comandoAPI = "next,c," + resul;
             //   String estado = utilDocu.ejecutarAPI(comandoAPI, "", sesion);
             comandoAPI = "get,c," + resul + ",status";
-            String estado = utilDocu.ejecutarAPI(comandoAPI, "", sesion);
+            String estado = utilDocu.ejecutarAPI(comandoAPI, "", getSesion());
 
             switch (estado) {
                 case "100":
@@ -430,9 +436,18 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
                     break;
             }
 
+            String sentencia2 = "select count(*) as num from dmi_queue_item where name = 'dm_fulltext_index_user' and task_state=' '";
+            IDfCollection col2 = utilDocu.ejecutarDql(sentencia2, getSesion());
+            String awaiting = "";
+            while (col2.next()) {
+                awaiting = col2.getString("num");
+            }
+            col2.close();
             tablaResultados.getModel().setValueAt(tareas, fila, 3);
-            tablaResultados.getModel().setValueAt(estado, fila, 4);
+            tablaResultados.getModel().setValueAt(awaiting, fila, 4);
+            tablaResultados.getModel().setValueAt(estado, fila, 5);
             tablaResultados.validate();
+            textoLog.append(servidor + " <--> " + String.format("%1$-8s", repo) + " --> Fallidas " + String.format("%5s", tareas) + " --> Awaiting " + String.format("%5s", awaiting) + " <--> " + estado + "\n");
         } catch (DfException ex) {
             textoLog.append("Error al actualizar datos de " + repo + " - Error: " + ex.getMessage() + "\n");
         }
@@ -448,41 +463,52 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         //      tablaResultados.setModel(modeloLotes);
         ArrayList filas = new ArrayList();
         botonRecargar.setEnabled(false);
-
         try {
             String sentencia = "select '" + docbroker + "' as Servidor,'" + docbase + "' as Repositorio, count(*)  from dmi_queue_item where name = 'dm_fulltext_index_user' and task_state='failed'";
-            IDfCollection col = utilDocu.ejecutarDql(sentencia, sesion);
-            textoLog.append("Conectando con ... servidor: " + docbroker + " - repositorio: " + docbase + "\n");
-            textoLog.append(sentencia + "\n");
+            IDfCollection col = utilDocu.ejecutarDql(sentencia, getSesion());
+            textoLog.append("Conectando con el servidor: " + docbroker + " - repositorio: " + docbase + "\n");
+//            textoLog.append(sentencia + "\n");
             try {
                 while (col.next()) {
-                    String docbaseid = sesion.getDocbaseId();
+                    String docbaseid = getSesion().getDocbaseId();
                     String server = col.getValue(col.getAttr(0).getName()).toString();
                     String repositorio = col.getValue(col.getAttr(1).getName()).toString();
-                    String comandoAPI = "apply,c,,FTINDEX_AGENT_ADMIN,NAME,S," + utilDocu.dameFTIndex(sesion)
-                            + ",AGENT_INSTANCE_NAME,S," + utilDocu.dameIndexAgent(sesion) + ",ACTION,S,status";
-                    String resul = utilDocu.ejecutarAPI(comandoAPI, "", sesion);
+                    String comandoAPI = "apply,c,,FTINDEX_AGENT_ADMIN,NAME,S," + utilDocu.dameFTIndex(getSesion())
+                            + ",AGENT_INSTANCE_NAME,S," + utilDocu.dameIndexAgent(getSesion()) + ",ACTION,S,status";
+                    String resul = utilDocu.ejecutarAPI(comandoAPI, "", getSesion());
                     comandoAPI = "next,c," + resul;
-                    String estado = utilDocu.ejecutarAPI(comandoAPI, "", sesion);
+                    String estado = utilDocu.ejecutarAPI(comandoAPI, "", getSesion());
                     comandoAPI = "get,c," + resul + ",status";
-                    estado = utilDocu.ejecutarAPI(comandoAPI, "", sesion);
+                    estado = utilDocu.ejecutarAPI(comandoAPI, "", getSesion());
 
-                    if (estado.equals("100")) {
-                        estado = "Parado";
-                    } else if (estado.equals("200")) {
-                        estado = "Sin respuesta";
-                    } else {
-                        estado = "En ejecución";
+                    switch (estado) {
+                        case "100":
+                            estado = "Parado";
+                            break;
+                        case "200":
+                            estado = "Sin respuesta";
+                            break;
+                        default:
+                            estado = "En ejecución";
+                            break;
                     }
 
                     String tareas = col.getValue(col.getAttr(2).getName()).toString();
-                    System.out.println(server + " <--> " + repositorio + " --> " + tareas + "  - Estado: " + estado);
-                    textoLog.append("Repositorio: " + repositorio + " - Número de tareas: " + tareas + "  - Estado: " + estado + "\n");
+                    String sentencia2 = "select count(*) as num from dmi_queue_item where name = 'dm_fulltext_index_user' and task_state=' '";
+                    IDfCollection col2 = utilDocu.ejecutarDql(sentencia2, getSesion());
+                    String awaiting = "";
+                    while (col2.next()) {
+                        awaiting = col2.getString("num");
+                    }
+                    col2.close();
+                    System.out.println(server + " <--> " + String.format("%1$-8s", repositorio) + " --> Fallidas " + String.format("%4s", tareas) + " --> Awaiting " + String.format("%4s", awaiting) + " <--> " + estado);
+                    textoLog.append(server + " <--> " + String.format("%1$-8s", repositorio) + " --> Fallidas " + String.format("%5s", tareas) + " --> Awaiting " + String.format("%5s", awaiting) + " <--> " + estado + "\n");
                     ArrayList columnas = new ArrayList();
                     columnas.add(server);
                     columnas.add(repositorio);
                     columnas.add(docbaseid + "  (" + Integer.toHexString(Integer.parseInt(docbaseid)) + ")");
                     columnas.add(tareas);
+                    columnas.add(awaiting);
                     columnas.add(estado);
                     filas.add(columnas);
                     textoLog.validate();
@@ -506,8 +532,8 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         }
 
         int cont = filas.size();
-        String[] cabecera = {"Servidor", "Repositorio", "Docbase ID", "Tareas Fallidas", "Estado"};
-        String[][] datos = new String[cont][5];
+        String[] cabecera = {"Servidor", "Repositorio", "Docbase ID", "Tareas Fallidas", "Awaiting Indexing", "Estado"};
+        String[][] datos = new String[cont][6];
 
         for (int n = 0; n < filas.size(); n++) {
             ArrayList columnas;
@@ -517,7 +543,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
             datos[n][2] = columnas.get(2).toString();
             datos[n][3] = columnas.get(3).toString();
             datos[n][4] = columnas.get(4).toString();
-
+            datos[n][5] = columnas.get(5).toString();
         }
 
         try {

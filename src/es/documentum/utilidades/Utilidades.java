@@ -34,6 +34,11 @@ import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.ss.usermodel.*;
+
+
+
 
 /**
  *
@@ -472,13 +477,13 @@ public class Utilidades {
         }
     }
 
-    public Properties leerPropeties(String archivo) {
+    public MiProperties leerPropeties(String archivo) {
         DIGIERROR = "";
-        Properties props = null;
+        MiProperties props = null;
         try {
             //Cargamos el archivo 
             FileInputStream ini = new FileInputStream(archivo);
-            props = new Properties();
+            props = new MiProperties();
             props.load(ini);
             ini.close();
         } catch (IOException ex) {
@@ -488,7 +493,7 @@ public class Utilidades {
         return props;
     }
 
-    public void escribirProperties(String archivo, Properties props) {
+    public void escribirProperties(String archivo, MiProperties props) {
         DIGIERROR = "";
         try {
             //Cargamos el archivo 
@@ -507,8 +512,8 @@ public class Utilidades {
 
     public String separador() {
         String SO = so();
-        String separador = "\\";
-        if (!SO.toLowerCase().contains("windows")) {
+        String separador = "/";
+        if (SO.toLowerCase().contains("windows")) {
             separador = "/";
         }
         return separador;
@@ -553,11 +558,11 @@ public class Utilidades {
     }
 
     public String usuarioHome() {
-        return System.getProperty("user.home");
+        return System.getProperty("user.home").replace("\\", "/");
     }
 
     public String usuarioDir() {
-        return System.getProperty("user.dir");
+        return System.getProperty("user.dir").replace("\\", "/");
     }
 
 //    public String wsServidor() {
@@ -636,7 +641,6 @@ public class Utilidades {
             escribeLog(ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
-
     }
     // Carga Una DLL, en este caso la coge del directorio "drivers" del "home" del usuario
 
@@ -766,8 +770,8 @@ public class Utilidades {
         return bytes;
     }
 
-    public Properties leerConfiguracion(String ruta) {
-        Properties props = new Properties();
+    public MiProperties leerConfiguracion(String ruta) {
+        MiProperties props = new MiProperties();
 
         DIGIERROR = "";
         try {
@@ -776,7 +780,7 @@ public class Utilidades {
             if (in == null) {
                 escribeLog("Error al cargar el fichero de propiedades: " + ruta);
             } else {
-                props = new java.util.Properties();
+                props = new MiProperties();
                 props.load(in);
             }
         } catch (IOException ex) {
@@ -1023,6 +1027,41 @@ public class Utilidades {
         }
     }
 
+    public void writeToExcel(JTable table, String ruta,String hoja) {
+        try {
+         //   new WorkbookFactory();
+            Workbook wb = new XSSFWorkbook(); //Excell workbook
+            
+            Sheet sheet = (Sheet) wb.createSheet(); //WorkSheet
+            wb.setSheetName(0, hoja);
+            Row row = sheet.createRow(2); //Row created at line 3
+            TableModel model = table.getModel(); //Table model
+            
+            Row headerRow = sheet.createRow(0); //Create row at line 0
+            for (int headings = 0; headings < model.getColumnCount(); headings++) { //For each column
+                headerRow.createCell(headings).setCellValue(model.getColumnName(headings));//Write column name
+            }
+            
+            for (int rows = 0; rows < model.getRowCount(); rows++) { //For each table row
+                for (int cols = 0; cols < table.getColumnCount(); cols++) { //For each table column
+                    row.createCell(cols).setCellValue(model.getValueAt(rows, cols).toString()); //Write value
+                    sheet.autoSizeColumn(cols);
+                }
+                
+                //Set the row to the next one in the sequence
+                row = sheet.createRow((rows + 3));
+                
+            }
+            
+            FileOutputStream fichero = new FileOutputStream(ruta);
+            wb.write(fichero);//Save the file     
+            wb.close();
+            fichero.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        } 
+    }
+
     public String humanReadableByteCount(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
         if (bytes < unit) {
@@ -1048,6 +1087,20 @@ public class Utilidades {
         return number;
     }
 
+    public static void recorrerDir(String ruta) {
+        File dir = new File(ruta);
+        File listFile[] = dir.listFiles();
+        if (listFile != null) {
+            for (int i = 0; i < listFile.length; i++) {
+                if (listFile[i].isDirectory()) {
+                    recorrerDir(listFile[i].getPath());
+                } else {
+                    System.out.println(listFile[i].getPath());
+                }
+            }
+        }
+    }
+
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
         /*
@@ -1058,7 +1111,8 @@ public class Utilidades {
         }
          */
 
-        util.borrarFichero("C:\\Users\\E274399\\documentumdcfs\\renditions", "**.xml*");
+        // util.borrarFichero("C:/Users/E274399/documentumdfcs/renditions", "**.xml*");
+        util.recorrerDir("c:/tmp");
     }
 }
 
