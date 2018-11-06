@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="DocumentumDFCs" default="default" basedir=".">
+    <description>Builds, tests, and runs the project DocumentumDFCs.</description>
+    <import file="nbproject/build-impl.xml"/>
+
+    <target name="-post-jar">
+        <touch file="${manifest.file}" verbose="true"/>  
+        <!--
+        <jar jarfile="${dist.jar}" update="true" basedir="src/es/documentum/propiedades" includes="dfc.properties" />
+        -->
+        <jar jarfile="${dist.jar}" update="true">
+            <zipfileset src="${dist.jar}" includes="**/*.class" />
+            <zipfileset src="dist/lib/commons-codec-1.7.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/commons-lang-2.4.jar" excludes="META-INF/*"/>            
+            <zipfileset src="dist/lib/log4j.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/dfc.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/configservice-impl.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/configservice-api.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/aspectjrt.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/certj.jar" excludes="META-INF/*"/>
+            <!--
+            <zipfileset src="dist/lib/cryptojce.jar" excludes="META-INF/*"/> 
+            <zipfileset src="dist/lib/cryptojcommon.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/jcmFIPS.jar" excludes="META-INF/*"/>
+            -->
+            <zipfileset src="dist/lib/commons-vfs-2.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/jsch-0.1.41.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/zehon_file_transfer-1.1.6.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/guava-11.0.2.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/LGoodDatePicker-2.4.2-core.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/javax.mail-1.5.2.jar" excludes="META-INF/*"/>
+            
+            <zipfileset src="dist/lib/commons-collections4-4.2.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/commons-compress-1.18.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/poi-4.0.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/poi-ooxml-4.0.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/poi-ooxml-schemas-4.0.0.jar" excludes="META-INF/*"/>
+            <zipfileset src="dist/lib/xmlbeans-3.0.1.jar" excludes="META-INF/*"/>
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Class-Path" value=". / META-INF/services"/>
+            </manifest>
+   
+        </jar>
+
+
+    </target>
+</project>
