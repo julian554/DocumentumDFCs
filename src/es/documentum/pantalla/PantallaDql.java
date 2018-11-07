@@ -486,7 +486,7 @@ public class PantallaDql extends javax.swing.JFrame {
                     hoja = textoDql.getText().trim();
                 }
 
-                util.writeToExcel(tablaResultados, fichero, hoja);
+                util.exportarAExcel(tablaResultados, fichero, hoja);
 //                EtiquetaEstado.setText(resultado);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");

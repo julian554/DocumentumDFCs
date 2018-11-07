@@ -37,9 +37,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 
-
-
-
 /**
  *
  * @author julian
@@ -1027,39 +1024,40 @@ public class Utilidades {
         }
     }
 
-    public void writeToExcel(JTable table, String ruta,String hoja) {
+    public void exportarAExcel(JTable table, String ruta, String hoja) {
         try {
-         //   new WorkbookFactory();
+            //   new WorkbookFactory();
             Workbook wb = new XSSFWorkbook(); //Excell workbook
-            
+
             Sheet sheet = (Sheet) wb.createSheet(); //WorkSheet
             wb.setSheetName(0, hoja);
             Row row = sheet.createRow(2); //Row created at line 3
             TableModel model = table.getModel(); //Table model
-            
+
             Row headerRow = sheet.createRow(0); //Create row at line 0
             for (int headings = 0; headings < model.getColumnCount(); headings++) { //For each column
                 headerRow.createCell(headings).setCellValue(model.getColumnName(headings));//Write column name
             }
-            
+
             for (int rows = 0; rows < model.getRowCount(); rows++) { //For each table row
                 for (int cols = 0; cols < table.getColumnCount(); cols++) { //For each table column
-                    row.createCell(cols).setCellValue(model.getValueAt(rows, cols).toString()); //Write value
+                    String valor = model.getValueAt(rows, cols) == null ? "" : model.getValueAt(rows, cols).toString();
+                    row.createCell(cols).setCellValue(valor); //Write value
                     sheet.autoSizeColumn(cols);
                 }
-                
+
                 //Set the row to the next one in the sequence
                 row = sheet.createRow((rows + 3));
-                
+
             }
-            
+
             FileOutputStream fichero = new FileOutputStream(ruta);
             wb.write(fichero);//Save the file     
             wb.close();
             fichero.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-        } 
+        }
     }
 
     public String humanReadableByteCount(long bytes, boolean si) {

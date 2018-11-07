@@ -475,11 +475,12 @@ public class PantallaJobs extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 String fichero = chooser.getSelectedFile().toString();
-                if (!fichero.toLowerCase().endsWith(".xls")) {
-                    fichero = fichero + ".xls";
+                if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                    fichero = fichero + ".xlsx";
                 }
                 if (!fichero.isEmpty()) {
-                    util.exportaExcel(tablaJobs, fichero);
+                    util.exportarAExcel(tablaJobs, fichero, "Jobs ");
+                 //   util.exportaExcel(tablaJobs, fichero);
                 }
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");

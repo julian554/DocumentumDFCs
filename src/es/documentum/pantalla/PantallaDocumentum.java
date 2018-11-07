@@ -3003,10 +3003,12 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 String fichero = chooser.getSelectedFile().toString();
-                if (!fichero.toLowerCase().endsWith(".xls")) {
-                    fichero = fichero + ".xls";
+                if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                    fichero = fichero + ".xlsx";
                 }
-                util.exportaExcel(tablaDocumentos, fichero);
+                String titulo_excel = "Repositorio " + repositorio;
+                util.exportarAExcel(tablaDocumentos, fichero, titulo_excel);
+                //util.exportaExcel(tablaDocumentos, fichero);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
             }
@@ -3022,10 +3024,13 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 String fichero = chooser.getSelectedFile().toString();
-                if (!fichero.toLowerCase().endsWith(".xls")) {
-                    fichero = fichero + ".xls";
+                if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                    fichero = fichero + ".xlsx";
                 }
-                util.exportaExcel(tablaAtributos, fichero);
+                //   util.exportaExcel(tablaAtributos, fichero);
+                String titulo_excel = "Atributos de " ; 
+                        //+ tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
+                util.exportarAExcel(tablaAtributos, fichero, titulo_excel);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
             }
