@@ -2830,4 +2830,27 @@ public class UtilidadesDocumentum {
         return ruta;
     }
 
+    public String ArrancarIndexAgent(IDfSession sesion) {
+        String resultado = "";
+        String comandoAPI = "";
+        comandoAPI = "apply,c,,FTINDEX_AGENT_ADMIN,NAME,S," + dameFTIndex(sesion)
+                + ",AGENT_INSTANCE_NAME,S," + dameIndexAgent(sesion) + ",ACTION,S,start";
+
+        String resul = ejecutarAPI(comandoAPI, "", sesion);
+        comandoAPI = "next,c," + resul;
+        ejecutarAPI(comandoAPI, "", sesion);
+        comandoAPI = "get,c," + resul + ",status";
+        resul = ejecutarAPI(comandoAPI, "", sesion);
+
+        if (resul.equals("100")) {
+            resultado = "Parado";
+        } else if (resul.equals("200")) {
+            resultado = "Sin respuesta";
+        } else {
+            resultado = "En ejecución";
+        }
+
+        return resultado;
+    }
+
 }

@@ -3028,8 +3028,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     fichero = fichero + ".xlsx";
                 }
                 //   util.exportaExcel(tablaAtributos, fichero);
-                String titulo_excel = "Atributos de " ; 
-                        //+ tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
+                String nom = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString().isEmpty() ? tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString() : tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
+                String titulo_excel = "Atributos de " + nom;
                 util.exportarAExcel(tablaAtributos, fichero, titulo_excel);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");

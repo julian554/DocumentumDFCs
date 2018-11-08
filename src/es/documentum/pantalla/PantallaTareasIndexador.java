@@ -85,6 +85,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         opcionPegar = new javax.swing.JMenuItem();
         opcionActualizar = new javax.swing.JMenuItem();
         opcionRelanzar = new javax.swing.JMenuItem();
+        opcionArrancar = new javax.swing.JMenuItem();
         panelResultado = new javax.swing.JScrollPane();
         tablaResultados = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -127,6 +128,14 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
             }
         });
         popupEditar.add(opcionRelanzar);
+
+        opcionArrancar.setText("Arrancar Indexador");
+        opcionArrancar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionArrancarActionPerformed(evt);
+            }
+        });
+        popupEditar.add(opcionArrancar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Indexadores de Documentum");
@@ -315,6 +324,14 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_OpcionSalirActionPerformed
 
+    private void opcionArrancarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionArrancarActionPerformed
+        utilDocu.ArrancarIndexAgent(gsesion);
+        docbase = tablaResultados.getModel().getValueAt(tablaResultados.convertRowIndexToModel(tablaResultados.getSelectedRow()), 1).toString();
+        docbroker = tablaResultados.getModel().getValueAt(tablaResultados.convertRowIndexToModel(tablaResultados.getSelectedRow()), 0).toString();
+        int fila = tablaResultados.getSelectedRow();
+        recargarFila(fila, docbase, docbroker);
+    }//GEN-LAST:event_opcionArrancarActionPerformed
+
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
             botonderecho = false;
@@ -332,12 +349,14 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
                 opcionPegar.setVisible(false);
                 opcionRelanzar.setVisible(false);
                 opcionActualizar.setVisible(false);
+                opcionArrancar.setVisible(false);
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
             }
             if (evt.getSource() == tablaResultados) {
                 opcionPegar.setVisible(false);
                 opcionRelanzar.setVisible(true);
                 opcionActualizar.setVisible(true);
+                opcionArrancar.setVisible(true);
                 JTable source = (JTable) evt.getSource();
                 int row = source.rowAtPoint(evt.getPoint());
                 docbroker = tablaResultados.getModel().getValueAt(row, 0).toString();
@@ -395,6 +414,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenuItem opcionActualizar;
+    private javax.swing.JMenuItem opcionArrancar;
     private javax.swing.JMenuItem opcionCopiar;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JMenuItem opcionRelanzar;
