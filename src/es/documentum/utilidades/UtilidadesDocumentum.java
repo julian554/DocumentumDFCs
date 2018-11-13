@@ -231,22 +231,6 @@ public class UtilidadesDocumentum {
         return coleccion;
     }
 
-    public String DameSupeTipo(String nombre, IDfSession sesion) {
-        String supertipo = "";
-        try {
-            String dql = "Select super_name from dm_type where name='" + nombre + "'";
-            IDfCollection col = ejecutarDql(dql, sesion);
-            if (col != null) {
-                while (col.next()) {
-                    IDfTypedObject r = col.getTypedObject();
-                    supertipo = r.getValueAt(0).asString();
-                }
-            }
-        } catch (DfException ex) {
-        }
-        return supertipo;
-    }
-
     public Boolean esTablaRegistrada(String tabla, IDfSession sesion) {
         Boolean registrada = false;
         String dql = "select table_name from dm_registered where lower(table_name)='" + tabla.toLowerCase() + "'";
@@ -2828,6 +2812,99 @@ public class UtilidadesDocumentum {
             ruta = ejecutarAPI("getpath,c," + r_object_id, "", sesion);
         }
         return ruta;
+    }
+
+    public String DameTiposPadre(String tipo, IDfSession sesion) {
+        String supertipos = "";
+
+        try {
+            String dql = "select h.r_supertype,h.i_position from dmi_type_info_s p, dmi_type_info_r h "
+                    + "where p.r_object_id=h.r_object_id and lower(p.r_type_name)='" + tipo.toLowerCase() + "' order by 2 desc";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    String valor = r.getValueAt(0).asString();
+
+                    if (!valor.toLowerCase().equalsIgnoreCase(tipo)) {
+                        if (supertipos.isEmpty()) {
+                            supertipos = valor;
+                        } else {
+                            supertipos = supertipos + ", " + valor;
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+        }
+
+        return supertipos;
+    }
+
+    public String DameFilestoreDeTipo(String tipo, IDfSession sesion) {
+        String filestore = "";
+        try {
+            String dql = "Select f.name from dmi_type_info t,dm_filestore f where t.r_type_name='" + tipo + "' and t.default_storage=f.r_object_id";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    filestore = r.getValueAt(0).asString();
+                }
+            }
+        } catch (DfException ex) {
+        }
+        return filestore;
+    }
+
+    public String DameSuperTipo(String tipo, IDfSession sesion) {
+        String supertipo = "";
+        try {
+            String dql = "Select super_name from dm_type where name='" + tipo + "'";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    supertipo = r.getValueAt(0).asString();
+                }
+            }
+        } catch (DfException ex) {
+        }
+        return supertipo;
+    }
+
+    public ArrayList<String> DameTiposHijos(String tipo, IDfSession sesion) {
+        ArrayList<String> hijos = new ArrayList<>();
+        try {
+            String dql = "Select name from dm_type where super_name='" + tipo + "' order by 1";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    String hijo = r.getValueAt(0).asString();
+                    hijos.add(hijo);
+                }
+            }
+        } catch (DfException ex) {
+        }
+        return hijos;
+    }
+
+    public String DameRobjectidDeTipo(String tipo, IDfSession sesion) {
+        String id = "";
+        try {
+            String dql = "Select r_object_id from dm_type where name='" + tipo + "'";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    id = r.getValueAt(0).asString();
+                }
+            }
+        } catch (DfException ex) {
+        }
+        return id;
     }
 
     public String ArrancarIndexAgent(IDfSession sesion) {

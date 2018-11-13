@@ -1036,7 +1036,8 @@ public class Utilidades {
 
             Row headerRow = sheet.createRow(0); //Create row at line 0
             for (int headings = 0; headings < model.getColumnCount(); headings++) { //For each column
-                headerRow.createCell(headings).setCellValue(model.getColumnName(headings));//Write column name
+                String nombrecol = model.getColumnName(headings) == null ? "" : model.getColumnName(headings);
+                headerRow.createCell(headings).setCellValue(nombrecol);//Write column name
             }
 
             for (int rows = 0; rows < model.getRowCount(); rows++) { //For each table row

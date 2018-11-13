@@ -649,7 +649,7 @@ public class PantallaDql extends javax.swing.JFrame {
                             datos = new Object[cont + 5][tam];
                             IDfTypedObject row = (IDfTypedObject) filas.get(0);
                             String nombre_tipo = row.getString("name");
-                            String supertipo = utildocum.DameSupeTipo(nombre_tipo, gsesion);
+                            String supertipo = utildocum.DameSuperTipo(nombre_tipo, gsesion);
                             datos[0][0] = "Type Name:";
                             datos[0][1] = nombre_tipo;
                             datos[0][2] = "";
