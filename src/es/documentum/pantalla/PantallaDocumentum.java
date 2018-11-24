@@ -22,6 +22,7 @@ import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -175,6 +176,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         textoCarpeta = new javax.swing.JTextField();
         botonConectar = new javax.swing.JButton();
         botonArribaDir = new javax.swing.JButton();
+        botonActivarCripto = new javax.swing.JButton();
         MenuDocumentum = new javax.swing.JMenuBar();
         opcionOpciones = new javax.swing.JMenu();
         opcionBuscar = new javax.swing.JMenuItem();
@@ -205,6 +207,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionJobs = new javax.swing.JMenuItem();
         Separador4 = new javax.swing.JPopupMenu.Separator();
         opcionEjecutarComandoSSOO = new javax.swing.JMenuItem();
+        opcionCripto = new javax.swing.JMenuItem();
         opcionAcercade = new javax.swing.JMenu();
         opcionManual = new javax.swing.JMenuItem();
         Acercade = new javax.swing.JMenuItem();
@@ -678,6 +681,19 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
 
+        botonActivarCripto.setBorder(null);
+        botonActivarCripto.setBorderPainted(false);
+        botonActivarCripto.setContentAreaFilled(false);
+        botonActivarCripto.setFocusPainted(false);
+        botonActivarCripto.setFocusable(false);
+        botonActivarCripto.setIconTextGap(1);
+        botonActivarCripto.setRequestFocusEnabled(false);
+        botonActivarCripto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonActivarCriptoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelEntradaLayout = new javax.swing.GroupLayout(panelEntrada);
         panelEntrada.setLayout(panelEntradaLayout);
         panelEntradaLayout.setHorizontalGroup(
@@ -698,7 +714,10 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEntradaLayout.createSequentialGroup()
                         .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textoIdDocumentum, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelEntradaLayout.createSequentialGroup()
+                                .addComponent(textoIdDocumentum, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botonActivarCripto, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(textoCarpeta))
                         .addGap(35, 35, 35)
                         .addComponent(botonBuscar)
@@ -718,9 +737,10 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEntradaLayout.createSequentialGroup()
-                        .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textoIdDocumentum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textoIdDocumentum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(botonActivarCripto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textoCarpeta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -947,6 +967,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
         opcionUtilidades.add(opcionEjecutarComandoSSOO);
+
+        opcionCripto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionCripto.setText("Encriptar / Desencriptar");
+        opcionCripto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionCriptoActionPerformed(evt);
+            }
+        });
+        opcionUtilidades.add(opcionCripto);
 
         MenuDocumentum.add(opcionUtilidades);
 
@@ -2033,6 +2062,19 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionTiposActionPerformed
 
+    private void opcionCriptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCriptoActionPerformed
+        PantallaDesencriptar pantallacripto = new PantallaDesencriptar(this, true);
+        pantallacripto.setVisible(true);
+    }//GEN-LAST:event_opcionCriptoActionPerformed
+
+    private void botonActivarCriptoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActivarCriptoActionPerformed
+        if (opcionCripto.isVisible()) {
+            opcionCripto.setVisible(false);
+        } else {
+            opcionCripto.setVisible(true);
+        }
+    }//GEN-LAST:event_botonActivarCriptoActionPerformed
+
     public void mostrarAcercade() {
         if (Conectado) {
             versiondfcs = utilDocum.DameVersionDFC();
@@ -2075,6 +2117,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator Separador2;
     private javax.swing.JPopupMenu.Separator Separador3;
     private javax.swing.JPopupMenu.Separator Separador4;
+    private javax.swing.JButton botonActivarCripto;
     private javax.swing.JButton botonArribaDir;
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonConectar;
@@ -2104,6 +2147,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionCopiarNombre;
     private javax.swing.JMenuItem opcionCopiarValor;
     private javax.swing.JMenuItem opcionCrearCarpeta;
+    private javax.swing.JMenuItem opcionCripto;
     private javax.swing.JMenuItem opcionDql;
     private javax.swing.JMenuItem opcionDumpAtributos;
     private javax.swing.JMenuItem opcionEjecutarComandoSSOO;
@@ -2588,6 +2632,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         textoRutaDocumentum.setEnabled(false);
         textoCarpeta.setEnabled(false);
         textoIdDocumentum.setEnabled(false);
+        opcionCripto.setVisible(false);
     }
 
     private void ConexionDocumentum() {
@@ -3003,10 +3048,12 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 String fichero = chooser.getSelectedFile().toString();
-                if (!fichero.toLowerCase().endsWith(".xls")) {
-                    fichero = fichero + ".xls";
+                if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                    fichero = fichero + ".xlsx";
                 }
-                util.exportaExcel(tablaDocumentos, fichero);
+                String titulo_excel = "Repositorio " + repositorio;
+                util.exportarAExcel(tablaDocumentos, fichero, titulo_excel);
+                //util.exportaExcel(tablaDocumentos, fichero);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
             }
@@ -3022,10 +3069,13 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 String fichero = chooser.getSelectedFile().toString();
-                if (!fichero.toLowerCase().endsWith(".xls")) {
-                    fichero = fichero + ".xls";
+                if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                    fichero = fichero + ".xlsx";
                 }
-                util.exportaExcel(tablaAtributos, fichero);
+                //   util.exportaExcel(tablaAtributos, fichero);
+                String nom = tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString().isEmpty() ? tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString() : tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
+                String titulo_excel = "Atributos de " + nom;
+                util.exportarAExcel(tablaAtributos, fichero, titulo_excel);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
             }

@@ -232,7 +232,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         });
         popupEditar.add(opcionCopiarTodo);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ejecutar Comandos SSH en remoto");
         setAlwaysOnTop(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
@@ -297,10 +297,10 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         jLabel1.setText("Servidor");
 
         TextoServidor.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 TextoServidorInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 

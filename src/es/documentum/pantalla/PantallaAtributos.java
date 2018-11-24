@@ -405,10 +405,12 @@ public class PantallaAtributos extends javax.swing.JFrame {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 fichero = chooser.getSelectedFile().toString();
-                if (!fichero.toLowerCase().endsWith(".xls")) {
-                    fichero = fichero + ".xls";
+                if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                    fichero = fichero + ".xlsx";
                 }
-                util.exportaExcel(tablaAtributos, fichero);
+                // util.exportaExcel(tablaAtributos, fichero);
+                String texto = "Atributos de " + textoIdDocumentum.getText();
+                util.exportarAExcel(tablaAtributos, fichero, texto);
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
             }

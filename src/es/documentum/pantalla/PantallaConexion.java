@@ -47,7 +47,7 @@ public class PantallaConexion extends javax.swing.JDialog {
     String boton = "";
     String dirbase = util.usuarioHome() + util.separador() + "documentumdfcs";
     String dirdfc = dirbase + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-    
+
     public static String getValor() {
         return valor;
     }
@@ -497,15 +497,19 @@ public class PantallaConexion extends javax.swing.JDialog {
         MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
         prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
         prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
-        prop.setProperty("usuario", textoUsuario.getText());
+        prop.remove("usuario");
+        prop.remove("repositorio");
+        prop.remove("password");
+        MiProperties propapp = util.leerPropeties(dirdfc + "DocumentumDFCs.properties");
+        propapp.setProperty("usuario", textoUsuario.getText());
         try {
-            prop.setProperty("password", RegistryPasswordUtils.encrypt(new String(textoPassword.getPassword())));
+            propapp.setProperty("password", RegistryPasswordUtils.encrypt(new String(textoPassword.getPassword())));
         } catch (DfException ex) {
             escribeLog("Error al guardar datos del repositorio. Error: " + ex.getMessage());
         }
-        prop.setProperty("repositorio", textoRepositorio.getText());
+        propapp.setProperty("repositorio", textoRepositorio.getText());
         util.escribirProperties(directorio + "dfc.properties", prop);
-
+        util.escribirProperties(directorio + "DocumentumDFCs.properties", propapp);
         int numelem = ListaSeleccion.getModel().getSize();
         int pos = 0;
 
@@ -551,13 +555,22 @@ public class PantallaConexion extends javax.swing.JDialog {
                 MiProperties prop = util.leerPropeties(directorio + "dfc.properties");
                 textoDocbroker.setText(prop.getProperty("dfc.docbroker.host[0]"));
                 textoPuerto.setText(prop.getProperty("dfc.docbroker.port[0]"));
-                textoRepositorio.setText(prop.getProperty("repositorio"));
-                textoUsuario.setText(prop.getProperty("usuario"));
-                try {
-                    textoPassword.setText(RegistryPasswordUtils.decrypt(prop.getProperty("password")));
-                } catch (DfException ex) {
-                    escribeLog("Error al hacer click en la lista. Error: "+ ex.getMessage());
+                MiProperties propapp = util.leerPropeties(directorio + "DocumentumDFCs.properties");
+                if (propapp == null) {
+                    propapp = new MiProperties();
+                    propapp.setProperty("repositorio", directoriodfc);
+                    propapp.setProperty("usuario", "");
+                    propapp.setProperty("password", "");
+                    util.escribirProperties(directorio + "DocumentumDFCs.properties", propapp);
                 }
+                textoRepositorio.setText(propapp.getProperty("repositorio"));
+                textoUsuario.setText(propapp.getProperty("usuario"));
+                try {
+                    textoPassword.setText(RegistryPasswordUtils.decrypt(propapp.getProperty("password")));
+                } catch (DfException ex) {
+                    escribeLog("Error al hacer click en la lista. Error: " + ex.getMessage());
+                }
+
                 textoDocbroker.requestFocus();
                 this.repaint();
             }
@@ -571,10 +584,15 @@ public class PantallaConexion extends javax.swing.JDialog {
             MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
             prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
             prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
-            prop.setProperty("usuario", textoUsuario.getText());
-            prop.setProperty("password", new String(textoPassword.getPassword()));
-            prop.setProperty("repositorio", textoRepositorio.getText());
+            MiProperties appprop = util.leerPropeties(dirdfc + "DocumentumDFCs.properties");
+            appprop.setProperty("usuario", textoUsuario.getText());
+            try {
+                appprop.setProperty("password", RegistryPasswordUtils.encrypt(new String(textoPassword.getPassword())));
+            } catch (Exception ex) {
+            }
+            appprop.setProperty("repositorio", textoRepositorio.getText());
             util.escribirProperties(dirdfc + "dfc.properties", prop);
+            util.escribirProperties(dirdfc + "DocumentumDFCs.properties", appprop);
             UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
             utildocum.setPro(prop);
             try {
@@ -744,10 +762,18 @@ public class PantallaConexion extends javax.swing.JDialog {
         MiProperties prop = util.leerPropeties(directorio + "dfc.properties");
         prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
         prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
-        prop.setProperty("repositorio", textoRepositorio.getText());
-        prop.setProperty("usuario", textoUsuario.getText());
-        prop.setProperty("password", new String(textoPassword.getPassword()));
+        prop.remove("usuario");
+        prop.remove("repositorio");
+        prop.remove("password");
+        MiProperties propapp = util.leerPropeties(directorio + "DocumentumDFCs.properties");
+        propapp.setProperty("repositorio", textoRepositorio.getText());
+        propapp.setProperty("usuario", textoUsuario.getText());
+        try {
+            propapp.setProperty("password", RegistryPasswordUtils.encrypt(new String(textoPassword.getPassword())));
+        } catch (Exception ex) {
+        }
         util.escribirProperties(dirdfc + "dfc.properties", prop);
+        util.escribirProperties(dirdfc + "DocumentumDFCs.properties", propapp);
         valor = "SELECION";
         clave = new String(textoPassword.getPassword());
         docbroker = textoDocbroker.getText();
@@ -796,10 +822,19 @@ public class PantallaConexion extends javax.swing.JDialog {
             MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
             prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
             prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
-            prop.setProperty("usuario", textoUsuario.getText());
-            prop.setProperty("password", new String(textoPassword.getPassword()));
-            prop.setProperty("repositorio", textoRepositorio.getText());
+            MiProperties propapp = util.leerPropeties(dirdfc + "DocumentumDFCs.properties");
+            if (propapp == null) {
+                propapp = new MiProperties();
+            }
+
+            propapp.setProperty("usuario", textoUsuario.getText());
+            try {
+                propapp.setProperty("password", RegistryPasswordUtils.encrypt(new String(textoPassword.getPassword())));
+            } catch (Exception ex) {
+            }
+            propapp.setProperty("repositorio", textoRepositorio.getText());
             util.escribirProperties(dirdfc + "dfc.properties", prop);
+            util.escribirProperties(dirdfc + "DocumentumDFCs.properties", propapp);
             UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
             try {
                 Thread.sleep(500);

@@ -41,7 +41,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     DefaultTreeModel modelo = new DefaultTreeModel(raiz);
     Boolean mistipos = false;
     String tiposPadre = "";
-    Boolean botonderecho=false;
+    Boolean botonderecho = false;
 
     public PantallaArbolTipos(PantallaDocumentum parent, boolean modal) {
         initComponents();
@@ -206,8 +206,8 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     private void arbolTiposMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolTiposMousePressed
         if (!arbolTipos.isSelectionEmpty()) {
             if (evt.getButton() == MouseEvent.BUTTON3) {
-               botonderecho=true; 
-               popupmenu(evt);
+                botonderecho = true;
+                popupmenu(evt);
             } else {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) arbolTipos.getLastSelectedPathComponent();
                 if (node == null) // Nothing is selected.
@@ -218,12 +218,12 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 Object nodeInfo = node.getUserObject();
                 String nombre = nodeInfo.toString();
 
-                if (esPadre(nombre)) {
+                if (esTipoPadre(nombre)) {
                     //            popupDirectorio.show((Component) evt.getSource(), evt.getX(), evt.getY());
                 } else {
                     //           popupFichero.show((Component) evt.getSource(), evt.getX(), evt.getY());
                 }
-                System.out.println(nombre + " --> " + (esPadre(nombre) ? "Nodo padre" : "Hijo"));
+                System.out.println(nombre + " --> " + (esTipoPadre(nombre) ? "Nodo padre" : "Hijo"));
                 CargarInfoNodo(nombre);
             }
         }
@@ -231,13 +231,13 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
 
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
-          MenuOpciones.show(evt.getComponent(), evt.getX(), evt.getY());
-          OpcionAtributos.setEnabled(true);
-          botonderecho=false;
+            MenuOpciones.show(evt.getComponent(), evt.getX(), evt.getY());
+            OpcionAtributos.setEnabled(true);
+            botonderecho = false;
         }
-        
+
     }
-    
+
     private void opcionCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCerrarActionPerformed
         this.dispose();
     }//GEN-LAST:event_opcionCerrarActionPerformed
@@ -267,12 +267,12 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
             String id = "";
             Object nodeInfo = node.getUserObject();
             String nombre = nodeInfo.toString();
-            id = DameR_object_id(nombre);
+            id = utildocum.DameRobjectidDeTipo(nombre, gsesion);
 
             pantallatipoatributos.setTitle("Relations de Documentos - r_object_id: " + id);
             pantallatipoatributos.setR_object_id(id);
             pantallatipoatributos.CargarTablas(id);
-            
+
             pantallatipoatributos.setVisible(true);
         }
     }//GEN-LAST:event_OpcionAtributosActionPerformed
@@ -329,13 +329,13 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     private javax.swing.JTable tablaInfo;
     // End of variables declaration//GEN-END:variables
 
-    public Boolean esPadre(String tipo) {
+    public Boolean esTipoPadre(String tipo) {
         String dql = "select name from dm_type where super_name ='" + tipo + "'";
         try {
             String resultado = execQuery(dql, gsesion);
             return !resultado.isEmpty();
         } catch (Exception ex) {
-            Utilidades.escribeLog("Error al consultar esPadre - Tipo: " + tipo + " - Error: " + ex.getMessage());
+            Utilidades.escribeLog("Error al consultar esTipoPadre - Tipo: " + tipo + " - Error: " + ex.getMessage());
         }
         return false;
     }
@@ -396,7 +396,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 DefaultMutableTreeNode nodohijo = new DefaultMutableTreeNode(hijo);
                 nodo.add(nodohijo);
 
-                if (esPadre(hijo)) {
+                if (esTipoPadre(hijo)) {
                     //     System.out.println(hijo);
                     DameTipos(hijo, nodohijo);
                 } else {
@@ -436,12 +436,13 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     }
 
     private void CargarInfoNodo(String nombre) {
-        String r_object_id = DameR_object_id(nombre);
-        String super_tipo = DameSupeTipo(nombre);
+        String r_object_id = utildocum.DameRobjectidDeTipo(nombre, gsesion);
+        String super_tipo = utildocum.DameSuperTipo(nombre, gsesion);
         tiposPadre = "";
-        tiposPadre = DamePadres(nombre);
-        String filestore = DameFilestore(nombre);
-        ArrayList<String> hijos = DameTiposHijo(nombre);
+        //  tiposPadre = DamePadres(nombre);
+        tiposPadre = utildocum.DameTiposPadre(nombre, gsesion);
+        String filestore = utildocum.DameFilestoreDeTipo(nombre, gsesion);
+        ArrayList<String> hijos = utildocum.DameTiposHijos(nombre, gsesion);
         int numhijos = hijos.size();
         int cont = 4 + numhijos;
         TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
@@ -503,38 +504,8 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         });
     }
 
-    private String DameSupeTipo(String nombre) {
-        String supertipo = "";
-        try {
-            String dql = "Select super_name from dm_type where name='" + nombre + "'";
-            IDfCollection col = utildocum.ejecutarDql(dql, gsesion);
-            if (col != null) {
-                while (col.next()) {
-                    IDfTypedObject r = col.getTypedObject();
-                    supertipo = r.getValueAt(0).asString();
-                }
-            }
-        } catch (DfException ex) {
-        }
-        return supertipo;
-    }
 
-    private String DameFilestore(String nombre) {
-        String filestore = "";
-        try {
-            String dql = "Select f.name from dmi_type_info t,dm_filestore f where t.r_type_name='" + nombre + "' and t.default_storage=f.r_object_id";
-            IDfCollection col = utildocum.ejecutarDql(dql, gsesion);
-            if (col != null) {
-                while (col.next()) {
-                    IDfTypedObject r = col.getTypedObject();
-                    filestore = r.getValueAt(0).asString();
-                }
-            }
-        } catch (DfException ex) {
-        }
-        return filestore;
-    }
-
+    /* 
     private String DamePadres(String nombre) {
         String supertipo = "";
         try {
@@ -562,40 +533,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         }
         return tiposPadre;
     }
-
-    private ArrayList<String> DameTiposHijo(String nombre) {
-        ArrayList<String> hijos = new ArrayList<>();
-        try {
-            String dql = "Select name from dm_type where super_name='" + nombre + "' order by 1";
-            IDfCollection col = utildocum.ejecutarDql(dql, gsesion);
-            if (col != null) {
-                while (col.next()) {
-                    IDfTypedObject r = col.getTypedObject();
-                    String hijo = r.getValueAt(0).asString();
-                    hijos.add(hijo);
-                }
-            }
-        } catch (DfException ex) {
-        }
-        return hijos;
-    }
-
-    private String DameR_object_id(String nombre) {
-        String id = "";
-        try {
-            String dql = "Select r_object_id from dm_type where name='" + nombre + "'";
-            IDfCollection col = utildocum.ejecutarDql(dql, gsesion);
-            if (col != null) {
-                while (col.next()) {
-                    IDfTypedObject r = col.getTypedObject();
-                    id = r.getValueAt(0).asString();
-                }
-            }
-        } catch (DfException ex) {
-        }
-        return id;
-    }
-
+     */
     public void expandOrCollapsToLevel(JTree tree, TreePath treePath, int level, boolean expand) {
         try {
             expandOrCollapsePath(tree, treePath, level, 0, expand);
