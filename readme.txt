@@ -66,3 +66,7 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     
     Añadido el comando "describe" en la Pantalla de DQL
 
+    Creado fichero de propiedades DocumentumDFCs.properties para los datos de login, se deja el dfc.properties como original.
+
+    Pantalla oculta para encriptar y desencriptar usando la libreria de Documentum RegistryPasswordUtils.
+
