@@ -31,18 +31,18 @@ public class reasignar {
     private String patron_tipodoc = "correos";
     private static Date fecha = new Date();
     private static FileWriter fichero = null;
-    protected static String m_docbase = "cyt_part02_test";
-    protected static String m_userName = "S000144";
-    protected static String m_password = "Prueba2007";
+    protected static String m_docbase = "rep_part02_test";
+    protected static String m_userName = "dmadmin";
+    protected static String m_password = "pasword";
     protected static String m_domain = "";
-    static String servidor = "tmpdla707.correospre.es";
+    static String servidor = "192.168.1.27";
     protected String m_jobid = null;
     protected String m_mtl = "0";
     protected static String m_filestore_destino = "filestore_system";
     // Default parameters passed by invocation of job
-    private static final String USER_KEY = "S000144";
-    private static final String DOCBASE_KEY = "cyt_part02_test";
-    private static final String PASSWORD_KEY = "Prueba2007";
+    private static final String USER_KEY = "dmadmin";
+    private static final String DOCBASE_KEY = "rep_part02_test";
+    private static final String PASSWORD_KEY = "pasword";
     private static final String DOMAIN_KEY = "";
     private static final String JOBID = "job_id";
     private static final String MTL = "method_trace_level";
@@ -96,7 +96,7 @@ public class reasignar {
 
             log_f("Inicio del job: " + fecha.toString() + NEWLINE);
             log_f("Repositorio: " + session.getDocbaseName() + NEWLINE);
-            String dql = "select r_object_id, i_partition,r_object_type,r_creation_date from dm_document_sp where r_object_type like 'correos%' and a_storage_type='filestore_system'";
+            String dql = "select r_object_id, i_partition,r_object_type,r_creation_date from dm_document_sp where r_object_type like 'car%' and a_storage_type='filestore_system'";
             log_f("DQL: " + dql + NEWLINE);
 
             IDfQuery query = new DfQuery();
