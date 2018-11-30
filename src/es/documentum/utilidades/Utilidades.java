@@ -1102,16 +1102,6 @@ public class Utilidades {
 
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
-        /*
-        util.cambiarPermisoRemoto("tx0655.correos.es", "s000232", "eCvaLL05v", "/home/s000232/borrado/borrado1/*.sh", OctalToDecimal("744"));
-        List<String> resultado = util.comandoRemoto("tx0655.correos.es", "s000232", "eCvaLL05v", "ls -l /home/s000232/borrado/borrado1");
-        for (int x = 0; x < resultado.size(); x++) {
-            System.out.println(resultado.get(x));
-        }
-         */
-
-        // util.borrarFichero("C:/Users/E274399/documentumdfcs/renditions", "**.xml*");
-       // util.recorrerDir("c:/tmp");
     }
 }
 
