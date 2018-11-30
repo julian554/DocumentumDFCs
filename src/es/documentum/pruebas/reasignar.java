@@ -28,7 +28,7 @@ import es.documentum.utilidades.UtilidadesDocumentum;
 
 public class reasignar {
 
-    private String patron_tipodoc = "correos";
+    private String patron_tipodoc = "car";
     private static Date fecha = new Date();
     private static FileWriter fichero = null;
     protected static String m_docbase = "rep_part02_test";
