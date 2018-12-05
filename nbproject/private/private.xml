@@ -5,10 +5,7 @@
         <group>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/utilidades/UtilidadesDocumentum.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/utilidades/Utilidades.java</file>
-<<<<<<< HEAD
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaConexion.java</file>
-=======
->>>>>>> bfe562c5a77fe435be18bb87177cdea8886138d8
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDql.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDocumentum.java</file>
         </group>

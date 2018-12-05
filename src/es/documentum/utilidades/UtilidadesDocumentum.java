@@ -1588,8 +1588,6 @@ public class UtilidadesDocumentum {
 //        }
 
 //        UtilidadesDocumentum ed = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-//        //IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "I_A1_RFC", "vilcs270.dcsi.adif", "1489");
-////        IDfSession sesion = ed.conectarDocumentum("dmadmin", "documentum", "prudcm1", "vilcs405", "1489");
 //        IDfSession sesion = ed.conectarDocumentum("dmadmin", "password", "MyRepo", "demo-server", "1489");
 //
 //        Boolean es = ed.esTablaRegistrada("xxxtblxxx_39015038", sesion);
