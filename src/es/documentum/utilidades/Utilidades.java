@@ -1100,6 +1100,12 @@ public class Utilidades {
         }
     }
 
+    public String rellenarPorIzquierda(String cadena, String valor, int numveces) {
+        String resultado = "";
+        resultado = org.apache.commons.lang.StringUtils.leftPad(cadena, numveces, valor);
+        return resultado;
+    }
+
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
     }

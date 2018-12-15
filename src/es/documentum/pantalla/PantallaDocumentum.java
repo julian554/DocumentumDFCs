@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -1961,7 +1962,18 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             String ruta = textoRutaDocumentum.getText() + "/" + tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
                             if (utilDocum.existeCarpeta(ruta)) {
                                 IDfFolder carpeta = (IDfFolder) lsesion.getObjectByPath(ruta);
+                                barradocum = new PantallaBarra(PantallaDocumentum.this, false);
+                                barradocum.setTitle("Borrando objetos y su posible contenido...");
+                                barradocum.barra.setIndeterminate(true);
+                                barradocum.setDefaultCloseOperation(1);
+                                barradocum.botonParar.setVisible(false);
+                                barradocum.setLabelMensa("Borrando " + ruta + " ...");
+                                barradocum.barra.setOpaque(true);
+                                barradocum.barra.setStringPainted(false);
+                                barradocum.validate();
+                                barradocum.setVisible(true);
                                 utilDocum.BorrarRuta(carpeta);
+                                barradocum.dispose();
                             } else {
                                 if (utilDocum.BorrarDocumento(r_object_id)) {
                                     EtiquetaEstado.setText("Borrado el objeto con r_object_id " + r_object_id);
@@ -2632,6 +2644,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         textoCarpeta.setEnabled(false);
         textoIdDocumentum.setEnabled(false);
         opcionCripto.setVisible(false);
+        
+
     }
 
     private void ConexionDocumentum() {
