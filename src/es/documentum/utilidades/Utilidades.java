@@ -32,10 +32,23 @@ import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipInputStream;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
+import javax.swing.tree.TreeModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  *
@@ -1098,6 +1111,46 @@ public class Utilidades {
                 }
             }
         }
+    }
+
+    public String rellenarPorIzquierda(String cadena, String valor, int numveces) {
+        String resultado = "";
+        resultado = org.apache.commons.lang.StringUtils.leftPad(cadena, numveces, valor);
+        return resultado;
+    }
+
+    public String ArboltoXml(TreeModel model) throws ParserConfigurationException, TransformerException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        DOMImplementation impl = builder.getDOMImplementation();
+
+        // Build an XML document from the tree model
+        Document doc = impl.createDocument(null, null, null);
+        Element root = createTree(doc, model, model.getRoot());
+        doc.appendChild(root);
+
+        // Transform the document into a string
+        DOMSource domSource = new DOMSource(doc);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        StringWriter sw = new StringWriter();
+        StreamResult sr = new StreamResult(sw);
+        transformer.transform(domSource, sr);
+        return sw.toString();
+    }
+
+    private Element createTree(Document doc, TreeModel model, Object node) {
+        Element el = doc.createElement(node.toString());
+        for (int i = 0; i < model.getChildCount(node); i++) {
+            Object child = model.getChild(node, i);
+            el.appendChild(createTree(doc, model, child));
+        }
+        return el;
     }
 
     public static void main(String args[]) {

@@ -18,7 +18,9 @@ import es.documentum.utilidades.MiProperties;
 import es.documentum.utilidades.Utilidades;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,6 +45,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import org.apache.log4j.Logger;
@@ -60,6 +63,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     File ficherolog = null;
     FileOutputStream fis;
     PrintStream out;
+    Boolean primeraDocumentos = true;
     String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
     static Logger logger = Logger.getLogger(PantallaDocumentum.class);
     public PantallaBarra barradocum = new PantallaBarra(PantallaDocumentum.this, false);
@@ -197,6 +201,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionImportarADocumentum = new javax.swing.JMenuItem();
         opcionRelations = new javax.swing.JMenuItem();
         opcionTipos = new javax.swing.JMenuItem();
+        opcionStorage = new javax.swing.JMenuItem();
         Separador2 = new javax.swing.JPopupMenu.Separator();
         opcionLeerLog = new javax.swing.JMenuItem();
         opcionPasswordLDAP = new javax.swing.JMenuItem();
@@ -913,6 +918,14 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
         opcionUtilidades.add(opcionTipos);
+
+        opcionStorage.setText("Almacenamiento del repositorio");
+        opcionStorage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionStorageActionPerformed(evt);
+            }
+        });
+        opcionUtilidades.add(opcionStorage);
         opcionUtilidades.add(Separador2);
 
         opcionLeerLog.setText("Leer fichero Log");
@@ -1961,7 +1974,18 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             String ruta = textoRutaDocumentum.getText() + "/" + tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString();
                             if (utilDocum.existeCarpeta(ruta)) {
                                 IDfFolder carpeta = (IDfFolder) lsesion.getObjectByPath(ruta);
+                                barradocum = new PantallaBarra(PantallaDocumentum.this, false);
+                                barradocum.setTitle("Borrando objetos y su posible contenido...");
+                                barradocum.barra.setIndeterminate(true);
+                                barradocum.setDefaultCloseOperation(1);
+                                barradocum.botonParar.setVisible(false);
+                                barradocum.setLabelMensa("Borrando " + ruta + " ...");
+                                barradocum.barra.setOpaque(true);
+                                barradocum.barra.setStringPainted(false);
+                                barradocum.validate();
+                                barradocum.setVisible(true);
                                 utilDocum.BorrarRuta(carpeta);
+                                barradocum.dispose();
                             } else {
                                 if (utilDocum.BorrarDocumento(r_object_id)) {
                                     EtiquetaEstado.setText("Borrado el objeto con r_object_id " + r_object_id);
@@ -2074,6 +2098,19 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonActivarCriptoActionPerformed
 
+    private void opcionStorageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionStorageActionPerformed
+        if (botonBuscar.isEnabled()) {
+            PantallaStorage pantallastorage = new PantallaStorage(this, true);
+            pantallastorage.setTitle("Almacenamiento en el repositorio " + repositorio);
+            pantallastorage.cargarStorage();
+            pantallastorage.setVisible(true);
+
+        } else {
+            EtiquetaEstado.setText("Debe seleccionar antes una conexión.");
+            botonConectar.requestFocus();
+        }
+    }//GEN-LAST:event_opcionStorageActionPerformed
+
     public void mostrarAcercade() {
         if (Conectado) {
             versiondfcs = utilDocum.DameVersionDFC();
@@ -2173,6 +2210,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionRelationsPopup;
     private javax.swing.JMenuItem opcionRenditions;
     private javax.swing.JMenuItem opcionSalir;
+    private javax.swing.JMenuItem opcionStorage;
     private javax.swing.JMenuItem opcionTipos;
     private javax.swing.JMenu opcionUtilidades;
     private javax.swing.JPanel panelDocu;
@@ -2222,6 +2260,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                                 return true;
                             }
                         }
+
                     };
                 }
                 if (r_object_id.isEmpty()) {
@@ -2303,10 +2342,32 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     EtiquetaEstado.setForeground(colormensaje);
                     EtiquetaEstado.validate();
                 }
-
+                pintarTablaAtributos();
+                tablaAtributos.getTableHeader().setFont(tablaAtributos.getTableHeader().getFont().deriveFont(Font.BOLD, tablaDocumentos.getTableHeader().getFont().getSize2D()));
+                //tablaAtributos.getTableHeader().setFont(tablaAtributos.getTableHeader().getFont().deriveFont(tablaAtributos.getTableHeader().getFont().getSize2D() + 1));
+                tablaAtributos.getTableHeader().setForeground(new Color(0, 0, 153));
             }
         }.start();
         System.gc();
+    }
+
+    private void pintarTablaAtributos() {
+        tablaAtributos.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                boolean oddRow = (row % 2 == 0);
+                if (oddRow) {
+                    setBackground(Color.WHITE);
+                } else {
+                    setBackground(new Color(245, 245, 245)); // gris claro
+                }
+
+                return this;
+            }
+        });
     }
 
     private void cargarDocumentos(String pcarpeta, String ptipo) {
@@ -2350,7 +2411,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
                 if (documentos.size() <= 0) {
                     Object[][] datos = new Object[0][6];
-                    Object[] cabecera = {"Nombre ", "ID Documentum (r_object_id)", "Tipo Documental", "Fecha Creación", "Usuario", "Check Out"};
+                    Object[] cabecera = {"Nombre ", "ID Documentum", "Tipo Documental", "Fecha Creación", "Usuario", "Check Out"};
                     modeloLotes = new DefaultTableModel(datos, cabecera) {
                         @Override
                         public boolean isCellEditable(int fila, int columna) {
@@ -2368,7 +2429,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 }
                 try {
                     Object[][] datos = new Object[documentos.size()][6];
-                    Object[] cabecera = {"Nombre ", "ID Documentum (r_object_id)", "Tipo Documental", "Fecha Creación", "Usuario", "Check Out"};
+                    Object[] cabecera = {"Nombre ", "ID Documentum", "Tipo Documental", "Fecha Creación", "Usuario", "Check Out"};
                     java.net.URL imgURL = PantallaDocumentum.class
                             .getClassLoader().getResource("es/documentum/imagenes/vacio.gif");
                     ImageIcon iconoCheckin = new ImageIcon(imgURL);
@@ -2423,10 +2484,40 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 }
                 barradocum.dispose();
                 tablaDocumentos.setRowSelectionInterval(0, 0);
+                pintarTablaDocumentos();
                 mostrarAtributos();
+                if (primeraDocumentos) {
+                    tablaDocumentos.getTableHeader().setFont(tablaDocumentos.getTableHeader().getFont().deriveFont(Font.BOLD, tablaDocumentos.getTableHeader().getFont().getSize2D() + 1));
+                    primeraDocumentos = false;
+                }
+                tablaDocumentos.getTableHeader().setForeground(new Color(0, 0, 153));
+//         tablaDocumentos.getTableHeader().setFont(tablaDocumentos.getTableHeader().getFont().deriveFont(tablaDocumentos.getTableHeader().getFont().getSize2D() + 1));
+                //        tablaDocumentos.getTableHeader().setFont(tablaDocumentos.getTableHeader().getFont().deriveFont(tablaDocumentos.getTableHeader().getFont().getSize2D() + 1));
             }
         }.start();
         System.gc();
+    }
+
+    private void pintarTablaDocumentos() {
+        tablaDocumentos.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                boolean oddRow = (row % 2 == 0);
+                if (oddRow) {
+                    setBackground(Color.WHITE);
+                } else {
+                    setBackground(new Color(245, 245, 245)); // gris claro
+                }
+
+                if (isSelected) {
+                    setBackground(new Color(175, 205, 235)); // azul claro selección
+                }
+                return this;
+            }
+        });
     }
 
     private void mostrarAtributos() {
@@ -2628,10 +2719,14 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionEstadisticasRepos.setVisible(false);
         opcionIndexador.setVisible(false);
         opcionJobs.setVisible(false);
+        opcionStorage.setVisible(false);
+        opcionTipos.setVisible(false);
+        opcionRelations.setVisible(false);
         textoRutaDocumentum.setEnabled(false);
         textoCarpeta.setEnabled(false);
         textoIdDocumentum.setEnabled(false);
         opcionCripto.setVisible(false);
+
     }
 
     private void ConexionDocumentum() {
@@ -2666,6 +2761,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             opcionEstadisticasRepos.setVisible(false);
             opcionIndexador.setVisible(false);
             opcionJobs.setVisible(false);
+            opcionStorage.setVisible(false);
+            opcionTipos.setVisible(false);
+            opcionRelations.setVisible(false);
             textoRutaDocumentum.setEnabled(false);
             textoCarpeta.setEnabled(false);
             textoIdDocumentum.setEnabled(false);
@@ -2690,6 +2788,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
             opcionIndexador.setVisible(true);
             opcionJobs.setVisible(true);
+            opcionStorage.setVisible(true);
+            opcionTipos.setVisible(true);
+            opcionRelations.setVisible(true);
             textoRutaDocumentum.setEnabled(true);
             textoCarpeta.setEnabled(true);
             textoIdDocumentum.setEnabled(true);

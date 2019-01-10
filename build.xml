@@ -12,6 +12,9 @@
     <import file="nbproject/build-impl.xml"/>
 
     <target name="-post-jar">
+        <propertyfile file="src/es/documentum/propiedades/version.properties">
+            <entry  key="BUILD" value="1" type="int" operation="+"/>
+        </propertyfile> 
         <touch file="${manifest.file}" verbose="true"/>  
         <!--
         <jar jarfile="${dist.jar}" update="true" basedir="src/es/documentum/propiedades" includes="dfc.properties" />

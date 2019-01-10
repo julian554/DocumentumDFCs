@@ -1901,6 +1901,93 @@ public class UtilidadesDocumentum {
         return lista;
     }
 
+    public ArrayList dameStorage(IDfSession sesion) {
+        ArrayList lista = new ArrayList();
+        try {
+            String dql = "select r_object_id, name as object_name, 'dm_filestore' as r_object_type, full_current_use as full_current_use, r_status as r_status, root as root from dm_filestore "
+                    + " union select r_object_id, name as object_name, 'dm_opticalstore' as r_object_type, full_current_use as full_current_use, r_status as r_status, '' as root from dm_opticalstore "
+                    + " union select r_object_id, name as object_name, 'dm_distributedstore' as r_object_type, full_current_use as full_current_use, r_status as r_status, '' as root from dm_distributedstore "
+                    + " union select r_object_id, name as object_name, 'dm_blobstore' as r_object_type, full_current_use as full_current_use, r_status as r_status, '' as root from dm_blobstore "
+                    + " union select r_object_id, name as object_name, 'dm_extern_file' as r_object_type, full_current_use as full_current_use, r_status as r_status, '' as root from dm_extern_file "
+                    + " union select r_object_id, name as object_name, 'dm_extern_url' as r_object_type, full_current_use as full_current_use, r_status as r_status, '' as root from dm_extern_url "
+                    + " union select r_object_id, name as object_name, 'dm_extern_free' as r_object_type, full_current_use as full_current_use, r_status as r_status, '' as root from dm_extern_free "
+                    + " union select r_object_id, object_name as object_name, 'dm_location' as r_object_type, 0 as full_current_use, 0 as r_status, file_system_path as root from dm_location "
+                    + " union select r_object_id, object_name as object_name, 'mount_point' as r_object_type, 0 as full_current_use, 0 as r_status, '' as root from dm_mount_point "
+                    + " union select r_object_id, object_name as object_name, 'dm_plugin' as r_object_type, r_content_size as full_current_use, 0 as r_status, '' as root from dm_plugin";
+            IDfCollection myColl = ejecutarDql(dql, sesion);
+            if (myColl == null) {
+                return lista;
+            }
+            int cont=0;
+            while (myColl.next()) {
+                cont++;
+                ArrayList datos = new ArrayList();
+                datos.add(myColl.getString("object_name"));
+                String tipo = myColl.getString("r_object_type");
+                datos.add(tipo);
+                String tam = "";
+                Long lvalor = Long.parseLong(myColl.getString("full_current_use"));
+                tam = util.humanReadableByteCount(lvalor, true);
+                datos.add(tam);
+                String estado = "Online";
+                switch (myColl.getString("r_status")) {
+                    case "0":
+                        estado = "Online";
+                        break;
+                    case "0.0":
+                        estado = "Online";
+                        break;
+                    case "1":
+                        estado = "Offline";
+                        break;
+                    case "1.0":
+                        estado = "Offline";
+                        break;
+                    case "2":
+                        estado = "Read Only";
+                        break;
+                    case "2.0":
+                        estado = "Read Only";
+                        break;
+                    case "3":
+                        estado = "WORM";
+                        break;
+                    case "3.0":
+                        estado = "WORM";
+                        break;
+                }
+
+                datos.add(estado);
+                
+                String r_object_id = myColl.getString("r_object_id");
+                String ruta="";
+                String root="";
+                if (tipo.equalsIgnoreCase("dm_filestore")) {
+                    root = myColl.getString("root");
+                    String dqllocationpath = "Select file_system_path from dm_location where object_name='" + root + "'";
+                    try{
+                        IDfCollection colpath = ejecutarDql(dqllocationpath, sesion);
+                        colpath.next();
+                        ruta=colpath.getString("file_system_path");
+                    }catch(Exception ex){
+                        System.out.println(ex.getMessage());
+                    }
+                }        
+                datos.add(root);
+                if (tipo.equalsIgnoreCase("dm_location")) {
+                    ruta = myColl.getString("root");
+                }
+                datos.add(ruta);
+                datos.add(r_object_id);
+                lista.add(datos);
+            }
+            myColl.close();
+        } catch (DfException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return lista;
+    }
+
     public String dameFilestore(IDfSession sesion, String r_object_id) {
         String filestore = "";
         IDfCollection resultado = ejecutarDql("select name from dm_filestore where r_object_id='" + r_object_id + "'", sesion);
@@ -2313,8 +2400,7 @@ public class UtilidadesDocumentum {
     /**
      * Recursive function for generating map of folder structure and documents
      *
-     * @param rootPath absolute path to repository cabinet or folder (i.e.
-     * "/Temp/myfolder")
+     * @param rootPath absolute path to repository cabinet or folder (i.e. "/Temp/myfolder")
      * @param indent string containing indentation tabs
      * @param session repository session
      *

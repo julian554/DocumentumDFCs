@@ -244,7 +244,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void CargarTablas(String tipo) {
-        String dql = "select attr_name, attr_type, attr_repeating,attr_length from dm_type_r where r_object_id='" + tipo + "' and attr_identifier <1025 order by i_position desc";
+        String dql = "select attr_name, attr_type, attr_repeating,attr_length from dm_type where r_object_id='" + tipo + "' and i_position > -1 * start_pos order by i_position desc enable(ROW_BASED)";
 
         TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
 
@@ -284,7 +284,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
 //        columna.sizeWidthToFit();
 
         // Propios
-        dql = "select attr_name, attr_type, attr_repeating,attr_length from dm_type_r where r_object_id='" + tipo + "' and attr_identifier >1025 order by i_position desc";
+        dql = "select attr_name, attr_type, attr_repeating,attr_length from dm_type where r_object_id='"+tipo+"' and i_position < -1 * start_pos  order by 1 enable(ROW_BASED)";
         ArrayList<DatosTipo> resultadoPropios = new ArrayList<>();
         try {
             IDfCollection colPropios = utildocum.ejecutarDql(dql, gsesion);
