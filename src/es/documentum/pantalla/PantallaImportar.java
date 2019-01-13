@@ -5,6 +5,7 @@ import com.documentum.fc.client.IDfClient;
 import com.documentum.fc.client.IDfCollection;
 import com.documentum.fc.client.IDfFolder;
 import com.documentum.fc.client.IDfSession;
+import com.documentum.fc.client.IDfSessionManager;
 import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.client.IDfTypedObject;
 import com.documentum.fc.common.DfException;
@@ -937,8 +938,8 @@ public class PantallaImportar extends javax.swing.JDialog {
         Properties pro = new Properties();
         Properties proapp = new Properties();
         String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-        String ficheropropiedades = dirdfc + util.separador() + "dfc.properties";
-        String ficheropropapp = dirdfc + util.separador() + "DocumentumDFCs.properties";
+        String ficheropropiedades = dirdfc + "dfc.properties";
+        String ficheropropapp = dirdfc + "DocumentumDFCs.properties";
         try {
             InputStream in = new FileInputStream(ficheropropiedades);
             if (in == null) {
@@ -974,15 +975,26 @@ public class PantallaImportar extends javax.swing.JDialog {
         }
 
         try {
+//            IDfClient client = DfClient.getLocalClient();
+//            IDfTypedObject config = client.getClientConfig();
+//            config.setString("primary_host", docbroker);
+//            config.setInt("primary_port", Integer.parseInt(puerto));
+//            IDfLoginInfo loginInfoObj = new DfLoginInfo();
+//            loginInfoObj.setUser(usuario);
+//            loginInfoObj.setPassword(password);
+//            docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
+//            sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
+
             IDfClient client = DfClient.getLocalClient();
-            IDfTypedObject config = client.getClientConfig();
-            config.setString("primary_host", docbroker);
-            config.setInt("primary_port", Integer.parseInt(puerto));
-            IDfLoginInfo loginInfoObj = new DfLoginInfo();
-            loginInfoObj.setUser(usuario);
-            loginInfoObj.setPassword(password);
+            IDfSessionManager sesMgr = client.newSessionManager();
+            IDfLoginInfo loginInfo = new DfLoginInfo();
+            loginInfo.setUser(usuario);
+            loginInfo.setPassword(password);
+            // sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
+            sesMgr.setIdentity(IDfSessionManager.ALL_DOCBASES, loginInfo);
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
-            sesion = client.newSession(docbase + "@" + docbroker, loginInfoObj);
+            sesion = sesMgr.getSession(docbase);
+
             if (!sesion.isConnected()) {
                 return null;
             }
