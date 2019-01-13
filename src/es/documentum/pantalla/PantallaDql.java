@@ -853,7 +853,7 @@ public class PantallaDql extends javax.swing.JFrame {
                     if (background == null || background instanceof javax.swing.plaf.UIResource) {
 //                        Color alternateColor = DefaultLookup.getColor(this, ui, "Table.alternateRowColor");
                         //Color alternateColor = UIManager.getColor ( "Table.alternateRowColor" );
-                        Color alternateColor = Color.LIGHT_GRAY;
+                        Color alternateColor = new Color(245, 245, 245); // gris claro;
                         if (alternateColor != null && row % 2 != 0) {
                             background = alternateColor;
                         }
