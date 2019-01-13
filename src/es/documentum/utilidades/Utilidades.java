@@ -1119,6 +1119,7 @@ public class Utilidades {
         return resultado;
     }
 
+<<<<<<< HEAD
     public String ArboltoXml(TreeModel model) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -1153,6 +1154,8 @@ public class Utilidades {
         return el;
     }
 
+=======
+>>>>>>> 63a187468faae4790ef9a00158418af6552b97f1
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
     }

@@ -37,6 +37,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -2726,6 +2727,10 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         textoCarpeta.setEnabled(false);
         textoIdDocumentum.setEnabled(false);
         opcionCripto.setVisible(false);
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 63a187468faae4790ef9a00158418af6552b97f1
 
     }
 
