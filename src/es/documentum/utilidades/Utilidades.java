@@ -1119,7 +1119,6 @@ public class Utilidades {
         return resultado;
     }
 
-
     public String ArboltoXml(TreeModel model) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
