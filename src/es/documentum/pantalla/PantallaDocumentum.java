@@ -2727,11 +2727,6 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         textoCarpeta.setEnabled(false);
         textoIdDocumentum.setEnabled(false);
         opcionCripto.setVisible(false);
-<<<<<<< HEAD
-=======
-        
->>>>>>> 63a187468faae4790ef9a00158418af6552b97f1
-
     }
 
     private void ConexionDocumentum() {
