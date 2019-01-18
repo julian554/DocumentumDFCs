@@ -43,6 +43,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     Boolean mistipos = false;
     String tiposPadre = "";
     Boolean botonderecho = false;
+    ArrayList busqueda = new ArrayList();
 
     public PantallaArbolTipos(PantallaDocumentum parent, boolean modal) {
         initComponents();
@@ -74,6 +75,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         BotonBuscar = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaInfo = new javax.swing.JTable();
+        BotonBuscarSiguiente = new javax.swing.JToggleButton();
         MenuPrincipal = new javax.swing.JMenuBar();
         opcionOpciones = new javax.swing.JMenu();
         opcionCerrar = new javax.swing.JMenuItem();
@@ -104,6 +106,11 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         arbolTipos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 arbolTiposMousePressed(evt);
+            }
+        });
+        arbolTipos.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                arbolTiposValueChanged(evt);
             }
         });
         ScrollArbol.setViewportView(arbolTipos);
@@ -149,6 +156,13 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         tablaInfo.setShowVerticalLines(false);
         jScrollPane1.setViewportView(tablaInfo);
 
+        BotonBuscarSiguiente.setText("Buscar Siguiente");
+        BotonBuscarSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonBuscarSiguienteActionPerformed(evt);
+            }
+        });
+
         opcionOpciones.setMnemonic('O');
         opcionOpciones.setText("Opciones");
         opcionOpciones.setName("opcionOpciones"); // NOI18N
@@ -177,11 +191,13 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(TextoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(BotonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BotonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BotonBuscarSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(CheckTiposPropios, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(BotonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ScrollArbol, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,7 +217,8 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                     .addComponent(BotonCerrar)
                     .addComponent(CheckTiposPropios)
                     .addComponent(TextoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BotonBuscar))
+                    .addComponent(BotonBuscar)
+                    .addComponent(BotonBuscarSiguiente))
                 .addGap(25, 25, 25))
         );
 
@@ -262,8 +279,8 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     }//GEN-LAST:event_CheckTiposPropiosActionPerformed
 
     private void BotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarActionPerformed
+        busqueda.clear();
         TreePath rutanodo = buscarNodo(raiz, TextoTipo.getText());
-
         arbolTipos.setSelectionPath(rutanodo);
         arbolTipos.scrollPathToVisible(rutanodo);
     }//GEN-LAST:event_BotonBuscarActionPerformed
@@ -312,6 +329,38 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_OpcionListadoActionPerformed
 
+    private void BotonBuscarSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarSiguienteActionPerformed
+        TreePath rutanodo = buscarNodoSiguiente(TextoTipo.getText());
+        if (rutanodo == null) {
+            busqueda.clear();
+            rutanodo = buscarNodo(raiz, TextoTipo.getText());
+        }
+        arbolTipos.setSelectionPath(rutanodo);
+        arbolTipos.scrollPathToVisible(rutanodo);
+    }//GEN-LAST:event_BotonBuscarSiguienteActionPerformed
+
+    private void arbolTiposValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_arbolTiposValueChanged
+        if (!arbolTipos.isSelectionEmpty()) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) arbolTipos.getLastSelectedPathComponent();
+            if (node == null) // Nothing is selected.
+            {
+                return;
+            }
+
+            Object nodeInfo = node.getUserObject();
+            String nombre = nodeInfo.toString();
+
+            if (esTipoPadre(nombre)) {
+                //            popupDirectorio.show((Component) evt.getSource(), evt.getX(), evt.getY());
+            } else {
+                //           popupFichero.show((Component) evt.getSource(), evt.getX(), evt.getY());
+            }
+            System.out.println(nombre + " --> " + (esTipoPadre(nombre) ? "Nodo padre" : "Hijo"));
+            CargarInfoNodo(nombre);
+        }
+
+    }//GEN-LAST:event_arbolTiposValueChanged
+
     /**
      * @param args the command line arguments
      */
@@ -350,6 +399,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton BotonBuscar;
+    private javax.swing.JToggleButton BotonBuscarSiguiente;
     private javax.swing.JButton BotonCerrar;
     private javax.swing.JCheckBox CheckTiposPropios;
     private javax.swing.JPopupMenu MenuOpciones;
@@ -647,13 +697,37 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     private TreePath buscarNodo(DefaultMutableTreeNode root, String s) {
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        // Busca nombre esacto
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
-            if (node.toString().equalsIgnoreCase(s)) {
+            System.out.println(node.toString());
+            if (node.toString().equalsIgnoreCase(s) && !util.buscarEnLista(busqueda, node.toString())) {
+                busqueda.add(node.toString());
+                return new TreePath(node.getPath());
+            }
+        }
+        // Si no encuentra nombre busca que empiece por
+        e = root.depthFirstEnumeration();
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode node = e.nextElement();
+            System.out.println(node.toString());
+            if (node.toString().toLowerCase().startsWith(s.toLowerCase()) && !util.buscarEnLista(busqueda, node.toString())) {
+                busqueda.add(node.toString());
                 return new TreePath(node.getPath());
             }
         }
         return null;
+    }
+
+    private TreePath buscarNodoSiguiente(String s) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) arbolTipos.getLastSelectedPathComponent();
+
+        if (node != null) {
+            return buscarNodo(raiz, s);
+        } else {
+            busqueda.clear();
+            return buscarNodo(raiz, s);
+        }
     }
 
     public String infoNodo(DefaultMutableTreeNode nodo, String dato) {

@@ -1153,6 +1153,19 @@ public class Utilidades {
         return el;
     }
 
+    public Boolean buscarEnLista(ArrayList lista, String elemento) {
+        for (int x = 0; x < lista.size(); x++) {
+            if (lista.get(x).equals(elemento)) {
+                return true;
+            }
+        }
+        return false;       
+    }
+    
+    
+
+    
+
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
     }

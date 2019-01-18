@@ -16,7 +16,7 @@ import java.util.Iterator;
 
 public class TestACSURLs {
 
-    static String servidor = "vilcs471";
+    static String servidor = "vilcs470";
 
     public static void main(String[] args) {
 
@@ -57,7 +57,7 @@ public class TestACSURLs {
             MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
             prop.setProperty("dfc.docbroker.host[0]", servidor);
             prop.setProperty("dfc.docbroker.port[0]", "1489");
-            prop.setProperty("dfc.acs.request.expiration_interval", "10");
+            prop.setProperty("dfc.acs.request.expiration_interval", "3");
             util.escribirProperties(dirdfc + "dfc.properties", prop);
 
             UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");

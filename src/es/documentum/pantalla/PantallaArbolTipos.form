@@ -85,11 +85,13 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="TextoTipo" min="-2" pref="259" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="BotonBuscar" min="-2" pref="101" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="BotonBuscar" min="-2" pref="97" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="BotonBuscarSiguiente" min="-2" pref="140" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="CheckTiposPropios" min="-2" pref="223" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="BotonCerrar" min="-2" pref="112" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -116,6 +118,7 @@
                   <Component id="CheckTiposPropios" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="TextoTipo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="BotonBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="BotonBuscarSiguiente" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
           </Group>
@@ -138,6 +141,7 @@
           </Properties>
           <Events>
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="arbolTiposMousePressed"/>
+            <EventHandler event="valueChanged" listener="javax.swing.event.TreeSelectionListener" parameters="javax.swing.event.TreeSelectionEvent" handler="arbolTiposValueChanged"/>
           </Events>
         </Component>
       </SubComponents>
@@ -189,5 +193,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JToggleButton" name="BotonBuscarSiguiente">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar Siguiente"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonBuscarSiguienteActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

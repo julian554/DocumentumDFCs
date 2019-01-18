@@ -3,7 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/utilidades/UtilidadesDocumentum.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/utilidades/Utilidades.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/Acercade.java</file>
@@ -12,14 +11,6 @@
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaConexion.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaImportar.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDocumentum.java</file>
-=======
-            <file>file:/D:/Adif/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaImportar.java</file>
-            <file>file:/D:/Adif/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDocumentum.java</file>
-            <file>file:/D:/Adif/proyectos/DocumentumDFCs/src/es/documentum/utilidades/Utilidades.java</file>
-            <file>file:/D:/Adif/proyectos/DocumentumDFCs/src/es/documentum/utilidades/UtilidadesDocumentum.java</file>
-            <file>file:/D:/Adif/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaConexion.java</file>
-            <file>file:/D:/Adif/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDql.java</file>
->>>>>>> 63a187468faae4790ef9a00158418af6552b97f1
         </group>
     </open-files>
 </project-private>

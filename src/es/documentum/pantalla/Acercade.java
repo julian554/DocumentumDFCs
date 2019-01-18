@@ -522,16 +522,16 @@ public class Acercade extends javax.swing.JDialog {
     }
 
     public void CargarConfiguraciones() {
-//        try {
-//            InputStream in = Acercade.class.getClassLoader().getResourceAsStream("es/documentum/propiedades/version.txt");
-//            if (in == null) {
-//                Utilidades.escribeLog("Error al cargar el fichero version.txt");
-//            }
-//            pro = new java.util.Properties();
-//            pro.load(in);
-//        } catch (Exception ex) {
-//            Utilidades.escribeLog("Error al cargar el fichero version.txt. Error: " + ex.getMessage());
-//        }
+        try {
+            InputStream in = Acercade.class.getClassLoader().getResourceAsStream("es/documentum/propiedades/version.txt");
+            if (in == null) {
+                Utilidades.escribeLog("Error al cargar el fichero version.txt");
+            }
+            pro = new java.util.Properties();
+            pro.load(in);
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al cargar el fichero version.txt. Error: " + ex.getMessage());
+        }
     }
 
     private void asignarIcono() {

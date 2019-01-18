@@ -1918,9 +1918,7 @@ public class UtilidadesDocumentum {
             if (myColl == null) {
                 return lista;
             }
-            int cont=0;
             while (myColl.next()) {
-                cont++;
                 ArrayList datos = new ArrayList();
                 datos.add(myColl.getString("object_name"));
                 String tipo = myColl.getString("r_object_type");
@@ -1970,7 +1968,7 @@ public class UtilidadesDocumentum {
                         colpath.next();
                         ruta=colpath.getString("file_system_path");
                     }catch(Exception ex){
-                        System.out.println(ex.getMessage());
+                        
                     }
                 }        
                 datos.add(root);
