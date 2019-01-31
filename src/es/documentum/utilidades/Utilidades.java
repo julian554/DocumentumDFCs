@@ -1053,18 +1053,26 @@ public class Utilidades {
                 headerRow.createCell(headings).setCellValue(nombrecol);//Write column name
             }
 
-            for (int rows = 0; rows < model.getRowCount(); rows++) { //For each table row
-                for (int cols = 0; cols < table.getColumnCount(); cols++) { //For each table column
+            int numrows = model.getRowCount();
+            int numcols = table.getColumnCount();
+            for (int rows = 0; rows < numrows; rows++) { //For each table row
+                for (int cols = 0; cols < numcols; cols++) { //For each table column
                     String valor = model.getValueAt(rows, cols) == null ? "" : model.getValueAt(rows, cols).toString();
                     row.createCell(cols).setCellValue(valor); //Write value
-                    sheet.autoSizeColumn(cols);
                 }
 
                 //Set the row to the next one in the sequence
                 row = sheet.createRow((rows + 3));
+                
+                if (rows >= numrows - 3 || numrows < 4){
+                    for (int cols = 0; cols < numcols; cols++) {
+                        // Este codigo penaliza el rendimiento por eso se ejecuta casi al final
+                        sheet.autoSizeColumn(cols);
+                    }
+                }
 
             }
-
+            
             FileOutputStream fichero = new FileOutputStream(ruta);
             wb.write(fichero);//Save the file     
             wb.close();
@@ -1159,12 +1167,8 @@ public class Utilidades {
                 return true;
             }
         }
-        return false;       
+        return false;
     }
-    
-    
-
-    
 
     public static void main(String args[]) {
         Utilidades util = new Utilidades();

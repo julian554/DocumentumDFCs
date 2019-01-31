@@ -283,6 +283,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         TreePath rutanodo = buscarNodo(raiz, TextoTipo.getText());
         arbolTipos.setSelectionPath(rutanodo);
         arbolTipos.scrollPathToVisible(rutanodo);
+        BotonBuscarSiguiente.setVisible(true);
     }//GEN-LAST:event_BotonBuscarActionPerformed
 
     private void OpcionAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpcionAtributosActionPerformed
@@ -450,6 +451,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     }
 
     private void cargarArbol() {
+        BotonBuscarSiguiente.setVisible(false);
         arbolTipos.setModel(null);
         raiz.removeAllChildren();
         arbolTipos.setCellRenderer(new RendererArbol());
