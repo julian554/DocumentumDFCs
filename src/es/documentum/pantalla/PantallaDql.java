@@ -434,19 +434,14 @@ public class PantallaDql extends javax.swing.JFrame {
                     textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), utildocum.dameError(), AtributoRojo);
                 } else {
                     String queEs = "encontrado(s)";
-                    if (dql.toLowerCase().startsWith("update")) {
+                    if (dql.toLowerCase().trim().startsWith("update")) {
                         queEs = "actualizado(s)";
                     }
-                    if (dql.toLowerCase().startsWith("insert")) {
+                    if (dql.toLowerCase().trim().startsWith("insert")) {
                         queEs = "insertado(s)";
                     }
-                    if (dql.toLowerCase().startsWith("delete")) {
+                    if (dql.toLowerCase().trim().startsWith("delete")) {
                         queEs = "borrado(s)";
-                    }
-
-                    switch (dql) {
-                        case "":
-                            break;
                     }
 
                     Long cont = 0L;
