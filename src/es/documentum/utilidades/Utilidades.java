@@ -1,5 +1,8 @@
 package es.documentum.utilidades;
 
+import com.documentum.fc.client.IDfTypedObject;
+import com.documentum.fc.common.IDfAttr;
+import com.documentum.fc.common.IDfValue;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
@@ -10,6 +13,7 @@ import com.jcraft.jsch.SftpException;
 import com.zehon.FileTransferStatus;
 import com.zehon.exception.FileTransferException;
 import com.zehon.scp.SCP;
+import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -648,7 +652,7 @@ public class Utilidades {
             out.close();
 
         } catch (IOException ex) {
-            escribeLog(ex.getMessage());
+            escribeLog("sacarArchivoJar - Error: " + ex.getMessage());
             DIGIERROR = ex.getMessage();
         }
     }
@@ -1037,6 +1041,58 @@ public class Utilidades {
         }
     }
 
+    public void exportarArrayListAExcel(ArrayList lista, String ruta, String hoja, String dql) {
+        try {
+            int numfilas = lista.size();
+            IDfTypedObject primerafila = (IDfTypedObject) lista.get(0);
+            int numcolumnas = primerafila.getAttrCount();
+
+            Workbook wb = new XSSFWorkbook(); //Excell workbook
+
+            Sheet sheet = (Sheet) wb.createSheet(); //WorkSheet
+            wb.setSheetName(0, hoja);
+            Row row = sheet.createRow(2); //Row created at line 3
+
+            Row headerRow = sheet.createRow(0); //Create row at line 0
+            for (int i = 0; i < numcolumnas; i++) { //For each column
+                String nombrecol = primerafila.getAttr(i).getName();;
+                headerRow.createCell(i).setCellValue(nombrecol);//Write column name
+            }
+
+            for (int rows = 0; rows < numfilas; rows++) { //For each table row
+                IDfTypedObject fila = (IDfTypedObject) lista.get(rows);
+                for (int cols = 0; cols < numcolumnas; cols++) { //For each table column
+                    IDfAttr attr = fila.getAttr(cols);
+                    IDfValue attrValue = fila.getValue(attr.getName());
+                    String valor = getDfObjectValue(attrValue) == null ? "" : getDfObjectValue(attrValue).toString();
+                    row.createCell(cols).setCellValue(valor); //Write value
+                }
+
+                //Set the row to the next one in the sequence
+                row = sheet.createRow((rows + 3));
+
+                if (rows >= numfilas - 3 || numfilas < 4) {
+                    for (int cols = 0; cols < numcolumnas; cols++) {
+                        // Este codigo penaliza el rendimiento por eso se ejecuta casi al final
+                        sheet.autoSizeColumn(cols);
+                    }
+                }
+
+            }
+            row = sheet.createRow((numfilas + 3));
+            row.createCell(0).setCellValue("DQL: " + dql);
+            sheet.autoSizeColumn(0);
+
+            FileOutputStream out = new FileOutputStream(new File(ruta));
+            wb.write(out);
+            out.close();
+
+        } catch (Exception ex) {
+            escribeLog("exportarArrayListAExcel - Error: "+ex.getMessage());
+        }
+
+    }
+
     public void exportarAExcel(JTable table, String ruta, String hoja) {
         try {
             //   new WorkbookFactory();
@@ -1063,8 +1119,8 @@ public class Utilidades {
 
                 //Set the row to the next one in the sequence
                 row = sheet.createRow((rows + 3));
-                
-                if (rows >= numrows - 3 || numrows < 4){
+
+                if (rows >= numrows - 3 || numrows < 4) {
                     for (int cols = 0; cols < numcols; cols++) {
                         // Este codigo penaliza el rendimiento por eso se ejecuta casi al final
                         sheet.autoSizeColumn(cols);
@@ -1072,7 +1128,7 @@ public class Utilidades {
                 }
 
             }
-            
+
             FileOutputStream fichero = new FileOutputStream(ruta);
             wb.write(fichero);//Save the file     
             wb.close();

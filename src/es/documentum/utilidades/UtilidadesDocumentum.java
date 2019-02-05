@@ -360,8 +360,8 @@ public class UtilidadesDocumentum {
                 }
             } catch (DfException ex) {
                 resultado = "Error al subir fichero a Documentum - " + ex.getMessage();
-                Utilidades.escribeLog(ex.getMessage());
-                ERROR = "Error al subir fichero a Documentum - " + ex.getMessage();
+                Utilidades.escribeLog(resultado);
+                ERROR = resultado;
             }
             resultadogd.setFichero(rutacarpeta + ficheros[i]);
             resultadogd.setId(ruta);
