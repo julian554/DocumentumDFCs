@@ -202,6 +202,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionRelations = new javax.swing.JMenuItem();
         opcionTipos = new javax.swing.JMenuItem();
         opcionStorage = new javax.swing.JMenuItem();
+        opcionInfoRepo = new javax.swing.JMenuItem();
         Separador2 = new javax.swing.JPopupMenu.Separator();
         opcionLeerLog = new javax.swing.JMenuItem();
         opcionPasswordLDAP = new javax.swing.JMenuItem();
@@ -926,6 +927,14 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
         opcionUtilidades.add(opcionStorage);
+
+        opcionInfoRepo.setText("Información del Repositorio");
+        opcionInfoRepo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionInfoRepoActionPerformed(evt);
+            }
+        });
+        opcionUtilidades.add(opcionInfoRepo);
         opcionUtilidades.add(Separador2);
 
         opcionLeerLog.setText("Leer fichero Log");
@@ -2111,6 +2120,22 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionStorageActionPerformed
 
+    private void opcionInfoRepoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionInfoRepoActionPerformed
+        if (botonBuscar.isEnabled()) {
+            PantallaInfoRepo pantallaInfoRepo = new PantallaInfoRepo(this, true);
+            pantallaInfoRepo.setTitle("Información del repositorio " + repositorio);
+            IDfSession lsesion = utilDocum.conectarDocumentum(usuario, clave, repositorio, docbroker, puerto);
+            pantallaInfoRepo.setGsesion(lsesion);
+            pantallaInfoRepo.setRepositorio(repositorio);
+            pantallaInfoRepo.inicializar();
+            pantallaInfoRepo.setVisible(true);
+
+        } else {
+            EtiquetaEstado.setText("Debe seleccionar antes una conexión.");
+            botonConectar.requestFocus();
+        }
+    }//GEN-LAST:event_opcionInfoRepoActionPerformed
+
     public void mostrarAcercade() {
         if (Conectado) {
             versiondfcs = utilDocum.DameVersionDFC();
@@ -2194,6 +2219,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionExportarDocumentosExcel;
     private javax.swing.JMenuItem opcionImportarADocumentum;
     private javax.swing.JMenuItem opcionIndexador;
+    private javax.swing.JMenuItem opcionInfoRepo;
     private javax.swing.JMenuItem opcionJobs;
     private javax.swing.JMenuItem opcionLeerLog;
     private javax.swing.JMenuItem opcionManual;
@@ -3192,7 +3218,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
         try {
             ClassPathUpdater.add(dirdfcproperties);
-            ClassPathUpdater.add(dirdfcproperties + "lib" + util.separador() + "jsafeFIPS.jar");
+            ClassPathUpdater.add(dirdfcproperties + "lib" + util.separador() + "jcmFIPS.jar");
         } catch (IOException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
             Utilidades.escribeLog("Error al exportarCarpeta - Error: " + ex.getMessage());
         }
@@ -3247,7 +3273,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
                     try {
                         ClassPathUpdater.add(dirdfc);
-                        ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
+                        ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jcmFIPS.jar");
                     } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                         Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
                     }

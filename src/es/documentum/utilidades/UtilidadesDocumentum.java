@@ -303,6 +303,37 @@ public class UtilidadesDocumentum {
         return coleccion;
     }
 
+    public Long ejecutarDqlContar(String dql, IDfSession sesion) {
+        Long numreg = 0L;
+
+        if (!dql.trim().toLowerCase().contains("count(*) ")) {
+            return numreg;
+        }
+
+        if (sesion == null) {
+            if (ERROR.isEmpty()) {
+                ERROR = "No se pudo obtener sesión de Documentum (ejecutarDql)";
+            }
+            return numreg;
+        }
+        IDfQuery query = new DfClientX().getQuery();
+        query.setDQL(dql);
+        try {
+            IDfCollection coleccion = query.execute(sesion, IDfQuery.DF_EXEC_QUERY);
+            coleccion.next();
+            String valor = coleccion.getTypedObject().getString("count(*)");
+            numreg = Long.parseLong(valor);
+        } catch (DfException ex) {
+            ERROR = "Error al ejecutar DQL (ejecutarDqlContar) - Error: " + ex.getMessage();
+            Utilidades.escribeLog("Error al ejecutar DQL '" + dql + "' (ejecutarDqlContar) - Error: " + ex.getMessage() + " - " + getStackTrace(ex));
+            return numreg;
+        }
+
+        ERROR = "";
+
+        return numreg;
+    }
+
     public String dameSql(IDfSession sesion) {
         String sqlResult = null;
         try {
@@ -1956,21 +1987,21 @@ public class UtilidadesDocumentum {
                 }
 
                 datos.add(estado);
-                
+
                 String r_object_id = myColl.getString("r_object_id");
-                String ruta="";
-                String root="";
+                String ruta = "";
+                String root = "";
                 if (tipo.equalsIgnoreCase("dm_filestore")) {
                     root = myColl.getString("root");
                     String dqllocationpath = "Select file_system_path from dm_location where object_name='" + root + "'";
-                    try{
+                    try {
                         IDfCollection colpath = ejecutarDql(dqllocationpath, sesion);
                         colpath.next();
-                        ruta=colpath.getString("file_system_path");
-                    }catch(Exception ex){
-                        
+                        ruta = colpath.getString("file_system_path");
+                    } catch (Exception ex) {
+
                     }
-                }        
+                }
                 datos.add(root);
                 if (tipo.equalsIgnoreCase("dm_location")) {
                     ruta = myColl.getString("root");
@@ -3051,4 +3082,30 @@ public class UtilidadesDocumentum {
         return resultado;
     }
 
+    public String getDormancyStatusFromServerMap(IDfSession dfSession, String serverName) {
+        String retval = null;
+        if ((dfSession != null) && (serverName != null)) {
+            try {
+                IDfTypedObject serverMap = dfSession.getServerMap(dfSession.getDocbaseName());
+                if (serverMap != null) {
+                    int count = serverMap.getValueCount("r_server_name");
+                    int index = -1;
+                    for (int i = 0; i < count; i++) {
+                        String mapServerName = serverMap.getRepeatingString("r_server_name", i);
+                        if (mapServerName.equals(serverName)) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    if (index != -1) {
+                        String dormantStatus = serverMap.getRepeatingString("server_dormancy_status", index);
+                        retval = dormantStatus;
+                    }
+                }
+            } catch (DfException e) {
+
+            }
+        }
+        return retval;
+    }
 }

@@ -394,6 +394,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionStorageActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="opcionInfoRepo">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Informaci&#xf3;n del Repositorio"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionInfoRepoActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="Separador2">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionLeerLog">
