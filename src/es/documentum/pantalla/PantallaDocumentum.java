@@ -2752,6 +2752,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         textoCarpeta.setEnabled(false);
         textoIdDocumentum.setEnabled(false);
         opcionCripto.setVisible(false);
+        opcionInfoRepo.setVisible(false);
 
     }
 
@@ -2793,6 +2794,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             textoRutaDocumentum.setEnabled(false);
             textoCarpeta.setEnabled(false);
             textoIdDocumentum.setEnabled(false);
+            opcionInfoRepo.setVisible(false);
         } else {
             botonBuscar.setEnabled(true);
             opcionBuscar.setEnabled(true);
@@ -2847,7 +2849,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             } else {
                 opcionIndexador.setEnabled(false);
             }
-
+            opcionInfoRepo.setVisible(true);
         }
         panelEstado.repaint();
 
