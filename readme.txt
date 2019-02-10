@@ -74,5 +74,7 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     
     Pantalla de Almacenamiento del Repositorio (Información de filestore / storage / ruta en el Sistema Operativo)
 
-    En la pantalla de DQL se permiten ejecutar múltiples sentencias (separadas por ;)
+    En la pantalla de DQL se permiten ejecutar múltiples sentencias (separadas por ; )
+    
+    Nueva pantalla de información del Repositorio
 
