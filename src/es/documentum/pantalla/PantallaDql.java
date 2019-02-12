@@ -82,7 +82,7 @@ public class PantallaDql extends javax.swing.JFrame {
 
     protected static Image getLogo() {
         //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
-        java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/DCTM_32.png");
+        java.net.URL imgURL = PantallaDql.class.getClassLoader().getResource("es/documentum/imagenes/DQL.png");
 
         if (imgURL != null) {
             return new ImageIcon(imgURL).getImage();

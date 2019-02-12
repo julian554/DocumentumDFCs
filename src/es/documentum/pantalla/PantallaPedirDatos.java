@@ -1,17 +1,28 @@
 package es.documentum.pantalla;
 
 import es.documentum.utilidades.Utilidades;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
 public class PantallaPedirDatos extends javax.swing.JDialog {
 
     public String carpeta;
+    public String icono = "";
     public String ruta;
     public String textoEtiquetaCarpeta;
     public String textoEtiquetaRuta;
     private String accion;
     public static PantallaDocumentum ventanapadre = null;
+
+    public String getIcono() {
+        return icono;
+    }
+
+    public void setIcono(String icono) {
+        this.icono = icono;
+    }
 
     public String getCarpeta() {
         return carpeta;
@@ -46,6 +57,25 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         ventanapadre = parent;
         initComponents();
         setLocationRelativeTo(ventanapadre);
+    }
+
+    public void asignarIconos() {
+        try {
+            setIconImage(new ImageIcon(getLogo()).getImage());
+        } catch (NullPointerException e) {
+            Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
+        }
+    }
+
+    protected Image getLogo() {
+        //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
+        java.net.URL imgURL = PantallaPedirDatos.class.getClassLoader().getResource("es/documentum/imagenes/" + icono);
+
+        if (imgURL != null) {
+            return new ImageIcon(imgURL).getImage();
+        } else {
+            return null;
+        }
     }
 
     /**

@@ -1,0 +1,517 @@
+package es.documentum.pantalla;
+
+import com.documentum.fc.client.IDfCollection;
+import com.documentum.fc.client.IDfSession;
+import es.documentum.utilidades.Utilidades;
+import static es.documentum.utilidades.Utilidades.escribeLog;
+import es.documentum.utilidades.UtilidadesDocumentum;
+import java.awt.Desktop;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+public class PantallaInfoRepositorio extends javax.swing.JFrame {
+
+    String repositorio = "";
+    IDfSession gsesion = null;
+    UtilidadesDocumentum utilDocum = new UtilidadesDocumentum();
+    Utilidades util = new Utilidades();
+    String componente = "";
+    Boolean botonderecho = false;
+    public static PantallaDocumentum ventanapadre = null;
+
+    public String getRepositorio() {
+        return repositorio;
+    }
+
+    public void setRepositorio(String repositorio) {
+        this.repositorio = repositorio;
+    }
+
+    public IDfSession getGsesion() {
+        return gsesion;
+    }
+
+    public void setGsesion(IDfSession gsesion) {
+        this.gsesion = gsesion;
+    }
+
+    
+    
+    public PantallaInfoRepositorio(PantallaDocumentum parent, boolean modal) {
+        ventanapadre = parent;
+        initComponents();
+        setLocationRelativeTo(null);
+        //  setVisible(true);
+        repaint();
+
+        try {
+            setIconImage(new ImageIcon(getLogo()).getImage());
+        } catch (NullPointerException e) {
+            Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
+        }
+        opcionRBMetalActionPerformed(null);
+
+    }
+
+    public void inicializar() {
+        cargarDatos(gsesion);
+    }
+
+    protected static Image getLogo() {
+        //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
+        java.net.URL imgURL = PantallaInfoRepositorio.class.getClassLoader().getResource("es/documentum/imagenes/information.png");
+
+        if (imgURL != null) {
+            return new ImageIcon(imgURL).getImage();
+        } else {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        popupEditar = new javax.swing.JPopupMenu();
+        opcionCopiar = new javax.swing.JMenuItem();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textoInfo = new javax.swing.JTextPane();
+        botonAceptar = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        Menu = new javax.swing.JMenu();
+        opcionCerrar = new javax.swing.JMenuItem();
+        opcionApariencia = new javax.swing.JMenu();
+        opcionRBMetal = new javax.swing.JRadioButtonMenuItem();
+        opcionRBNimbus = new javax.swing.JRadioButtonMenuItem();
+        opcionRBWindows = new javax.swing.JRadioButtonMenuItem();
+        opcionRBWindowsClassic = new javax.swing.JRadioButtonMenuItem();
+        opcionRBPorDefecto = new javax.swing.JRadioButtonMenuItem();
+
+        opcionCopiar.setText("Copiar Ctrl+C");
+        opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionCopiarActionPerformed(evt);
+            }
+        });
+        popupEditar.add(opcionCopiar);
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Ejecutar Comandos SSH en remoto");
+        setAlwaysOnTop(true);
+        setMinimumSize(new java.awt.Dimension(1074, 775));
+        setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        setName("VentanaLeerFichero"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1074, 775));
+
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(700, 500));
+
+        textoInfo.setEditable(false);
+        textoInfo.setBackground(new java.awt.Color(245, 245, 245));
+        textoInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                textoInfoMousePressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(textoInfo);
+
+        botonAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
+        botonAceptar.setMnemonic('A');
+        botonAceptar.setText("Cerrar");
+        botonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAceptarActionPerformed(evt);
+            }
+        });
+
+        Menu.setMnemonic('A');
+        Menu.setText("Archivo");
+
+        opcionCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+        opcionCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
+        opcionCerrar.setText("Cerrar");
+        opcionCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionCerrarActionPerformed(evt);
+            }
+        });
+        Menu.add(opcionCerrar);
+
+        jMenuBar1.add(Menu);
+
+        opcionApariencia.setMnemonic('A');
+        opcionApariencia.setText("Apariencia");
+
+        opcionRBMetal.setSelected(true);
+        opcionRBMetal.setText("Metal");
+        opcionRBMetal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionRBMetalActionPerformed(evt);
+            }
+        });
+        opcionApariencia.add(opcionRBMetal);
+
+        opcionRBNimbus.setSelected(true);
+        opcionRBNimbus.setText("Nimbus");
+        opcionRBNimbus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionRBNimbusActionPerformed(evt);
+            }
+        });
+        opcionApariencia.add(opcionRBNimbus);
+
+        opcionRBWindows.setSelected(true);
+        opcionRBWindows.setText("Windows");
+        opcionRBWindows.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionRBWindowsActionPerformed(evt);
+            }
+        });
+        opcionApariencia.add(opcionRBWindows);
+
+        opcionRBWindowsClassic.setSelected(true);
+        opcionRBWindowsClassic.setText("Windows Classic");
+        opcionRBWindowsClassic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionRBWindowsClassicActionPerformed(evt);
+            }
+        });
+        opcionApariencia.add(opcionRBWindowsClassic);
+
+        opcionRBPorDefecto.setSelected(true);
+        opcionRBPorDefecto.setText("Propia del Sistema Operativo");
+        opcionRBPorDefecto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionRBPorDefectoActionPerformed(evt);
+            }
+        });
+        opcionApariencia.add(opcionRBPorDefecto);
+
+        jMenuBar1.add(opcionApariencia);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1076, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(botonAceptar)
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void opcionCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCerrarActionPerformed
+        dispose();
+    }//GEN-LAST:event_opcionCerrarActionPerformed
+
+
+    private void opcionCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarActionPerformed
+        if (componente.equals("textoInfo")) {
+            if (textoInfo.getSelectedText() == null) {
+                Utilidades.copiarTextoPortapapeles(textoInfo.getText());
+            } else {
+                Utilidades.copiarTextoPortapapeles(textoInfo.getSelectedText());
+            }
+        }
+    }//GEN-LAST:event_opcionCopiarActionPerformed
+
+    private void opcionRBMetalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionRBMetalActionPerformed
+        opcionRBMetal.setSelected(true);
+        opcionRBNimbus.setSelected(false);
+        opcionRBWindows.setSelected(false);
+        opcionRBWindowsClassic.setSelected(false);
+        opcionRBPorDefecto.setSelected(false);
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Metal".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+            SwingUtilities.updateComponentTreeUI(this);
+            this.pack();
+            System.gc();
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al cambiar Aspecto Visual a Metal - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_opcionRBMetalActionPerformed
+
+    private void opcionRBNimbusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionRBNimbusActionPerformed
+        opcionRBMetal.setSelected(false);
+        opcionRBNimbus.setSelected(true);
+        opcionRBWindows.setSelected(false);
+        opcionRBWindowsClassic.setSelected(false);
+        opcionRBPorDefecto.setSelected(false);
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+            SwingUtilities.updateComponentTreeUI(this);
+            this.pack();
+            System.gc();
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al cambiar Aspecto Visual a Nimbus - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_opcionRBNimbusActionPerformed
+
+    private void opcionRBWindowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionRBWindowsActionPerformed
+        opcionRBMetal.setSelected(false);
+        opcionRBNimbus.setSelected(false);
+        opcionRBWindows.setSelected(true);
+        opcionRBWindowsClassic.setSelected(false);
+        opcionRBPorDefecto.setSelected(false);
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+            SwingUtilities.updateComponentTreeUI(this);
+            this.pack();
+            System.gc();
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al cambiar Aspecto Visual a Windows - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_opcionRBWindowsActionPerformed
+
+    private void opcionRBWindowsClassicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionRBWindowsClassicActionPerformed
+        opcionRBMetal.setSelected(false);
+        opcionRBNimbus.setSelected(false);
+        opcionRBWindows.setSelected(false);
+        opcionRBWindowsClassic.setSelected(true);
+        opcionRBPorDefecto.setSelected(false);
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows Classic".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+            SwingUtilities.updateComponentTreeUI(this);
+            this.pack();
+            System.gc();
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al cambiar Aspecto Visual a Windows Classic - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_opcionRBWindowsClassicActionPerformed
+
+    private void opcionRBPorDefectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionRBPorDefectoActionPerformed
+        try {
+            opcionRBMetal.setSelected(false);
+            opcionRBNimbus.setSelected(false);
+            opcionRBWindows.setSelected(false);
+            opcionRBWindowsClassic.setSelected(false);
+            opcionRBPorDefecto.setSelected(true);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            SwingUtilities.updateComponentTreeUI(this);
+            System.gc();
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al cambiar Aspecto por Defecto - " + ex.getMessage());
+        }
+    }//GEN-LAST:event_opcionRBPorDefectoActionPerformed
+
+    private void textoInfoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoInfoMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            componente = "textoInfo";
+            botonderecho = true;
+            popupmenu(evt);
+        }
+    }//GEN-LAST:event_textoInfoMousePressed
+
+    private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
+        dispose();
+    }//GEN-LAST:event_botonAceptarActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            escribeLog("Error al establecer el estilo de la ventana. Error: " + ex.getMessage());
+        }
+        //</editor-fold>
+
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                PantallaInfoRepositorio frame = new PantallaInfoRepositorio(ventanapadre, true);
+                frame.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+
+            }
+        });
+    }
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Menu;
+    public static javax.swing.JButton botonAceptar;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenu opcionApariencia;
+    private javax.swing.JMenuItem opcionCerrar;
+    private javax.swing.JMenuItem opcionCopiar;
+    private javax.swing.JRadioButtonMenuItem opcionRBMetal;
+    private javax.swing.JRadioButtonMenuItem opcionRBNimbus;
+    private javax.swing.JRadioButtonMenuItem opcionRBPorDefecto;
+    private javax.swing.JRadioButtonMenuItem opcionRBWindows;
+    private javax.swing.JRadioButtonMenuItem opcionRBWindowsClassic;
+    private javax.swing.JPopupMenu popupEditar;
+    private javax.swing.JTextPane textoInfo;
+    // End of variables declaration//GEN-END:variables
+
+    private class HTMLListener implements HyperlinkListener {
+
+        public void hyperlinkUpdate(HyperlinkEvent e) {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                try {
+//                    textoInfo.setPage(e.getURL());
+                    if (Desktop.isDesktopSupported()) {
+                        Desktop.getDesktop().browse(e.getURL().toURI());
+                    }
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void cargarDatos(IDfSession gsesion) {
+        try {
+            String id = gsesion.getDocbaseId();
+            String idrepositorio = id + " (" + Integer.toHexString(Integer.parseInt(id)) + ")";
+            String dql = "select object_name, r_object_id, web_server_loc, r_server_version from dm_server_config order by r_object_id";
+            IDfCollection col = utilDocum.ejecutarDql(dql, gsesion);
+            textoInfo.setContentType("text/html");
+            textoInfo.addHyperlinkListener(new HTMLListener());
+            StringBuilder cadenaHTML = new StringBuilder();
+            cadenaHTML.append("<br>");
+            while (col.next()) {
+                String repo = col.getTypedObject().getString("object_name");
+                String version = col.getTypedObject().getString("r_server_version");
+                String servidor = col.getTypedObject().getString("web_server_loc");
+                String r_object_id = col.getTypedObject().getString("r_object_id");
+                String dormancyStatus = utilDocum.getDormancyStatusFromServerMap(gsesion, repo);
+                String mensajeActivo = "";
+                if (dormancyStatus != null && dormancyStatus.equalsIgnoreCase("Active")) {
+                    mensajeActivo = "Activo";
+                } else {
+                    mensajeActivo = "Parado";
+                }
+
+                cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><tr bgcolor=#f5f5f5><th>REPOSITORIO</th><th>ID</th>"
+                        + "<th>DOCBROKER</th><th>VERSION</th><th>ESTADO</th>");
+                cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + repo + " </font></td>");
+                cadenaHTML.append("<td><font color=\"black\" size=4> " + idrepositorio + " </font></td>");
+                cadenaHTML.append("<td><font color=\"black\" size=4> " + servidor + " </font></td>");
+                cadenaHTML.append("<td><font color=\"black\" size=4> " + version + " </font></td");
+                cadenaHTML.append("<td><font color=\"black\" size=4> " + mensajeActivo + " </font></td></tr></TABLE><br>");
+
+                //  dql = "select app_server_name, app_server_uri from dm_server_config_r where r_object_id='" + r_object_id + "'";
+                dql = "select servlet_name as app_server_name, base_uri as app_server_uri from dm_sysprocess_config_r where server_config_id ='" + r_object_id + "'";
+                IDfCollection col_lineas = utilDocum.ejecutarDql(dql, gsesion);
+
+                if (col_lineas != null) {
+//                    cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>APLICACIONES EN SERVIDOR</b></CAPTION>");
+                    cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>JAVA METHOD SERVER</b></CAPTION>");
+                }
+
+                while (col_lineas.next()) {
+                    String nombre_servlet = col_lineas.getTypedObject().getString("app_server_name");
+                    String uri_servlet = col_lineas.getTypedObject().getString("app_server_uri");
+                    cadenaHTML.append("<tr bgcolor=\"white\"><td  width=\"30%\"><font color=\"black\" size=4>" + nombre_servlet + "</font></td>");
+                    //   cadenaHTML.append("<td><font color=\"blue\" size=4>" + uri_servlet + "</font></td></tr>");
+                    cadenaHTML.append("<td><fontsize=4><a href=\"" + uri_servlet + "\">" + uri_servlet + "</a></font></td></tr>");
+                }
+                cadenaHTML.append("</TABLE><br><br>");
+                if (col_lineas != null) {
+                    col_lineas.close();
+                }
+            }
+
+            if (col != null) {
+                col.close();
+            }
+            dql = "SELECT s.object_name as nombre,r_is_public,server_major_version,server_minor_version,dormancy_status,acs_base_url,c.object_name as srv "
+                    + " FROM dm_acs_config_sp s, dm_acs_config_r r, dm_server_config c where s.r_object_id=r.r_object_id "
+                    + " and s.svr_config_id=c.r_object_id and acs_base_url !=' '";
+            col = utilDocum.ejecutarDql(dql, gsesion);
+            cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>ACS</b></CAPTION>"
+                    + "<tr bgcolor=#f5f5f5><th>NOMBRE</th><th>REPOSITORIO</th><th>VERSION</th><th>ESTADO</th><th>URL</th></tr>");
+            while (col.next()) {
+                String nombre_acs = col.getTypedObject().getString("nombre");
+                String acs_publico = col.getTypedObject().getString("r_is_public");
+                String acs_servidor = col.getTypedObject().getString("srv");
+                String acs_v_mayor = col.getTypedObject().getString("server_major_version");
+                String acs_v_menor = col.getTypedObject().getString("server_minor_version");
+                String estado = col.getTypedObject().getString("dormancy_status");
+                estado = estado.trim().equalsIgnoreCase("ACTIVE") ? "Activo" : "No Activo";
+                String acs_url = col.getTypedObject().getString("acs_base_url");
+                cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + nombre_acs + " </font></td>");
+                cadenaHTML.append("<td><font color=\"black\" size=4> " + acs_servidor + " </font></td>");
+                cadenaHTML.append("<td><font color=\"black\" size=4> " + acs_v_mayor + "." + acs_v_menor + " </font></td>");
+                cadenaHTML.append("<td><font color=\"black\" size=4> " + estado + " </font></td");
+                cadenaHTML.append("<td><fontsize=4><a href=\"" + acs_url + "\">" + acs_url + "</a></font></td></tr>");
+//                cadenaHTML.append("<td><font color=\"blue\" size=4> " + acs_url + " </font></td></tr>");
+            }
+            if (col != null) {
+                col.close();
+            }
+            cadenaHTML.append("</TABLE><br>");
+            textoInfo.setText(cadenaHTML.toString());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    private void popupmenu(MouseEvent evt) {
+        if (evt.isPopupTrigger() || botonderecho) {
+            botonderecho = false;
+            if (evt.getSource().getClass().getName().equals("javax.swing.JTextPane")) {
+                popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
+
+            }
+
+        }
+    }
+
+}

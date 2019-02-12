@@ -4,11 +4,11 @@ import com.documentum.fc.client.IDfFolder;
 import com.documentum.fc.client.IDfSession;
 import com.documentum.fc.client.IDfSysObject;
 import com.documentum.fc.common.DfException;
-import static es.documentum.pantalla.PantallaDocumentum.getLogo;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -61,7 +61,17 @@ public class PantallaJobs extends javax.swing.JFrame {
             Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
         }
     }
+    
+    protected static Image getLogo() {
+        //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
+        java.net.URL imgURL = PantallaJobs.class.getClassLoader().getResource("es/documentum/imagenes/jobs.png");
 
+        if (imgURL != null) {
+            return new ImageIcon(imgURL).getImage();
+        } else {
+            return null;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

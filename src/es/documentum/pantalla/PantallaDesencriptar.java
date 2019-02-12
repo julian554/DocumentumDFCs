@@ -2,6 +2,8 @@ package es.documentum.pantalla;
 
 import com.documentum.fc.impl.util.RegistryPasswordUtils;
 import es.documentum.utilidades.Utilidades;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class PantallaDesencriptar extends javax.swing.JDialog {
 
@@ -12,7 +14,23 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
         super(parent, modal);
         ventanapadre = parent;
         initComponents();
+        try {
+            setIconImage(new ImageIcon(getLogo()).getImage());
+        } catch (NullPointerException e) {
+            Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
+        }
         setLocationRelativeTo(ventanapadre);
+    }
+
+    protected static Image getLogo() {
+        //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
+        java.net.URL imgURL = PantallaDesencriptar.class.getClassLoader().getResource("es/documentum/imagenes/encryption.png");
+
+        if (imgURL != null) {
+            return new ImageIcon(imgURL).getImage();
+        } else {
+            return null;
+        }
     }
 
     /**

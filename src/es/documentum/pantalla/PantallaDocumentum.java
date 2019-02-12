@@ -117,8 +117,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     }
 
     protected static Image getLogo() {
-        //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
-        java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/DCTM_32.png");
+        //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/storage.gif");
+        java.net.URL imgURL = PantallaStorage.class.getClassLoader().getResource("es/documentum/imagenes/DCTM_32.png");
 
         if (imgURL != null) {
             return new ImageIcon(imgURL).getImage();
@@ -775,6 +775,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionOpciones.setToolTipText("");
 
         opcionBuscar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/buscar_peq.png"))); // NOI18N
         opcionBuscar.setText("Buscar");
         opcionBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -784,6 +785,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionOpciones.add(opcionBuscar);
 
         opcionConectar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionConectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/conexion_peq.png"))); // NOI18N
         opcionConectar.setText("Conectar");
         opcionConectar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -794,6 +796,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionOpciones.add(jSeparator1);
 
         opcionSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+        opcionSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
         opcionSalir.setMnemonic('S');
         opcionSalir.setText("Salir");
         opcionSalir.setToolTipText("Volver a la pantalla anterior");
@@ -859,6 +862,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.setText("Utilidades");
 
         opcionDql.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionDql.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/DQL.png"))); // NOI18N
         opcionDql.setText("Editor de DQL");
         opcionDql.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -868,6 +872,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.add(opcionDql);
 
         opcionAPI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionAPI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/API.png"))); // NOI18N
         opcionAPI.setText("Ejecutar comando API");
         opcionAPI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -877,6 +882,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.add(opcionAPI);
         opcionUtilidades.add(Separador1);
 
+        opcionCrearCarpeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/carpeta_azul.png"))); // NOI18N
         opcionCrearCarpeta.setText("Crear carpeta en Repositorio");
         opcionCrearCarpeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -886,6 +892,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.add(opcionCrearCarpeta);
 
         opcionExportarCarpeta.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionExportarCarpeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/carpeta.png"))); // NOI18N
         opcionExportarCarpeta.setText("Exportar Carpeta de Documentum");
         opcionExportarCarpeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -895,6 +902,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.add(opcionExportarCarpeta);
 
         opcionImportarADocumentum.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionImportarADocumentum.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/document-import.png"))); // NOI18N
         opcionImportarADocumentum.setText("Importar a Documentum");
         opcionImportarADocumentum.setToolTipText("");
         opcionImportarADocumentum.addActionListener(new java.awt.event.ActionListener() {
@@ -904,6 +912,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionUtilidades.add(opcionImportarADocumentum);
 
+        opcionRelations.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/relation-peq.png"))); // NOI18N
         opcionRelations.setText("Relations de Documentos");
         opcionRelations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -912,6 +921,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionUtilidades.add(opcionRelations);
 
+        opcionTipos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/tipos.png"))); // NOI18N
         opcionTipos.setText("Tipos Documentales");
         opcionTipos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -920,6 +930,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionUtilidades.add(opcionTipos);
 
+        opcionStorage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/storage.png"))); // NOI18N
         opcionStorage.setText("Almacenamiento del repositorio");
         opcionStorage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -928,6 +939,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionUtilidades.add(opcionStorage);
 
+        opcionInfoRepo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/information.png"))); // NOI18N
         opcionInfoRepo.setText("Información del Repositorio");
         opcionInfoRepo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -937,6 +949,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.add(opcionInfoRepo);
         opcionUtilidades.add(Separador2);
 
+        opcionLeerLog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/doc.png"))); // NOI18N
         opcionLeerLog.setText("Leer fichero Log");
         opcionLeerLog.setActionCommand("LeerFicheroLog");
         opcionLeerLog.addActionListener(new java.awt.event.ActionListener() {
@@ -946,6 +959,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionUtilidades.add(opcionLeerLog);
 
+        opcionPasswordLDAP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/cambiar_password.png"))); // NOI18N
         opcionPasswordLDAP.setText("Cambiar Password LDAP");
         opcionPasswordLDAP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -955,6 +969,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.add(opcionPasswordLDAP);
         opcionUtilidades.add(Separador3);
 
+        opcionEstadisticasRepos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/estadisticas.png"))); // NOI18N
         opcionEstadisticasRepos.setText("Estadísticas de Repositorios");
         opcionEstadisticasRepos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -963,6 +978,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionUtilidades.add(opcionEstadisticasRepos);
 
+        opcionIndexador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/idx.png"))); // NOI18N
         opcionIndexador.setText("Indexador");
         opcionIndexador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -971,6 +987,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionUtilidades.add(opcionIndexador);
 
+        opcionJobs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/jobs.png"))); // NOI18N
         opcionJobs.setText("Jobs");
         opcionJobs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -981,6 +998,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.add(Separador4);
 
         opcionEjecutarComandoSSOO.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionEjecutarComandoSSOO.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/terminal_1.png"))); // NOI18N
         opcionEjecutarComandoSSOO.setText("Ejecutar comando de Sistema");
         opcionEjecutarComandoSSOO.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -990,6 +1008,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionUtilidades.add(opcionEjecutarComandoSSOO);
 
         opcionCripto.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        opcionCripto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/encryption.png"))); // NOI18N
         opcionCripto.setText("Encriptar / Desencriptar");
         opcionCripto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1002,6 +1021,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
         opcionAcercade.setText("Acerca de");
 
+        opcionManual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/manual.png"))); // NOI18N
         opcionManual.setText("Manual de la Aplicación");
         opcionManual.setToolTipText("Manual de la Aplicación");
         opcionManual.addActionListener(new java.awt.event.ActionListener() {
@@ -1011,6 +1031,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         opcionAcercade.add(opcionManual);
 
+        Acercade.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/documentum_logo_mini.gif"))); // NOI18N
         Acercade.setText("Acerca de ...");
         Acercade.setToolTipText("Acerca de DocumentumDFCs");
         Acercade.addActionListener(new java.awt.event.ActionListener() {
@@ -1513,6 +1534,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             PantallaPedirDatos pedirDatos = new PantallaPedirDatos(this, true);
             pedirDatos.setTitle("Datos para exportar carpeta de Documentum");
             pedirDatos.setAccion("ExportarCarpeta");
+            pedirDatos.setIcono("carpeta.png");
+            pedirDatos.asignarIconos();
             pedirDatos.setVisible(true);
             String carpeta = pedirDatos.getCarpeta();
             String ruta = pedirDatos.getRuta();
@@ -1884,6 +1907,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private void opcionCrearCarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCrearCarpetaActionPerformed
         PantallaPedirDatos pedir = new PantallaPedirDatos(this, true);
         pedir.setAccion("CrearCarpeta");
+        pedir.setIcono("carpeta_azul.png");
+        pedir.asignarIconos();
         pedir.setTitle("Crear carpeta en el Repositorio");
         pedir.setEtiquetaCarpeta("Nombre de la carpeta");
         pedir.setEtiquetaRuta("Ruta de origen de la carpeta");
@@ -2122,7 +2147,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     private void opcionInfoRepoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionInfoRepoActionPerformed
         if (botonBuscar.isEnabled()) {
-            PantallaInfoRepo pantallaInfoRepo = new PantallaInfoRepo(this, true);
+            PantallaInfoRepositorio pantallaInfoRepo = new PantallaInfoRepositorio(this, true);
             pantallaInfoRepo.setTitle("Información del repositorio " + repositorio);
             IDfSession lsesion = utilDocum.conectarDocumentum(usuario, clave, repositorio, docbroker, puerto);
             pantallaInfoRepo.setGsesion(lsesion);

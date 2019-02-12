@@ -223,6 +223,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+B"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/buscar_peq.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Buscar"/>
               </Properties>
               <Events>
@@ -233,6 +236,9 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+C"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/conexion_peq.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Conectar"/>
               </Properties>
@@ -246,6 +252,9 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="ESCAPE"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/salir_peq.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="83"/>
                 <Property name="text" type="java.lang.String" value="Salir"/>
@@ -320,6 +329,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+D"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/DQL.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Editor de DQL"/>
               </Properties>
               <Events>
@@ -331,6 +343,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+A"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/API.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Ejecutar comando API"/>
               </Properties>
               <Events>
@@ -341,6 +356,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionCrearCarpeta">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/carpeta_azul.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Crear carpeta en Repositorio"/>
               </Properties>
               <Events>
@@ -351,6 +369,9 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+E"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/carpeta.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Exportar Carpeta de Documentum"/>
               </Properties>
@@ -363,6 +384,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+I"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/document-import.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Importar a Documentum"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -372,6 +396,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionRelations">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/relation-peq.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Relations de Documentos"/>
               </Properties>
               <Events>
@@ -380,6 +407,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionTipos">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/tipos.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Tipos Documentales"/>
               </Properties>
               <Events>
@@ -388,6 +418,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionStorage">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/storage.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Almacenamiento del repositorio"/>
               </Properties>
               <Events>
@@ -396,6 +429,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionInfoRepo">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/information.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Informaci&#xf3;n del Repositorio"/>
               </Properties>
               <Events>
@@ -406,6 +442,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionLeerLog">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/doc.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Leer fichero Log"/>
                 <Property name="actionCommand" type="java.lang.String" value="LeerFicheroLog"/>
               </Properties>
@@ -415,6 +454,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionPasswordLDAP">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/cambiar_password.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Cambiar Password LDAP"/>
               </Properties>
               <Events>
@@ -425,6 +467,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionEstadisticasRepos">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/estadisticas.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Estad&#xed;sticas de Repositorios"/>
               </Properties>
               <Events>
@@ -433,6 +478,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionIndexador">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/idx.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Indexador"/>
               </Properties>
               <Events>
@@ -441,6 +489,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="opcionJobs">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/jobs.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Jobs"/>
               </Properties>
               <Events>
@@ -454,6 +505,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+S"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/terminal_1.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Ejecutar comando de Sistema"/>
               </Properties>
               <Events>
@@ -464,6 +518,9 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+J"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/encryption.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Encriptar / Desencriptar"/>
               </Properties>
@@ -480,6 +537,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="opcionManual">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/manual.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Manual de la Aplicaci&#xf3;n"/>
                 <Property name="toolTipText" type="java.lang.String" value="Manual de la Aplicaci&#xf3;n"/>
               </Properties>
@@ -489,6 +549,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="Acercade">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/es/documentum/imagenes/documentum_logo_mini.gif"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Acerca de ..."/>
                 <Property name="toolTipText" type="java.lang.String" value="Acerca de DocumentumDFCs"/>
               </Properties>
