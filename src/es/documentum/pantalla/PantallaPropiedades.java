@@ -60,7 +60,7 @@ public class PantallaPropiedades extends javax.swing.JDialog {
 
         popupEditar = new javax.swing.JPopupMenu();
         opcionCopiar = new javax.swing.JMenuItem();
-        botonAceptar = new javax.swing.JButton();
+        botonCerrar = new javax.swing.JButton();
         CajaPropiedades = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         labelCheckout = new javax.swing.JTextField();
@@ -106,12 +106,16 @@ public class PantallaPropiedades extends javax.swing.JDialog {
         setMaximumSize(new java.awt.Dimension(961, 576));
         setResizable(false);
 
-        botonAceptar.setMnemonic('A');
-        botonAceptar.setText("Aceptar");
-        botonAceptar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        botonAceptar.addActionListener(new java.awt.event.ActionListener() {
+        botonCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
+        botonCerrar.setText("Cerrar");
+        botonCerrar.setActionCommand("Cerrar");
+        botonCerrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        botonCerrar.setMaximumSize(new java.awt.Dimension(89, 28));
+        botonCerrar.setMinimumSize(new java.awt.Dimension(89, 28));
+        botonCerrar.setPreferredSize(new java.awt.Dimension(89, 28));
+        botonCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAceptarActionPerformed(evt);
+                botonCerrarActionPerformed(evt);
             }
         });
 
@@ -512,7 +516,7 @@ public class PantallaPropiedades extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(420, 420, 420)
-                .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -525,18 +529,16 @@ public class PantallaPropiedades extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(CajaPropiedades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(33, 33, 33)
-                .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
-
-        getAccessibleContext().setAccessibleName("Propiedades");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
+    private void botonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCerrarActionPerformed
         dispose();
-    }//GEN-LAST:event_botonAceptarActionPerformed
+    }//GEN-LAST:event_botonCerrarActionPerformed
 
     private void opcionCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarActionPerformed
         if (componente.equals("labelName")) {
@@ -814,7 +816,7 @@ public class PantallaPropiedades extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CajaPropiedades;
-    private javax.swing.JButton botonAceptar;
+    private javax.swing.JButton botonCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -852,7 +854,7 @@ public class PantallaPropiedades extends javax.swing.JDialog {
     private void asignarIcono() {
         java.net.URL imgURL = PantallaPropiedades.class.getClassLoader().getResource("es/documentum/imagenes/si.png");
         Icon imgicon = new ImageIcon(imgURL);
-        this.botonAceptar.setIcon(imgicon);
+        this.botonCerrar.setIcon(imgicon);
 
     }
 

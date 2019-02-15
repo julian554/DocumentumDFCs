@@ -5,7 +5,10 @@
         <group>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/utilidades/UtilidadesDocumentum.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/utilidades/Utilidades.java</file>
-            <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaInfoRepo.java</file>
+            <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaPedirDatos.java</file>
+            <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaApi.java</file>
+            <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaEjecutarComandoRemoto.java</file>
+            <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaConexion.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDql.java</file>
             <file>file:/D:/proyectos/DocumentumDFCs/src/es/documentum/pantalla/PantallaDocumentum.java</file>
         </group>

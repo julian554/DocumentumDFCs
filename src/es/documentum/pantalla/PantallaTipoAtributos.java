@@ -73,6 +73,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         setTitle("Tipos Documentales");
         setMinimumSize(new java.awt.Dimension(909, 651));
 
+        BotonCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
         BotonCerrar.setText("Cerrar");
         BotonCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
