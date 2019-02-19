@@ -438,13 +438,14 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                     mensajeActivo = "Parado";
                 }
 
-                cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><tr bgcolor=#f5f5f5><th>REPOSITORIO</th><th>ID</th>"
-                        + "<th>DOCBROKER</th><th>VERSION</th><th>ESTADO</th>");
-                cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + repo + " </font></td>");
-                cadenaHTML.append("<td><font color=\"black\" size=4> " + idrepositorio + " </font></td>");
-                cadenaHTML.append("<td><font color=\"black\" size=4> " + servidor + " </font></td>");
-                cadenaHTML.append("<td><font color=\"black\" size=4> " + version + " </font></td");
-                cadenaHTML.append("<td><font color=\"black\" size=4> " + mensajeActivo + " </font></td></tr></TABLE><br>");
+                cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><tr bgcolor=#f5f5f5><th>REPOSITORIO</th><th>R_OBJECT_ID</th>"
+                                + "<th>ID</th><th>DOCBROKER</th><th>VERSION</th><th>ESTADO</th>");
+                cadenaHTML.append("<tr bgcolor=\"white\"><td style=\"text-align:center\"><font color=\"black\" size=4> " + repo + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + r_object_id + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + idrepositorio + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + servidor + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + version + " </font></td");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + mensajeActivo + " </font></td></tr></TABLE><br>");
 
                 //  dql = "select app_server_name, app_server_uri from dm_server_config_r where r_object_id='" + r_object_id + "'";
                 dql = "select servlet_name as app_server_name, base_uri as app_server_uri from dm_sysprocess_config_r where server_config_id ='" + r_object_id + "'";
@@ -487,9 +488,9 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 estado = estado.trim().equalsIgnoreCase("ACTIVE") ? "Activo" : "No Activo";
                 String acs_url = col.getTypedObject().getString("acs_base_url");
                 cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + nombre_acs + " </font></td>");
-                cadenaHTML.append("<td><font color=\"black\" size=4> " + acs_servidor + " </font></td>");
-                cadenaHTML.append("<td><font color=\"black\" size=4> " + acs_v_mayor + "." + acs_v_menor + " </font></td>");
-                cadenaHTML.append("<td><font color=\"black\" size=4> " + estado + " </font></td");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + acs_servidor + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + acs_v_mayor + "." + acs_v_menor + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + estado + " </font></td");
                 cadenaHTML.append("<td><fontsize=4><a href=\"" + acs_url + "\">" + acs_url + "</a></font></td></tr>");
 //                cadenaHTML.append("<td><font color=\"blue\" size=4> " + acs_url + " </font></td></tr>");
             }
