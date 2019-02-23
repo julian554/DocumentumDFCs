@@ -2429,7 +2429,8 @@ public class UtilidadesDocumentum {
     /**
      * Recursive function for generating map of folder structure and documents
      *
-     * @param rootPath absolute path to repository cabinet or folder (i.e. "/Temp/myfolder")
+     * @param rootPath absolute path to repository cabinet or folder (i.e.
+     * "/Temp/myfolder")
      * @param indent string containing indentation tabs
      * @param session repository session
      *
@@ -3082,6 +3083,69 @@ public class UtilidadesDocumentum {
         return resultado;
     }
 
+    public String esActivoLDAP(String r_object_id, IDfSession sesion) {
+        String resultado = "No Activo";
+        try {
+            String repo = sesion.getDocbaseName();
+            String dql = "select count(*) as numero from dm_server_config where ldap_config_id='" + r_object_id + "' and object_name='" + repo + "'";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            String numero = "0";
+            while (col.next()) {
+                numero = col.getTypedObject().getString("numero");
+            }
+
+            if (col != null) {
+                col.close();
+            }
+
+            if (Integer.parseInt(numero) > 0) {
+                resultado = "Activo";
+            }
+
+        } catch (Exception ex) {
+
+        }
+        return resultado;
+    }
+
+    public String descripcionTipoLDAP(String tipo) {
+        String descripcion = "";
+        switch (tipo) {
+            case "netscape":
+                descripcion = "Sun One/Netscape/iPlanet Directory Server";
+                break;
+            case "microsoft":
+                descripcion = "Microsoft Active Directory";
+                break;
+            case "microsoftadam":
+                descripcion = "Microsoft ADAM";
+                break;
+            case "oracle":
+                descripcion = "Oracle Internet Directory Server";
+                break;
+            case "ibm":
+                descripcion = "IBM Directory Server";
+                break;
+        }
+        return descripcion;
+    }
+
+    public String descripcionImportacionLDAP(String modo) {
+        String descripcion = "";
+        switch (modo) {
+            case "both":
+                descripcion = "Users and groups";
+                break;
+            case "users":
+                descripcion = "Users only";
+                break;
+            case "groups":
+                descripcion = "Groups & member users";
+                break;
+        }
+        return descripcion;
+    }
+
     public String getDormancyStatusFromServerMap(IDfSession dfSession, String serverName) {
         String retval = null;
         if ((dfSession != null) && (serverName != null)) {
@@ -3108,4 +3172,5 @@ public class UtilidadesDocumentum {
         }
         return retval;
     }
+
 }

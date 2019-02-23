@@ -40,8 +40,6 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
         this.gsesion = gsesion;
     }
 
-    
-    
     public PantallaInfoRepositorio(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
         initComponents();
@@ -439,7 +437,7 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 }
 
                 cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><tr bgcolor=#f5f5f5><th>REPOSITORIO</th><th>R_OBJECT_ID</th>"
-                                + "<th>ID</th><th>DOCBROKER</th><th>VERSION</th><th>ESTADO</th>");
+                        + "<th>R_DOCBASE_ID</th><th>DOCBROKER</th><th>VERSION</th><th>ESTADO</th>");
                 cadenaHTML.append("<tr bgcolor=\"white\"><td style=\"text-align:center\"><font color=\"black\" size=4> " + repo + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + r_object_id + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + idrepositorio + " </font></td>");
@@ -490,14 +488,96 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + nombre_acs + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + acs_servidor + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + acs_v_mayor + "." + acs_v_menor + " </font></td>");
-                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + estado + " </font></td");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + estado + " </font></td>");
                 cadenaHTML.append("<td><fontsize=4><a href=\"" + acs_url + "\">" + acs_url + "</a></font></td></tr>");
 //                cadenaHTML.append("<td><font color=\"blue\" size=4> " + acs_url + " </font></td></tr>");
             }
             if (col != null) {
                 col.close();
             }
+
+            cadenaHTML.append("</TABLE><br><br>");
+
+            dql = "select a.object_name as agent_name, c.object_name as object_name, a.force_inactive as force_inactive,"
+                    + " b.ft_engine_id as connected_server_id  from dm_ftindex_agent_config a, dm_fulltext_index b, "
+                    + " dm_ftengine_config c  where a.index_name = b.index_name and b.ft_engine_id = c.r_object_id";
+            col = utilDocum.ejecutarDql(dql, gsesion);
+            cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>INDEXADOR</b></CAPTION>"
+                    + "<tr bgcolor=#f5f5f5><th>NOMBRE DEL AGENTE</th><th>NOMBRE DEL OBJETO</th><th>ID</th><th>URL</th></tr>");
+
+            while (col.next()) {
+                String agent_name = col.getTypedObject().getString("agent_name");
+                String object_name = col.getTypedObject().getString("object_name");
+                String force_inactive = col.getTypedObject().getString("force_inactive");
+                String connected_server_id = col.getTypedObject().getString("connected_server_id");
+                String dsearch_qrserver_host = "";
+                String dsearch_qrserver_port = "";
+                String dsearch_qrserver_protocol = "";
+
+                dql = "select param_name,param_value from dm_ftengine_config_r  where r_object_id='" + connected_server_id + "' and param_name in ('dsearch_qrserver_host','dsearch_qrserver_port','dsearch_qrserver_protocol')";
+                IDfCollection col_lineas = utilDocum.ejecutarDql(dql, gsesion);
+                while (col_lineas.next()) {
+                    String parametro = col_lineas.getTypedObject().getString("param_name");
+                    if (parametro.equalsIgnoreCase("dsearch_qrserver_host")) {
+                        dsearch_qrserver_host = col_lineas.getTypedObject().getString("param_value");;
+                    }
+                    if (parametro.equalsIgnoreCase("dsearch_qrserver_port")) {
+                        dsearch_qrserver_port = col_lineas.getTypedObject().getString("param_value");;
+                    }
+                    if (parametro.equalsIgnoreCase("dsearch_qrserver_protocol")) {
+                        dsearch_qrserver_protocol = col_lineas.getTypedObject().getString("param_value");;
+                    }
+                }
+                String url = dsearch_qrserver_protocol + "://" + dsearch_qrserver_host + ":" + dsearch_qrserver_port + "/dsearchadmin";
+                col_lineas.close();
+                cadenaHTML.append("<tr bgcolor=\"white\"><td style=\"text-align:center\"><font color=\"black\" size=4> " + agent_name + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + object_name + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + connected_server_id + " </font></td>");
+                cadenaHTML.append("<td><fontsize=4><a href=\"" + url + "\">" + url + "</a></font></td></tr>");
+
+            }
+
+            if (col != null) {
+                col.close();
+            }
+
+            cadenaHTML.append("</TABLE><br><br>");
+
+            dql = "select r_object_id,object_name,ldap_host,port_number,ssl_mode,ssl_port,a_application_type,import_mode,first_time_sync from dm_ldap_config";
+            col = utilDocum.ejecutarDql(dql, gsesion);
+
+            cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>SINCRONIZACION CON LDAP</b></CAPTION>"
+                    + "<tr bgcolor=#f5f5f5><th>NOMBRE DEL OBJETO</th><th>ID</th><th>ESTADO</th><th>SERVIDOR</th><th>PUERTO</th>"
+                    + "<th>TIPO DE DIRECTORIO</th><th>MODO DE IMPORTACION</th></tr>");
+
+            while (col.next()) {
+                String r_object_id = col.getTypedObject().getString("r_object_id");
+                String estado = utilDocum.esActivoLDAP(r_object_id, gsesion);  //:"NO";
+                String nombre = col.getTypedObject().getString("object_name");
+                String servidor = col.getTypedObject().getString("ldap_host");
+                String puerto = col.getTypedObject().getString("port_number");
+                String puerto_ssl = col.getTypedObject().getString("ssl_port");
+                puerto = (puerto_ssl.isEmpty() || puerto_ssl.equals("0")) ? puerto : puerto_ssl;
+                String a_application_type = col.getTypedObject().getString("a_application_type");
+                String tipo = utilDocum.descripcionTipoLDAP(a_application_type);
+                String import_mode = col.getTypedObject().getString("import_mode");
+                String modo=utilDocum.descripcionImportacionLDAP(import_mode);                
+
+                cadenaHTML.append("<tr bgcolor=\"white\"><td style=\"text-align:center\"><font color=\"black\" size=4> " + nombre + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + r_object_id + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + estado + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + servidor + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + puerto + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + tipo + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + modo + " </font></td></tr>");
+            }
+
+            if (col != null) {
+                col.close();
+            }
+
             cadenaHTML.append("</TABLE><br>");
+
             textoInfo.setText(cadenaHTML.toString());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
