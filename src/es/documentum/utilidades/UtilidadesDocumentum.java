@@ -3087,7 +3087,7 @@ public class UtilidadesDocumentum {
         String resultado = "No Activo";
         try {
             String repo = sesion.getDocbaseName();
-            String dql = "select count(*) as numero from dm_server_config where ldap_config_id='" + r_object_id + "' and object_name='" + repo + "'";
+            String dql = "select count(*) as numero from dm_server_config where ldap_config_id='" + r_object_id + "'"; // and object_name='" + repo + "'";
             IDfCollection col = ejecutarDql(dql, sesion);
             String numero = "0";
             while (col.next()) {
@@ -3100,8 +3100,22 @@ public class UtilidadesDocumentum {
 
             if (Integer.parseInt(numero) > 0) {
                 resultado = "Activo";
-            }
+            } else {
+                dql = "select count(*) as numero from dm_server_config_r where extra_directory_config_id='" + r_object_id + "'";
+                col = ejecutarDql(dql, sesion);
+                numero = "0";
+                while (col.next()) {
+                    numero = col.getTypedObject().getString("numero");
+                }
 
+                if (col != null) {
+                    col.close();
+                }
+
+                if (Integer.parseInt(numero) > 0) {
+                    resultado = "Activo";
+                }
+            }
         } catch (Exception ex) {
 
         }
