@@ -1,9 +1,6 @@
 package es.documentum.pantalla;
 
 import es.documentum.utilidades.Utilidades;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JTextArea;
 
 public class PantallaMensaje extends javax.swing.JDialog {
 
