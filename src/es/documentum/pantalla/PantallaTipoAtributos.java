@@ -130,6 +130,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         opcionOpciones.setName("opcionOpciones"); // NOI18N
 
         opcionCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+        opcionCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
         opcionCerrar.setText("Cerrar");
         opcionCerrar.setToolTipText("Cerrar la Aplicación");
         opcionCerrar.setActionCommand("");

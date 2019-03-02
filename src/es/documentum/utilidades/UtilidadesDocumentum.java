@@ -20,9 +20,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class UtilidadesDocumentum {
@@ -1909,20 +1916,35 @@ public class UtilidadesDocumentum {
     public ArrayList dameJobs(IDfSession sesion) {
         ArrayList lista = new ArrayList();
         try {
-            String dql = "select object_name,subject,title,a_last_completion,is_inactive,a_current_status,r_object_id from dm_job_sp order by object_name";
+            String dql = "select object_name,subject,title,a_last_completion,is_inactive,a_current_status,r_object_id,a_next_invocation from dm_job_sp order by object_name";
             IDfCollection myColl = ejecutarDql(dql, sesion);
             if (myColl == null) {
                 return lista;
             }
+            DateFormat formatofecha_origen = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            DateFormat formatofecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             while (myColl.next()) {
                 ArrayList datos = new ArrayList();
                 datos.add(myColl.getString("object_name"));
                 datos.add(myColl.getString("subject"));
                 datos.add(myColl.getString("title"));
-                datos.add(myColl.getString("a_last_completion").equals("nulldate") ? "" : myColl.getString("a_last_completion"));
+                String ultima_ejecucion = myColl.getString("a_last_completion").equalsIgnoreCase("nulldate") ? "" : myColl.getString("a_last_completion");
+                try {
+                    Date fecha_prox_invo = formatofecha_origen.parse(ultima_ejecucion);
+                    ultima_ejecucion = formatofecha.format(fecha_prox_invo);
+                } catch (Exception ex) {
+                }
+                datos.add(ultima_ejecucion);
                 datos.add(myColl.getString("is_inactive").equals("0") ? "Activo" : "Inactivo");
                 datos.add(myColl.getString("a_current_status"));
                 datos.add(myColl.getString("r_object_id"));
+                String prox_invo = myColl.getString("a_next_invocation").equalsIgnoreCase("nulldate") ? "" : myColl.getString("a_next_invocation");
+                try {
+                    Date fecha_prox_invo = formatofecha_origen.parse(prox_invo);
+                    prox_invo = formatofecha.format(fecha_prox_invo);
+                } catch (Exception ex) {
+                }
+                datos.add(prox_invo);
                 lista.add(datos);
             }
             myColl.close();
@@ -3186,5 +3208,6 @@ public class UtilidadesDocumentum {
         }
         return retval;
     }
+
 
 }

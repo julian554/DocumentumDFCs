@@ -400,6 +400,7 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
     private class HTMLListener implements HyperlinkListener {
 
         public void hyperlinkUpdate(HyperlinkEvent e) {
+
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 try {
 //                    textoInfo.setPage(e.getURL());
@@ -485,11 +486,16 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 String estado = col.getTypedObject().getString("dormancy_status");
                 estado = estado.trim().equalsIgnoreCase("ACTIVE") ? "Activo" : "No Activo";
                 String acs_url = col.getTypedObject().getString("acs_base_url");
+
                 cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + nombre_acs + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + acs_servidor + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + acs_v_mayor + "." + acs_v_menor + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + estado + " </font></td>");
-                cadenaHTML.append("<td><fontsize=4><a href=\"" + acs_url + "\">" + acs_url + "</a></font></td></tr>");
+                if (estado.equals("No Activo")) {
+                    cadenaHTML.append("<td></td></tr>");;
+                } else {
+                    cadenaHTML.append("<td><fontsize=4><a href=\"" + acs_url + "\">" + acs_url + "</a></font></td></tr>");
+                }
 //                cadenaHTML.append("<td><font color=\"blue\" size=4> " + acs_url + " </font></td></tr>");
             }
             if (col != null) {
@@ -561,7 +567,7 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 String a_application_type = col.getTypedObject().getString("a_application_type");
                 String tipo = utilDocum.descripcionTipoLDAP(a_application_type);
                 String import_mode = col.getTypedObject().getString("import_mode");
-                String modo=utilDocum.descripcionImportacionLDAP(import_mode);                
+                String modo = utilDocum.descripcionImportacionLDAP(import_mode);
 
                 cadenaHTML.append("<tr bgcolor=\"white\"><td style=\"text-align:center\"><font color=\"black\" size=4> " + nombre + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + r_object_id + " </font></td>");

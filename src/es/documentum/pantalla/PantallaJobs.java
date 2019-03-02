@@ -345,8 +345,8 @@ public class PantallaJobs extends javax.swing.JFrame {
                     return;
                 }
 
-                Object[][] datos = new Object[jobs.size()][7];
-                Object[] cabecera = {"Nombre", "Descripción", "Tipo", "Fecha modificación", "Activo", "Resultado", "ID"};
+                Object[][] datos = new Object[jobs.size()][8];
+                Object[] cabecera = {"Nombre", "Descripción", "Tipo", "Ultima ejecución", "Activo", "Resultado", "ID","Próxima ejecución"};
 
                 for (int n = 0; n < jobs.size(); n++) {
                     ArrayList valores = (ArrayList) jobs.get(n);
@@ -357,6 +357,7 @@ public class PantallaJobs extends javax.swing.JFrame {
                     datos[n][4] = valores.get(4);
                     datos[n][5] = valores.get(5);
                     datos[n][6] = valores.get(6);
+                    datos[n][7] = valores.get(7);
                     barradocum.labelMensa.setText((String) valores.get(0));
                 }
 

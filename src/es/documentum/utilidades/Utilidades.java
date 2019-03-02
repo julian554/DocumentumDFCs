@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipInputStream;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreeModel;
@@ -1088,7 +1089,7 @@ public class Utilidades {
             out.close();
 
         } catch (Exception ex) {
-            escribeLog("exportarArrayListAExcel - Error: "+ex.getMessage());
+            escribeLog("exportarArrayListAExcel - Error: " + ex.getMessage());
         }
 
     }
@@ -1217,13 +1218,41 @@ public class Utilidades {
         return el;
     }
 
-    public Boolean buscarEnLista(ArrayList lista, String elemento) {
+    public Boolean estaEnLista(ArrayList lista, String elemento) {
         for (int x = 0; x < lista.size(); x++) {
             if (lista.get(x).equals(elemento)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public ArrayList buscarEnLista(ArrayList comboHistorial, String texto) {
+        ArrayList listaResultado = new ArrayList();
+
+        int size = comboHistorial.size();
+        for (int i = 0; i < size; i++) {
+            String elemento = comboHistorial.get(i).toString();
+            if (elemento.toLowerCase().contains(texto.toLowerCase())) {
+                if (!estaEnLista(listaResultado, elemento)) {
+                    listaResultado.add(elemento);
+                }
+            }
+        }
+        return listaResultado;
+    }
+
+    public int buscarEnCombo(DefaultComboBoxModel modelo, String cadena) {
+        if (modelo != null) {
+            for (int i = 0; i < modelo.getSize(); i++) {
+                if (cadena.equalsIgnoreCase(modelo.getElementAt(i).toString().trim())) {
+                    return i;
+                }
+            }
+        } else {
+            return 0;
+        }
+        return -1;
     }
 
     public static void main(String args[]) {

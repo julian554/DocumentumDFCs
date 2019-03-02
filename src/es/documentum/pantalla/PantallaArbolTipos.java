@@ -707,7 +707,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
             System.out.println(node.toString());
-            if (node.toString().equalsIgnoreCase(s) && !util.buscarEnLista(busqueda, node.toString())) {
+            if (node.toString().equalsIgnoreCase(s) && !util.estaEnLista(busqueda, node.toString())) {
                 busqueda.add(node.toString());
                 return new TreePath(node.getPath());
             }
@@ -717,7 +717,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
             System.out.println(node.toString());
-            if (node.toString().toLowerCase().startsWith(s.toLowerCase()) && !util.buscarEnLista(busqueda, node.toString())) {
+            if (node.toString().toLowerCase().startsWith(s.toLowerCase()) && !util.estaEnLista(busqueda, node.toString())) {
                 busqueda.add(node.toString());
                 return new TreePath(node.getPath());
             }
