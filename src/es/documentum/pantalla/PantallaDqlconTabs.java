@@ -814,6 +814,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
     private void comboHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboHistorialActionPerformed
         String valor = (String) comboHistorial.getSelectedItem();
+        valor = valor.trim();
         if (textoDql.getText().isEmpty() || !textoDql.getText().equals(valor)) {
             if (!valor.isEmpty()) {
                 if (checkMultiplesDqls.isSelected()) {
@@ -838,13 +839,13 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
                     } else {
                         if (textoDql.getText().isEmpty()) {
-                            textoDql.append(valor.endsWith(";") ? valor.trim() : valor.trim() + ";");
+                            textoDql.append(valor.endsWith(";") ? valor : valor + ";");
                         } else {
-                            textoDql.append(valor.endsWith(";") ? "\n" + valor.trim() : "\n" + valor.trim() + ";");
+                            textoDql.append(valor.endsWith(";") ? "\n" + valor : "\n" + valor + ";");
                         }
                     }
                 } else {
-                    textoDql.setText(valor.trim());
+                    textoDql.setText(valor);
                 }
             }
         }
