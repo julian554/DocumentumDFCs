@@ -1419,9 +1419,13 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     private void opcionDqlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionDqlActionPerformed
         if (botonBuscar.isEnabled()) {
-            PantallaDql pantallaDql = new PantallaDql(this, true);
+            PantallaDqlconTabs pantallaDql = new PantallaDqlconTabs(this, true);
             pantallaDql.setTitle("Consultas a Documentum por DQL  -  " + EtiquetaDocbroker.getText() + " / " + EtiquetaRepositorio.getText());
             pantallaDql.setVisible(true);
+//            PantallaDql pantallaDql = new PantallaDql(this, true);
+//            pantallaDql.setTitle("Consultas a Documentum por DQL  -  " + EtiquetaDocbroker.getText() + " / " + EtiquetaRepositorio.getText());
+//            pantallaDql.setVisible(true);            
+            
         } else {
             EtiquetaEstado.setText("Debe seleccionar antes una conexión.");
             botonConectar.requestFocus();
