@@ -55,6 +55,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     ArrayList listaCombo = new ArrayList();
     JScrollPane[] scroll;
     JTable[] tabla;
+    int DQLsExcel = 1;
 
     public PantallaDqlconTabs(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
@@ -77,6 +78,8 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         cargarComboHistorial();
         TextoNumReg.setText("0");
+        checkExportarExcel.setEnabled(false);
+        TextoNumLineasExcel.setEnabled(false);
         StyleConstants.setForeground(AtributoRojo, Color.RED);
         StyleConstants.setForeground(AtributoAzul, Color.BLUE);
         StyleConstants.setForeground(AtributoNegro, Color.BLACK);
@@ -523,6 +526,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                     StyledDocument textoLogDQLMultiple = textoMultiplesLogs.getStyledDocument();
                     int contdqls = 0;
                     int tablasResultado = 1;
+                    String repo = gsesion.getDocbaseName();
                     while (misDql.hasMoreElements()) {
                         contdqls++;
                         String dql = misDql.nextToken();
@@ -547,15 +551,15 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                             textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), dql + "  -  ", AtributoNegro);
                             textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), utildocum.dameError(), AtributoRojo);
                         } else {
-                            String queEs = "encontrado(s)";
+                            String queEs = "encontrado(s) en " + repo;
                             if (dql.toLowerCase().trim().startsWith("update")) {
-                                queEs = "actualizado(s)";
+                                queEs = "actualizado(s) en " + repo;
                             }
                             if (dql.toLowerCase().trim().startsWith("insert")) {
-                                queEs = "insertado(s)";
+                                queEs = "insertado(s) en " + repo;
                             }
                             if (dql.toLowerCase().trim().startsWith("delete")) {
-                                queEs = "borrado(s)";
+                                queEs = "borrado(s) en " + repo;
                             }
 
                             Long cont = 0L;
@@ -643,14 +647,15 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                                     rutaDqls = ventanapadre.dirbase + util.separador() + "DQLS" + util.separador();
                                     util.crearDirectorio(rutaDqls);
                                     barradocum.setLabelMensa("Generando Excel - " + dql);
-                                    util.exportarArrayListAExcel(lista, rutaDqls + "DQL - " + col.getObjectSession().getSessionConfig().getId("session_id") + "-" + contdqls + ".xlsx", "DQL - " + col.getObjectSession().getSessionConfig().getId("session_id") + "-" + contdqls, dql);
+                                    util.exportarArrayListAExcel(lista, rutaDqls + "DQL - " + repo + " - " + col.getObjectSession().getSessionConfig().getId("session_id") + "-" + DQLsExcel + ".xlsx", "DQL - " + col.getObjectSession().getSessionConfig().getId("session_id") + "-" + DQLsExcel, dql);
+                                    DQLsExcel++;
                                 }
                             }
 
                             textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), dql.trim(), AtributoNegro);
                             textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), "   -  " + cont + " registro(s) " + queEs, AtributoAzul);
                             if (cont < limitelineas && checkExportarExcel.isSelected()) {
-                                textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), "\nGenerado fichero excel  " + rutaDqls + "DQL - " + col.getObjectSession().getSessionConfig().getId("session_id") + "-" + contdqls + ".xlsx", AtributoNegro);
+                                textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), "\nGenerado fichero excel  " + rutaDqls + "DQL - " + repo + " - " + col.getObjectSession().getSessionConfig().getId("session_id") + "-" + (DQLsExcel - 1) + ".xlsx", AtributoNegro);
                             }
 
                         }
@@ -794,9 +799,17 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
     private void checkMultiplesDqlsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMultiplesDqlsActionPerformed
         if (checkMultiplesDqls.isSelected()) {
+            checkExportarExcel.setEnabled(true);
+            TextoNumLineasExcel.setEnabled(true);
             checkDameSQL.setEnabled(false);
         } else {
+            checkExportarExcel.setEnabled(false);
+            TextoNumLineasExcel.setEnabled(false);
             checkDameSQL.setEnabled(true);
+            int numtab = panelTabResultados.getTabCount();
+            for (int t = numtab - 1; t > 0; t--) {
+                panelTabResultados.remove(t);
+            }
         }
     }//GEN-LAST:event_checkMultiplesDqlsActionPerformed
 
@@ -839,13 +852,13 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
                     } else {
                         if (textoDql.getText().isEmpty()) {
-                            textoDql.append(valor.endsWith(";") ? valor : valor + ";");
+                            textoDql.append(valor.endsWith(";") ? valor.trim() : valor.trim() + ";");
                         } else {
-                            textoDql.append(valor.endsWith(";") ? "\n" + valor : "\n" + valor + ";");
+                            textoDql.append(valor.endsWith(";") ? "\n" + valor.trim() : "\n" + valor.trim() + ";");
                         }
                     }
                 } else {
-                    textoDql.setText(valor);
+                    textoDql.setText(valor.trim());
                 }
             }
         }

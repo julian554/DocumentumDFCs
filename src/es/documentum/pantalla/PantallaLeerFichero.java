@@ -106,27 +106,19 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(695, Short.MAX_VALUE)
                 .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 802, Short.MAX_VALUE)
-                    .addContainerGap()))
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(479, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                .addGap(13, 13, 13)
                 .addComponent(botonCerrar)
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
-                    .addGap(49, 49, 49)))
         );
 
         pack();
@@ -241,14 +233,14 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
     }
 
     public static void asignariconos() {
-        java.net.URL imgURL = PantallaLeerFichero.class.getClassLoader().getResource("es/documentum/imagenes/salir.png");
-        Icon imgicon = new ImageIcon(imgURL);
-        botonCerrar.setIcon(imgicon);
+//        java.net.URL imgURL = PantallaLeerFichero.class.getClassLoader().getResource("es/documentum/imagenes/salir.png");
+//        Icon imgicon = new ImageIcon(imgURL);
+//        botonCerrar.setIcon(imgicon);
     }
 
     protected static Image getLogo() {
         //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
-        java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/DCTM_32.png");
+        java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/doc.png");
 
         if (imgURL != null) {
             return new ImageIcon(imgURL).getImage();
