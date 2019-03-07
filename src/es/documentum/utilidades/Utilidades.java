@@ -1049,7 +1049,21 @@ public class Utilidades {
             int numcolumnas = primerafila.getAttrCount();
 
             Workbook wb = new XSSFWorkbook(); //Excell workbook
+            CellStyle estiloCabecera = wb.createCellStyle();//Create estiloCabecera
+            Font font = wb.createFont();//Create font
+            font.setBold(true);//Make font bold
+            estiloCabecera.setFont(font);//set it to bold
+            estiloCabecera.setAlignment(HorizontalAlignment.CENTER);
+            estiloCabecera.setBorderBottom(BorderStyle.THIN);
+            estiloCabecera.setBorderLeft(BorderStyle.THIN);
+            estiloCabecera.setBorderRight(BorderStyle.THIN);
+            estiloCabecera.setBorderTop(BorderStyle.THIN);
 
+            CellStyle estiloTodo = wb.createCellStyle();
+            estiloTodo.setBorderBottom(BorderStyle.THIN);
+            estiloTodo.setBorderLeft(BorderStyle.THIN);
+            estiloTodo.setBorderRight(BorderStyle.THIN);
+            estiloTodo.setBorderTop(BorderStyle.THIN);
             Sheet sheet = (Sheet) wb.createSheet(); //WorkSheet
             wb.setSheetName(0, hoja);
             Row row = sheet.createRow(2); //Row created at line 3
@@ -1058,6 +1072,7 @@ public class Utilidades {
             for (int i = 0; i < numcolumnas; i++) { //For each column
                 String nombrecol = primerafila.getAttr(i).getName();;
                 headerRow.createCell(i).setCellValue(nombrecol);//Write column name
+                headerRow.getCell(i).setCellStyle(estiloCabecera);
             }
 
             for (int rows = 0; rows < numfilas; rows++) { //For each table row
@@ -1067,6 +1082,7 @@ public class Utilidades {
                     IDfValue attrValue = fila.getValue(attr.getName());
                     String valor = getDfObjectValue(attrValue) == null ? "" : getDfObjectValue(attrValue).toString();
                     row.createCell(cols).setCellValue(valor); //Write value
+                    row.getCell(cols).setCellStyle(estiloTodo);
                 }
 
                 //Set the row to the next one in the sequence
@@ -1103,11 +1119,27 @@ public class Utilidades {
             wb.setSheetName(0, hoja);
             Row row = sheet.createRow(2); //Row created at line 3
             TableModel model = table.getModel(); //Table model
+            CellStyle estiloCabecera = wb.createCellStyle();//Create estiloCabecera
+            Font font = wb.createFont();//Create font
+            font.setBold(true);//Make font bold
+            estiloCabecera.setFont(font);//set it to bold
+            estiloCabecera.setAlignment(HorizontalAlignment.CENTER);
+            estiloCabecera.setBorderBottom(BorderStyle.THIN);
+            estiloCabecera.setBorderLeft(BorderStyle.THIN);
+            estiloCabecera.setBorderRight(BorderStyle.THIN);
+            estiloCabecera.setBorderTop(BorderStyle.THIN);
+
+            CellStyle estiloTodo = wb.createCellStyle();
+            estiloTodo.setBorderBottom(BorderStyle.THIN);
+            estiloTodo.setBorderLeft(BorderStyle.THIN);
+            estiloTodo.setBorderRight(BorderStyle.THIN);
+            estiloTodo.setBorderTop(BorderStyle.THIN);
 
             Row headerRow = sheet.createRow(0); //Create row at line 0
             for (int headings = 0; headings < model.getColumnCount(); headings++) { //For each column
                 String nombrecol = model.getColumnName(headings) == null ? "" : model.getColumnName(headings);
                 headerRow.createCell(headings).setCellValue(nombrecol);//Write column name
+                headerRow.getCell(headings).setCellStyle(estiloCabecera);
             }
 
             int numrows = model.getRowCount();
@@ -1116,6 +1148,7 @@ public class Utilidades {
                 for (int cols = 0; cols < numcols; cols++) { //For each table column
                     String valor = model.getValueAt(rows, cols) == null ? "" : model.getValueAt(rows, cols).toString();
                     row.createCell(cols).setCellValue(valor); //Write value
+                    row.getCell(cols).setCellStyle(estiloTodo);
                 }
 
                 //Set the row to the next one in the sequence
