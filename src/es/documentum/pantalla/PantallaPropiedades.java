@@ -46,7 +46,7 @@ public class PantallaPropiedades extends javax.swing.JDialog {
         asignarIcono();
         util = pdocum.util;
         docum = pdocum.utilDocum;
-        //      ConsultarValores(r_object_id);
+        //      consultarValores(r_object_id);
     }
 
     /**
@@ -869,10 +869,10 @@ public class PantallaPropiedades extends javax.swing.JDialog {
         }
     }
 
-    public void ConsultarValores(String r_object_id) {
+    public void consultarValores(String r_object_id) {
         this.setTitle("Propiedades del objeto - " + r_object_id);
         ArrayList<AtributosDocumentum> atributos = new ArrayList<>();
-        atributos = docum.DameTodosAtributos(r_object_id);
+        atributos = docum.dameTodosAtributos(r_object_id);
         labelR_object_id.setText(r_object_id);
         for (int n = 0; n < atributos.size(); n++) {
             String valor = atributos.get(n).getNombre().toLowerCase();

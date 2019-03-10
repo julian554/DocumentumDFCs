@@ -51,14 +51,14 @@
         </MenuItem>
       </SubComponents>
     </Container>
-    <Menu class="javax.swing.JMenuBar" name="MenuOpciones">
+    <Menu class="javax.swing.JMenuBar" name="menuOpciones">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="OpcionRefresco">
+        <Menu class="javax.swing.JMenu" name="opcionRefresco">
           <Properties>
             <Property name="text" type="java.lang.String" value="Opciones"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="OpcionSalir">
+            <MenuItem class="javax.swing.JMenuItem" name="opcionSalir">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/es/documentum/imagenes/salir_peq.png"/>
@@ -66,7 +66,7 @@
                 <Property name="text" type="java.lang.String" value="Salir"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OpcionSalirActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionSalirActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -79,7 +79,7 @@
     <Property name="title" type="java.lang.String" value="Indexadores de Documentum"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="MenuOpciones"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="menuOpciones"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>

@@ -68,7 +68,7 @@ public class PantallaRelations extends javax.swing.JFrame {
     }
 
     public void setTextoServidor(String servidor) {
-        TextoId.setText(servidor);
+        textoId.setText(servidor);
     }
 
     public PantallaRelations(PantallaDocumentum parent, boolean modal) {
@@ -114,11 +114,11 @@ public class PantallaRelations extends javax.swing.JFrame {
         botonCerrar = new javax.swing.JButton();
         botonBuscar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        ListaHijo = new javax.swing.JList<>();
+        listaHijo = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
-        TextoId = new javax.swing.JTextField();
+        textoId = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        ListaPadre = new javax.swing.JList<>();
+        listaPadre = new javax.swing.JList<>();
         etiquetaTipoRelation = new javax.swing.JLabel();
         etiquetaIdRelation = new javax.swing.JLabel();
         etiquetaNombreRelation = new javax.swing.JLabel();
@@ -127,8 +127,8 @@ public class PantallaRelations extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         botonAnterior = new javax.swing.JButton();
         botonSiguiente = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        Menu = new javax.swing.JMenu();
+        menuPrincipal = new javax.swing.JMenuBar();
+        menuArchivo = new javax.swing.JMenu();
         opcionCerrar = new javax.swing.JMenuItem();
         opcionApariencia = new javax.swing.JMenu();
         opcionRBMetal = new javax.swing.JRadioButtonMenuItem();
@@ -184,38 +184,38 @@ public class PantallaRelations extends javax.swing.JFrame {
             }
         });
 
-        ListaHijo.setFont(new java.awt.Font("Monospaced", 1, 12)); // NOI18N
-        ListaHijo.setForeground(new java.awt.Color(0, 51, 102));
-        ListaHijo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        ListaHijo.addMouseListener(new java.awt.event.MouseAdapter() {
+        listaHijo.setFont(new java.awt.Font("Monospaced", 1, 12)); // NOI18N
+        listaHijo.setForeground(new java.awt.Color(0, 51, 102));
+        listaHijo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listaHijo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                ListaHijoMousePressed(evt);
+                listaHijoMousePressed(evt);
             }
         });
-        jScrollPane2.setViewportView(ListaHijo);
+        jScrollPane2.setViewportView(listaHijo);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("r_object_id");
 
-        TextoId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        TextoId.setForeground(new java.awt.Color(0, 51, 153));
-        TextoId.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
+        textoId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        textoId.setForeground(new java.awt.Color(0, 51, 153));
+        textoId.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                TextoIdInputMethodTextChanged(evt);
+                textoIdInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
-        ListaPadre.setFont(new java.awt.Font("Monospaced", 1, 12)); // NOI18N
-        ListaPadre.setForeground(new java.awt.Color(0, 51, 102));
-        ListaPadre.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        ListaPadre.addMouseListener(new java.awt.event.MouseAdapter() {
+        listaPadre.setFont(new java.awt.Font("Monospaced", 1, 12)); // NOI18N
+        listaPadre.setForeground(new java.awt.Color(0, 51, 102));
+        listaPadre.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listaPadre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                ListaPadreMousePressed(evt);
+                listaPadreMousePressed(evt);
             }
         });
-        jScrollPane3.setViewportView(ListaPadre);
+        jScrollPane3.setViewportView(listaPadre);
 
         etiquetaTipoRelation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         etiquetaTipoRelation.setForeground(new java.awt.Color(0, 0, 102));
@@ -249,8 +249,8 @@ public class PantallaRelations extends javax.swing.JFrame {
             }
         });
 
-        Menu.setMnemonic('A');
-        Menu.setText("Archivo");
+        menuArchivo.setMnemonic('A');
+        menuArchivo.setText("Archivo");
 
         opcionCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
         opcionCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
@@ -260,9 +260,9 @@ public class PantallaRelations extends javax.swing.JFrame {
                 opcionCerrarActionPerformed(evt);
             }
         });
-        Menu.add(opcionCerrar);
+        menuArchivo.add(opcionCerrar);
 
-        jMenuBar1.add(Menu);
+        menuPrincipal.add(menuArchivo);
 
         opcionApariencia.setMnemonic('A');
         opcionApariencia.setText("Apariencia");
@@ -312,9 +312,9 @@ public class PantallaRelations extends javax.swing.JFrame {
         });
         opcionApariencia.add(opcionRBPorDefecto);
 
-        jMenuBar1.add(opcionApariencia);
+        menuPrincipal.add(opcionApariencia);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -326,7 +326,7 @@ public class PantallaRelations extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TextoId, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textoId, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -356,7 +356,7 @@ public class PantallaRelations extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TextoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -397,39 +397,39 @@ public class PantallaRelations extends javax.swing.JFrame {
     }//GEN-LAST:event_botonCerrarActionPerformed
 
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
-        String id = TextoId.getText();
+        String id = textoId.getText();
         if (!id.isEmpty() && id.length() == 16 && id.startsWith("09")) {
-            LimpiarTexto();
-            CargarDatos(id);
+            limpiarTexto();
+            cargarDatos(id);
         }
     }//GEN-LAST:event_botonBuscarActionPerformed
 
 
     private void opcionCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarActionPerformed
         if (componente.equals("ListaHijo")) {
-            if (ListaHijo.getModel().getElementAt(ListaHijo.getSelectedIndex()) != null) {
-                Utilidades.copiarTextoPortapapeles(ListaHijo.getModel().getElementAt(ListaHijo.getSelectedIndex()));
+            if (listaHijo.getModel().getElementAt(listaHijo.getSelectedIndex()) != null) {
+                Utilidades.copiarTextoPortapapeles(listaHijo.getModel().getElementAt(listaHijo.getSelectedIndex()));
             }
         }
 
         if (componente.equals("ListaPadre")) {
-            if (ListaPadre.getModel().getElementAt(ListaPadre.getSelectedIndex()) != null) {
-                Utilidades.copiarTextoPortapapeles(ListaPadre.getModel().getElementAt(ListaPadre.getSelectedIndex()));
+            if (listaPadre.getModel().getElementAt(listaPadre.getSelectedIndex()) != null) {
+                Utilidades.copiarTextoPortapapeles(listaPadre.getModel().getElementAt(listaPadre.getSelectedIndex()));
             }
         }
 
         if (componente.equals("TextoId")) {
-            if (TextoId.getSelectedText() == null) {
-                Utilidades.copiarTextoPortapapeles(TextoId.getText());
+            if (textoId.getSelectedText() == null) {
+                Utilidades.copiarTextoPortapapeles(textoId.getText());
             } else {
-                Utilidades.copiarTextoPortapapeles(TextoId.getSelectedText());
+                Utilidades.copiarTextoPortapapeles(textoId.getSelectedText());
             }
         }
     }//GEN-LAST:event_opcionCopiarActionPerformed
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
         if (componente.equals("TextoId")) {
-            TextoId.setText(Utilidades.pegarTextoPortapapeles());
+            textoId.setText(Utilidades.pegarTextoPortapapeles());
         }
     }//GEN-LAST:event_opcionPegarActionPerformed
 
@@ -532,45 +532,45 @@ public class PantallaRelations extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionRBPorDefectoActionPerformed
 
-    private void ListaHijoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaHijoMousePressed
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && ListaHijo.getModel().getSize() > 0) {
+    private void listaHijoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaHijoMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && listaHijo.getModel().getSize() > 0) {
             botonderecho = true;
             componente = "ListaHijo";
             popupmenu(evt);
         }
-    }//GEN-LAST:event_ListaHijoMousePressed
+    }//GEN-LAST:event_listaHijoMousePressed
 
-    private void TextoIdInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_TextoIdInputMethodTextChanged
+    private void textoIdInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_textoIdInputMethodTextChanged
 //        if (!TextoId.getText().isEmpty()) {
 //            setId(TextoId.getText());
 //        }
 
-    }//GEN-LAST:event_TextoIdInputMethodTextChanged
+    }//GEN-LAST:event_textoIdInputMethodTextChanged
 
     private void opcionCopiarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarTodoActionPerformed
         String textocompleto = "";
         if (componente.equals("ListaHijo")) {
-            for (int i = 0; i < ListaHijo.getModel().getSize(); i++) {
-                textocompleto = textocompleto + ListaHijo.getModel().getElementAt(i) + "\n";
+            for (int i = 0; i < listaHijo.getModel().getSize(); i++) {
+                textocompleto = textocompleto + listaHijo.getModel().getElementAt(i) + "\n";
             }
         }
 
         if (componente.equals("ListaPadre")) {
-            for (int i = 0; i < ListaPadre.getModel().getSize(); i++) {
-                textocompleto = textocompleto + ListaPadre.getModel().getElementAt(i) + "\n";
+            for (int i = 0; i < listaPadre.getModel().getSize(); i++) {
+                textocompleto = textocompleto + listaPadre.getModel().getElementAt(i) + "\n";
             }
         }
 
         Utilidades.copiarTextoPortapapeles(textocompleto);
     }//GEN-LAST:event_opcionCopiarTodoActionPerformed
 
-    private void ListaPadreMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaPadreMousePressed
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && ListaPadre.getModel().getSize() > 0) {
+    private void listaPadreMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaPadreMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && listaPadre.getModel().getSize() > 0) {
             botonderecho = true;
             componente = "ListaPadre";
             popupmenu(evt);
         }
-    }//GEN-LAST:event_ListaPadreMousePressed
+    }//GEN-LAST:event_listaPadreMousePressed
 
     private void botonSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSiguienteActionPerformed
         if (poslista + 1 < numrela) {
@@ -578,7 +578,7 @@ public class PantallaRelations extends javax.swing.JFrame {
         } else {
             poslista = 0;
         }
-        CargarHijo(listarelaciones.get(poslista));
+        cargarHijo(listarelaciones.get(poslista));
     }//GEN-LAST:event_botonSiguienteActionPerformed
 
     private void botonAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnteriorActionPerformed
@@ -587,7 +587,7 @@ public class PantallaRelations extends javax.swing.JFrame {
         } else {
             poslista = numrela - 1;
         }
-        CargarHijo(listarelaciones.get(poslista));
+        cargarHijo(listarelaciones.get(poslista));
     }//GEN-LAST:event_botonAnteriorActionPerformed
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
@@ -601,19 +601,19 @@ public class PantallaRelations extends javax.swing.JFrame {
                 }
             }
 
-            if (evt.getSource() == ListaHijo) {
+            if (evt.getSource() == listaHijo) {
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
                 opcionPegar.setEnabled(false);
                 opcionPegar.setVisible(false);
             }
 
-            if (evt.getSource() == ListaPadre) {
+            if (evt.getSource() == listaPadre) {
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
                 opcionPegar.setEnabled(false);
                 opcionPegar.setVisible(false);
             }
 
-            if (evt.getSource() == TextoId) {
+            if (evt.getSource() == textoId) {
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
                 opcionPegar.setEnabled(true);
                 opcionPegar.setVisible(true);
@@ -660,10 +660,6 @@ public class PantallaRelations extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> ListaHijo;
-    private javax.swing.JList<String> ListaPadre;
-    private javax.swing.JMenu Menu;
-    private javax.swing.JTextField TextoId;
     private javax.swing.JButton botonAnterior;
     private javax.swing.JButton botonBuscar;
     public static javax.swing.JButton botonCerrar;
@@ -675,9 +671,12 @@ public class PantallaRelations extends javax.swing.JFrame {
     private javax.swing.JLabel etiquetaTipoRelation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JList<String> listaHijo;
+    private javax.swing.JList<String> listaPadre;
+    private javax.swing.JMenu menuArchivo;
+    private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenu opcionApariencia;
     private javax.swing.JMenuItem opcionCerrar;
     private javax.swing.JMenuItem opcionCopiar;
@@ -689,12 +688,13 @@ public class PantallaRelations extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem opcionRBWindows;
     private javax.swing.JRadioButtonMenuItem opcionRBWindowsClassic;
     private javax.swing.JPopupMenu popupEditar;
+    private javax.swing.JTextField textoId;
     // End of variables declaration//GEN-END:variables
 
-    public void LimpiarTexto() {
+    public void limpiarTexto() {
         DefaultListModel Modelo = new DefaultListModel();
-        ListaHijo.setModel(Modelo);
-        ListaPadre.setModel(Modelo);
+        listaHijo.setModel(Modelo);
+        listaPadre.setModel(Modelo);
         etiquetaOrigen.setText("r_object_id:");
         etiquetaDestino.setText("r_object_id:");
         etiquetaTipoRelation.setText("");
@@ -703,13 +703,13 @@ public class PantallaRelations extends javax.swing.JFrame {
         setTitle("Relations de un Documento");
     }
 
-    public void CargarDatos(String r_object_id) {
+    public void cargarDatos(String r_object_id) {
         if (!r_object_id.isEmpty()) {
-            LimpiarTexto();
-            TextoId.setText(r_object_id);
+            limpiarTexto();
+            textoId.setText(r_object_id);
             setId(r_object_id);
             Map<String, String> relaciones = new HashMap<>();
-            setListarelaciones(ventanapadre.utilDocum.DameRelation(r_object_id, ventanapadre.utilDocum.conectarDocumentum()));
+            setListarelaciones(ventanapadre.utilDocum.dameRelation(r_object_id, ventanapadre.utilDocum.conectarDocumentum()));
 
             if (getListarelaciones().isEmpty()) {
                 PantallaMensaje mensaje = new PantallaMensaje(this, botonderecho);
@@ -742,20 +742,20 @@ public class PantallaRelations extends javax.swing.JFrame {
             System.out.println(relaciones.get("IdRelacion"));
             etiquetaIdRelation.setText("r_object_id de la relation: " + relaciones.get("IdRelacion"));
 
-            ListaPadre.removeAll();
+            listaPadre.removeAll();
             DefaultListModel ModeloPadre = new DefaultListModel();
-            ListaPadre.setModel(ModeloPadre);
+            listaPadre.setModel(ModeloPadre);
 
             try {
-                ArrayList listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdPadre"), "object_name");
+                ArrayList listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdPadre"), "object_name");
                 String nombrePadre = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
-                listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdPadre"), "r_object_type");
+                listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdPadre"), "r_object_type");
                 String tipoPadre = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
-                listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdPadre"), "a_storage_type");
+                listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdPadre"), "a_storage_type");
                 String filestorePadre = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
-                listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdPadre"), "r_content_size");
+                listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdPadre"), "r_content_size");
                 String tamPadre = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
-                listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdPadre"), "i_partition");
+                listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdPadre"), "i_partition");
                 String iPartitionPadre = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
                 ModeloPadre.add(0, "Nombre del Documento: " + nombrePadre);
                 ModeloPadre.add(1, "Tipo documental: " + tipoPadre);
@@ -773,30 +773,30 @@ public class PantallaRelations extends javax.swing.JFrame {
 //            System.out.println(relaciones.get("IdPadre"));
 //            System.out.println(relaciones.get("RutaPadreDocumentum"));
 //            System.out.println(relaciones.get("RutaPadreSSOO"));
-            CargarHijo(relaciones);
+            cargarHijo(relaciones);
 
         }
     }
 
-    private void CargarHijo(Map<String, String> relaciones) {
-        ListaHijo.removeAll();
+    private void cargarHijo(Map<String, String> relaciones) {
+        listaHijo.removeAll();
         DefaultListModel ModeloHijo = new DefaultListModel();
-        ListaHijo.setModel(ModeloHijo);
+        listaHijo.setModel(ModeloHijo);
         etiquetaTipoRelation.setText(relaciones.get("Tipo"));
         try {
             etiquetaDestino.setText("r_object_id: " + relaciones.get("IdHijo"));
             etiquetaOrigen.setText("r_object_id: " + relaciones.get("IdPadre"));
             etiquetaNombreRelation.setText("Nombre de la relation: " + relaciones.get("NombreRelacion"));
             etiquetaIdRelation.setText("r_object_id de la relation: " + relaciones.get("IdRelacion"));
-            ArrayList listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdHijo"), "object_name");
+            ArrayList listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdHijo"), "object_name");
             String nombreHijo = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
-            listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdHijo"), "r_object_type");
+            listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdHijo"), "r_object_type");
             String tipoHijo = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
-            listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdHijo"), "a_storage_type");
+            listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdHijo"), "a_storage_type");
             String filestoreHijo = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
-            listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdHijo"), "r_content_size");
+            listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdHijo"), "r_content_size");
             String tamHijo = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
-            listavalores = ventanapadre.utilDocum.DameAtributo(relaciones.get("IdHijo"), "i_partition");
+            listavalores = ventanapadre.utilDocum.dameAtributo(relaciones.get("IdHijo"), "i_partition");
             String iPartitionHijo = listavalores.isEmpty() ? "" : listavalores.get(0).toString();
             ModeloHijo.add(0, "Nombre del Documento: " + nombreHijo);
             ModeloHijo.add(1, "Tipo documental: " + tipoHijo);

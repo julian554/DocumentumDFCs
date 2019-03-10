@@ -57,15 +57,15 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     }
 
     public void setTextoServidor(String servidor) {
-        TextoServidor.setText(servidor);
+        textoServidor.setText(servidor);
     }
 
     public void setTextoUsuario(String usuario) {
-        TextoUsuario.setText(usuario);
+        textoUsuario.setText(usuario);
     }
 
     public void setTextoClave(String clave) {
-        TextoClave.setText(clave);
+        textoClave.setText(clave);
     }
 
     public PantallaEjecutarComandoRemoto(PantallaDocumentum parent, boolean modal) {
@@ -90,72 +90,72 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
         }
         opcionRBMetalActionPerformed(null);
-        TextoComando.requestFocus();
-        TextoServidor.getDocument().addDocumentListener(new DocumentListener() {
+        textoComando.requestFocus();
+        textoServidor.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (!TextoServidor.getText().isEmpty()) {
-                    setServidor(TextoServidor.getText());
+                if (!textoServidor.getText().isEmpty()) {
+                    setServidor(textoServidor.getText());
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if (!TextoServidor.getText().isEmpty()) {
-                    setServidor(TextoServidor.getText());
+                if (!textoServidor.getText().isEmpty()) {
+                    setServidor(textoServidor.getText());
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if (!TextoServidor.getText().isEmpty()) {
-                    setServidor(TextoServidor.getText());
+                if (!textoServidor.getText().isEmpty()) {
+                    setServidor(textoServidor.getText());
                 }
             }
         });
 
-        TextoUsuario.getDocument().addDocumentListener(new DocumentListener() {
+        textoUsuario.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (!TextoUsuario.getText().isEmpty()) {
-                    setUsuario(TextoUsuario.getText());
+                if (!textoUsuario.getText().isEmpty()) {
+                    setUsuario(textoUsuario.getText());
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if (!TextoUsuario.getText().isEmpty()) {
-                    setUsuario(TextoUsuario.getText());
+                if (!textoUsuario.getText().isEmpty()) {
+                    setUsuario(textoUsuario.getText());
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if (!TextoUsuario.getText().isEmpty()) {
-                    setUsuario(TextoUsuario.getText());
+                if (!textoUsuario.getText().isEmpty()) {
+                    setUsuario(textoUsuario.getText());
                 }
             }
         });
 
-        TextoClave.getDocument().addDocumentListener(new DocumentListener() {
+        textoClave.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if (!String.valueOf(TextoClave.getPassword()).isEmpty()) {
-                    setClave(String.valueOf(TextoClave.getPassword()));
+                if (!String.valueOf(textoClave.getPassword()).isEmpty()) {
+                    setClave(String.valueOf(textoClave.getPassword()));
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if (!String.valueOf(TextoClave.getPassword()).isEmpty()) {
-                    setClave(String.valueOf(TextoClave.getPassword()));
+                if (!String.valueOf(textoClave.getPassword()).isEmpty()) {
+                    setClave(String.valueOf(textoClave.getPassword()));
                 }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                if (!String.valueOf(TextoClave.getPassword()).isEmpty()) {
-                    setUsuario(String.valueOf(TextoClave.getPassword()));
+                if (!String.valueOf(textoClave.getPassword()).isEmpty()) {
+                    setUsuario(String.valueOf(textoClave.getPassword()));
                 }
             }
         });
@@ -186,20 +186,20 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         opcionPegar = new javax.swing.JMenuItem();
         opcionCopiarTodo = new javax.swing.JMenuItem();
         botonCerrar = new javax.swing.JButton();
-        TextoComando = new javax.swing.JTextField();
-        LabelComando = new javax.swing.JLabel();
+        textoComando = new javax.swing.JTextField();
+        labelComando = new javax.swing.JLabel();
         botonEjecutar = new javax.swing.JButton();
         comboHistorial = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
-        Texto = new javax.swing.JList<>();
+        textoResultado = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
-        TextoServidor = new javax.swing.JTextField();
+        textoServidor = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        TextoUsuario = new javax.swing.JTextField();
+        textoUsuario = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        TextoClave = new javax.swing.JPasswordField();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        Menu = new javax.swing.JMenu();
+        textoClave = new javax.swing.JPasswordField();
+        menuPrincipal = new javax.swing.JMenuBar();
+        menuArchivo = new javax.swing.JMenu();
         opcionCerrar = new javax.swing.JMenuItem();
         opcionApariencia = new javax.swing.JMenu();
         opcionRBMetal = new javax.swing.JRadioButtonMenuItem();
@@ -246,23 +246,23 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             }
         });
 
-        TextoComando.addMouseListener(new java.awt.event.MouseAdapter() {
+        textoComando.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                TextoComandoMousePressed(evt);
+                textoComandoMousePressed(evt);
             }
         });
-        TextoComando.addActionListener(new java.awt.event.ActionListener() {
+        textoComando.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoComandoActionPerformed(evt);
+                textoComandoActionPerformed(evt);
             }
         });
-        TextoComando.addKeyListener(new java.awt.event.KeyAdapter() {
+        textoComando.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                TextoComandoKeyPressed(evt);
+                textoComandoKeyPressed(evt);
             }
         });
 
-        LabelComando.setText("Comando");
+        labelComando.setText("Comando");
 
         botonEjecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar.png"))); // NOI18N
         botonEjecutar.setText("Ejecutar");
@@ -284,21 +284,21 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             }
         });
 
-        Texto.setFont(new java.awt.Font("Monospaced", 1, 12)); // NOI18N
-        Texto.setForeground(new java.awt.Color(0, 51, 102));
-        Texto.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        Texto.addMouseListener(new java.awt.event.MouseAdapter() {
+        textoResultado.setFont(new java.awt.Font("Monospaced", 1, 12)); // NOI18N
+        textoResultado.setForeground(new java.awt.Color(0, 51, 102));
+        textoResultado.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        textoResultado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                TextoMousePressed(evt);
+                textoResultadoMousePressed(evt);
             }
         });
-        jScrollPane2.setViewportView(Texto);
+        jScrollPane2.setViewportView(textoResultado);
 
         jLabel1.setText("Servidor");
 
-        TextoServidor.addInputMethodListener(new java.awt.event.InputMethodListener() {
+        textoServidor.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                TextoServidorInputMethodTextChanged(evt);
+                textoServidorInputMethodTextChanged(evt);
             }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
@@ -308,8 +308,8 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
 
         jLabel3.setText("Contraseña");
 
-        Menu.setMnemonic('A');
-        Menu.setText("Archivo");
+        menuArchivo.setMnemonic('A');
+        menuArchivo.setText("Archivo");
 
         opcionCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
         opcionCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
@@ -319,9 +319,9 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
                 opcionCerrarActionPerformed(evt);
             }
         });
-        Menu.add(opcionCerrar);
+        menuArchivo.add(opcionCerrar);
 
-        jMenuBar1.add(Menu);
+        menuPrincipal.add(menuArchivo);
 
         opcionApariencia.setMnemonic('A');
         opcionApariencia.setText("Apariencia");
@@ -371,9 +371,9 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         });
         opcionApariencia.add(opcionRBPorDefecto);
 
-        jMenuBar1.add(opcionApariencia);
+        menuPrincipal.add(opcionApariencia);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -385,20 +385,20 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(LabelComando, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
+                            .addComponent(labelComando, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(TextoServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textoServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(TextoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(textoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(TextoClave, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
-                            .addComponent(TextoComando))
+                                .addComponent(textoClave, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                            .addComponent(textoComando))
                         .addGap(29, 29, 29)
                         .addComponent(botonEjecutar))
                     .addComponent(comboHistorial, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -413,16 +413,16 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TextoServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textoServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(TextoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(TextoClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textoClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TextoComando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LabelComando)
+                    .addComponent(textoComando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelComando)
                     .addComponent(botonEjecutar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -444,23 +444,23 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_botonCerrarActionPerformed
 
-    private void TextoComandoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoComandoActionPerformed
+    private void textoComandoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoComandoActionPerformed
 
-    }//GEN-LAST:event_TextoComandoActionPerformed
+    }//GEN-LAST:event_textoComandoActionPerformed
 
     private void botonEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEjecutarActionPerformed
-        Ejecutar();
+        ejecutar();
     }//GEN-LAST:event_botonEjecutarActionPerformed
 
-    private void Ejecutar() {
-        if (TextoComando.getText().isEmpty()) {
+    private void ejecutar() {
+        if (textoComando.getText().isEmpty()) {
             return;
         }
         try {
             Utilidades util = new Utilidades();
-            List<String> resultado = util.comandoRemoto(this.getServidor(), this.getUsuario(), this.getClave(), TextoComando.getText());
+            List<String> resultado = util.comandoRemoto(this.getServidor(), this.getUsuario(), this.getClave(), textoComando.getText());
             DefaultListModel ModeloLista = new DefaultListModel();
-            Texto.setModel(ModeloLista);
+            textoResultado.setModel(ModeloLista);
 
             for (int x = 0; x < resultado.size(); x++) {
                 //    System.out.println(resultado.get(x));
@@ -468,10 +468,10 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
                 ModeloLista.add(x, resultado.get(x));
                 //  Texto.append(resultado.get(x).replace(" ","\t")+"\n");
             }
-            if (!TextoComando.getText().equals(comboHistorial.getSelectedItem())) {
+            if (!textoComando.getText().equals(comboHistorial.getSelectedItem())) {
                 try {
                     FileOutputStream historial = new FileOutputStream(new File(util.usuarioHome() + util.separador() + "tmp" + util.separador() + "historialCmd.log"), true);
-                    historial.write(("\n" + TextoComando.getText().replaceAll("(\r\n|\n)", " ")).getBytes());
+                    historial.write(("\n" + textoComando.getText().replaceAll("(\r\n|\n)", " ")).getBytes());
                     historial.close();
                     cargarComboHistorial();
                 } catch (Exception ex) {
@@ -485,33 +485,33 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
 
     private void opcionCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarActionPerformed
         if (componente.equals("Texto")) {
-            if (Texto.getModel().getElementAt(Texto.getSelectedIndex()) != null) {
-                Utilidades.copiarTextoPortapapeles(Texto.getModel().getElementAt(Texto.getSelectedIndex()));
+            if (textoResultado.getModel().getElementAt(textoResultado.getSelectedIndex()) != null) {
+                Utilidades.copiarTextoPortapapeles(textoResultado.getModel().getElementAt(textoResultado.getSelectedIndex()));
             }
         }
 
         if (componente.equals("TextoComando")) {
-            if (TextoComando.getSelectedText() == null) {
-                Utilidades.copiarTextoPortapapeles(TextoComando.getText());
+            if (textoComando.getSelectedText() == null) {
+                Utilidades.copiarTextoPortapapeles(textoComando.getText());
             } else {
-                Utilidades.copiarTextoPortapapeles(TextoComando.getSelectedText());
+                Utilidades.copiarTextoPortapapeles(textoComando.getSelectedText());
             }
         }
     }//GEN-LAST:event_opcionCopiarActionPerformed
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
         if (componente.equals("TextoComando")) {
-            TextoComando.setText(Utilidades.pegarTextoPortapapeles());
+            textoComando.setText(Utilidades.pegarTextoPortapapeles());
         }
     }//GEN-LAST:event_opcionPegarActionPerformed
 
-    private void TextoComandoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextoComandoMousePressed
+    private void textoComandoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoComandoMousePressed
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
             botonderecho = true;
             componente = "TextoComando";
             popupmenu(evt);
         }
-    }//GEN-LAST:event_TextoComandoMousePressed
+    }//GEN-LAST:event_textoComandoMousePressed
 
     private void comboHistorialMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboHistorialMousePressed
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
@@ -523,18 +523,18 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
 
     private void comboHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboHistorialActionPerformed
         String valor = (String) comboHistorial.getSelectedItem();
-        if (TextoComando.getText().isEmpty() || !TextoComando.getText().equals(valor)) {
+        if (textoComando.getText().isEmpty() || !textoComando.getText().equals(valor)) {
             if (!valor.isEmpty()) {
-                TextoComando.setText(valor);
+                textoComando.setText(valor);
             }
         }
     }//GEN-LAST:event_comboHistorialActionPerformed
 
-    private void TextoComandoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextoComandoKeyPressed
+    private void textoComandoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoComandoKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-            Ejecutar();
+            ejecutar();
         }
-    }//GEN-LAST:event_TextoComandoKeyPressed
+    }//GEN-LAST:event_textoComandoKeyPressed
 
     private void opcionRBMetalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionRBMetalActionPerformed
         opcionRBMetal.setSelected(true);
@@ -635,25 +635,25 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionRBPorDefectoActionPerformed
 
-    private void TextoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextoMousePressed
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && Texto.getModel().getSize() > 0) {
+    private void textoResultadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoResultadoMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && textoResultado.getModel().getSize() > 0) {
             botonderecho = true;
             componente = "Texto";
             popupmenu(evt);
         }
-    }//GEN-LAST:event_TextoMousePressed
+    }//GEN-LAST:event_textoResultadoMousePressed
 
-    private void TextoServidorInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_TextoServidorInputMethodTextChanged
-        if (!TextoServidor.getText().isEmpty()) {
-            setServidor(TextoServidor.getText());
+    private void textoServidorInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_textoServidorInputMethodTextChanged
+        if (!textoServidor.getText().isEmpty()) {
+            setServidor(textoServidor.getText());
         }
-    }//GEN-LAST:event_TextoServidorInputMethodTextChanged
+    }//GEN-LAST:event_textoServidorInputMethodTextChanged
 
     private void opcionCopiarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarTodoActionPerformed
         String textocompleto = "";
-        for (int i = 0; i < Texto.getModel().getSize(); i++) {
+        for (int i = 0; i < textoResultado.getModel().getSize(); i++) {
 //    System.out.println(Texto.getModel().getElementAt(i));
-            textocompleto = textocompleto + Texto.getModel().getElementAt(i) + "\n";
+            textocompleto = textocompleto + textoResultado.getModel().getElementAt(i) + "\n";
         }
         Utilidades.copiarTextoPortapapeles(textocompleto);
     }//GEN-LAST:event_opcionCopiarTodoActionPerformed
@@ -669,12 +669,12 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
                 }
             }
 
-            if (evt.getSource() == Texto) {
+            if (evt.getSource() == textoResultado) {
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
                 opcionPegar.setEnabled(false);
                 opcionPegar.setVisible(false);
             }
-            if (evt.getSource() == TextoComando) {
+            if (evt.getSource() == textoComando) {
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
                 opcionPegar.setEnabled(true);
                 opcionPegar.setVisible(true);
@@ -760,21 +760,16 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabelComando;
-    private javax.swing.JMenu Menu;
-    private javax.swing.JList<String> Texto;
-    private javax.swing.JPasswordField TextoClave;
-    private javax.swing.JTextField TextoComando;
-    private javax.swing.JTextField TextoServidor;
-    private javax.swing.JTextField TextoUsuario;
     public static javax.swing.JButton botonCerrar;
     private javax.swing.JButton botonEjecutar;
     private javax.swing.JComboBox comboHistorial;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel labelComando;
+    private javax.swing.JMenu menuArchivo;
+    private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenu opcionApariencia;
     private javax.swing.JMenuItem opcionCerrar;
     private javax.swing.JMenuItem opcionCopiar;
@@ -786,19 +781,24 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem opcionRBWindows;
     private javax.swing.JRadioButtonMenuItem opcionRBWindowsClassic;
     private javax.swing.JPopupMenu popupEditar;
+    private javax.swing.JPasswordField textoClave;
+    private javax.swing.JTextField textoComando;
+    private javax.swing.JList<String> textoResultado;
+    private javax.swing.JTextField textoServidor;
+    private javax.swing.JTextField textoUsuario;
     // End of variables declaration//GEN-END:variables
 
-    public void LimpiarTexto() {
-        Texto.removeAll();
+    public void limpiarTexto() {
+        textoResultado.removeAll();
     }
 
-    public void CargarFichero(String fichero) {
+    public void cargarFichero(String fichero) {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(fichero));
             String aux = "";
             DefaultListModel ModeloLista = new DefaultListModel();
-            Texto.setModel(ModeloLista);
+            textoResultado.setModel(ModeloLista);
             int i = 0;
             while ((aux = br.readLine()) != null) {
                 // builder.append(aux);
@@ -821,7 +821,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         }
     }
 
-    public Boolean CargarLista(List<String> lista) {
+    public Boolean cargarLista(List<String> lista) {
         if (lista == null) {
             return false;
         }
@@ -830,7 +830,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         while (nombreIterator.hasNext()) {
             String elemento = nombreIterator.next();
             DefaultListModel Modelo = new DefaultListModel();
-            Texto.setModel(Modelo);
+            textoResultado.setModel(Modelo);
             try {
                 Modelo.add(i, elemento);
                 i++;

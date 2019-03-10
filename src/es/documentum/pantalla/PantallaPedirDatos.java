@@ -95,7 +95,7 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         etiquetaRuta = new javax.swing.JLabel();
         textoRutaSO = new javax.swing.JTextField();
         botonCancelar = new javax.swing.JButton();
-        EtiquetaPanel = new javax.swing.JLabel();
+        etiquetaPanel = new javax.swing.JLabel();
         botonNavegar = new javax.swing.JButton();
 
         opcionPegar.setText("Pegar");
@@ -151,15 +151,15 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
             }
         });
 
-        EtiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        EtiquetaPanel.setForeground(new java.awt.Color(0, 0, 153));
-        EtiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        EtiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        etiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        etiquetaPanel.setForeground(new java.awt.Color(0, 0, 153));
+        etiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        etiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseClicked(evt);
+                etiquetaPanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseEntered(evt);
+                etiquetaPanelMouseEntered(evt);
             }
         });
 
@@ -179,7 +179,7 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(2, 2, 2))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
@@ -223,7 +223,7 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
                     .addComponent(botonAceptar)
                     .addComponent(botonCancelar))
                 .addGap(28, 28, 28)
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {textoCarpeta, textoRutaSO});
@@ -234,7 +234,7 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        if (ComprobarValores()) {
+        if (comprobarValores()) {
             setCarpeta(textoCarpeta.getText());
             setRuta(textoRutaSO.getText());
             this.dispose();
@@ -250,9 +250,9 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
-    private void EtiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseEntered
-        EtiquetaPanel.setToolTipText(EtiquetaPanel.getText());
-    }//GEN-LAST:event_EtiquetaPanelMouseEntered
+    private void etiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseEntered
+        etiquetaPanel.setToolTipText(etiquetaPanel.getText());
+    }//GEN-LAST:event_etiquetaPanelMouseEntered
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
         if (evt.getSource().toString().equals("textoRutaSO")) {
@@ -263,11 +263,11 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_opcionPegarActionPerformed
 
-    private void EtiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseClicked
+    private void etiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseClicked
         if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            Utilidades.copiarTextoPortapapeles(EtiquetaPanel.getText());
+            Utilidades.copiarTextoPortapapeles(etiquetaPanel.getText());
         }
-    }//GEN-LAST:event_EtiquetaPanelMouseClicked
+    }//GEN-LAST:event_etiquetaPanelMouseClicked
 
     private void textoRutaSOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoRutaSOActionPerformed
         // TODO add your handling code here:
@@ -309,11 +309,11 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel EtiquetaPanel;
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonCancelar;
     public javax.swing.JButton botonNavegar;
     private javax.swing.JLabel etiquetaCarpeta;
+    private javax.swing.JLabel etiquetaPanel;
     private javax.swing.JLabel etiquetaRuta;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JPopupMenu popupmenu;
@@ -324,36 +324,36 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
     public void asignariconos() {
     }
 
-    private Boolean ComprobarValores() {
+    private Boolean comprobarValores() {
         Boolean resultado = true;
         if (textoCarpeta.getText().isEmpty()) {
-            EtiquetaPanel.setText("Debe indicar la Carpeta de Documentum");
+            etiquetaPanel.setText("Debe indicar la Carpeta de Documentum");
             textoCarpeta.requestFocus();
             return false;
         }
         if (textoRutaSO.getText().isEmpty()) {
-            EtiquetaPanel.setText("Debe indicar la ruta de destino");
+            etiquetaPanel.setText("Debe indicar la ruta de destino");
             textoRutaSO.requestFocus();
             return false;
         }
 
         if (accion.equals("ExportarCarpeta")) {
             if (ventanapadre.utilDocum.existeCarpeta(textoCarpeta.getText()) == false) {
-                EtiquetaPanel.setText("La carpeta indicada parece que no existe en Documentum");
+                etiquetaPanel.setText("La carpeta indicada parece que no existe en Documentum");
                 textoCarpeta.requestFocus();
                 return false;
             }
 
             if (!ventanapadre.util.existeDirectorio(textoRutaSO.getText())) {
                 if (!ventanapadre.util.crearDirectorio(textoRutaSO.getText())) {
-                    EtiquetaPanel.setText("Debe indicar una ruta de destino válida");
+                    etiquetaPanel.setText("Debe indicar una ruta de destino válida");
                     textoRutaSO.requestFocus();
                     return false;
                 }
             }
 
             if (ventanapadre.util.discoLibre(textoRutaSO.getText()) == 0) {
-                EtiquetaPanel.setText("Debe indicar una ruta con suficiente espacio disponible");
+                etiquetaPanel.setText("Debe indicar una ruta con suficiente espacio disponible");
                 textoRutaSO.requestFocus();
                 return false;
             }

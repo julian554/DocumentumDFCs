@@ -1182,7 +1182,7 @@ public class Utilidades {
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
-    public static int OctalToDecimal(String octo) {
+    public static int octalToDecimal(String octo) {
         int number = 0;      // init result
         for (int i = 0; i < octo.length(); i++) { // pass through all input characters
             char digit = octo.charAt(i);            // fetch octal digit
@@ -1217,7 +1217,7 @@ public class Utilidades {
         return resultado;
     }
 
-    public String ArboltoXml(TreeModel model) throws ParserConfigurationException, TransformerException {
+    public String arboltoXml(TreeModel model) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         DOMImplementation impl = builder.getDOMImplementation();

@@ -34,6 +34,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="opcionCopiarValor">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/copiar.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Copiar Valor"/>
           </Properties>
           <Events>
@@ -42,6 +45,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="opcionExportarExcel">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/excel-24.gif"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Exportar a Excel"/>
           </Properties>
           <Events>
@@ -50,6 +56,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="opcionSeleccionarColumna">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/lista-sel.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Seleccionar Columna"/>
           </Properties>
           <Events>
@@ -74,9 +83,9 @@
         </MenuItem>
       </SubComponents>
     </Container>
-    <Menu class="javax.swing.JMenuBar" name="BarraMenu">
+    <Menu class="javax.swing.JMenuBar" name="barraMenu">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="opciones">
+        <Menu class="javax.swing.JMenu" name="menuOpciones">
           <Properties>
             <Property name="text" type="java.lang.String" value="Opciones"/>
           </Properties>
@@ -122,7 +131,7 @@
     </Property>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="BarraMenu"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="barraMenu"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
@@ -191,7 +200,7 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="botonConsultar" linkSize="1" alignment="0" min="-2" pref="130" max="-2" attributes="0"/>
                                       <Component id="checkDameSQL" alignment="0" min="-2" pref="151" max="-2" attributes="0"/>
-                                      <Component id="TextoNumReg" min="-2" pref="119" max="-2" attributes="0"/>
+                                      <Component id="textoNumReg" min="-2" pref="119" max="-2" attributes="0"/>
                                       <Component id="jLabel3" min="-2" pref="146" max="-2" attributes="0"/>
                                       <Component id="botonSalir" linkSize="1" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
                                   </Group>
@@ -224,7 +233,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" pref="20" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          <Component id="TextoNumReg" min="-2" max="-2" attributes="0"/>
+                          <Component id="textoNumReg" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="botonSalir" linkSize="2" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
@@ -354,7 +363,7 @@
             <Property name="text" type="java.lang.String" value="N&#xba; de registros de salida"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="TextoNumReg">
+        <Component class="javax.swing.JFormattedTextField" name="textoNumReg">
           <Properties>
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
               <Format format="#" subtype="-1" type="0"/>
@@ -364,7 +373,7 @@
             <Property name="toolTipText" type="java.lang.String" value="El valor 0 indica que no hay l&#xed;mite de l&#xed;neas a devolver"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextoNumRegActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoNumRegActionPerformed"/>
           </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">
@@ -406,7 +415,7 @@
                           <Component id="jLabel5" alignment="1" max="32767" attributes="0"/>
                           <Component id="jLabel4" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="TextoNumLineasExcel" min="-2" pref="117" max="-2" attributes="0"/>
+                              <Component id="textoNumLineasExcel" min="-2" pref="117" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -426,7 +435,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                      <Component id="TextoNumLineasExcel" min="-2" max="-2" attributes="0"/>
+                      <Component id="textoNumLineasExcel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -451,14 +460,14 @@
                 <Property name="text" type="java.lang.String" value="L&#xed;mite de registros Excel"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JFormattedTextField" name="TextoNumLineasExcel">
+            <Component class="javax.swing.JFormattedTextField" name="textoNumLineasExcel">
               <Properties>
                 <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                   <Format format="#" subtype="-1" type="0"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" value="3000"/>
-                <Property name="toolTipText" type="java.lang.String" value="Un n&#xfa;mero superior a 3.000 l&#xed;nea har&#xe1; muy lento el proceso"/>
+                <Property name="text" type="java.lang.String" value="12000"/>
+                <Property name="toolTipText" type="java.lang.String" value="Un n&#xfa;mero superior a 12.000 l&#xed;nea har&#xe1; muy lento el proceso"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
@@ -488,17 +497,17 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="EtiquetaEstado" alignment="0" max="32767" attributes="0"/>
+              <Component id="etiquetaEstado" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="EtiquetaEstado" alignment="0" pref="28" max="32767" attributes="0"/>
+              <Component id="etiquetaEstado" alignment="0" pref="28" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="EtiquetaEstado">
+        <Component class="javax.swing.JLabel" name="etiquetaEstado">
         </Component>
       </SubComponents>
     </Container>

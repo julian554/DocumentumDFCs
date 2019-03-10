@@ -77,9 +77,9 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         tablaResultados.setAutoscrolls(true);
         setLocationRelativeTo(null);
         cargarComboHistorial();
-        TextoNumReg.setText("0");
+        textoNumReg.setText("0");
         checkExportarExcel.setEnabled(false);
-        TextoNumLineasExcel.setEnabled(false);
+        textoNumLineasExcel.setEnabled(false);
         StyleConstants.setForeground(AtributoRojo, Color.RED);
         StyleConstants.setForeground(AtributoAzul, Color.BLUE);
         StyleConstants.setForeground(AtributoNegro, Color.BLACK);
@@ -119,23 +119,23 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         comboHistorial = new javax.swing.JComboBox();
         checkDameSQL = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
-        TextoNumReg = new javax.swing.JFormattedTextField();
+        textoNumReg = new javax.swing.JFormattedTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         textoMultiplesLogs = new javax.swing.JTextPane();
         jPanel1 = new javax.swing.JPanel();
         checkMultiplesDqls = new javax.swing.JCheckBox();
         checkExportarExcel = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
-        TextoNumLineasExcel = new javax.swing.JFormattedTextField();
+        textoNumLineasExcel = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
         textoListaDQL = new javax.swing.JTextField();
         panelEstado = new javax.swing.JPanel();
-        EtiquetaEstado = new javax.swing.JLabel();
+        etiquetaEstado = new javax.swing.JLabel();
         panelTabResultados = new javax.swing.JTabbedPane();
         panelResultado = new javax.swing.JScrollPane();
         tablaResultados = new javax.swing.JTable();
-        BarraMenu = new javax.swing.JMenuBar();
-        opciones = new javax.swing.JMenu();
+        barraMenu = new javax.swing.JMenuBar();
+        menuOpciones = new javax.swing.JMenu();
         opcionConsultar = new javax.swing.JMenuItem();
         opcionSalir = new javax.swing.JMenuItem();
 
@@ -155,6 +155,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
         popupEditar.add(opcionPegar);
 
+        opcionCopiarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiarValor.setText("Copiar Valor");
         opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,6 +164,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
         popupDatos.add(opcionCopiarValor);
 
+        opcionExportarExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/excel-24.gif"))); // NOI18N
         opcionExportarExcel.setText("Exportar a Excel");
         opcionExportarExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,6 +173,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
         popupDatos.add(opcionExportarExcel);
 
+        opcionSeleccionarColumna.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/lista-sel.png"))); // NOI18N
         opcionSeleccionarColumna.setText("Seleccionar Columna");
         opcionSeleccionarColumna.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,13 +256,13 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
         jLabel3.setText("Nº de registros de salida");
 
-        TextoNumReg.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#"))));
-        TextoNumReg.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        TextoNumReg.setText("0");
-        TextoNumReg.setToolTipText("El valor 0 indica que no hay límite de líneas a devolver");
-        TextoNumReg.addActionListener(new java.awt.event.ActionListener() {
+        textoNumReg.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#"))));
+        textoNumReg.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        textoNumReg.setText("0");
+        textoNumReg.setToolTipText("El valor 0 indica que no hay límite de líneas a devolver");
+        textoNumReg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoNumRegActionPerformed(evt);
+                textoNumRegActionPerformed(evt);
             }
         });
 
@@ -284,10 +287,10 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
         jLabel5.setText("Límite de registros Excel");
 
-        TextoNumLineasExcel.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#"))));
-        TextoNumLineasExcel.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        TextoNumLineasExcel.setText("3000");
-        TextoNumLineasExcel.setToolTipText("Un número superior a 3.000 línea hará muy lento el proceso");
+        textoNumLineasExcel.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#"))));
+        textoNumLineasExcel.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        textoNumLineasExcel.setText("12000");
+        textoNumLineasExcel.setToolTipText("Un número superior a 12.000 línea hará muy lento el proceso");
 
         jLabel4.setText("(DQLs separadas por ; )");
 
@@ -303,7 +306,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(TextoNumLineasExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textoNumLineasExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -319,7 +322,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addGap(2, 2, 2)
-                .addComponent(TextoNumLineasExcel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textoNumLineasExcel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
@@ -329,10 +332,10 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
             }
         });
         textoListaDQL.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 textoListaDQLCaretPositionChanged(evt);
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -358,7 +361,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                                 .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(botonConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(checkDameSQL, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TextoNumReg, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(textoNumReg, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(panelDqlLayout.createSequentialGroup()
@@ -386,7 +389,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)
-                        .addComponent(TextoNumReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textoNumReg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelDqlLayout.createSequentialGroup()
@@ -412,11 +415,11 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         panelEstado.setLayout(panelEstadoLayout);
         panelEstadoLayout.setHorizontalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(EtiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(etiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelEstadoLayout.setVerticalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(EtiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+            .addComponent(etiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
         panelTabResultados.setFocusCycleRoot(true);
@@ -446,7 +449,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
         panelTabResultados.addTab("DQL", panelResultado);
 
-        opciones.setText("Opciones");
+        menuOpciones.setText("Opciones");
 
         opcionConsultar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         opcionConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar_peq.png"))); // NOI18N
@@ -456,7 +459,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                 opcionConsultarActionPerformed(evt);
             }
         });
-        opciones.add(opcionConsultar);
+        menuOpciones.add(opcionConsultar);
 
         opcionSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
         opcionSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
@@ -466,11 +469,11 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                 opcionSalirActionPerformed(evt);
             }
         });
-        opciones.add(opcionSalir);
+        menuOpciones.add(opcionSalir);
 
-        BarraMenu.add(opciones);
+        barraMenu.add(menuOpciones);
 
-        setJMenuBar(BarraMenu);
+        setJMenuBar(barraMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -520,6 +523,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                 barradocum.barra.setOpaque(true);
                 barradocum.barra.setStringPainted(false);
                 barradocum.validate();
+                barradocum.setDefaultCloseOperation(HIDE_ON_CLOSE);
                 barradocum.setVisible(true);
                 try {
                     textoMultiplesLogs.setText("");
@@ -537,7 +541,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                             continue;
                         }
 
-                        String numreg = TextoNumReg.getText();
+                        String numreg = textoNumReg.getText();
                         final long numregsalida = Long.parseLong(numreg);
                         if (numregsalida > 0 && dql.toLowerCase().trim().startsWith("select")) {
                             dql = dql + " enable (return_top " + numreg + ")";
@@ -564,7 +568,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
                             Long cont = 0L;
                             String rutaDqls = "";
-                            int limitelineas = Integer.parseInt(TextoNumLineasExcel.getText());
+                            int limitelineas = Integer.parseInt(textoNumLineasExcel.getText());
                             if (col != null) {
                                 ArrayList lista = new ArrayList();
                                 while (col.next()) {
@@ -676,7 +680,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private void opcionConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionConsultarActionPerformed
         if (!textoDql.getText().isEmpty()) {
             if (!checkMultiplesDqls.isSelected()) {
-                ejecutarDql(textoDql.getText(), TextoNumReg.getText());
+                ejecutarDql(textoDql.getText(), textoNumReg.getText());
             } else {
                 ejecutarMultiplesDQL(textoDql.getText());
             }
@@ -800,11 +804,11 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private void checkMultiplesDqlsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMultiplesDqlsActionPerformed
         if (checkMultiplesDqls.isSelected()) {
             checkExportarExcel.setEnabled(true);
-            TextoNumLineasExcel.setEnabled(true);
+            textoNumLineasExcel.setEnabled(true);
             checkDameSQL.setEnabled(false);
         } else {
             checkExportarExcel.setEnabled(false);
-            TextoNumLineasExcel.setEnabled(false);
+            textoNumLineasExcel.setEnabled(false);
             checkDameSQL.setEnabled(true);
             int numtab = panelTabResultados.getTabCount();
             for (int t = numtab - 1; t > 0; t--) {
@@ -879,7 +883,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private void botonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultarActionPerformed
         if (!textoDql.getText().isEmpty()) {
             if (!checkMultiplesDqls.isSelected()) {
-                ejecutarDql(textoDql.getText(), TextoNumReg.getText());
+                ejecutarDql(textoDql.getText(), textoNumReg.getText());
             } else {
                 ejecutarMultiplesDQL(textoDql.getText());
             }
@@ -894,9 +898,9 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_textoDqlMousePressed
 
-    private void TextoNumRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoNumRegActionPerformed
+    private void textoNumRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoNumRegActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextoNumRegActionPerformed
+    }//GEN-LAST:event_textoNumRegActionPerformed
 
     private void textoListaDQLCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_textoListaDQLCaretUpdate
         ArrayList listaSeleccion = util.buscarEnLista(listaCombo, textoListaDQL.getText());
@@ -929,7 +933,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         };
 
         tablaResultados.setModel(modeloLotes);
-        EtiquetaEstado.setText("");
+        etiquetaEstado.setText("");
         textoMultiplesLogs.setText("");
         ERROR = "";
         textoMultiplesLogs.setForeground(Color.BLACK);
@@ -972,7 +976,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                         }
                         col.close();
                         if (filas.size() <= 0) {
-                            EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
+                            etiquetaEstado.setText("0 Registro(s) encontrado(s) ");
                             if (esTipo) {
                                 try {
                                     StringTokenizer param = new StringTokenizer(dql.trim(), " ");
@@ -1031,7 +1035,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                             datos = new Object[cont + 5][tam];
                             IDfTypedObject row = (IDfTypedObject) filas.get(0);
                             String nombre_tipo = row.getString("name");
-                            String supertipo = utildocum.DameSuperTipo(nombre_tipo, gsesion);
+                            String supertipo = utildocum.dameSuperTipo(nombre_tipo, gsesion);
                             datos[0][0] = "Type Name:";
                             datos[0][1] = nombre_tipo;
                             datos[0][2] = "";
@@ -1058,7 +1062,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                                 int tam_attr = row.getInt("attr_length");
                                 int repeat = row.getInt("attr_repeating");
                                 datos[i + 5][0] = nombre_attr;
-                                datos[i + 5][1] = DameDescTipo(tipo_attr).equalsIgnoreCase("String") ? "CHAR" + " (" + tam_attr + ")" : DameDescTipo(tipo_attr).toUpperCase();
+                                datos[i + 5][1] = dameDescTipo(tipo_attr).equalsIgnoreCase("String") ? "CHAR" + " (" + tam_attr + ")" : dameDescTipo(tipo_attr).toUpperCase();
                                 datos[i + 5][2] = repeat == 1 ? "REPEATING" : "";
                             }
                         }
@@ -1078,7 +1082,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                         col.close();
 
                         if (filas.size() <= 0) {
-                            EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
+                            etiquetaEstado.setText("0 Registro(s) encontrado(s) ");
                             textoMultiplesLogs.setText("0 Registro(s) encontrado(s) ");
                             barradocum.dispose();
                             return;
@@ -1113,7 +1117,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                         }
                     }
 
-                    if (!BuscarEnComboHistorial(textoDql.getText())) {
+                    if (!buscarEnComboHistorial(textoDql.getText())) {
                         try {
                             FileOutputStream historial = new FileOutputStream(new File(dirdfc + "historial-dql.log"), true);
                             historial.write(("\n" + textoDql.getText().replaceAll("(\r\n|\n)", " ")).getBytes());
@@ -1140,7 +1144,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                         panelTabResultados.remove(t);
                     }
                     mostrarTablaResultado(tablaResultados, modeloLotes, tamcabecera, esTabla, esTipo);
-                    EtiquetaEstado.setText(cont + " Registro(s) encontrado(s) ");
+                    etiquetaEstado.setText(cont + " Registro(s) encontrado(s) ");
                     if (ERROR.isEmpty()) {
                         textoMultiplesLogs.setText(cont + " Registro(s) encontrado(s) ");
                     } else {
@@ -1153,7 +1157,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                     } else {
                         textoMultiplesLogs.setText(ERROR);
                         textoMultiplesLogs.setForeground(Color.RED);
-                        EtiquetaEstado.setText("0 Registro(s) encontrado(s) ");
+                        etiquetaEstado.setText("0 Registro(s) encontrado(s) ");
                     }
 
                 }
@@ -1268,7 +1272,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
     }
 
-    private String DameDescTipo(int tipo) {
+    private String dameDescTipo(int tipo) {
         String valor = "";
         switch (tipo) {
             case 0:
@@ -1370,7 +1374,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         comboHistorial.setModel(modelo);
     }
 
-    private Boolean BuscarEnComboHistorial(String texto) {
+    private Boolean buscarEnComboHistorial(String texto) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboHistorial.getModel();
         return (util.buscarEnCombo(model, texto.trim()) != -1);
 //        return (model.getIndexOf(texto.trim()) != -1);
@@ -1385,16 +1389,14 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar BarraMenu;
-    private javax.swing.JLabel EtiquetaEstado;
-    private javax.swing.JFormattedTextField TextoNumLineasExcel;
-    private javax.swing.JFormattedTextField TextoNumReg;
+    private javax.swing.JMenuBar barraMenu;
     private javax.swing.JButton botonConsultar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JCheckBox checkDameSQL;
     private javax.swing.JCheckBox checkExportarExcel;
     private javax.swing.JCheckBox checkMultiplesDqls;
     private javax.swing.JComboBox comboHistorial;
+    private javax.swing.JLabel etiquetaEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1403,6 +1405,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JMenu menuOpciones;
     private javax.swing.JMenuItem opcionConsultar;
     private javax.swing.JMenuItem opcionCopiar;
     private javax.swing.JMenuItem opcionCopiarValor;
@@ -1411,7 +1414,6 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionSalir;
     private javax.swing.JMenuItem opcionSeleccionarColumna;
     private javax.swing.JMenuItem opcionVaciarHistorial;
-    private javax.swing.JMenu opciones;
     private javax.swing.JPanel panelDql;
     private javax.swing.JPanel panelEstado;
     private javax.swing.JScrollPane panelResultado;
@@ -1423,6 +1425,8 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private javax.swing.JTextArea textoDql;
     private javax.swing.JTextField textoListaDQL;
     private javax.swing.JTextPane textoMultiplesLogs;
+    private javax.swing.JFormattedTextField textoNumLineasExcel;
+    private javax.swing.JFormattedTextField textoNumReg;
     // End of variables declaration//GEN-END:variables
 
     private void salir() {

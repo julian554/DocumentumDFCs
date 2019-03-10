@@ -66,9 +66,9 @@
         </MenuItem>
       </SubComponents>
     </Container>
-    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+    <Menu class="javax.swing.JMenuBar" name="menuPrincipal">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="opciones">
+        <Menu class="javax.swing.JMenu" name="menuOpciones">
           <Properties>
             <Property name="text" type="java.lang.String" value="Opciones"/>
           </Properties>
@@ -115,7 +115,7 @@
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="menuPrincipal"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
@@ -177,20 +177,20 @@
                   <EmptySpace pref="83" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="TextoCarpetaDocumentum" alignment="0" max="32767" attributes="0"/>
+                          <Component id="textoCarpetaDocumentum" alignment="0" max="32767" attributes="0"/>
                           <Component id="comboTipoDocumental" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabel3" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="0" min="-2" pref="281" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="LabelFicheroImportar" min="-2" pref="251" max="-2" attributes="0"/>
+                                      <Component id="labelFicheroImportar" min="-2" pref="251" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
-                                      <Component id="RBFichero" min="-2" pref="86" max="-2" attributes="0"/>
+                                      <Component id="rBFichero" min="-2" pref="86" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="RBDirectorio" max="32767" attributes="0"/>
+                                      <Component id="rBDirectorio" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="TextoFichero" min="-2" pref="495" max="-2" attributes="0"/>
+                                  <Component id="textoFichero" min="-2" pref="495" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="botonSelFichero" min="-2" pref="27" max="-2" attributes="0"/>
@@ -198,11 +198,11 @@
                       </Group>
                       <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="LabelNombreFichero" min="-2" pref="251" max="-2" attributes="0"/>
+                              <Component id="labelNombreFichero" min="-2" pref="251" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                              <Component id="CheckCrearDir" max="32767" attributes="0"/>
+                              <Component id="checkCrearDir" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="TextoNombreFichero" alignment="0" min="-2" pref="495" max="-2" attributes="0"/>
+                          <Component id="textoNombreFichero" alignment="0" min="-2" pref="495" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
@@ -214,32 +214,32 @@
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="LabelFicheroImportar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="RBFichero" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="RBDirectorio" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelFicheroImportar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBFichero" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rBDirectorio" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="TextoFichero" min="-2" max="-2" attributes="0"/>
+                      <Component id="textoFichero" min="-2" max="-2" attributes="0"/>
                       <Component id="botonSelFichero" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace pref="18" max="32767" attributes="0"/>
-                          <Component id="LabelNombreFichero" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelNombreFichero" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="CheckCrearDir" min="-2" max="-2" attributes="0"/>
+                          <Component id="checkCrearDir" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <Component id="TextoNombreFichero" min="-2" max="-2" attributes="0"/>
+                  <Component id="textoNombreFichero" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="TextoCarpetaDocumentum" min="-2" max="-2" attributes="0"/>
+                  <Component id="textoCarpetaDocumentum" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -250,7 +250,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="LabelFicheroImportar">
+        <Component class="javax.swing.JLabel" name="labelFicheroImportar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fichero a Importar"/>
           </Properties>
@@ -276,12 +276,12 @@
             <Property name="text" type="java.lang.String" value="Tipo Documental Documentum"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="TextoFichero">
+        <Component class="javax.swing.JTextField" name="textoFichero">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextoFicheroActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoFicheroActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="TextoCarpetaDocumentum">
+        <Component class="javax.swing.JTextField" name="textoCarpetaDocumentum">
         </Component>
         <Component class="javax.swing.JButton" name="botonSelFichero">
           <Properties>
@@ -293,33 +293,33 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonSelFicheroActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="LabelNombreFichero">
+        <Component class="javax.swing.JLabel" name="labelNombreFichero">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nombre del fichero"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="TextoNombreFichero">
+        <Component class="javax.swing.JTextField" name="textoNombreFichero">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextoNombreFicheroActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoNombreFicheroActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="RBFichero">
+        <Component class="javax.swing.JRadioButton" name="rBFichero">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fichero"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RBFicheroActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rBFicheroActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="RBDirectorio">
+        <Component class="javax.swing.JRadioButton" name="rBDirectorio">
           <Properties>
             <Property name="text" type="java.lang.String" value="Directorio"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RBDirectorioActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rBDirectorioActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="CheckCrearDir">
+        <Component class="javax.swing.JCheckBox" name="checkCrearDir">
           <Properties>
             <Property name="text" type="java.lang.String" value="Crear directorio"/>
           </Properties>

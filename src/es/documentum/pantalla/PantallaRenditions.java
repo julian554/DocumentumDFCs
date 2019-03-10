@@ -260,12 +260,12 @@ public class PantallaRenditions extends javax.swing.JFrame {
     }//GEN-LAST:event_opcionCopiarFormatoActionPerformed
 
     private void opcionExportarRenditionsExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionExportarRenditionsExcelActionPerformed
-        ExportarAtributosExcel();
+        exportarAtributosExcel();
     }//GEN-LAST:event_opcionExportarRenditionsExcelActionPerformed
 
     private void tablaRenditionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaRenditionsMouseClicked
         if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1 && tablaRenditions.getModel().getRowCount() > 0) {
-            AbrirRendition();
+            abrirRendition();
         }
     }//GEN-LAST:event_tablaRenditionsMouseClicked
 
@@ -393,7 +393,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
         System.gc();
     }
 
-    private void AbrirRendition() {
+    private void abrirRendition() {
         String resultado = tablaRenditions.getModel().getValueAt(tablaRenditions.convertRowIndexToModel(tablaRenditions.getSelectedRow()), 4).toString();
         try {
             File path = new File(resultado);
@@ -403,7 +403,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
         }
     }
 
-    private void ExportarAtributosExcel() {
+    private void exportarAtributosExcel() {
         if (tablaRenditions.getModel().getRowCount() > 0) {
             String fichero = "";
             JFileChooser chooser = new JFileChooser();

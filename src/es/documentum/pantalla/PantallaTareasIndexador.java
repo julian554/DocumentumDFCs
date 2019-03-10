@@ -23,7 +23,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
     UtilidadesDocumentum utilDocu = new UtilidadesDocumentum();
     IDfSession gsesion;
     String docbase;
-    String docbroker = utilDocu.DameDocbroker();
+    String docbroker = utilDocu.dameDocbroker();
 
     public IDfSession getSesion() {
         return gsesion;
@@ -92,9 +92,9 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         textoLog = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         botonRecargar = new javax.swing.JButton();
-        MenuOpciones = new javax.swing.JMenuBar();
-        OpcionRefresco = new javax.swing.JMenu();
-        OpcionSalir = new javax.swing.JMenuItem();
+        menuOpciones = new javax.swing.JMenuBar();
+        opcionRefresco = new javax.swing.JMenu();
+        opcionSalir = new javax.swing.JMenuItem();
 
         opcionCopiar.setText("Copiar Ctrl+C");
         opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
@@ -197,20 +197,20 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
             }
         });
 
-        OpcionRefresco.setText("Opciones");
+        opcionRefresco.setText("Opciones");
 
-        OpcionSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
-        OpcionSalir.setText("Salir");
-        OpcionSalir.addActionListener(new java.awt.event.ActionListener() {
+        opcionSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
+        opcionSalir.setText("Salir");
+        opcionSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OpcionSalirActionPerformed(evt);
+                opcionSalirActionPerformed(evt);
             }
         });
-        OpcionRefresco.add(OpcionSalir);
+        opcionRefresco.add(opcionSalir);
 
-        MenuOpciones.add(OpcionRefresco);
+        menuOpciones.add(opcionRefresco);
 
-        setJMenuBar(MenuOpciones);
+        setJMenuBar(menuOpciones);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -313,7 +313,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         System.gc();
     }//GEN-LAST:event_botonRecargarActionPerformed
 
-    private void OpcionSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpcionSalirActionPerformed
+    private void opcionSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionSalirActionPerformed
         if (gsesion.isConnected()) {
             try {
                 gsesion.disconnect();
@@ -322,10 +322,10 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
             }
         }
         this.dispose();
-    }//GEN-LAST:event_OpcionSalirActionPerformed
+    }//GEN-LAST:event_opcionSalirActionPerformed
 
     private void opcionArrancarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionArrancarActionPerformed
-        utilDocu.ArrancarIndexAgent(gsesion);
+        utilDocu.arrancarIndexAgent(gsesion);
         docbase = tablaResultados.getModel().getValueAt(tablaResultados.convertRowIndexToModel(tablaResultados.getSelectedRow()), 1).toString();
         docbroker = tablaResultados.getModel().getValueAt(tablaResultados.convertRowIndexToModel(tablaResultados.getSelectedRow()), 0).toString();
         int fila = tablaResultados.getSelectedRow();
@@ -407,17 +407,17 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar MenuOpciones;
-    private javax.swing.JMenu OpcionRefresco;
-    private javax.swing.JMenuItem OpcionSalir;
     private javax.swing.JButton botonRecargar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenuBar menuOpciones;
     private javax.swing.JMenuItem opcionActualizar;
     private javax.swing.JMenuItem opcionArrancar;
     private javax.swing.JMenuItem opcionCopiar;
     private javax.swing.JMenuItem opcionPegar;
+    private javax.swing.JMenu opcionRefresco;
     private javax.swing.JMenuItem opcionRelanzar;
+    private javax.swing.JMenuItem opcionSalir;
     private javax.swing.JScrollPane panelResultado;
     private javax.swing.JPopupMenu popupEditar;
     private javax.swing.JTable tablaResultados;

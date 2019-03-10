@@ -45,11 +45,11 @@ public class PantallaImportar extends javax.swing.JDialog {
     IDfSession sesion = conectarDocumentum();
 
     public String getRutadcm() {
-        return this.TextoCarpetaDocumentum.getText();
+        return this.textoCarpetaDocumentum.getText();
     }
 
     public void setRutadcm(String rutadcm) {
-        this.TextoCarpetaDocumentum.setText(rutadcm);
+        this.textoCarpetaDocumentum.setText(rutadcm);
     }
     public static PantallaDocumentum ventanapadre = null;
 
@@ -75,8 +75,8 @@ public class PantallaImportar extends javax.swing.JDialog {
             Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
         }
         utilidadesdocumentum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        RBFichero.setSelected(true);
-        CheckCrearDir.setVisible(false);
+        rBFichero.setSelected(true);
+        checkCrearDir.setVisible(false);
     }
 
     protected static Image getLogo() {
@@ -106,24 +106,24 @@ public class PantallaImportar extends javax.swing.JDialog {
         popupHistorial = new javax.swing.JPopupMenu();
         opcionVaciarHistorial = new javax.swing.JMenuItem();
         panelImportar = new javax.swing.JPanel();
-        LabelFicheroImportar = new javax.swing.JLabel();
+        labelFicheroImportar = new javax.swing.JLabel();
         comboTipoDocumental = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        TextoFichero = new javax.swing.JTextField();
-        TextoCarpetaDocumentum = new javax.swing.JTextField();
+        textoFichero = new javax.swing.JTextField();
+        textoCarpetaDocumentum = new javax.swing.JTextField();
         botonSelFichero = new javax.swing.JButton();
-        LabelNombreFichero = new javax.swing.JLabel();
-        TextoNombreFichero = new javax.swing.JTextField();
-        RBFichero = new javax.swing.JRadioButton();
-        RBDirectorio = new javax.swing.JRadioButton();
-        CheckCrearDir = new javax.swing.JCheckBox();
+        labelNombreFichero = new javax.swing.JLabel();
+        textoNombreFichero = new javax.swing.JTextField();
+        rBFichero = new javax.swing.JRadioButton();
+        rBDirectorio = new javax.swing.JRadioButton();
+        checkCrearDir = new javax.swing.JCheckBox();
         panelEstado = new javax.swing.JPanel();
         textoLog = new javax.swing.JTextField();
         botonEjecutar = new javax.swing.JButton();
         botonSalir = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        opciones = new javax.swing.JMenu();
+        menuPrincipal = new javax.swing.JMenuBar();
+        menuOpciones = new javax.swing.JMenu();
         opcionEjecutar = new javax.swing.JMenuItem();
         opcionSalir = new javax.swing.JMenuItem();
 
@@ -174,7 +174,7 @@ public class PantallaImportar extends javax.swing.JDialog {
 
         panelImportar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        LabelFicheroImportar.setText("Fichero a Importar");
+        labelFicheroImportar.setText("Fichero a Importar");
 
         comboTipoDocumental.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -191,9 +191,9 @@ public class PantallaImportar extends javax.swing.JDialog {
 
         jLabel4.setText("Tipo Documental Documentum");
 
-        TextoFichero.addActionListener(new java.awt.event.ActionListener() {
+        textoFichero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoFicheroActionPerformed(evt);
+                textoFicheroActionPerformed(evt);
             }
         });
 
@@ -204,29 +204,29 @@ public class PantallaImportar extends javax.swing.JDialog {
             }
         });
 
-        LabelNombreFichero.setText("Nombre del fichero");
+        labelNombreFichero.setText("Nombre del fichero");
 
-        TextoNombreFichero.addActionListener(new java.awt.event.ActionListener() {
+        textoNombreFichero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoNombreFicheroActionPerformed(evt);
+                textoNombreFicheroActionPerformed(evt);
             }
         });
 
-        RBFichero.setText("Fichero");
-        RBFichero.addActionListener(new java.awt.event.ActionListener() {
+        rBFichero.setText("Fichero");
+        rBFichero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RBFicheroActionPerformed(evt);
+                rBFicheroActionPerformed(evt);
             }
         });
 
-        RBDirectorio.setText("Directorio");
-        RBDirectorio.addActionListener(new java.awt.event.ActionListener() {
+        rBDirectorio.setText("Directorio");
+        rBDirectorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RBDirectorioActionPerformed(evt);
+                rBDirectorioActionPerformed(evt);
             }
         });
 
-        CheckCrearDir.setText("Crear directorio");
+        checkCrearDir.setText("Crear directorio");
 
         javax.swing.GroupLayout panelImportarLayout = new javax.swing.GroupLayout(panelImportar);
         panelImportar.setLayout(panelImportarLayout);
@@ -236,27 +236,27 @@ public class PantallaImportar extends javax.swing.JDialog {
                 .addContainerGap(83, Short.MAX_VALUE)
                 .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(TextoCarpetaDocumentum)
+                        .addComponent(textoCarpetaDocumentum)
                         .addComponent(comboTipoDocumental, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(panelImportarLayout.createSequentialGroup()
                             .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(panelImportarLayout.createSequentialGroup()
-                                    .addComponent(LabelFicheroImportar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelFicheroImportar, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(53, 53, 53)
-                                    .addComponent(RBFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(rBFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(RBDirectorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addComponent(TextoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(rBDirectorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(textoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(botonSelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelImportarLayout.createSequentialGroup()
-                            .addComponent(LabelNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(54, 54, 54)
-                            .addComponent(CheckCrearDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(TextoNombreFichero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(checkCrearDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(textoNombreFichero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(55, 55, 55))
         );
         panelImportarLayout.setVerticalGroup(
@@ -264,27 +264,27 @@ public class PantallaImportar extends javax.swing.JDialog {
             .addGroup(panelImportarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LabelFicheroImportar)
-                    .addComponent(RBFichero)
-                    .addComponent(RBDirectorio))
+                    .addComponent(labelFicheroImportar)
+                    .addComponent(rBFichero)
+                    .addComponent(rBDirectorio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(TextoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textoFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonSelFichero))
                 .addGroup(panelImportarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelImportarLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(LabelNombreFichero)
+                        .addComponent(labelNombreFichero)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(panelImportarLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CheckCrearDir)
+                        .addComponent(checkCrearDir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(TextoNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textoNombreFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TextoCarpetaDocumentum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textoCarpetaDocumentum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -346,7 +346,7 @@ public class PantallaImportar extends javax.swing.JDialog {
             }
         });
 
-        opciones.setText("Opciones");
+        menuOpciones.setText("Opciones");
 
         opcionEjecutar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         opcionEjecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar_peq.png"))); // NOI18N
@@ -356,7 +356,7 @@ public class PantallaImportar extends javax.swing.JDialog {
                 opcionEjecutarActionPerformed(evt);
             }
         });
-        opciones.add(opcionEjecutar);
+        menuOpciones.add(opcionEjecutar);
 
         opcionSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
         opcionSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
@@ -366,11 +366,11 @@ public class PantallaImportar extends javax.swing.JDialog {
                 opcionSalirActionPerformed(evt);
             }
         });
-        opciones.add(opcionSalir);
+        menuOpciones.add(opcionSalir);
 
-        jMenuBar1.add(opciones);
+        menuPrincipal.add(menuOpciones);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -409,8 +409,8 @@ public class PantallaImportar extends javax.swing.JDialog {
         new Thread() {
             @Override
             public void run() {
-                Utilidades.escribeLog("Inicio Importar directorio " + TextoFichero.getText() + " en " + TextoCarpetaDocumentum.getText());
-                dirSSOO = TextoFichero.getText();
+                Utilidades.escribeLog("Inicio Importar directorio " + textoFichero.getText() + " en " + textoCarpetaDocumentum.getText());
+                dirSSOO = textoFichero.getText();
                 panelImportar.setEnabled(false);
                 botonEjecutar.setEnabled(false);
                 botonSalir.setEnabled(false);
@@ -432,10 +432,10 @@ public class PantallaImportar extends javax.swing.JDialog {
                 opcionEjecutar.setEnabled(true);
                 opcionSalir.setEnabled(true);
                 barradocum.dispose();
-                ventanapadre.BuscarEnDocumentum();
+                ventanapadre.buscarEnDocumentum();
                 dispose();
-                CheckCrearDir.setEnabled(true);
-                Utilidades.escribeLog("Fin Importar directorio " + TextoFichero.getText() + " en " + TextoCarpetaDocumentum.getText());
+                checkCrearDir.setEnabled(true);
+                Utilidades.escribeLog("Fin Importar directorio " + textoFichero.getText() + " en " + textoCarpetaDocumentum.getText());
             }
         }.start();
     }
@@ -446,11 +446,11 @@ public class PantallaImportar extends javax.swing.JDialog {
     }//GEN-LAST:event_botonSalirActionPerformed
 
     private void botonEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEjecutarActionPerformed
-        if (ComprobarValores()) {
-            if (this.RBFichero.isSelected()) {
-                Utilidades.escribeLog("Inicio Importar fichero " + TextoFichero.getText());
+        if (comprobarValores()) {
+            if (this.rBFichero.isSelected()) {
+                Utilidades.escribeLog("Inicio Importar fichero " + textoFichero.getText());
                 subirADocumentum();
-                Utilidades.escribeLog("Fin Importar fichero " + TextoFichero.getText());
+                Utilidades.escribeLog("Fin Importar fichero " + textoFichero.getText());
             } else {
                 importarDirectorio();
             }
@@ -458,11 +458,11 @@ public class PantallaImportar extends javax.swing.JDialog {
     }//GEN-LAST:event_botonEjecutarActionPerformed
 
     private void opcionEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionEjecutarActionPerformed
-        if (ComprobarValores()) {
-            if (this.RBFichero.isSelected()) {
-                Utilidades.escribeLog("Inicio Importar fichero" + TextoFichero.getText());
+        if (comprobarValores()) {
+            if (this.rBFichero.isSelected()) {
+                Utilidades.escribeLog("Inicio Importar fichero" + textoFichero.getText());
                 subirADocumentum();
-                Utilidades.escribeLog("Fin Importar fichero" + TextoFichero.getText());
+                Utilidades.escribeLog("Fin Importar fichero" + textoFichero.getText());
             } else {
                 importarDirectorio();
             }
@@ -507,19 +507,19 @@ public class PantallaImportar extends javax.swing.JDialog {
 
     }//GEN-LAST:event_opcionVaciarHistorialActionPerformed
 
-    private void TextoFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoFicheroActionPerformed
+    private void textoFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoFicheroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextoFicheroActionPerformed
+    }//GEN-LAST:event_textoFicheroActionPerformed
 
     private void botonSelFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSelFicheroActionPerformed
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("/"));
-        if (RBFichero.isSelected()) {
+        if (rBFichero.isSelected()) {
             chooser.setDialogTitle("Seleccionar fichero a importar");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                TextoFichero.setText(chooser.getSelectedFile().toString());
-                TextoNombreFichero.setText(chooser.getSelectedFile().getName());
+                textoFichero.setText(chooser.getSelectedFile().toString());
+                textoNombreFichero.setText(chooser.getSelectedFile().getName());
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
             }
@@ -527,16 +527,16 @@ public class PantallaImportar extends javax.swing.JDialog {
             chooser.setDialogTitle("Seleccionar Directorio a importar");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                TextoFichero.setText(chooser.getSelectedFile().toString());
+                textoFichero.setText(chooser.getSelectedFile().toString());
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el directorio a importar");
             }
         }
     }//GEN-LAST:event_botonSelFicheroActionPerformed
 
-    private void TextoNombreFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoNombreFicheroActionPerformed
+    private void textoNombreFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoNombreFicheroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextoNombreFicheroActionPerformed
+    }//GEN-LAST:event_textoNombreFicheroActionPerformed
 
     private void textoLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoLogActionPerformed
         // TODO add your handling code here:
@@ -551,21 +551,21 @@ public class PantallaImportar extends javax.swing.JDialog {
 
     }//GEN-LAST:event_textoLogMousePressed
 
-    private void RBDirectorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RBDirectorioActionPerformed
-        RBFichero.setSelected(false);
-        LabelFicheroImportar.setText("Directorio a Importar");
-        LabelNombreFichero.setEnabled(false);
-        TextoNombreFichero.setEnabled(false);
-        CheckCrearDir.setVisible(true);
-    }//GEN-LAST:event_RBDirectorioActionPerformed
+    private void rBDirectorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rBDirectorioActionPerformed
+        rBFichero.setSelected(false);
+        labelFicheroImportar.setText("Directorio a Importar");
+        labelNombreFichero.setEnabled(false);
+        textoNombreFichero.setEnabled(false);
+        checkCrearDir.setVisible(true);
+    }//GEN-LAST:event_rBDirectorioActionPerformed
 
-    private void RBFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RBFicheroActionPerformed
-        RBDirectorio.setSelected(false);
-        LabelFicheroImportar.setText("Fichero a Importar");
-        LabelNombreFichero.setEnabled(true);
-        TextoNombreFichero.setEnabled(true);
-        CheckCrearDir.setVisible(false);
-    }//GEN-LAST:event_RBFicheroActionPerformed
+    private void rBFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rBFicheroActionPerformed
+        rBDirectorio.setSelected(false);
+        labelFicheroImportar.setText("Fichero a Importar");
+        labelNombreFichero.setEnabled(true);
+        textoNombreFichero.setEnabled(true);
+        checkCrearDir.setVisible(false);
+    }//GEN-LAST:event_rBFicheroActionPerformed
 
     private void botonEjecutarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonEjecutarMousePressed
         textoLog.setText("Importando fichero en Documentum ...");
@@ -583,38 +583,38 @@ public class PantallaImportar extends javax.swing.JDialog {
         }
     }
 
-    private Boolean ComprobarValores() {
+    private Boolean comprobarValores() {
         Boolean correcto = true;
 
-        if (RBFichero.isSelected()) {
-            if (TextoFichero.getText().isEmpty()) {
+        if (rBFichero.isSelected()) {
+            if (textoFichero.getText().isEmpty()) {
                 textoLog.setText("Debe indicar el fichero a importar");
-                TextoFichero.requestFocus();
+                textoFichero.requestFocus();
                 return false;
             }
 
-            if (TextoNombreFichero.getText().isEmpty()) {
+            if (textoNombreFichero.getText().isEmpty()) {
                 textoLog.setText("Debe indicar un nombre de fichero");
-                TextoNombreFichero.requestFocus();
+                textoNombreFichero.requestFocus();
                 return false;
             }
         } else {
-            if (TextoFichero.getText().isEmpty()) {
+            if (textoFichero.getText().isEmpty()) {
                 textoLog.setText("Debe indicar el directorio del Sistema Operativo a importar");
-                TextoFichero.requestFocus();
+                textoFichero.requestFocus();
                 return false;
             }
         }
 
-        if (TextoCarpetaDocumentum.getText().isEmpty()) {
+        if (textoCarpetaDocumentum.getText().isEmpty()) {
             textoLog.setText("Debe indicar una carpeta de destino en Documentum");
-            TextoCarpetaDocumentum.requestFocus();
+            textoCarpetaDocumentum.requestFocus();
             return false;
         }
 
-        if (ventanapadre.utilDocum.existeCarpeta(TextoCarpetaDocumentum.getText()) == false) {
+        if (ventanapadre.utilDocum.existeCarpeta(textoCarpetaDocumentum.getText()) == false) {
             textoLog.setText("La carpeta indicada parece que no existe en Documentum");
-            TextoCarpetaDocumentum.requestFocus();
+            textoCarpetaDocumentum.requestFocus();
             return false;
         }
         return correcto;
@@ -685,21 +685,17 @@ public class PantallaImportar extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox CheckCrearDir;
-    private javax.swing.JLabel LabelFicheroImportar;
-    private javax.swing.JLabel LabelNombreFichero;
-    private javax.swing.JRadioButton RBDirectorio;
-    private javax.swing.JRadioButton RBFichero;
-    private javax.swing.JTextField TextoCarpetaDocumentum;
-    private javax.swing.JTextField TextoFichero;
-    private javax.swing.JTextField TextoNombreFichero;
     private javax.swing.JButton botonEjecutar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JButton botonSelFichero;
+    private javax.swing.JCheckBox checkCrearDir;
     private javax.swing.JComboBox comboTipoDocumental;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JLabel labelFicheroImportar;
+    private javax.swing.JLabel labelNombreFichero;
+    private javax.swing.JMenu menuOpciones;
+    private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenuItem opcionCopiar;
     private javax.swing.JMenuItem opcionCopiarValor;
     private javax.swing.JMenuItem opcionEjecutar;
@@ -707,13 +703,17 @@ public class PantallaImportar extends javax.swing.JDialog {
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JMenuItem opcionSalir;
     private javax.swing.JMenuItem opcionVaciarHistorial;
-    private javax.swing.JMenu opciones;
     private javax.swing.JPanel panelEstado;
     private javax.swing.JPanel panelImportar;
     private javax.swing.JPopupMenu popupDatos;
     private javax.swing.JPopupMenu popupEditar;
     private javax.swing.JPopupMenu popupHistorial;
+    private javax.swing.JRadioButton rBDirectorio;
+    private javax.swing.JRadioButton rBFichero;
+    private javax.swing.JTextField textoCarpetaDocumentum;
+    private javax.swing.JTextField textoFichero;
     private javax.swing.JTextField textoLog;
+    private javax.swing.JTextField textoNombreFichero;
     // End of variables declaration//GEN-END:variables
 
     private void salir() {
@@ -721,21 +721,21 @@ public class PantallaImportar extends javax.swing.JDialog {
     }
 
     private void subirADocumentum() {
-        textoLog.setText(utilidadesdocumentum.importarADocumentum(TextoNombreFichero.getText(), TextoFichero.getText(), TextoCarpetaDocumentum.getText(), tipodocumental));
-        PantallaImportar.ventanapadre.ActualizarTablaDocumentos(TextoCarpetaDocumentum.getText());
+        textoLog.setText(utilidadesdocumentum.importarADocumentum(textoNombreFichero.getText(), textoFichero.getText(), textoCarpetaDocumentum.getText(), tipodocumental));
+        PantallaImportar.ventanapadre.actualizarTablaDocumentos(textoCarpetaDocumentum.getText());
     }
 
     public void ImportarDirEnDcm(String rutaSO) {
         File dir = new File(rutaSO);
         String directorio = dir.getName();
-        if (CheckCrearDir.isEnabled() && CheckCrearDir.isSelected()) {
-            TextoCarpetaDocumentum.setText(TextoCarpetaDocumentum.getText() + "/" + directorio);
-            String nuevarutaDocum = TextoCarpetaDocumentum.getText();
+        if (checkCrearDir.isEnabled() && checkCrearDir.isSelected()) {
+            textoCarpetaDocumentum.setText(textoCarpetaDocumentum.getText() + "/" + directorio);
+            String nuevarutaDocum = textoCarpetaDocumentum.getText();
             this.textoLog.setText("Creando carpeta " + nuevarutaDocum + " ... ");
             this.barradocum.setLabelMensa("Creando carpeta " + nuevarutaDocum + " ... ");
             IDfFolder nuevafolder = crearCarpeta(nuevarutaDocum);
             this.textoLog.setText("Creada carpeta " + nuevarutaDocum);
-            CheckCrearDir.setEnabled(false);
+            checkCrearDir.setEnabled(false);
         }
         File[] listFile = dir.listFiles();
         if (listFile != null) {
@@ -743,7 +743,7 @@ public class PantallaImportar extends javax.swing.JDialog {
                 String ruta = listFile[i].getPath().replace("\\", "/");
                 if (listFile[i].isDirectory()) {
                     String nueva = ruta.substring(this.dirSSOO.length() + 1, ruta.length());
-                    String nombreDir = this.TextoCarpetaDocumentum.getText() + (nueva.equals("/") ? "" : new StringBuilder().append("/").append(nueva).toString());
+                    String nombreDir = this.textoCarpetaDocumentum.getText() + (nueva.equals("/") ? "" : new StringBuilder().append("/").append(nueva).toString());
 
                     this.textoLog.setText("Creando carpeta " + nombreDir + " ... ");
                     this.barradocum.setLabelMensa("Creando carpeta " + nombreDir + " ... ");
@@ -756,7 +756,7 @@ public class PantallaImportar extends javax.swing.JDialog {
                     String nombre = listFile[i].getName().replace("\\", "/");
                     String nueva = ruta.substring(this.dirSSOO.length() + 1, ruta.length() - nombre.length());
                     nueva = nueva.endsWith("/") ? nueva.substring(0, nueva.length() - 1) : nueva;
-                    String rutaDocum = this.TextoCarpetaDocumentum.getText() + ((nueva.equals("/")) || (nueva.equals("")) ? "" : new StringBuilder().append("/").append(nueva).toString());
+                    String rutaDocum = this.textoCarpetaDocumentum.getText() + ((nueva.equals("/")) || (nueva.equals("")) ? "" : new StringBuilder().append("/").append(nueva).toString());
 
                     this.barradocum.setLabelMensa("Creando documento " + nombre + " ... ");
                     this.textoLog.setText("Creando documento " + nombre + " ... ");

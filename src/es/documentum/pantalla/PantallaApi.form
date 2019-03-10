@@ -149,7 +149,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel1" min="-2" pref="131" max="-2" attributes="0"/>
                                   <EmptySpace pref="646" max="32767" attributes="0"/>
-                                  <Component id="BotonBorrarSalida" min="-2" pref="125" max="-2" attributes="0"/>
+                                  <Component id="botonBorrarSalida" min="-2" pref="125" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
                               <Component id="scrollMultiAPI" alignment="0" max="32767" attributes="0"/>
@@ -201,7 +201,7 @@
                           <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel1" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
-                              <Component id="BotonBorrarSalida" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="botonBorrarSalida" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane2" pref="143" max="32767" attributes="0"/>
@@ -341,12 +341,12 @@
         </Component>
         <Component class="javax.swing.JTextField" name="textoAPI">
         </Component>
-        <Component class="javax.swing.JButton" name="BotonBorrarSalida">
+        <Component class="javax.swing.JButton" name="botonBorrarSalida">
           <Properties>
             <Property name="text" type="java.lang.String" value="Borrar Salida"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotonBorrarSalidaActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonBorrarSalidaActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="checkMostrarSQL">

@@ -262,12 +262,12 @@ public class PantallaJobs extends javax.swing.JFrame {
     }//GEN-LAST:event_opcionRunJobActionPerformed
 
     private void opcionExportarJobsExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionExportarJobsExcelActionPerformed
-        ExportarAtributosExcel();
+        exportarAtributosExcel();
     }//GEN-LAST:event_opcionExportarJobsExcelActionPerformed
 
     private void tablaJobsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaJobsMouseClicked
         if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1 && tablaJobs.getModel().getRowCount() > 0) {
-            AbrirJob();
+            abrirJob();
         }
 
     }//GEN-LAST:event_tablaJobsMouseClicked
@@ -468,7 +468,7 @@ public class PantallaJobs extends javax.swing.JFrame {
         System.gc();
     }
 
-    private void AbrirJob() {
+    private void abrirJob() {
 //        String resultado = tablaJobs.getModel().getValueAt(tablaJobs.convertRowIndexToModel(tablaJobs.getSelectedRow()), 4).toString();
 //        try {
 //            File path = new File(resultado);
@@ -478,7 +478,7 @@ public class PantallaJobs extends javax.swing.JFrame {
 //        }
     }
 
-    private void ExportarAtributosExcel() {
+    private void exportarAtributosExcel() {
         if (tablaJobs.getModel().getRowCount() > 0) {
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));
@@ -555,7 +555,7 @@ public class PantallaJobs extends javax.swing.JFrame {
                 fileName = object.getFileEx2(fileName, "", 0, "", false);
                 if ((fileName != null) && (!fileName.equals(""))) {
                     PantallaLeerFichero lee = new PantallaLeerFichero(this, true);
-                    lee.CargarFichero(fileName);
+                    lee.cargarFichero(fileName);
                     lee.setTitle("Log de la ejecución del job " + object.getObjectName());
                     lee.setVisible(true);
 

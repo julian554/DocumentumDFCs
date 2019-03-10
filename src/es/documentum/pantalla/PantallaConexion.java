@@ -135,8 +135,8 @@ public class PantallaConexion extends javax.swing.JDialog {
 
         popupmenu = new javax.swing.JPopupMenu();
         opcionBorrar = new javax.swing.JMenuItem();
-        PanelSeleccion = new javax.swing.JScrollPane();
-        ListaSeleccion = new javax.swing.JList();
+        panelSeleccion = new javax.swing.JScrollPane();
+        listaSeleccion = new javax.swing.JList();
         botonGuardar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         textoDocbroker = new javax.swing.JTextField();
@@ -151,7 +151,7 @@ public class PantallaConexion extends javax.swing.JDialog {
         botonSalir = new javax.swing.JButton();
         botonSelecionar = new javax.swing.JButton();
         botonTestConex = new javax.swing.JButton();
-        EtiquetaPanel = new javax.swing.JLabel();
+        etiquetaPanel = new javax.swing.JLabel();
         comboRepositorio = new javax.swing.JComboBox<>();
         botonConectar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
@@ -179,18 +179,18 @@ public class PantallaConexion extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
 
-        ListaSeleccion.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        ListaSeleccion.setName("ListaSeleccion"); // NOI18N
-        ListaSeleccion.addMouseListener(new java.awt.event.MouseAdapter() {
+        listaSeleccion.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listaSeleccion.setName("listaSeleccion"); // NOI18N
+        listaSeleccion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ListaSeleccionMouseClicked(evt);
+                listaSeleccionMouseClicked(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                ListaSeleccionMousePressed(evt);
+                listaSeleccionMousePressed(evt);
             }
         });
-        PanelSeleccion.setViewportView(ListaSeleccion);
-        ListaSeleccion.getAccessibleContext().setAccessibleName("ListaSeleccion");
+        panelSeleccion.setViewportView(listaSeleccion);
+        listaSeleccion.getAccessibleContext().setAccessibleName("ListaSeleccion");
 
         botonGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/guardar.png"))); // NOI18N
         botonGuardar.setMnemonic('A');
@@ -267,14 +267,14 @@ public class PantallaConexion extends javax.swing.JDialog {
             }
         });
 
-        EtiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        EtiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        EtiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        etiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        etiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        etiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseClicked(evt);
+                etiquetaPanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseEntered(evt);
+                etiquetaPanelMouseEntered(evt);
             }
         });
 
@@ -362,7 +362,7 @@ public class PantallaConexion extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(EtiquetaPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(etiquetaPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,7 +376,7 @@ public class PantallaConexion extends javax.swing.JDialog {
                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(398, 398, 398))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(PanelSeleccion)
+                        .addComponent(panelSeleccion)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -447,7 +447,7 @@ public class PantallaConexion extends javax.swing.JDialog {
                             .addComponent(jLabel11))
                         .addGap(4, 4, 4)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PanelSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(panelSeleccion, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -499,7 +499,7 @@ public class PantallaConexion extends javax.swing.JDialog {
                     .addComponent(botonSalir)
                     .addComponent(botonTestConex))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {textoDocbroker, textoPuerto, textoRepositorio});
@@ -531,20 +531,20 @@ public class PantallaConexion extends javax.swing.JDialog {
         propapp.setProperty("repositorio", textoRepositorio.getText());
         util.escribirProperties(directorio + "dfc.properties", prop);
         util.escribirProperties(directorio + "DocumentumDFCs.properties", propapp);
-        int numelem = ListaSeleccion.getModel().getSize();
+        int numelem = listaSeleccion.getModel().getSize();
         int pos = 0;
 
         while (pos < numelem) {
-            if (ListaSeleccion.getModel().getElementAt(pos).equals(textoDocbroker.getText().toLowerCase())) {
+            if (listaSeleccion.getModel().getElementAt(pos).equals(textoDocbroker.getText().toLowerCase())) {
                 break;
             }
             pos++;
         }
         if (pos >= numelem) {
-            DefaultListModel ModeloLista = (DefaultListModel) ListaSeleccion.getModel();
+            DefaultListModel ModeloLista = (DefaultListModel) listaSeleccion.getModel();
             ModeloLista.addElement(textoDocbroker.getText().toLowerCase());
-            ListaSeleccion.setModel(ModeloLista);
-            ListaSeleccion.setSelectedIndex(pos);
+            listaSeleccion.setModel(ModeloLista);
+            listaSeleccion.setSelectedIndex(pos);
         }
 
     }//GEN-LAST:event_botonGuardarActionPerformed
@@ -560,18 +560,18 @@ public class PantallaConexion extends javax.swing.JDialog {
 
     private void botonSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSelecionarActionPerformed
         if (conexionOK) {
-            SeleccionarConexion();
+            seleccionarConexion();
             this.dispose();
         } else {
-            EtiquetaPanel.setText("Debe confirma que la conexión es correcta. Use el botón \"Test Conexión\"");
+            etiquetaPanel.setText("Debe confirma que la conexión es correcta. Use el botón \"Test Conexión\"");
             botonTestConex.requestFocus();
         }
     }//GEN-LAST:event_botonSelecionarActionPerformed
 
-    private void ListaSeleccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaSeleccionMouseClicked
-        if (ListaSeleccion.getModel().getSize() > 0) {
-            if (ListaSeleccion.getSelectedIndex() >= 0) {
-                String directoriodfc = ListaSeleccion.getModel().getElementAt(ListaSeleccion.getSelectedIndex()).toString();
+    private void listaSeleccionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaSeleccionMouseClicked
+        if (listaSeleccion.getModel().getSize() > 0) {
+            if (listaSeleccion.getSelectedIndex() >= 0) {
+                String directoriodfc = listaSeleccion.getModel().getElementAt(listaSeleccion.getSelectedIndex()).toString();
                 String directorio = dirdfc + "repos" + util.separador() + directoriodfc + util.separador();
                 MiProperties prop = util.leerPropeties(directorio + "dfc.properties");
                 textoDocbroker.setText(prop.getProperty("dfc.docbroker.host[0]"));
@@ -596,12 +596,12 @@ public class PantallaConexion extends javax.swing.JDialog {
                 this.repaint();
             }
         }
-    }//GEN-LAST:event_ListaSeleccionMouseClicked
+    }//GEN-LAST:event_listaSeleccionMouseClicked
 
     private void botonTestConexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTestConexActionPerformed
-        if (ComprobarValores()) {
+        if (comprobarValores()) {
             botonTestConex.setEnabled(false);
-            EtiquetaPanel.setText("Estableciendo Conexión con Documentum ...");
+            etiquetaPanel.setText("Estableciendo Conexión con Documentum ...");
             MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
             prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
             prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());
@@ -628,13 +628,13 @@ public class PantallaConexion extends javax.swing.JDialog {
             if (idsesion == null) {
                 botonTestConex.setBackground(colornoconex);
                 conexionOK = false;
-                EtiquetaPanel.setText(utildocum.dameError());
+                etiquetaPanel.setText(utildocum.dameError());
             } else {
                 botonTestConex.setBackground(colorconex);
                 conexionOK = true;
-                EtiquetaPanel.setText("Conexión correcta con Documentum");
-                versiondocumentum = utildocum.DameVersionDocumentum();
-                idrepositorio = utildocum.DameIdRepositorio();
+                etiquetaPanel.setText("Conexión correcta con Documentum");
+                versiondocumentum = utildocum.dameVersionDocumentum();
+                idrepositorio = utildocum.dameIdRepositorio();
                 docbroker = textoDocbroker.getText();
                 repositorio = textoRepositorio.getText();
                 puerto = textoPuerto.getText();
@@ -657,31 +657,31 @@ public class PantallaConexion extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_botonTestConexActionPerformed
 
-    private void EtiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseEntered
-        EtiquetaPanel.setToolTipText(EtiquetaPanel.getText());
-    }//GEN-LAST:event_EtiquetaPanelMouseEntered
+    private void etiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseEntered
+        etiquetaPanel.setToolTipText(etiquetaPanel.getText());
+    }//GEN-LAST:event_etiquetaPanelMouseEntered
 
-    private void ListaSeleccionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaSeleccionMousePressed
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && ListaSeleccion.getModel().getSize() > 0) {
+    private void listaSeleccionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaSeleccionMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && listaSeleccion.getModel().getSize() > 0) {
             popupmenu.show(evt.getComponent(), evt.getX(), evt.getY());
         }
-    }//GEN-LAST:event_ListaSeleccionMousePressed
+    }//GEN-LAST:event_listaSeleccionMousePressed
 
     private void opcionBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionBorrarActionPerformed
-        if (!ListaSeleccion.isSelectionEmpty()) {
-            String directorio = ListaSeleccion.getModel().getElementAt(ListaSeleccion.getSelectedIndex()).toString();
+        if (!listaSeleccion.isSelectionEmpty()) {
+            String directorio = listaSeleccion.getModel().getElementAt(listaSeleccion.getSelectedIndex()).toString();
             System.out.println(dirdfc + "repos" + util.separador() + directorio);
             util.borrarDirectorio(dirdfc + "repos" + util.separador() + directorio);
-            ListaSeleccion.removeAll();
+            listaSeleccion.removeAll();
             cargarLista();
         }
     }//GEN-LAST:event_opcionBorrarActionPerformed
 
-    private void EtiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseClicked
+    private void etiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseClicked
         if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            Utilidades.copiarTextoPortapapeles(EtiquetaPanel.getText());
+            Utilidades.copiarTextoPortapapeles(etiquetaPanel.getText());
         }
-    }//GEN-LAST:event_EtiquetaPanelMouseClicked
+    }//GEN-LAST:event_etiquetaPanelMouseClicked
 
     private void comboRepositorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRepositorioActionPerformed
 
@@ -717,15 +717,13 @@ public class PantallaConexion extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel EtiquetaPanel;
-    private javax.swing.JList ListaSeleccion;
-    private javax.swing.JScrollPane PanelSeleccion;
     private javax.swing.JButton botonConectar;
     private javax.swing.JButton botonGuardar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JButton botonSelecionar;
     private javax.swing.JButton botonTestConex;
     private javax.swing.JComboBox<String> comboRepositorio;
+    private javax.swing.JLabel etiquetaPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -743,7 +741,9 @@ public class PantallaConexion extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JList listaSeleccion;
     private javax.swing.JMenuItem opcionBorrar;
+    private javax.swing.JScrollPane panelSeleccion;
     private javax.swing.JPopupMenu popupmenu;
     private javax.swing.JTextField textoDocbroker;
     private javax.swing.JPasswordField textoPassword;
@@ -760,7 +760,7 @@ public class PantallaConexion extends javax.swing.JDialog {
         String[] listadir = dirrepos.list();
         DefaultListModel ModeloLista = new DefaultListModel();
         if (listadir == null) {
-            ListaSeleccion.setModel(ModeloLista);
+            listaSeleccion.setModel(ModeloLista);
             return;
         }
 
@@ -770,8 +770,8 @@ public class PantallaConexion extends javax.swing.JDialog {
             }
 
         }
-        ListaSeleccion.setModel(ModeloLista);
-        ListaSeleccion.setCellRenderer(new MiCellRenderer());
+        listaSeleccion.setModel(ModeloLista);
+        listaSeleccion.setCellRenderer(new MiCellRenderer());
     }
 
     class MiCellRenderer extends DefaultListCellRenderer {
@@ -795,11 +795,11 @@ public class PantallaConexion extends javax.swing.JDialog {
         }
     }
 
-    private void SeleccionarConexion() {
+    private void seleccionarConexion() {
         String directorio = dirdfc;
-        if (ListaSeleccion.getModel().getSize() > 0) {
-            if (ListaSeleccion.getSelectedIndex() > 0) {
-                directorio = directorio + "repos" + util.separador() + ListaSeleccion.getModel().getElementAt(ListaSeleccion.getSelectedIndex()) + util.separador();
+        if (listaSeleccion.getModel().getSize() > 0) {
+            if (listaSeleccion.getSelectedIndex() > 0) {
+                directorio = directorio + "repos" + util.separador() + listaSeleccion.getModel().getElementAt(listaSeleccion.getSelectedIndex()) + util.separador();
             }
         }
         MiProperties prop = util.leerPropeties(directorio + "dfc.properties");
@@ -824,26 +824,26 @@ public class PantallaConexion extends javax.swing.JDialog {
 
     }
 
-    private Boolean ComprobarValores() {
+    private Boolean comprobarValores() {
         Boolean resultado = true;
         if (textoDocbroker.getText().isEmpty()) {
-            EtiquetaPanel.setText("Debe dar un valor al Docbroker");
+            etiquetaPanel.setText("Debe dar un valor al Docbroker");
             textoDocbroker.requestFocus();
             return false;
         }
         if (textoPuerto.getText().isEmpty()) {
-            EtiquetaPanel.setText("Debe dar un valor al Puerto");
+            etiquetaPanel.setText("Debe dar un valor al Puerto");
             textoPuerto.requestFocus();
             return false;
         }
 
         if (textoUsuario.getText().isEmpty()) {
-            EtiquetaPanel.setText("Debe indicar el Usuario");
+            etiquetaPanel.setText("Debe indicar el Usuario");
             textoUsuario.requestFocus();
             return false;
         }
         if (new String(textoPassword.getPassword()).isEmpty()) {
-            EtiquetaPanel.setText("Debe indicar la Password del Usuario");
+            etiquetaPanel.setText("Debe indicar la Password del Usuario");
             textoPassword.requestFocus();
             return false;
         }
@@ -851,17 +851,17 @@ public class PantallaConexion extends javax.swing.JDialog {
         if (boton.equals("conectar")) {
             boton = "";
         } else if (textoRepositorio.getText().isEmpty()) {
-            EtiquetaPanel.setText("Debe dar un valor al Repositorio");
+            etiquetaPanel.setText("Debe dar un valor al Repositorio");
             textoRepositorio.requestFocus();
             return false;
         }
-        EtiquetaPanel.setText("");
+        etiquetaPanel.setText("");
         return resultado;
     }
 
     private IDfClient conectar_bocbroker() {
         comboRepositorio.removeAllItems();
-        if (ComprobarValores()) {
+        if (comprobarValores()) {
             MiProperties prop = util.leerPropeties(dirdfc + "dfc.properties");
             prop.setProperty("dfc.docbroker.host[0]", textoDocbroker.getText());
             prop.setProperty("dfc.docbroker.port[0]", textoPuerto.getText());

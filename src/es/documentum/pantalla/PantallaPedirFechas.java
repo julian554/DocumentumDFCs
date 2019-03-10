@@ -72,11 +72,11 @@ public class PantallaPedirFechas extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         botonCancelar = new javax.swing.JButton();
-        EtiquetaPanel = new javax.swing.JLabel();
-        DPFechaInicio = new com.lgooddatepicker.core.DatePicker();
-        DPFechaFin = new com.lgooddatepicker.core.DatePicker();
+        etiquetaPanel = new javax.swing.JLabel();
+        dPFechaInicio = new com.lgooddatepicker.core.DatePicker();
+        dPFechaFin = new com.lgooddatepicker.core.DatePicker();
         jLabel3 = new javax.swing.JLabel();
-        TextoCorreo = new javax.swing.JTextField();
+        textoCorreo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -112,18 +112,18 @@ public class PantallaPedirFechas extends javax.swing.JDialog {
             }
         });
 
-        EtiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        EtiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        EtiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        etiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        etiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        etiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseClicked(evt);
+                etiquetaPanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseEntered(evt);
+                etiquetaPanelMouseEntered(evt);
             }
         });
 
-        DPFechaInicio.setToolTipText("Fecha de Inicio");
+        dPFechaInicio.setToolTipText("Fecha de Inicio");
 
         jLabel3.setText("Email");
         jLabel3.setMaximumSize(new java.awt.Dimension(34, 24));
@@ -135,7 +135,7 @@ public class PantallaPedirFechas extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
                 .addGap(2, 2, 2))
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
@@ -143,19 +143,19 @@ public class PantallaPedirFechas extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TextoCorreo))
+                        .addComponent(textoCorreo))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DPFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(dPFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(32, 32, 32)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(botonAceptar))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(DPFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dPFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonCancelar))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -165,8 +165,8 @@ public class PantallaPedirFechas extends javax.swing.JDialog {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(DPFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(DPFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dPFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dPFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,23 +174,23 @@ public class PantallaPedirFechas extends javax.swing.JDialog {
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botonCancelar, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(botonAceptar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        if (ComprobarValores()) {
-            setFechafinal(DPFechaFin.getText());
-            setFechainicial(DPFechaInicio.getText());
-            setCorreo(TextoCorreo.getText());
+        if (comprobarValores()) {
+            setFechafinal(dPFechaFin.getText());
+            setFechainicial(dPFechaInicio.getText());
+            setCorreo(textoCorreo.getText());
             setRespuesta(true);
             this.dispose();
         }
@@ -202,15 +202,15 @@ public class PantallaPedirFechas extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
-    private void EtiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseEntered
-        EtiquetaPanel.setToolTipText(EtiquetaPanel.getText());
-    }//GEN-LAST:event_EtiquetaPanelMouseEntered
+    private void etiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseEntered
+        etiquetaPanel.setToolTipText(etiquetaPanel.getText());
+    }//GEN-LAST:event_etiquetaPanelMouseEntered
 
-    private void EtiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseClicked
+    private void etiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseClicked
         if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            Utilidades.copiarTextoPortapapeles(EtiquetaPanel.getText());
+            Utilidades.copiarTextoPortapapeles(etiquetaPanel.getText());
         }
-    }//GEN-LAST:event_EtiquetaPanelMouseClicked
+    }//GEN-LAST:event_etiquetaPanelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -231,50 +231,50 @@ public class PantallaPedirFechas extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.lgooddatepicker.core.DatePicker DPFechaFin;
-    private com.lgooddatepicker.core.DatePicker DPFechaInicio;
-    private javax.swing.JLabel EtiquetaPanel;
-    private javax.swing.JTextField TextoCorreo;
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonCancelar;
+    private com.lgooddatepicker.core.DatePicker dPFechaFin;
+    private com.lgooddatepicker.core.DatePicker dPFechaInicio;
+    private javax.swing.JLabel etiquetaPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField textoCorreo;
     // End of variables declaration//GEN-END:variables
 
     public void asignariconos() {
     }
 
-    private Boolean ComprobarValores() {
+    private Boolean comprobarValores() {
         Boolean resultado = true;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date fecha1 = sdf.parse(DPFechaInicio.getText(), new ParsePosition(0));
+        Date fecha1 = sdf.parse(dPFechaInicio.getText(), new ParsePosition(0));
         Calendar cal1 = new GregorianCalendar();
         cal1.setTime(fecha1);
-        Date fecha2 = sdf.parse(DPFechaFin.getText(), new ParsePosition(0));
+        Date fecha2 = sdf.parse(dPFechaFin.getText(), new ParsePosition(0));
         Calendar cal2 = new GregorianCalendar();
         cal2.setTime(fecha2);
 
         // Comparaciones
         if (cal2.before(cal1)) {
-            EtiquetaPanel.setText(" La fecha final no puede ser anterior a la fecha inicial");
+            etiquetaPanel.setText(" La fecha final no puede ser anterior a la fecha inicial");
             resultado = false;
-            DPFechaInicio.setText("");
-            DPFechaFin.setText("");
+            dPFechaInicio.setText("");
+            dPFechaFin.setText("");
         }
 
         return resultado;
     }
 
     private void inicializar() {
-        DatePickerSettings settings = DPFechaInicio.getSettings();
+        DatePickerSettings settings = dPFechaInicio.getSettings();
         settings.initialDate = LocalDate.now();
         settings.formatDatesCommonEra = DateUtilities.createFormatterFromPatternString(
                 "dd/MM/yyyy", settings.pickerLocale);
         settings.formatDatesBeforeCommonEra = DateUtilities.createFormatterFromPatternString(
                 "dd/MM/yyyy", settings.pickerLocale);
 
-        settings = DPFechaFin.getSettings();
+        settings = dPFechaFin.getSettings();
         settings.initialDate = LocalDate.now();
         settings.formatDatesCommonEra = DateUtilities.createFormatterFromPatternString(
                 "dd/MM/yyyy", settings.pickerLocale);

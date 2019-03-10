@@ -211,7 +211,7 @@ public class PantallaStorage extends javax.swing.JFrame {
     }//GEN-LAST:event_opcionCopiarValorActionPerformed
 
     private void opcionExportarAExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionExportarAExcelActionPerformed
-        ExportarAtributosExcel();
+        exportarAtributosExcel();
     }//GEN-LAST:event_opcionExportarAExcelActionPerformed
 
     private void tablaStorageMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaStorageMousePressed
@@ -401,7 +401,7 @@ public class PantallaStorage extends javax.swing.JFrame {
         System.gc();
     }
 
-    private void ExportarAtributosExcel() {
+    private void exportarAtributosExcel() {
         if (tablaStorage.getModel().getRowCount() > 0) {
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));

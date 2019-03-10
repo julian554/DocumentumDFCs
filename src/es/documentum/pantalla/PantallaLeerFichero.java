@@ -181,11 +181,11 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionCerrar;
     // End of variables declaration//GEN-END:variables
 
-    public void LimpiarTexto() {
+    public void limpiarTexto() {
         Texto.setText("");
     }
 
-    public void CargarFichero(String fichero) {
+    public void cargarFichero(String fichero) {
         DefaultCaret caret = (DefaultCaret) Texto.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         BufferedReader br = null;
@@ -216,7 +216,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
         Texto.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontPoints));
     }
 
-    public Boolean CargarLista(List<String> lista) {
+    public Boolean cargarLista(List<String> lista) {
         if (lista == null) {
             return false;
         }

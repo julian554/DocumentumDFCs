@@ -92,7 +92,7 @@ public class PantallaApi extends javax.swing.JFrame {
         textoDatosApi = new javax.swing.JTextField();
         checkMulti = new javax.swing.JCheckBox();
         textoAPI = new javax.swing.JTextField();
-        BotonBorrarSalida = new javax.swing.JButton();
+        botonBorrarSalida = new javax.swing.JButton();
         checkMostrarSQL = new javax.swing.JCheckBox();
         comboHistorial = new javax.swing.JComboBox();
         panelEstado = new javax.swing.JPanel();
@@ -195,10 +195,10 @@ public class PantallaApi extends javax.swing.JFrame {
             }
         });
 
-        BotonBorrarSalida.setText("Borrar Salida");
-        BotonBorrarSalida.addActionListener(new java.awt.event.ActionListener() {
+        botonBorrarSalida.setText("Borrar Salida");
+        botonBorrarSalida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonBorrarSalidaActionPerformed(evt);
+                botonBorrarSalidaActionPerformed(evt);
             }
         });
 
@@ -236,7 +236,7 @@ public class PantallaApi extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAPILayout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 646, Short.MAX_VALUE)
-                                .addComponent(BotonBorrarSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(botonBorrarSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(scrollMultiAPI, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAPILayout.createSequentialGroup()
@@ -277,7 +277,7 @@ public class PantallaApi extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(panelAPILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BotonBorrarSalida))
+                            .addComponent(botonBorrarSalida))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
                     .addGroup(panelAPILayout.createSequentialGroup()
@@ -419,9 +419,9 @@ public class PantallaApi extends javax.swing.JFrame {
         pintarMulti(checkMulti.isSelected());
     }//GEN-LAST:event_checkMultiActionPerformed
 
-    private void BotonBorrarSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBorrarSalidaActionPerformed
+    private void botonBorrarSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarSalidaActionPerformed
         textoLog.setText("");
-    }//GEN-LAST:event_BotonBorrarSalidaActionPerformed
+    }//GEN-LAST:event_botonBorrarSalidaActionPerformed
 
     private void checkMostrarSQLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMostrarSQLActionPerformed
         // TODO add your handling code here:
@@ -486,8 +486,8 @@ public class PantallaApi extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BotonBorrarSalida;
     private javax.swing.JLabel EtiquetaEstado;
+    private javax.swing.JButton botonBorrarSalida;
     private javax.swing.JButton botonConsultar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JCheckBox checkMostrarSQL;
@@ -659,8 +659,8 @@ public class PantallaApi extends javax.swing.JFrame {
                                         tokenizer = new StringTokenizer(methodStr2, ",");
                                     }
                                     if ((tokenizer == null) || (tokenizer.countTokens() <= 1)) {
-                                        String strDocbroker = utildocum.DameDocbroker();
-                                        String docbrokerPort = utildocum.DamePuertoDocbroker();
+                                        String strDocbroker = utildocum.dameDocbroker();
+                                        String docbrokerPort = utildocum.damePuertoDocbroker();
                                         StringBuffer additionalParamBuffer = new StringBuffer();
                                         if ((methodStr2 != null) && (methodStr2.length() > 0)) {
                                             additionalParamBuffer.append(",");
@@ -772,7 +772,7 @@ public class PantallaApi extends javax.swing.JFrame {
             output = resultsBuf.toString();
             textoLog.setText(output);
             textoLog.setCaretPosition(0);
-            if (!BuscarEnComboHistorial(textoAPI.getText())) {
+            if (!buscarEnComboHistorial(textoAPI.getText())) {
                 try {
                     FileOutputStream historial = new FileOutputStream(new File(dirdfc + "historial-api.log"), true);
                     historial.write(("\n" + textoAPI.getText().replaceAll("(\r\n|\n)", " ")).getBytes());
@@ -785,7 +785,7 @@ public class PantallaApi extends javax.swing.JFrame {
 
     }
 
-    private Boolean BuscarEnComboHistorial(String texto) {
+    private Boolean buscarEnComboHistorial(String texto) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboHistorial.getModel();
 //        return (model.getIndexOf(texto) > 0);
         return (buscarEnCombo(model, texto.trim()) != -1);

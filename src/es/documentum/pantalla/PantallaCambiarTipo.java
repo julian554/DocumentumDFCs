@@ -73,7 +73,7 @@ public class PantallaCambiarTipo extends javax.swing.JDialog {
         etiquetaIdDocumentum = new javax.swing.JLabel();
         etiquetaRuta = new javax.swing.JLabel();
         botonCancelar = new javax.swing.JButton();
-        EtiquetaPanel = new javax.swing.JLabel();
+        etiquetaPanel = new javax.swing.JLabel();
         etiqueta_r_object_id = new javax.swing.JLabel();
         etiquetaCarpeta1 = new javax.swing.JLabel();
         etiquetaTipoDocumentalActual = new javax.swing.JLabel();
@@ -120,16 +120,16 @@ public class PantallaCambiarTipo extends javax.swing.JDialog {
             }
         });
 
-        EtiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        EtiquetaPanel.setForeground(new java.awt.Color(0, 0, 153));
-        EtiquetaPanel.setAutoscrolls(true);
-        EtiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        EtiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        etiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        etiquetaPanel.setForeground(new java.awt.Color(0, 0, 153));
+        etiquetaPanel.setAutoscrolls(true);
+        etiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        etiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseClicked(evt);
+                etiquetaPanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseEntered(evt);
+                etiquetaPanelMouseEntered(evt);
             }
         });
 
@@ -183,7 +183,7 @@ public class PantallaCambiarTipo extends javax.swing.JDialog {
                         .addGap(233, 233, 233)
                         .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(43, Short.MAX_VALUE))
-            .addComponent(EtiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(etiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +205,7 @@ public class PantallaCambiarTipo extends javax.swing.JDialog {
                     .addComponent(botonAceptar)
                     .addComponent(botonCancelar))
                 .addGap(18, 18, 18)
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {botonAceptar, botonCancelar});
@@ -214,17 +214,17 @@ public class PantallaCambiarTipo extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        if (ComprobarValores()) {
+        if (comprobarValores()) {
             String tipodocumental = (String) comboTipoDocumental.getSelectedItem();
-            utilDocum.CambiarTipoDocumental(r_object_id, tipodocumental);
+            utilDocum.cambiarTipoDocumental(r_object_id, tipodocumental);
             String resultado = utilDocum.dameError();
             if (resultado.isEmpty()) {
-                EtiquetaPanel.setText("Cambiado el tipo documental a " + tipodocumental);
+                etiquetaPanel.setText("Cambiado el tipo documental a " + tipodocumental);
                 setAccion("OK");
                 etiquetaTipoDocumentalActual.setText(tipodocumental);
                 setTipoDocumentalActual(tipodocumental);
             } else {
-                EtiquetaPanel.setText(resultado);
+                etiquetaPanel.setText(resultado);
             }
             //this.dispose();
         }
@@ -235,18 +235,18 @@ public class PantallaCambiarTipo extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
-    private void EtiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseEntered
-        EtiquetaPanel.setToolTipText(EtiquetaPanel.getText());
-    }//GEN-LAST:event_EtiquetaPanelMouseEntered
+    private void etiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseEntered
+        etiquetaPanel.setToolTipText(etiquetaPanel.getText());
+    }//GEN-LAST:event_etiquetaPanelMouseEntered
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
     }//GEN-LAST:event_opcionPegarActionPerformed
 
-    private void EtiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseClicked
+    private void etiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseClicked
         if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            Utilidades.copiarTextoPortapapeles(EtiquetaPanel.getText());
+            Utilidades.copiarTextoPortapapeles(etiquetaPanel.getText());
         }
-    }//GEN-LAST:event_EtiquetaPanelMouseClicked
+    }//GEN-LAST:event_etiquetaPanelMouseClicked
 
     private void comboTipoDocumentalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboTipoDocumentalMousePressed
 
@@ -275,12 +275,12 @@ public class PantallaCambiarTipo extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel EtiquetaPanel;
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonCancelar;
     private javax.swing.JComboBox comboTipoDocumental;
     private javax.swing.JLabel etiquetaCarpeta1;
     private javax.swing.JLabel etiquetaIdDocumentum;
+    private javax.swing.JLabel etiquetaPanel;
     private javax.swing.JLabel etiquetaRuta;
     private javax.swing.JLabel etiquetaTipoDocumentalActual;
     private javax.swing.JLabel etiqueta_r_object_id;
@@ -291,11 +291,11 @@ public class PantallaCambiarTipo extends javax.swing.JDialog {
     public void asignariconos() {
     }
 
-    private Boolean ComprobarValores() {
+    private Boolean comprobarValores() {
         Boolean resultado = true;
 
         if (comboTipoDocumental == null || comboTipoDocumental.getSelectedItem().toString().isEmpty()) {
-            EtiquetaPanel.setText("Debe indicar el tipo documental");
+            etiquetaPanel.setText("Debe indicar el tipo documental");
             comboTipoDocumental.requestFocus();
             return false;
         }

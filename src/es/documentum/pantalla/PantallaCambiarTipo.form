@@ -69,7 +69,7 @@
               </Group>
               <EmptySpace pref="43" max="32767" attributes="0"/>
           </Group>
-          <Component id="EtiquetaPanel" max="32767" attributes="0"/>
+          <Component id="etiquetaPanel" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -96,7 +96,7 @@
                   <Component id="botonCancelar" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="EtiquetaPanel" min="-2" pref="26" max="-2" attributes="0"/>
+              <Component id="etiquetaPanel" min="-2" pref="26" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -150,7 +150,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonCancelarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="EtiquetaPanel">
+    <Component class="javax.swing.JLabel" name="etiquetaPanel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>
@@ -166,8 +166,8 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EtiquetaPanelMouseClicked"/>
-        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EtiquetaPanelMouseEntered"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="etiquetaPanelMouseClicked"/>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="etiquetaPanelMouseEntered"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="etiqueta_r_object_id">

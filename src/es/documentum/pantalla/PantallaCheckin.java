@@ -67,7 +67,7 @@ public class PantallaCheckin extends javax.swing.JDialog {
     }
 
     public void setLabelFichero(String fichero) {
-        this.LabelFichero.setText(fichero);
+        this.labelFichero.setText(fichero);
     }
 
     public static PantallaDocumentum ventanapadre = null;
@@ -95,27 +95,27 @@ public class PantallaCheckin extends javax.swing.JDialog {
         popupmenu = new javax.swing.JPopupMenu();
         opcionPegar = new javax.swing.JMenuItem();
         botonAceptar = new javax.swing.JButton();
-        LabelFichero = new javax.swing.JLabel();
+        labelFichero = new javax.swing.JLabel();
         textoVersion = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         textoFichero = new javax.swing.JTextField();
         botonCancelar = new javax.swing.JButton();
-        EtiquetaPanel = new javax.swing.JLabel();
+        etiquetaPanel = new javax.swing.JLabel();
         botonNavegar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        CheckMisma = new javax.swing.JRadioButton();
-        CheckMenor = new javax.swing.JRadioButton();
-        CheckMayor = new javax.swing.JRadioButton();
+        checkMisma = new javax.swing.JRadioButton();
+        checkMenor = new javax.swing.JRadioButton();
+        checkMayor = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         textoDescripcion = new javax.swing.JTextField();
-        LabelVersion = new javax.swing.JLabel();
-        LabelTipo = new javax.swing.JLabel();
-        LabelFormato = new javax.swing.JLabel();
+        labelVersion = new javax.swing.JLabel();
+        labelTipo = new javax.swing.JLabel();
+        labelFormato = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        CheckIndexar = new javax.swing.JCheckBox();
+        checkIndexar = new javax.swing.JCheckBox();
 
         opcionPegar.setText("Pegar");
         opcionPegar.setToolTipText("Pegar");
@@ -145,10 +145,10 @@ public class PantallaCheckin extends javax.swing.JDialog {
             }
         });
 
-        LabelFichero.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        LabelFichero.setMaximumSize(new java.awt.Dimension(41, 22));
-        LabelFichero.setMinimumSize(new java.awt.Dimension(41, 22));
-        LabelFichero.setPreferredSize(new java.awt.Dimension(41, 22));
+        labelFichero.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        labelFichero.setMaximumSize(new java.awt.Dimension(41, 22));
+        labelFichero.setMinimumSize(new java.awt.Dimension(41, 22));
+        labelFichero.setPreferredSize(new java.awt.Dimension(41, 22));
 
         textoVersion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,14 +175,14 @@ public class PantallaCheckin extends javax.swing.JDialog {
             }
         });
 
-        EtiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        EtiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        EtiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        etiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        etiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        etiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseClicked(evt);
+                etiquetaPanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseEntered(evt);
+                etiquetaPanelMouseEntered(evt);
             }
         });
 
@@ -199,21 +199,21 @@ public class PantallaCheckin extends javax.swing.JDialog {
 
         jLabel3.setText("Guardar como:");
 
-        CheckMisma.addActionListener(new java.awt.event.ActionListener() {
+        checkMisma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckMismaActionPerformed(evt);
+                checkMismaActionPerformed(evt);
             }
         });
 
-        CheckMenor.addActionListener(new java.awt.event.ActionListener() {
+        checkMenor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckMenorActionPerformed(evt);
+                checkMenorActionPerformed(evt);
             }
         });
 
-        CheckMayor.addActionListener(new java.awt.event.ActionListener() {
+        checkMayor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckMayorActionPerformed(evt);
+                checkMayorActionPerformed(evt);
             }
         });
 
@@ -227,17 +227,17 @@ public class PantallaCheckin extends javax.swing.JDialog {
             }
         });
 
-        LabelVersion.setMaximumSize(new java.awt.Dimension(18, 198));
-        LabelVersion.setMinimumSize(new java.awt.Dimension(18, 198));
-        LabelVersion.setPreferredSize(new java.awt.Dimension(18, 198));
+        labelVersion.setMaximumSize(new java.awt.Dimension(18, 198));
+        labelVersion.setMinimumSize(new java.awt.Dimension(18, 198));
+        labelVersion.setPreferredSize(new java.awt.Dimension(18, 198));
 
-        LabelTipo.setMaximumSize(new java.awt.Dimension(18, 198));
-        LabelTipo.setMinimumSize(new java.awt.Dimension(18, 198));
-        LabelTipo.setPreferredSize(new java.awt.Dimension(18, 198));
+        labelTipo.setMaximumSize(new java.awt.Dimension(18, 198));
+        labelTipo.setMinimumSize(new java.awt.Dimension(18, 198));
+        labelTipo.setPreferredSize(new java.awt.Dimension(18, 198));
 
-        LabelFormato.setMaximumSize(new java.awt.Dimension(18, 198));
-        LabelFormato.setMinimumSize(new java.awt.Dimension(18, 198));
-        LabelFormato.setPreferredSize(new java.awt.Dimension(18, 198));
+        labelFormato.setMaximumSize(new java.awt.Dimension(18, 198));
+        labelFormato.setMinimumSize(new java.awt.Dimension(18, 198));
+        labelFormato.setPreferredSize(new java.awt.Dimension(18, 198));
 
         jLabel1.setText("(misma versión)");
         jLabel1.setMaximumSize(new java.awt.Dimension(75, 21));
@@ -254,14 +254,14 @@ public class PantallaCheckin extends javax.swing.JDialog {
         jLabel7.setMinimumSize(new java.awt.Dimension(76, 21));
         jLabel7.setPreferredSize(new java.awt.Dimension(76, 21));
 
-        CheckIndexar.setText("Indexar documento");
+        checkIndexar.setText("Indexar documento");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(2, 2, 2))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
@@ -281,9 +281,9 @@ public class PantallaCheckin extends javax.swing.JDialog {
                                     .addComponent(textoVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(CheckMisma)
-                                            .addComponent(CheckMenor)
-                                            .addComponent(CheckMayor))
+                                            .addComponent(checkMisma)
+                                            .addComponent(checkMenor)
+                                            .addComponent(checkMayor))
                                         .addGap(36, 36, 36)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -292,7 +292,7 @@ public class PantallaCheckin extends javax.swing.JDialog {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addComponent(textoDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(LabelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -303,11 +303,11 @@ public class PantallaCheckin extends javax.swing.JDialog {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(botonNavegar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(LabelFormato, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                        .addComponent(LabelTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(LabelVersion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(labelFormato, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                        .addComponent(labelTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelVersion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(CheckIndexar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                        .addComponent(checkIndexar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -315,26 +315,26 @@ public class PantallaCheckin extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(LabelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(LabelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LabelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LabelFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CheckMisma, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(checkMisma, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(CheckMenor))
+                        .addComponent(checkMenor))
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CheckMayor)
+                    .addComponent(checkMayor)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -345,7 +345,7 @@ public class PantallaCheckin extends javax.swing.JDialog {
                     .addComponent(textoDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(CheckIndexar)
+                .addComponent(checkIndexar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -357,7 +357,7 @@ public class PantallaCheckin extends javax.swing.JDialog {
                     .addComponent(botonAceptar)
                     .addComponent(botonCancelar))
                 .addGap(18, 18, 18)
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {textoFichero, textoVersion});
@@ -368,7 +368,7 @@ public class PantallaCheckin extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        if (ComprobarValores()) {
+        if (comprobarValores()) {
             boton = "S";
             this.dispose();
         }
@@ -384,9 +384,9 @@ public class PantallaCheckin extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
-    private void EtiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseEntered
-        EtiquetaPanel.setToolTipText(EtiquetaPanel.getText());
-    }//GEN-LAST:event_EtiquetaPanelMouseEntered
+    private void etiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseEntered
+        etiquetaPanel.setToolTipText(etiquetaPanel.getText());
+    }//GEN-LAST:event_etiquetaPanelMouseEntered
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
         if (evt.getSource().toString().equals("textoRutaSO")) {
@@ -397,11 +397,11 @@ public class PantallaCheckin extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_opcionPegarActionPerformed
 
-    private void EtiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseClicked
+    private void etiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseClicked
         if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            Utilidades.copiarTextoPortapapeles(EtiquetaPanel.getText());
+            Utilidades.copiarTextoPortapapeles(etiquetaPanel.getText());
         }
-    }//GEN-LAST:event_EtiquetaPanelMouseClicked
+    }//GEN-LAST:event_etiquetaPanelMouseClicked
 
     private void textoFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoFicheroActionPerformed
         // TODO add your handling code here:
@@ -432,23 +432,23 @@ public class PantallaCheckin extends javax.swing.JDialog {
         inicializar();
     }//GEN-LAST:event_formComponentShown
 
-    private void CheckMismaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckMismaActionPerformed
-        CheckMisma.setSelected(true);
-        CheckMenor.setSelected(false);
-        CheckMayor.setSelected(false);
-    }//GEN-LAST:event_CheckMismaActionPerformed
+    private void checkMismaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMismaActionPerformed
+        checkMisma.setSelected(true);
+        checkMenor.setSelected(false);
+        checkMayor.setSelected(false);
+    }//GEN-LAST:event_checkMismaActionPerformed
 
-    private void CheckMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckMenorActionPerformed
-        CheckMisma.setSelected(false);
-        CheckMenor.setSelected(true);
-        CheckMayor.setSelected(false);
-    }//GEN-LAST:event_CheckMenorActionPerformed
+    private void checkMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMenorActionPerformed
+        checkMisma.setSelected(false);
+        checkMenor.setSelected(true);
+        checkMayor.setSelected(false);
+    }//GEN-LAST:event_checkMenorActionPerformed
 
-    private void CheckMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckMayorActionPerformed
-        CheckMisma.setSelected(false);
-        CheckMenor.setSelected(false);
-        CheckMayor.setSelected(true);
-    }//GEN-LAST:event_CheckMayorActionPerformed
+    private void checkMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMayorActionPerformed
+        checkMisma.setSelected(false);
+        checkMenor.setSelected(false);
+        checkMayor.setSelected(true);
+    }//GEN-LAST:event_checkMayorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -469,18 +469,14 @@ public class PantallaCheckin extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox CheckIndexar;
-    private javax.swing.JRadioButton CheckMayor;
-    private javax.swing.JRadioButton CheckMenor;
-    private javax.swing.JRadioButton CheckMisma;
-    private javax.swing.JLabel EtiquetaPanel;
-    private javax.swing.JLabel LabelFichero;
-    private javax.swing.JLabel LabelFormato;
-    private javax.swing.JLabel LabelTipo;
-    private javax.swing.JLabel LabelVersion;
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonCancelar;
     private javax.swing.JButton botonNavegar;
+    private javax.swing.JCheckBox checkIndexar;
+    private javax.swing.JRadioButton checkMayor;
+    private javax.swing.JRadioButton checkMenor;
+    private javax.swing.JRadioButton checkMisma;
+    private javax.swing.JLabel etiquetaPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -488,6 +484,10 @@ public class PantallaCheckin extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel labelFichero;
+    private javax.swing.JLabel labelFormato;
+    private javax.swing.JLabel labelTipo;
+    private javax.swing.JLabel labelVersion;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JPopupMenu popupmenu;
     private javax.swing.JTextField textoDescripcion;
@@ -498,14 +498,14 @@ public class PantallaCheckin extends javax.swing.JDialog {
     public void asignariconos() {
     }
 
-    private Boolean ComprobarValores() {
+    private Boolean comprobarValores() {
         Boolean resultado = true;
 
-        if (CheckMisma.isSelected()) {
+        if (checkMisma.isSelected()) {
             setVersion("igual");
-        } else if (CheckMenor.isSelected()) {
+        } else if (checkMenor.isSelected()) {
             setVersion("menor");
-        } else if (CheckMayor.isSelected()) {
+        } else if (checkMayor.isSelected()) {
             setVersion("mayor");
         }
         
@@ -516,16 +516,16 @@ public class PantallaCheckin extends javax.swing.JDialog {
             setDescripcion(textoDescripcion.getText());
         }
 
-        setIndexar(CheckIndexar.isSelected());
+        setIndexar(checkIndexar.isSelected());
         
         return resultado;
     }
 
     private void inicializar() {
         if (!r_object_id.isEmpty()) {
-            ArrayList formato = ventanapadre.utilDocum.DameAtributo(r_object_id, "r_object_type");
-            ArrayList tipo = ventanapadre.utilDocum.DameAtributo(r_object_id, "a_content_type");
-            ArrayList version = ventanapadre.utilDocum.DameAtributo(r_object_id, "r_version_label");
+            ArrayList formato = ventanapadre.utilDocum.dameAtributo(r_object_id, "r_object_type");
+            ArrayList tipo = ventanapadre.utilDocum.dameAtributo(r_object_id, "a_content_type");
+            ArrayList version = ventanapadre.utilDocum.dameAtributo(r_object_id, "r_version_label");
             String versionactual = version.get(0).toString();
             String valversion[] = versionactual.split("\\.");
             String mayor = valversion[0];
@@ -543,16 +543,16 @@ public class PantallaCheckin extends javax.swing.JDialog {
                 Utilidades.escribeLog("Error al obtener versión en el Chek In. Error: "+ ex.getMessage());
             }
 
-            CheckMisma.setText(versionactual);
-            CheckMenor.setText(versionmenor);
-            CheckMayor.setText(versionmayor);
-            CheckMisma.setSelected(true);
-            CheckMenor.setSelected(false);
-            CheckMayor.setSelected(false);
-            LabelVersion.setText("Versión: " + versionactual + ", Current");
-            LabelTipo.setText("Tipo: " + tipo.get(0));
-            LabelFormato.setText("Formato: " + formato.get(0));
-            CheckIndexar.setSelected(getIndexar());
+            checkMisma.setText(versionactual);
+            checkMenor.setText(versionmenor);
+            checkMayor.setText(versionmayor);
+            checkMisma.setSelected(true);
+            checkMenor.setSelected(false);
+            checkMayor.setSelected(false);
+            labelVersion.setText("Versión: " + versionactual + ", Current");
+            labelTipo.setText("Tipo: " + tipo.get(0));
+            labelFormato.setText("Formato: " + formato.get(0));
+            checkIndexar.setSelected(getIndexar());
         }
     }
 

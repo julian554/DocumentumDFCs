@@ -55,33 +55,30 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        BotonCerrar = new javax.swing.JButton();
+        botonCerrar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        TablaPropios = new javax.swing.JTable();
+        tablaPropios = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        TablaHeredados = new javax.swing.JTable();
+        tablaHeredados = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        MenuPrincipal = new javax.swing.JMenuBar();
+        menuPrincipal = new javax.swing.JMenuBar();
         opcionOpciones = new javax.swing.JMenu();
         opcionCerrar = new javax.swing.JMenuItem();
-
-        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tipos Documentales");
         setMinimumSize(new java.awt.Dimension(909, 651));
 
-        BotonCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
-        BotonCerrar.setText("Cerrar");
-        BotonCerrar.addActionListener(new java.awt.event.ActionListener() {
+        botonCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
+        botonCerrar.setText("Cerrar");
+        botonCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonCerrarActionPerformed(evt);
+                botonCerrarActionPerformed(evt);
             }
         });
 
-        TablaPropios.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPropios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -92,9 +89,9 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(TablaPropios);
+        jScrollPane2.setViewportView(tablaPropios);
 
-        TablaHeredados.setModel(new javax.swing.table.DefaultTableModel(
+        tablaHeredados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -105,7 +102,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(TablaHeredados);
+        jScrollPane3.setViewportView(tablaHeredados);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 0, 0));
@@ -141,9 +138,9 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         });
         opcionOpciones.add(opcionCerrar);
 
-        MenuPrincipal.add(opcionOpciones);
+        menuPrincipal.add(opcionOpciones);
 
-        setJMenuBar(MenuPrincipal);
+        setJMenuBar(menuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,7 +148,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(782, Short.MAX_VALUE)
-                .addComponent(BotonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addComponent(jScrollPane2)
             .addGroup(layout.createSequentialGroup()
@@ -173,7 +170,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(BotonCerrar)
+                .addComponent(botonCerrar)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -185,9 +182,9 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BotonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonCerrarActionPerformed
+    private void botonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCerrarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_BotonCerrarActionPerformed
+    }//GEN-LAST:event_botonCerrarActionPerformed
 
     private void opcionCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCerrarActionPerformed
         this.dispose();
@@ -232,20 +229,19 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BotonCerrar;
-    private javax.swing.JMenuBar MenuPrincipal;
-    private javax.swing.JTable TablaHeredados;
-    private javax.swing.JTable TablaPropios;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton botonCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenuItem opcionCerrar;
     private javax.swing.JMenu opcionOpciones;
+    private javax.swing.JTable tablaHeredados;
+    private javax.swing.JTable tablaPropios;
     // End of variables declaration//GEN-END:variables
 
-    public void CargarTablas(String tipo) {
+    public void cargarTablas(String tipo) {
         String dql = "select attr_name, attr_type, attr_repeating,attr_length from dm_type where r_object_id='" + tipo + "' and i_position > -1 * start_pos order by i_position desc enable(ROW_BASED)";
 
         TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
@@ -274,12 +270,12 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         String[][] datos = new String[tam][4];
         for (int n = 0; n < tam; n++) {
             datos[n][0] = resultado.get(n).getAttr_name();
-            datos[n][1] = DameDescType(resultado.get(n).getAttr_type());
+            datos[n][1] = dameDescType(resultado.get(n).getAttr_type());
             datos[n][2] = "" + resultado.get(n).getAttr_length();
             datos[n][3] = resultado.get(n).getAttr_repeating() ? "S" : "N";
         }
         modeloLotes = new TablaSinEditarCol(datos, cabecera);
-        TablaHeredados.setModel(modeloLotes);
+        tablaHeredados.setModel(modeloLotes);
 //        TableColumn columna = TablaHeredados.getColumnModel().getColumn(0);
 //        columna.setPreferredWidth(250);
 //        columna.setMaxWidth(250);
@@ -308,12 +304,12 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         String[][] datosPropios = new String[tam][4];
         for (int n = 0; n < tam; n++) {
             datosPropios[n][0] = resultadoPropios.get(n).getAttr_name();
-            datosPropios[n][1] = DameDescType(resultadoPropios.get(n).getAttr_type());
+            datosPropios[n][1] = dameDescType(resultadoPropios.get(n).getAttr_type());
             datosPropios[n][2] = "" + resultadoPropios.get(n).getAttr_length();
             datosPropios[n][3] = resultadoPropios.get(n).getAttr_repeating() ? "S" : "N";
         }
         modeloLotes = new TablaSinEditarCol(datosPropios, cabecera);
-        TablaPropios.setModel(modeloLotes);
+        tablaPropios.setModel(modeloLotes);
 //        TableColumn columnaPropios = TablaPropios.getColumnModel().getColumn(0);
 //        columnaPropios.setPreferredWidth(250);
 //        columnaPropios.setMaxWidth(250);
@@ -321,7 +317,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         pintarTablas();
     }
 
-    private String DameDescType(int tipo) {
+    private String dameDescType(int tipo) {
         String valor = "";
         switch (tipo) {
             case 0:
@@ -346,7 +342,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
     }
 
     private void pintarTablas() {
-        TablaHeredados.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+        tablaHeredados.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table,
                     Object value, boolean isSelected, boolean hasFocus, int row, int col) {
@@ -367,21 +363,21 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                     table.getColumnModel().getColumn(2).setPreferredWidth(100);
                     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
                     centerRenderer.setHorizontalAlignment(JLabel.RIGHT);
-                    centerRenderer.setBackground(BotonCerrar.getBackground());
+                    centerRenderer.setBackground(botonCerrar.getBackground());
                     table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
                 }
                 if (col == 3) {
                     table.getColumnModel().getColumn(3).setPreferredWidth(75);
                     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
                     centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                    centerRenderer.setBackground(BotonCerrar.getBackground());
+                    centerRenderer.setBackground(botonCerrar.getBackground());
                     table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
                 }
 
                 setOpaque(true);
                 setForeground(Color.BLACK);
                 setBackground(new Color(245, 245, 245)); // gris claro
-                setBackground(BotonCerrar.getBackground());
+                setBackground(botonCerrar.getBackground());
                 String nombre = (String) table.getValueAt(row, 0);
                 if (nombre.equals("Super Tipo")) {
                     //   setOpaque(true);
@@ -395,7 +391,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
             }
         });
 
-        TablaPropios.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+        tablaPropios.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table,
                     Object value, boolean isSelected, boolean hasFocus, int row, int col) {
@@ -410,7 +406,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                     table.getColumnModel().getColumn(2).setPreferredWidth(100);
                     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
                     centerRenderer.setHorizontalAlignment(JLabel.RIGHT);
-                    centerRenderer.setBackground(BotonCerrar.getBackground());
+                    centerRenderer.setBackground(botonCerrar.getBackground());
                     centerRenderer.setForeground(Color.BLUE);
                     table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
                 }
@@ -418,14 +414,14 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                     table.getColumnModel().getColumn(3).setPreferredWidth(75);
                     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
                     centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                    centerRenderer.setBackground(BotonCerrar.getBackground());
+                    centerRenderer.setBackground(botonCerrar.getBackground());
                     centerRenderer.setForeground(Color.BLUE);
                     table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
                 }
                 setOpaque(true);
                 setForeground(Color.BLUE);
                 setBackground(new Color(245, 245, 245)); // gris claro
-                setBackground(BotonCerrar.getBackground());
+                setBackground(botonCerrar.getBackground());
                 String nombre = (String) table.getValueAt(row, 0);
                 if (nombre.equals("Super Tipo")) {
                     //   setOpaque(true);

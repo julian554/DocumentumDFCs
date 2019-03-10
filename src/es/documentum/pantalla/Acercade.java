@@ -81,7 +81,7 @@ public class Acercade extends javax.swing.JDialog {
         asignarIcono();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         dirdfc = docum.dirdfc;
-        if (docum.Conectado) {
+        if (docum.conectado) {
             repositorio = docum.repositorio;
             versiondocumentum = docum.versiondocumentum;
             idrepositorio = docum.idrepositorio;
@@ -90,7 +90,7 @@ public class Acercade extends javax.swing.JDialog {
             puerto = docum.puerto;
             versiondfcs = docum.versiondfcs;
         }
-        valoresPc(docum.Conectado);
+        valoresPc(docum.conectado);
 
     }
 

@@ -193,7 +193,7 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
 
     private void botonEncriptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEncriptarActionPerformed
         accion = "encriptar";
-        if (ComprobarValores()) {
+        if (comprobarValores()) {
             try {
                 textoEncriptado.setText(RegistryPasswordUtils.encrypt(textoPlano.getText()));
             } catch (Exception ex) {
@@ -235,7 +235,7 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
 
     private void botonDesencriptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDesencriptarActionPerformed
         accion = "desencriptar";
-        if (ComprobarValores()) {
+        if (comprobarValores()) {
             try {
                 textoPlano.setText(RegistryPasswordUtils.decrypt(textoEncriptado.getText()));
             } catch (Exception ex) {
@@ -278,7 +278,7 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
     public void asignariconos() {
     }
 
-    private Boolean ComprobarValores() {
+    private Boolean comprobarValores() {
         Boolean resultado = true;
         if (accion.toLowerCase().equals("encriptar")) {
             if (textoPlano.getText().isEmpty()) {

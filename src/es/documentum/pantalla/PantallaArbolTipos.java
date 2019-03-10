@@ -67,41 +67,41 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        MenuOpciones = new javax.swing.JPopupMenu();
-        OpcionAtributos = new javax.swing.JMenuItem();
-        OpcionListado = new javax.swing.JMenuItem();
+        menuOpciones = new javax.swing.JPopupMenu();
+        opcionAtributos = new javax.swing.JMenuItem();
+        opcionListado = new javax.swing.JMenuItem();
         popupDatos = new javax.swing.JPopupMenu();
         opcionCopiarValor = new javax.swing.JMenuItem();
         opcionExportarExcel = new javax.swing.JMenuItem();
-        BotonCerrar = new javax.swing.JButton();
-        CheckTiposPropios = new javax.swing.JCheckBox();
-        TextoTipo = new javax.swing.JTextField();
-        BotonBuscar = new javax.swing.JToggleButton();
-        BotonBuscarSiguiente = new javax.swing.JToggleButton();
+        botonCerrar = new javax.swing.JButton();
+        checkTiposPropios = new javax.swing.JCheckBox();
+        textoTipo = new javax.swing.JTextField();
+        botonBuscar = new javax.swing.JToggleButton();
+        botonBuscarSiguiente = new javax.swing.JToggleButton();
         divisorArbol = new javax.swing.JSplitPane();
-        ScrollInfo = new javax.swing.JScrollPane();
+        scrollInfo = new javax.swing.JScrollPane();
         tablaInfo = new javax.swing.JTable();
-        ScrollArbol = new javax.swing.JScrollPane();
+        scrollArbol = new javax.swing.JScrollPane();
         arbolTipos = new javax.swing.JTree();
-        MenuPrincipal = new javax.swing.JMenuBar();
+        menuPrincipal = new javax.swing.JMenuBar();
         opcionOpciones = new javax.swing.JMenu();
         opcionCerrar = new javax.swing.JMenuItem();
 
-        OpcionAtributos.setText("Ver Atributos");
-        OpcionAtributos.addActionListener(new java.awt.event.ActionListener() {
+        opcionAtributos.setText("Ver Atributos");
+        opcionAtributos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OpcionAtributosActionPerformed(evt);
+                opcionAtributosActionPerformed(evt);
             }
         });
-        MenuOpciones.add(OpcionAtributos);
+        menuOpciones.add(opcionAtributos);
 
-        OpcionListado.setText("Exportar Arbol a XML");
-        OpcionListado.addActionListener(new java.awt.event.ActionListener() {
+        opcionListado.setText("Exportar Arbol a XML");
+        opcionListado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OpcionListadoActionPerformed(evt);
+                opcionListadoActionPerformed(evt);
             }
         });
-        MenuOpciones.add(OpcionListado);
+        menuOpciones.add(opcionListado);
 
         opcionCopiarValor.setText("Copiar Valor");
         opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
@@ -123,34 +123,34 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         setTitle("Tipos Documentales");
         setMinimumSize(new java.awt.Dimension(909, 651));
 
-        BotonCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
-        BotonCerrar.setText("Cerrar");
-        BotonCerrar.addActionListener(new java.awt.event.ActionListener() {
+        botonCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
+        botonCerrar.setText("Cerrar");
+        botonCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonCerrarActionPerformed(evt);
+                botonCerrarActionPerformed(evt);
             }
         });
 
-        CheckTiposPropios.setText("Tipos Documentales propios");
-        CheckTiposPropios.addActionListener(new java.awt.event.ActionListener() {
+        checkTiposPropios.setText("Tipos Documentales propios");
+        checkTiposPropios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckTiposPropiosActionPerformed(evt);
+                checkTiposPropiosActionPerformed(evt);
             }
         });
 
-        BotonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/buscar_peq.png"))); // NOI18N
-        BotonBuscar.setText("Buscar");
-        BotonBuscar.addActionListener(new java.awt.event.ActionListener() {
+        botonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/buscar_peq.png"))); // NOI18N
+        botonBuscar.setText("Buscar");
+        botonBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonBuscarActionPerformed(evt);
+                botonBuscarActionPerformed(evt);
             }
         });
 
-        BotonBuscarSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/siguiente.png"))); // NOI18N
-        BotonBuscarSiguiente.setText("Buscar Siguiente");
-        BotonBuscarSiguiente.addActionListener(new java.awt.event.ActionListener() {
+        botonBuscarSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/siguiente.png"))); // NOI18N
+        botonBuscarSiguiente.setText("Buscar Siguiente");
+        botonBuscarSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonBuscarSiguienteActionPerformed(evt);
+                botonBuscarSiguienteActionPerformed(evt);
             }
         });
 
@@ -179,11 +179,11 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 tablaInfoMousePressed(evt);
             }
         });
-        ScrollInfo.setViewportView(tablaInfo);
+        scrollInfo.setViewportView(tablaInfo);
 
-        divisorArbol.setRightComponent(ScrollInfo);
+        divisorArbol.setRightComponent(scrollInfo);
 
-        ScrollArbol.setPreferredSize(new java.awt.Dimension(400, 362));
+        scrollArbol.setPreferredSize(new java.awt.Dimension(400, 362));
 
         arbolTipos.setAutoscrolls(true);
         arbolTipos.setRowHeight(18);
@@ -198,9 +198,9 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 arbolTiposValueChanged(evt);
             }
         });
-        ScrollArbol.setViewportView(arbolTipos);
+        scrollArbol.setViewportView(arbolTipos);
 
-        divisorArbol.setLeftComponent(ScrollArbol);
+        divisorArbol.setLeftComponent(scrollArbol);
 
         opcionOpciones.setMnemonic('O');
         opcionOpciones.setText("Opciones");
@@ -218,9 +218,9 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         });
         opcionOpciones.add(opcionCerrar);
 
-        MenuPrincipal.add(opcionOpciones);
+        menuPrincipal.add(opcionOpciones);
 
-        setJMenuBar(MenuPrincipal);
+        setJMenuBar(menuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -228,15 +228,15 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(TextoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BotonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BotonBuscarSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonBuscarSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 136, Short.MAX_VALUE)
-                .addComponent(CheckTiposPropios, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(checkTiposPropios, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BotonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addComponent(divisorArbol, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -246,20 +246,20 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 .addComponent(divisorArbol, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BotonCerrar)
-                    .addComponent(CheckTiposPropios)
-                    .addComponent(TextoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BotonBuscar)
-                    .addComponent(BotonBuscarSiguiente))
+                    .addComponent(botonCerrar)
+                    .addComponent(checkTiposPropios)
+                    .addComponent(textoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonBuscar)
+                    .addComponent(botonBuscarSiguiente))
                 .addGap(25, 25, 25))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BotonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonCerrarActionPerformed
+    private void botonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCerrarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_BotonCerrarActionPerformed
+    }//GEN-LAST:event_botonCerrarActionPerformed
 
     private void arbolTiposMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arbolTiposMousePressed
         if (!arbolTipos.isSelectionEmpty()) {
@@ -282,7 +282,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                     //           popupFichero.show((Component) evt.getSource(), evt.getX(), evt.getY());
                 }
                 System.out.println(nombre + " --> " + (esTipoPadre(nombre) ? "Nodo padre" : "Hijo"));
-                CargarInfoNodo(nombre);
+                cargarInfoNodo(nombre);
             }
         }
     }//GEN-LAST:event_arbolTiposMousePressed
@@ -299,25 +299,25 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_opcionCerrarActionPerformed
 
-    private void CheckTiposPropiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckTiposPropiosActionPerformed
-        if (CheckTiposPropios.isSelected()) {
+    private void checkTiposPropiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkTiposPropiosActionPerformed
+        if (checkTiposPropios.isSelected()) {
             mistipos = true;
         } else {
             mistipos = false;
         }
         cargarArbol();
 
-    }//GEN-LAST:event_CheckTiposPropiosActionPerformed
+    }//GEN-LAST:event_checkTiposPropiosActionPerformed
 
-    private void BotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarActionPerformed
+    private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
         busqueda.clear();
-        TreePath rutanodo = buscarNodo(raiz, TextoTipo.getText());
+        TreePath rutanodo = buscarNodo(raiz, textoTipo.getText());
         arbolTipos.setSelectionPath(rutanodo);
         arbolTipos.scrollPathToVisible(rutanodo);
-        BotonBuscarSiguiente.setVisible(true);
-    }//GEN-LAST:event_BotonBuscarActionPerformed
+        botonBuscarSiguiente.setVisible(true);
+    }//GEN-LAST:event_botonBuscarActionPerformed
 
-    private void OpcionAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpcionAtributosActionPerformed
+    private void opcionAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionAtributosActionPerformed
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) arbolTipos.getLastSelectedPathComponent();
         if (node != null) // Nothing is selected.
         {
@@ -325,22 +325,22 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
             String id = "";
             Object nodeInfo = node.getUserObject();
             String nombre = nodeInfo.toString();
-            id = utildocum.DameRobjectidDeTipo(nombre, gsesion);
+            id = utildocum.dameRobjectidDeTipo(nombre, gsesion);
 
             pantallatipoatributos.setTitle("Atributos del Tipo - r_object_id: " + id);
             pantallatipoatributos.setR_object_id(id);
-            pantallatipoatributos.CargarTablas(id);
+            pantallatipoatributos.cargarTablas(id);
 
             pantallatipoatributos.setVisible(true);
         }
-    }//GEN-LAST:event_OpcionAtributosActionPerformed
+    }//GEN-LAST:event_opcionAtributosActionPerformed
 
-    private void OpcionListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpcionListadoActionPerformed
+    private void opcionListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionListadoActionPerformed
         // recorrerArbol();
 
         TreeModel modelo = arbolTipos.getModel();
         try {
-            String res = util.ArboltoXml(modelo);
+            String res = util.arboltoXml(modelo);
             //    System.out.println(res);
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("."));
@@ -359,17 +359,17 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
             System.out.println("Error - " + ex.getMessage());
         }
 
-    }//GEN-LAST:event_OpcionListadoActionPerformed
+    }//GEN-LAST:event_opcionListadoActionPerformed
 
-    private void BotonBuscarSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarSiguienteActionPerformed
-        TreePath rutanodo = buscarNodoSiguiente(TextoTipo.getText());
+    private void botonBuscarSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarSiguienteActionPerformed
+        TreePath rutanodo = buscarNodoSiguiente(textoTipo.getText());
         if (rutanodo == null) {
             busqueda.clear();
-            rutanodo = buscarNodo(raiz, TextoTipo.getText());
+            rutanodo = buscarNodo(raiz, textoTipo.getText());
         }
         arbolTipos.setSelectionPath(rutanodo);
         arbolTipos.scrollPathToVisible(rutanodo);
-    }//GEN-LAST:event_BotonBuscarSiguienteActionPerformed
+    }//GEN-LAST:event_botonBuscarSiguienteActionPerformed
 
     private void arbolTiposValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_arbolTiposValueChanged
         if (!arbolTipos.isSelectionEmpty()) {
@@ -388,7 +388,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 //           popupFichero.show((Component) evt.getSource(), evt.getX(), evt.getY());
             }
             System.out.println(nombre + " --> " + (esTipoPadre(nombre) ? "Nodo padre" : "Hijo"));
-            CargarInfoNodo(nombre);
+            cargarInfoNodo(nombre);
         }
 
     }//GEN-LAST:event_arbolTiposValueChanged
@@ -468,25 +468,25 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton BotonBuscar;
-    private javax.swing.JToggleButton BotonBuscarSiguiente;
-    private javax.swing.JButton BotonCerrar;
-    private javax.swing.JCheckBox CheckTiposPropios;
-    private javax.swing.JPopupMenu MenuOpciones;
-    private javax.swing.JMenuBar MenuPrincipal;
-    private javax.swing.JMenuItem OpcionAtributos;
-    private javax.swing.JMenuItem OpcionListado;
-    private javax.swing.JScrollPane ScrollArbol;
-    private javax.swing.JScrollPane ScrollInfo;
-    private javax.swing.JTextField TextoTipo;
     private javax.swing.JTree arbolTipos;
+    private javax.swing.JToggleButton botonBuscar;
+    private javax.swing.JToggleButton botonBuscarSiguiente;
+    private javax.swing.JButton botonCerrar;
+    private javax.swing.JCheckBox checkTiposPropios;
     private javax.swing.JSplitPane divisorArbol;
+    private javax.swing.JPopupMenu menuOpciones;
+    private javax.swing.JMenuBar menuPrincipal;
+    private javax.swing.JMenuItem opcionAtributos;
     private javax.swing.JMenuItem opcionCerrar;
     private javax.swing.JMenuItem opcionCopiarValor;
     private javax.swing.JMenuItem opcionExportarExcel;
+    private javax.swing.JMenuItem opcionListado;
     private javax.swing.JMenu opcionOpciones;
     private javax.swing.JPopupMenu popupDatos;
+    private javax.swing.JScrollPane scrollArbol;
+    private javax.swing.JScrollPane scrollInfo;
     private javax.swing.JTable tablaInfo;
+    private javax.swing.JTextField textoTipo;
     // End of variables declaration//GEN-END:variables
 
     public Boolean esTipoPadre(String tipo) {
@@ -524,12 +524,12 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     }
 
     private void cargarArbol() {
-        BotonBuscarSiguiente.setVisible(false);
+        botonBuscarSiguiente.setVisible(false);
         arbolTipos.setModel(null);
         raiz.removeAllChildren();
         arbolTipos.setCellRenderer(new RendererArbol());
         arbolTipos.setModel(modelo);
-        DameTipos(" ", raiz);
+        dameTipos(" ", raiz);
         DefaultTreeCellRenderer render = (DefaultTreeCellRenderer) arbolTipos.getCellRenderer();
         if (mistipos) {
             expandOrCollapsToLevel(arbolTipos, new TreePath(((DefaultMutableTreeNode) arbolTipos.getModel().getRoot())), 2, true);
@@ -538,7 +538,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         }
     }
 
-    private void DameTipos(String tipo, DefaultMutableTreeNode nodo) {
+    private void dameTipos(String tipo, DefaultMutableTreeNode nodo) {
         String dql = "select name,super_name from dm_type where super_name='" + tipo + "' and super_name<>' ' order by 2,1";
         if (tipo.equals(" ")) {
             dql = "select name,super_name from dm_type where super_name=' ' order by 2,1";
@@ -562,7 +562,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
 
                 if (esTipoPadre(hijo)) {
                     //     System.out.println(hijo);
-                    DameTipos(hijo, nodohijo);
+                    dameTipos(hijo, nodohijo);
                 } else {
                     //     System.out.println(hijo);
                 }
@@ -599,14 +599,14 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         return resultado;
     }
 
-    private void CargarInfoNodo(String nombre) {
-        String r_object_id = utildocum.DameRobjectidDeTipo(nombre, gsesion);
-        String super_tipo = utildocum.DameSuperTipo(nombre, gsesion);
+    private void cargarInfoNodo(String nombre) {
+        String r_object_id = utildocum.dameRobjectidDeTipo(nombre, gsesion);
+        String super_tipo = utildocum.dameSuperTipo(nombre, gsesion);
         tiposPadre = "";
         //  tiposPadre = DamePadres(nombre);
-        tiposPadre = utildocum.DameTiposPadre(nombre, gsesion);
-        String filestore = utildocum.DameFilestoreDeTipo(nombre, gsesion);
-        ArrayList<String> hijos = utildocum.DameTiposHijos(nombre, gsesion);
+        tiposPadre = utildocum.dameTiposPadre(nombre, gsesion);
+        String filestore = utildocum.dameFilestoreDeTipo(nombre, gsesion);
+        ArrayList<String> hijos = utildocum.dameTiposHijos(nombre, gsesion);
         int numhijos = hijos.size();
         int cont = 4 + numhijos;
         TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
@@ -653,7 +653,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 setOpaque(true);
                 setForeground(Color.BLACK);
                 setBackground(new Color(245, 245, 245)); // gris claro
-                setBackground(BotonBuscar.getBackground());
+                setBackground(botonBuscar.getBackground());
                 String nombre = (String) table.getValueAt(row, 0);
                 if (nombre.equals("Super Tipo")) {
                     //   setOpaque(true);

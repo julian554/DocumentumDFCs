@@ -46,7 +46,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="EtiquetaPanel" alignment="1" max="32767" attributes="0"/>
+              <Component id="etiquetaPanel" alignment="1" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
@@ -70,9 +70,9 @@
                                   <Component id="textoVersion" min="-2" pref="440" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="CheckMisma" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="CheckMenor" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="CheckMayor" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="checkMisma" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="checkMenor" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="checkMayor" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -89,7 +89,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <Component id="LabelFichero" alignment="0" min="-2" pref="585" max="-2" attributes="0"/>
+                  <Component id="labelFichero" alignment="0" min="-2" pref="585" max="-2" attributes="0"/>
                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="botonAceptar" min="-2" pref="111" max="-2" attributes="0"/>
@@ -103,12 +103,12 @@
                       </Group>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="LabelFormato" alignment="0" pref="233" max="32767" attributes="0"/>
-                      <Component id="LabelTipo" alignment="0" max="32767" attributes="0"/>
-                      <Component id="LabelVersion" alignment="0" max="32767" attributes="0"/>
+                      <Component id="labelFormato" alignment="0" pref="233" max="32767" attributes="0"/>
+                      <Component id="labelTipo" alignment="0" max="32767" attributes="0"/>
+                      <Component id="labelVersion" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="CheckIndexar" alignment="0" pref="160" max="32767" attributes="0"/>
+                      <Component id="checkIndexar" alignment="0" pref="160" max="32767" attributes="0"/>
                       <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -120,29 +120,29 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-              <Component id="LabelFichero" min="-2" max="-2" attributes="0"/>
+              <Component id="labelFichero" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="LabelVersion" min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="labelVersion" min="-2" pref="18" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="LabelTipo" min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="labelTipo" min="-2" pref="18" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="LabelFormato" min="-2" pref="18" max="-2" attributes="0"/>
+              <Component id="labelFormato" min="-2" pref="18" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="CheckMisma" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkMisma" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CheckMenor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="checkMenor" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="CheckMayor" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkMayor" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -156,7 +156,7 @@
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="27" max="32767" attributes="0"/>
-              <Component id="CheckIndexar" min="-2" max="-2" attributes="0"/>
+              <Component id="checkIndexar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" pref="21" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -170,7 +170,7 @@
                   <Component id="botonCancelar" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="EtiquetaPanel" min="-2" pref="26" max="-2" attributes="0"/>
+              <Component id="etiquetaPanel" min="-2" pref="26" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -191,7 +191,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonAceptarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="LabelFichero">
+    <Component class="javax.swing.JLabel" name="labelFichero">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -238,7 +238,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonCancelarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="EtiquetaPanel">
+    <Component class="javax.swing.JLabel" name="etiquetaPanel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>
@@ -250,8 +250,8 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EtiquetaPanelMouseClicked"/>
-        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EtiquetaPanelMouseEntered"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="etiquetaPanelMouseClicked"/>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="etiquetaPanelMouseEntered"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="botonNavegar">
@@ -277,19 +277,19 @@
         <Property name="text" type="java.lang.String" value="Guardar como:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="CheckMisma">
+    <Component class="javax.swing.JRadioButton" name="checkMisma">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckMismaActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkMismaActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="CheckMenor">
+    <Component class="javax.swing.JRadioButton" name="checkMenor">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckMenorActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkMenorActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="CheckMayor">
+    <Component class="javax.swing.JRadioButton" name="checkMayor">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CheckMayorActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkMayorActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -307,7 +307,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoDescripcionActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="LabelVersion">
+    <Component class="javax.swing.JLabel" name="labelVersion">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[18, 198]"/>
@@ -320,7 +320,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="LabelTipo">
+    <Component class="javax.swing.JLabel" name="labelTipo">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[18, 198]"/>
@@ -333,7 +333,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="LabelFormato">
+    <Component class="javax.swing.JLabel" name="labelFormato">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[18, 198]"/>
@@ -388,7 +388,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="CheckIndexar">
+    <Component class="javax.swing.JCheckBox" name="checkIndexar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Indexar documento"/>
       </Properties>

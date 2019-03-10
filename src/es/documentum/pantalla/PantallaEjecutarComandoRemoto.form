@@ -34,9 +34,9 @@
         </MenuItem>
       </SubComponents>
     </Container>
-    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+    <Menu class="javax.swing.JMenuBar" name="menuPrincipal">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="Menu">
+        <Menu class="javax.swing.JMenu" name="menuArchivo">
           <Properties>
             <Property name="mnemonic" type="int" value="65"/>
             <Property name="text" type="java.lang.String" value="Archivo"/>
@@ -124,7 +124,7 @@
     <Property name="name" type="java.lang.String" value="VentanaLeerFichero" noResource="true"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="menuPrincipal"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
@@ -149,22 +149,22 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
-                          <Component id="LabelComando" alignment="0" pref="70" max="32767" attributes="0"/>
+                          <Component id="labelComando" alignment="0" pref="70" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="TextoServidor" min="-2" pref="222" max="-2" attributes="0"/>
+                              <Component id="textoServidor" min="-2" pref="222" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel2" min="-2" pref="43" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="TextoUsuario" min="-2" pref="118" max="-2" attributes="0"/>
+                              <Component id="textoUsuario" min="-2" pref="118" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabel3" min="-2" pref="69" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="TextoClave" pref="118" max="32767" attributes="0"/>
+                              <Component id="textoClave" pref="118" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="TextoComando" max="32767" attributes="0"/>
+                          <Component id="textoComando" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Component id="botonEjecutar" min="-2" max="-2" attributes="0"/>
@@ -185,17 +185,17 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="TextoServidor" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textoServidor" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="TextoUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textoUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="TextoClave" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textoClave" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="TextoComando" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="LabelComando" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textoComando" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelComando" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botonEjecutar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -224,14 +224,14 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JTextField" name="TextoComando">
+    <Component class="javax.swing.JTextField" name="textoComando">
       <Events>
-        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TextoComandoMousePressed"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextoComandoActionPerformed"/>
-        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TextoComandoKeyPressed"/>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textoComandoMousePressed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoComandoActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textoComandoKeyPressed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="LabelComando">
+    <Component class="javax.swing.JLabel" name="labelComando">
       <Properties>
         <Property name="text" type="java.lang.String" value="Comando"/>
       </Properties>
@@ -266,7 +266,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JList" name="Texto">
+        <Component class="javax.swing.JList" name="textoResultado">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Monospaced" size="12" style="1"/>
@@ -280,7 +280,7 @@
             <Property name="selectionMode" type="int" value="0"/>
           </Properties>
           <Events>
-            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TextoMousePressed"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textoResultadoMousePressed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -293,9 +293,9 @@
         <Property name="text" type="java.lang.String" value="Servidor"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="TextoServidor">
+    <Component class="javax.swing.JTextField" name="textoServidor">
       <Events>
-        <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="TextoServidorInputMethodTextChanged"/>
+        <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="textoServidorInputMethodTextChanged"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -303,14 +303,14 @@
         <Property name="text" type="java.lang.String" value="Usuario"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="TextoUsuario">
+    <Component class="javax.swing.JTextField" name="textoUsuario">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="text" type="java.lang.String" value="Contrase&#xf1;a"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="TextoClave">
+    <Component class="javax.swing.JPasswordField" name="textoClave">
     </Component>
   </SubComponents>
 </Form>

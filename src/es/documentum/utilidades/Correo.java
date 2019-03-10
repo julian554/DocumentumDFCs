@@ -99,7 +99,7 @@ public class Correo {
         this.adjuntos = adjuntos;
     }
 
-    public String Enviar() {
+    public String enviar() {
         String respuesta = "OK";
         // Preparamos la sesion
         Session session = null;

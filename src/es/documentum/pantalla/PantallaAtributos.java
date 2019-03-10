@@ -276,7 +276,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
     }//GEN-LAST:event_opcionCopiarAtributoActionPerformed
 
     private void opcionExportarAtributosExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionExportarAtributosExcelActionPerformed
-        ExportarAtributosExcel();
+        exportarAtributosExcel();
     }//GEN-LAST:event_opcionExportarAtributosExcelActionPerformed
 
     public static void main(String args[]) {
@@ -322,7 +322,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
                     return;
                 }
 
-                atributos = utilDocum.DameTodosAtributos(r_object_id);
+                atributos = utilDocum.dameTodosAtributos(r_object_id);
                 if (atributos.size() <= 0) {
                     tablaAtributos.setModel(modeloLotes);
                     if (!utilDocum.dameError().isEmpty()) {
@@ -416,7 +416,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
         System.gc();
     }
 
-    private void ExportarAtributosExcel() {
+    private void exportarAtributosExcel() {
         if (tablaAtributos.getModel().getRowCount() > 0) {
             String fichero = "";
             JFileChooser chooser = new JFileChooser();
