@@ -208,6 +208,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         opcionRBWindowsClassic = new javax.swing.JRadioButtonMenuItem();
         opcionRBPorDefecto = new javax.swing.JRadioButtonMenuItem();
 
+        opcionCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiar.setText("Copiar Ctrl+C");
         opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -216,6 +217,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         });
         popupEditar.add(opcionCopiar);
 
+        opcionPegar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/pegar-doc.png"))); // NOI18N
         opcionPegar.setText("Pegar  Ctrl+V");
         opcionPegar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -224,6 +226,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         });
         popupEditar.add(opcionPegar);
 
+        opcionCopiarTodo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar-todo.png"))); // NOI18N
         opcionCopiarTodo.setText("Copiar Todo");
         opcionCopiarTodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -297,10 +300,10 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
         jLabel1.setText("Servidor");
 
         textoServidor.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 textoServidorInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
@@ -484,13 +487,13 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     }
 
     private void opcionCopiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarActionPerformed
-        if (componente.equals("Texto")) {
+        if (componente.equals("textoResultado")) {
             if (textoResultado.getModel().getElementAt(textoResultado.getSelectedIndex()) != null) {
                 Utilidades.copiarTextoPortapapeles(textoResultado.getModel().getElementAt(textoResultado.getSelectedIndex()));
             }
         }
 
-        if (componente.equals("TextoComando")) {
+        if (componente.equals("textoComando")) {
             if (textoComando.getSelectedText() == null) {
                 Utilidades.copiarTextoPortapapeles(textoComando.getText());
             } else {
@@ -500,7 +503,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     }//GEN-LAST:event_opcionCopiarActionPerformed
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
-        if (componente.equals("TextoComando")) {
+        if (componente.equals("textoComando")) {
             textoComando.setText(Utilidades.pegarTextoPortapapeles());
         }
     }//GEN-LAST:event_opcionPegarActionPerformed
@@ -508,7 +511,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     private void textoComandoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoComandoMousePressed
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
             botonderecho = true;
-            componente = "TextoComando";
+            componente = "textoComando";
             popupmenu(evt);
         }
     }//GEN-LAST:event_textoComandoMousePressed
@@ -638,7 +641,7 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
     private void textoResultadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoResultadoMousePressed
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && textoResultado.getModel().getSize() > 0) {
             botonderecho = true;
-            componente = "Texto";
+            componente = "textoResultado";
             popupmenu(evt);
         }
     }//GEN-LAST:event_textoResultadoMousePressed
@@ -673,11 +676,13 @@ public class PantallaEjecutarComandoRemoto extends javax.swing.JFrame {
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
                 opcionPegar.setEnabled(false);
                 opcionPegar.setVisible(false);
+                opcionCopiarTodo.setVisible(true);
             }
             if (evt.getSource() == textoComando) {
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
                 opcionPegar.setEnabled(true);
                 opcionPegar.setVisible(true);
+                opcionCopiarTodo.setVisible(false);
             }
 
         }

@@ -98,6 +98,7 @@ public class PantallaPedirDatos extends javax.swing.JDialog {
         etiquetaPanel = new javax.swing.JLabel();
         botonNavegar = new javax.swing.JButton();
 
+        opcionPegar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/pegar-doc.png"))); // NOI18N
         opcionPegar.setText("Pegar");
         opcionPegar.setToolTipText("Pegar");
         opcionPegar.addActionListener(new java.awt.event.ActionListener() {

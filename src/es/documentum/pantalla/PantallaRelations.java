@@ -137,6 +137,7 @@ public class PantallaRelations extends javax.swing.JFrame {
         opcionRBWindowsClassic = new javax.swing.JRadioButtonMenuItem();
         opcionRBPorDefecto = new javax.swing.JRadioButtonMenuItem();
 
+        opcionCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiar.setText("Copiar Ctrl+C");
         opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,6 +146,7 @@ public class PantallaRelations extends javax.swing.JFrame {
         });
         popupEditar.add(opcionCopiar);
 
+        opcionPegar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/pegar-doc.png"))); // NOI18N
         opcionPegar.setText("Pegar  Ctrl+V");
         opcionPegar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,6 +155,7 @@ public class PantallaRelations extends javax.swing.JFrame {
         });
         popupEditar.add(opcionPegar);
 
+        opcionCopiarTodo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar-todo.png"))); // NOI18N
         opcionCopiarTodo.setText("Copiar Todo");
         opcionCopiarTodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,10 +203,10 @@ public class PantallaRelations extends javax.swing.JFrame {
         textoId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         textoId.setForeground(new java.awt.Color(0, 51, 153));
         textoId.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 textoIdInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 

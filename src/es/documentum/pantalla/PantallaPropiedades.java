@@ -93,6 +93,7 @@ public class PantallaPropiedades extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         labelA_storage_type = new javax.swing.JTextField();
 
+        opcionCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiar.setText("Copiar Ctrl+C");
         opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,7 +109,6 @@ public class PantallaPropiedades extends javax.swing.JDialog {
 
         botonCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
         botonCerrar.setText("Cerrar");
-        botonCerrar.setActionCommand("Cerrar");
         botonCerrar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         botonCerrar.setMaximumSize(new java.awt.Dimension(89, 28));
         botonCerrar.setMinimumSize(new java.awt.Dimension(89, 28));

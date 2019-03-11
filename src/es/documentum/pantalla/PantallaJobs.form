@@ -10,6 +10,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="opcionCopiarValor">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/copiar.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Copiar Valor"/>
           </Properties>
           <Events>
@@ -55,6 +58,9 @@
         </Component>
         <MenuItem class="javax.swing.JMenuItem" name="opcionExportarJobsExcel">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/excel-24.gif"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Exportar lista de Jobs a Excel"/>
             <Property name="actionCommand" type="java.lang.String" value="ExportarAtributosExcel"/>
           </Properties>

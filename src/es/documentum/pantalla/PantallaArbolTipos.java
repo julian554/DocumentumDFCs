@@ -69,8 +69,8 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
 
         menuOpciones = new javax.swing.JPopupMenu();
         opcionAtributos = new javax.swing.JMenuItem();
-        opcionListado = new javax.swing.JMenuItem();
-        popupDatos = new javax.swing.JPopupMenu();
+        opcionListadoXML = new javax.swing.JMenuItem();
+        menuDatos = new javax.swing.JPopupMenu();
         opcionCopiarValor = new javax.swing.JMenuItem();
         opcionExportarExcel = new javax.swing.JMenuItem();
         botonCerrar = new javax.swing.JButton();
@@ -87,6 +87,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         opcionOpciones = new javax.swing.JMenu();
         opcionCerrar = new javax.swing.JMenuItem();
 
+        opcionAtributos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ver-atributos.png"))); // NOI18N
         opcionAtributos.setText("Ver Atributos");
         opcionAtributos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,29 +96,32 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         });
         menuOpciones.add(opcionAtributos);
 
-        opcionListado.setText("Exportar Arbol a XML");
-        opcionListado.addActionListener(new java.awt.event.ActionListener() {
+        opcionListadoXML.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/expotar-xml.png"))); // NOI18N
+        opcionListadoXML.setText("Exportar Arbol a XML");
+        opcionListadoXML.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opcionListadoActionPerformed(evt);
+                opcionListadoXMLActionPerformed(evt);
             }
         });
-        menuOpciones.add(opcionListado);
+        menuOpciones.add(opcionListadoXML);
 
+        opcionCopiarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiarValor.setText("Copiar Valor");
         opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcionCopiarValorActionPerformed(evt);
             }
         });
-        popupDatos.add(opcionCopiarValor);
+        menuDatos.add(opcionCopiarValor);
 
+        opcionExportarExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/excel-24.gif"))); // NOI18N
         opcionExportarExcel.setText("Exportar a Excel");
         opcionExportarExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcionExportarExcelActionPerformed(evt);
             }
         });
-        popupDatos.add(opcionExportarExcel);
+        menuDatos.add(opcionExportarExcel);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tipos Documentales");
@@ -265,6 +269,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         if (!arbolTipos.isSelectionEmpty()) {
             if (evt.getButton() == MouseEvent.BUTTON3) {
                 botonderecho = true;
+                componente = "arbolTipos";
                 popupmenu(evt);
             } else {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) arbolTipos.getLastSelectedPathComponent();
@@ -289,8 +294,14 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
 
     private void popupmenu(MouseEvent evt) {
         if (evt.isPopupTrigger() || botonderecho) {
-            popupDatos.show(evt.getComponent(), evt.getX(), evt.getY());
-            botonderecho = false;
+            if (componente.equals("tablaInfo")) {
+                menuDatos.show(evt.getComponent(), evt.getX(), evt.getY());
+                botonderecho = false;
+            }
+            if (componente.equals("arbolTipos")) {
+                menuOpciones.show(evt.getComponent(), evt.getX(), evt.getY());
+                botonderecho = false;
+            }
         }
 
     }
@@ -335,7 +346,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionAtributosActionPerformed
 
-    private void opcionListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionListadoActionPerformed
+    private void opcionListadoXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionListadoXMLActionPerformed
         // recorrerArbol();
 
         TreeModel modelo = arbolTipos.getModel();
@@ -359,7 +370,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
             System.out.println("Error - " + ex.getMessage());
         }
 
-    }//GEN-LAST:event_opcionListadoActionPerformed
+    }//GEN-LAST:event_opcionListadoXMLActionPerformed
 
     private void botonBuscarSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarSiguienteActionPerformed
         TreePath rutanodo = buscarNodoSiguiente(textoTipo.getText());
@@ -394,7 +405,6 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     }//GEN-LAST:event_arbolTiposValueChanged
 
     private void tablaInfoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaInfoMousePressed
-
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
             botonderecho = true;
             componente = "tablaInfo";
@@ -474,15 +484,15 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
     private javax.swing.JButton botonCerrar;
     private javax.swing.JCheckBox checkTiposPropios;
     private javax.swing.JSplitPane divisorArbol;
+    private javax.swing.JPopupMenu menuDatos;
     private javax.swing.JPopupMenu menuOpciones;
     private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenuItem opcionAtributos;
     private javax.swing.JMenuItem opcionCerrar;
     private javax.swing.JMenuItem opcionCopiarValor;
     private javax.swing.JMenuItem opcionExportarExcel;
-    private javax.swing.JMenuItem opcionListado;
+    private javax.swing.JMenuItem opcionListadoXML;
     private javax.swing.JMenu opcionOpciones;
-    private javax.swing.JPopupMenu popupDatos;
     private javax.swing.JScrollPane scrollArbol;
     private javax.swing.JScrollPane scrollInfo;
     private javax.swing.JTable tablaInfo;

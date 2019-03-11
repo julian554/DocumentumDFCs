@@ -90,6 +90,7 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
         opcionRBWindowsClassic = new javax.swing.JRadioButtonMenuItem();
         opcionRBPorDefecto = new javax.swing.JRadioButtonMenuItem();
 
+        opcionCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiar.setText("Copiar Ctrl+C");
         opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

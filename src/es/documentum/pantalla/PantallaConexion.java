@@ -167,6 +167,7 @@ public class PantallaConexion extends javax.swing.JDialog {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
 
+        opcionBorrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/borrar_peq.png"))); // NOI18N
         opcionBorrar.setText("Borrar conexión");
         opcionBorrar.setToolTipText("Borra la conexión seleccionada");
         opcionBorrar.addActionListener(new java.awt.event.ActionListener() {

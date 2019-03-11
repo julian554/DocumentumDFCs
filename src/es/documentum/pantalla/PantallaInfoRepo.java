@@ -75,6 +75,7 @@ public class PantallaInfoRepo extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         textoInfo = new javax.swing.JTextPane();
 
+        opcionCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiar.setText("Copiar Ctrl+C");
         opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

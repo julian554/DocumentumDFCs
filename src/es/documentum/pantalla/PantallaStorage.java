@@ -88,6 +88,7 @@ public class PantallaStorage extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaStorage = new javax.swing.JTable();
 
+        opcionCopiarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiarValor.setText("Copiar Valor");
         opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,6 +98,7 @@ public class PantallaStorage extends javax.swing.JFrame {
         popupAtributos.add(opcionCopiarValor);
         popupAtributos.add(jSeparator2);
 
+        opcionExportarAExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/excel-24.gif"))); // NOI18N
         opcionExportarAExcel.setText("Exportar lista a Excel");
         opcionExportarAExcel.setActionCommand("ExportarAtributosExcel");
         opcionExportarAExcel.addActionListener(new java.awt.event.ActionListener() {

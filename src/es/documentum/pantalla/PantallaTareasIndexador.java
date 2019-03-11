@@ -96,6 +96,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         opcionRefresco = new javax.swing.JMenu();
         opcionSalir = new javax.swing.JMenuItem();
 
+        opcionCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiar.setText("Copiar Ctrl+C");
         opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,6 +105,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         });
         popupEditar.add(opcionCopiar);
 
+        opcionPegar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/pegar-doc.png"))); // NOI18N
         opcionPegar.setText("Pegar  Ctrl+V");
         opcionPegar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +114,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         });
         popupEditar.add(opcionPegar);
 
+        opcionActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/actualizar.png"))); // NOI18N
         opcionActualizar.setText("Actualizar información de fila");
         opcionActualizar.setAutoscrolls(true);
         opcionActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -121,6 +124,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         });
         popupEditar.add(opcionActualizar);
 
+        opcionRelanzar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/relanzar.png"))); // NOI18N
         opcionRelanzar.setText("Relanzar tareas fallidas");
         opcionRelanzar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,6 +133,7 @@ public class PantallaTareasIndexador extends javax.swing.JFrame {
         });
         popupEditar.add(opcionRelanzar);
 
+        opcionArrancar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar.png"))); // NOI18N
         opcionArrancar.setText("Arrancar Indexador");
         opcionArrancar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

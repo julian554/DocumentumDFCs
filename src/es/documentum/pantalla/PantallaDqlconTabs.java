@@ -173,7 +173,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
         popupDatos.add(opcionExportarExcel);
 
-        opcionSeleccionarColumna.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/lista-sel.png"))); // NOI18N
+        opcionSeleccionarColumna.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/lista-seleccion.png"))); // NOI18N
         opcionSeleccionarColumna.setText("Seleccionar Columna");
         opcionSeleccionarColumna.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,10 +332,10 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
             }
         });
         textoListaDQL.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 textoListaDQLCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 

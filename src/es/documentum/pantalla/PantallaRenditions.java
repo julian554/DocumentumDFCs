@@ -80,6 +80,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaRenditions = new javax.swing.JTable();
 
+        opcionCopiarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiarValor.setText("Copiar Valor");
         opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,6 +89,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
         });
         popupAtributos.add(opcionCopiarValor);
 
+        opcionCopiarFormato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar-formato.png"))); // NOI18N
         opcionCopiarFormato.setText("Copiar nombre de Formato");
         opcionCopiarFormato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,6 +98,7 @@ public class PantallaRenditions extends javax.swing.JFrame {
         });
         popupAtributos.add(opcionCopiarFormato);
 
+        opcionExportarRenditionsExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/excel-24.gif"))); // NOI18N
         opcionExportarRenditionsExcel.setText("Exportar lista de renditions a Excel");
         opcionExportarRenditionsExcel.setActionCommand("ExportarAtributosExcel");
         opcionExportarRenditionsExcel.addActionListener(new java.awt.event.ActionListener() {

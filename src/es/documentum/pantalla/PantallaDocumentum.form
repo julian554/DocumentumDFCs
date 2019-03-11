@@ -133,6 +133,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="opcionRenditions">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/renditions.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Ver Renditions"/>
           </Properties>
           <Events>
@@ -152,6 +155,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="opcionConvertir">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/convertir-pdf.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Convertir a PDF (ADTS)"/>
           </Properties>
           <Events>
@@ -428,7 +434,7 @@
                   <KeyStroke key="Ctrl+Alt+E"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/es/documentum/imagenes/carpeta.png"/>
+                  <Image iconType="3" name="/es/documentum/imagenes/carpeta-exportar-peq.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Exportar Carpeta de Documentum"/>
               </Properties>

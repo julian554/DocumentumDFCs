@@ -10,23 +10,29 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="opcionAtributos">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/ver-atributos.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Ver Atributos"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionAtributosActionPerformed"/>
           </Events>
         </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="opcionListado">
+        <MenuItem class="javax.swing.JMenuItem" name="opcionListadoXML">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/expotar-xml.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Exportar Arbol a XML"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionListadoActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcionListadoXMLActionPerformed"/>
           </Events>
         </MenuItem>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPopupMenu" name="popupDatos">
+    <Container class="javax.swing.JPopupMenu" name="menuDatos">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
@@ -34,6 +40,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="opcionCopiarValor">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/copiar.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Copiar Valor"/>
           </Properties>
           <Events>
@@ -42,6 +51,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="opcionExportarExcel">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/excel-24.gif"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Exportar a Excel"/>
           </Properties>
           <Events>

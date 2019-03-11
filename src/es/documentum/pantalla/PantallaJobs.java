@@ -94,6 +94,7 @@ public class PantallaJobs extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaJobs = new javax.swing.JTable();
 
+        opcionCopiarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiarValor.setText("Copiar Valor");
         opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,6 +132,7 @@ public class PantallaJobs extends javax.swing.JFrame {
         popupAtributos.add(opcionJobLog);
         popupAtributos.add(jSeparator2);
 
+        opcionExportarJobsExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/excel-24.gif"))); // NOI18N
         opcionExportarJobsExcel.setText("Exportar lista de Jobs a Excel");
         opcionExportarJobsExcel.setActionCommand("ExportarAtributosExcel");
         opcionExportarJobsExcel.addActionListener(new java.awt.event.ActionListener() {

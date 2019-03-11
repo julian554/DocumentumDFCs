@@ -10,6 +10,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="opcionBorrar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/es/documentum/imagenes/borrar_peq.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Borrar conexi&#xf3;n"/>
             <Property name="toolTipText" type="java.lang.String" value="Borra la conexi&#xf3;n seleccionada"/>
           </Properties>

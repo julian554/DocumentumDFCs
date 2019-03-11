@@ -320,6 +320,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         popupDocumentos.add(opcionDumpAtributos);
 
+        opcionRenditions.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/renditions.png"))); // NOI18N
         opcionRenditions.setText("Ver Renditions");
         opcionRenditions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -337,6 +338,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         });
         popupDocumentos.add(opcionRelationsPopup);
 
+        opcionConvertir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/convertir-pdf.png"))); // NOI18N
         opcionConvertir.setText("Convertir a PDF (ADTS)");
         opcionConvertir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -912,7 +914,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         menuUtilidades.add(opcionCrearCarpeta);
 
         opcionExportarCarpeta.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        opcionExportarCarpeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/carpeta.png"))); // NOI18N
+        opcionExportarCarpeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/carpeta-exportar-peq.png"))); // NOI18N
         opcionExportarCarpeta.setText("Exportar Carpeta de Documentum");
         opcionExportarCarpeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
