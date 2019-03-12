@@ -306,9 +306,9 @@ public class PantallaStorage extends javax.swing.JFrame {
                 ;
                 }
                 tablaStorage.setModel(modeloLotes);
-                tablaStorage.setShowHorizontalLines(true);
-                tablaStorage.setRowSelectionAllowed(false);
-                tablaStorage.setAutoCreateRowSorter(true);
+//                tablaStorage.setShowHorizontalLines(true);
+//                tablaStorage.setRowSelectionAllowed(false);
+//                tablaStorage.setAutoCreateRowSorter(true);
 
                 TableColumn columna = tablaStorage.getColumnModel().getColumn(0);
                 columna.setPreferredWidth(220);
@@ -370,10 +370,10 @@ public class PantallaStorage extends javax.swing.JFrame {
                 String estado = (String) table.getValueAt(row, 3);
 
                 if (valor.equals("dm_filestore")) {
-                    setOpaque(true);
+//                    setOpaque(true);
                     setForeground(new Color(0, 0, 153)); // Azul marino
                 } else {
-                    setOpaque(true);
+//                    setOpaque(true);
                     setForeground(Color.BLACK);
                 }
 

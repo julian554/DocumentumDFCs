@@ -76,7 +76,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
         botonDumpAtributos = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         textoIdDocumentum = new javax.swing.JTextField();
-        EtiquetaEstado = new javax.swing.JLabel();
+        etiquetaEstado = new javax.swing.JLabel();
 
         opcionCopiarValor.setText("Copiar Valor");
         opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
@@ -167,8 +167,8 @@ public class PantallaAtributos extends javax.swing.JFrame {
             }
         });
 
-        EtiquetaEstado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        EtiquetaEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        etiquetaEstado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        etiquetaEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -184,7 +184,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
                 .addGap(70, 70, 70)
                 .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
-            .addComponent(EtiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(etiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelDocumentos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -200,7 +200,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
                         .addComponent(botonDumpAtributos, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 718, Short.MAX_VALUE)
-                .addComponent(EtiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(etiquetaEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(87, 87, 87)
@@ -251,11 +251,11 @@ public class PantallaAtributos extends javax.swing.JFrame {
     private void botonDumpAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDumpAtributosActionPerformed
         if (!textoIdDocumentum.getText().isEmpty()) {
             if (textoIdDocumentum.getText().length() == 16) {
-                EtiquetaEstado.setText("Buscando atributos en Documentum para el ID de Documentum " + textoIdDocumentum.getText());
+                etiquetaEstado.setText("Buscando atributos en Documentum para el ID de Documentum " + textoIdDocumentum.getText());
                 cargarAtributos(textoIdDocumentum.getText());
                 utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
             } else {
-                EtiquetaEstado.setText("El ID de Documentum (r_object_id) tiene que tener 16 caracteres.");
+                etiquetaEstado.setText("El ID de Documentum (r_object_id) tiene que tener 16 caracteres.");
             }
         }
     }//GEN-LAST:event_botonDumpAtributosActionPerformed
@@ -289,9 +289,9 @@ public class PantallaAtributos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel EtiquetaEstado;
     private javax.swing.JButton botonDumpAtributos;
     private javax.swing.JButton botonSalir;
+    private javax.swing.JLabel etiquetaEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem opcionCopiarAtributo;
@@ -318,7 +318,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
                 utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
                 if (r_object_id.isEmpty()) {
                     tablaAtributos.setModel(modeloLotes);
-                    EtiquetaEstado.setText("");
+                    etiquetaEstado.setText("");
                     return;
                 }
 
@@ -327,14 +327,14 @@ public class PantallaAtributos extends javax.swing.JFrame {
                     tablaAtributos.setModel(modeloLotes);
                     if (!utilDocum.dameError().isEmpty()) {
                         if (utilDocum.dameError().contains("Bad ID given: 0000000000000000")) {
-                            EtiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
+                            etiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
                         } else {
-                            EtiquetaEstado.setText(utilDocum.dameError());
+                            etiquetaEstado.setText(utilDocum.dameError());
                         }
                     } else {
-                        EtiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
+                        etiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
                     }
-                    EtiquetaEstado.validate();
+                    etiquetaEstado.validate();
                     return;
                 }
 
@@ -374,7 +374,7 @@ public class PantallaAtributos extends javax.swing.JFrame {
                     }
 
                 } else {
-                    EtiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
+                    etiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
                 }
                 tablaAtributos.setModel(modeloLotes);
                 TableColumn columna = tablaAtributos.getColumnModel().getColumn(0);
@@ -383,9 +383,9 @@ public class PantallaAtributos extends javax.swing.JFrame {
                 columna.sizeWidthToFit();
                 tablaAtributos.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
                 tablaAtributos.doLayout();
-                EtiquetaEstado.setText(mensajeborrado);
-                EtiquetaEstado.setForeground(colormensaje);
-                EtiquetaEstado.validate();
+                etiquetaEstado.setText(mensajeborrado);
+                etiquetaEstado.setForeground(colormensaje);
+                etiquetaEstado.validate();
                 pintarTabla();
             }
         }.start();

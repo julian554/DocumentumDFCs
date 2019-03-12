@@ -546,6 +546,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         tablaDocumentos.setPreferredSize(null);
         tablaDocumentos.setSelectionBackground(new java.awt.Color(204, 255, 255));
         tablaDocumentos.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tablaDocumentos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaDocumentos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaDocumentosMouseClicked(evt);
@@ -576,6 +577,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaAtributos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaAtributos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tablaAtributosMousePressed(evt);
@@ -1234,7 +1236,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         }
 
-        if (componente.equals("EtiquetaEstado")) {
+        if (componente.equals("etiquetaEstado")) {
             Utilidades.copiarTextoPortapapeles(etiquetaEstado.getText());
         }
     }//GEN-LAST:event_opcionCopiarActionPerformed
@@ -1278,7 +1280,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private void etiquetaEstadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaEstadoMousePressed
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
             botonderecho = true;
-            componente = "EtiquetaEstado";
+            componente = "etiquetaEstado";
             popupmenu(evt);
         }
     }//GEN-LAST:event_etiquetaEstadoMousePressed
@@ -2468,6 +2470,9 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     setBackground(new Color(245, 245, 245)); // gris claro
                 }
 
+                if (isSelected) {
+                    setBackground(new Color(175, 205, 235)); // azul claro selección
+                }
                 return this;
             }
         });
@@ -3158,7 +3163,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         /*       
         if (!nombre.equals("a_content_type") && !nombre.equals("subject") && !nombre.equals("title") && !nombre.equals("acl_name")
                 && !nombre.equals("object_name") && !nombre.startsWith("map_atr")) {
-            EtiquetaEstado.setText("Atributo " + nombre + " no modificable");
+            etiquetaEstado.setText("Atributo " + nombre + " no modificable");
             return;
         }
          */

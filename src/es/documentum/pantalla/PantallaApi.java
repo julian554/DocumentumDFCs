@@ -96,7 +96,7 @@ public class PantallaApi extends javax.swing.JFrame {
         checkMostrarSQL = new javax.swing.JCheckBox();
         comboHistorial = new javax.swing.JComboBox();
         panelEstado = new javax.swing.JPanel();
-        EtiquetaEstado = new javax.swing.JLabel();
+        etiquetaEstado = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         opciones = new javax.swing.JMenu();
         opcionConsultar = new javax.swing.JMenuItem();
@@ -294,11 +294,11 @@ public class PantallaApi extends javax.swing.JFrame {
         panelEstado.setLayout(panelEstadoLayout);
         panelEstadoLayout.setHorizontalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(EtiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(etiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelEstadoLayout.setVerticalGroup(
             panelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(EtiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+            .addComponent(etiquetaEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
         opciones.setText("Opciones");
@@ -446,7 +446,7 @@ public class PantallaApi extends javax.swing.JFrame {
 
     public void ejecutarApi(String papi) {
         final String api = papi;
-        EtiquetaEstado.setText("");
+        etiquetaEstado.setText("");
         textoLog.setText("");
 
     }
@@ -486,13 +486,13 @@ public class PantallaApi extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel EtiquetaEstado;
     private javax.swing.JButton botonBorrarSalida;
     private javax.swing.JButton botonConsultar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JCheckBox checkMostrarSQL;
     private javax.swing.JCheckBox checkMulti;
     private javax.swing.JComboBox comboHistorial;
+    private javax.swing.JLabel etiquetaEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;

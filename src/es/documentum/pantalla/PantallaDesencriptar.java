@@ -50,7 +50,7 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
         etiquetaEncriptado = new javax.swing.JLabel();
         textoEncriptado = new javax.swing.JTextField();
         botonSalir = new javax.swing.JButton();
-        EtiquetaPanel = new javax.swing.JLabel();
+        etiquetaPanel = new javax.swing.JLabel();
         botonDesencriptar = new javax.swing.JButton();
 
         opcionPegar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/pegar-doc.png"))); // NOI18N
@@ -113,15 +113,15 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
             }
         });
 
-        EtiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        EtiquetaPanel.setForeground(new java.awt.Color(0, 0, 153));
-        EtiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        EtiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        etiquetaPanel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        etiquetaPanel.setForeground(new java.awt.Color(0, 0, 153));
+        etiquetaPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        etiquetaPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseClicked(evt);
+                etiquetaPanelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                EtiquetaPanelMouseEntered(evt);
+                etiquetaPanelMouseEntered(evt);
             }
         });
 
@@ -141,7 +141,7 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(EtiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(etiquetaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,7 +180,7 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
                     .addComponent(botonSalir)
                     .addComponent(botonDesencriptar))
                 .addGap(28, 28, 28)
-                .addComponent(EtiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(etiquetaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {textoEncriptado, textoPlano});
@@ -209,9 +209,9 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_botonSalirActionPerformed
 
-    private void EtiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseEntered
-        EtiquetaPanel.setToolTipText(EtiquetaPanel.getText());
-    }//GEN-LAST:event_EtiquetaPanelMouseEntered
+    private void etiquetaPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseEntered
+        etiquetaPanel.setToolTipText(etiquetaPanel.getText());
+    }//GEN-LAST:event_etiquetaPanelMouseEntered
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
         if (evt.getSource().toString().equals("textoEncriptado")) {
@@ -222,11 +222,11 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_opcionPegarActionPerformed
 
-    private void EtiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EtiquetaPanelMouseClicked
+    private void etiquetaPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etiquetaPanelMouseClicked
         if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            Utilidades.copiarTextoPortapapeles(EtiquetaPanel.getText());
+            Utilidades.copiarTextoPortapapeles(etiquetaPanel.getText());
         }
-    }//GEN-LAST:event_EtiquetaPanelMouseClicked
+    }//GEN-LAST:event_etiquetaPanelMouseClicked
 
     private void textoEncriptadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoEncriptadoActionPerformed
         // TODO add your handling code here:
@@ -262,11 +262,11 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel EtiquetaPanel;
     private javax.swing.JButton botonDesencriptar;
     private javax.swing.JButton botonEncriptar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JLabel etiquetaEncriptado;
+    private javax.swing.JLabel etiquetaPanel;
     private javax.swing.JLabel etiquetaPlano;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JPopupMenu popupmenu;
@@ -281,19 +281,19 @@ public class PantallaDesencriptar extends javax.swing.JDialog {
         Boolean resultado = true;
         if (accion.toLowerCase().equals("encriptar")) {
             if (textoPlano.getText().isEmpty()) {
-                EtiquetaPanel.setText("Debe indicar el texto a encriptar");
+                etiquetaPanel.setText("Debe indicar el texto a encriptar");
                 textoPlano.requestFocus();
                 return false;
             }
         }
         if (accion.toLowerCase().equals("desencriptar")) {
             if (textoEncriptado.getText().isEmpty()) {
-                EtiquetaPanel.setText("Debe indicar el texto a desencriptar");
+                etiquetaPanel.setText("Debe indicar el texto a desencriptar");
                 textoEncriptado.requestFocus();
                 return false;
             }
         }
-        EtiquetaPanel.setText("");
+        etiquetaPanel.setText("");
         return resultado;
     }
 }

@@ -12,8 +12,6 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.text.DefaultCaret;
@@ -59,7 +57,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        Texto = new javax.swing.JTextArea();
+        textoFichero = new javax.swing.JTextArea();
         botonCerrar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         Menu = new javax.swing.JMenu();
@@ -70,12 +68,12 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setName("VentanaLeerFichero"); // NOI18N
 
-        Texto.setEditable(false);
-        Texto.setColumns(20);
-        Texto.setForeground(new java.awt.Color(0, 0, 102));
-        Texto.setLineWrap(true);
-        Texto.setRows(5);
-        jScrollPane1.setViewportView(Texto);
+        textoFichero.setEditable(false);
+        textoFichero.setColumns(20);
+        textoFichero.setForeground(new java.awt.Color(0, 0, 102));
+        textoFichero.setLineWrap(true);
+        textoFichero.setRows(5);
+        jScrollPane1.setViewportView(textoFichero);
 
         botonCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
         botonCerrar.setText("Cerrar");
@@ -174,19 +172,19 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Menu;
-    private javax.swing.JTextArea Texto;
     public static javax.swing.JButton botonCerrar;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem opcionCerrar;
+    private javax.swing.JTextArea textoFichero;
     // End of variables declaration//GEN-END:variables
 
     public void limpiarTexto() {
-        Texto.setText("");
+        textoFichero.setText("");
     }
 
     public void cargarFichero(String fichero) {
-        DefaultCaret caret = (DefaultCaret) Texto.getCaret();
+        DefaultCaret caret = (DefaultCaret) textoFichero.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         BufferedReader br = null;
         Utilidades util = new Utilidades();
@@ -197,7 +195,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
             String os = util.so();
             String encoding = System.getProperty("file.encoding");
             br = new BufferedReader(new InputStreamReader(new FileInputStream(fichero), (idioma.equals("es-ES") && os.toLowerCase().contains("windows")) ? "8859_1" : encoding));
-            Texto.read(br, null);
+            textoFichero.read(br, null);
         } catch (FileNotFoundException ex) {
             Utilidades.escribeLog("Fichero de log " + fichero + " no encontrado - Error " + ex.getMessage());
         } catch (IOException ex) {
@@ -211,9 +209,9 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
                 }
             }
         }
-        Texto.setCaretPosition(Texto.getDocument().getLength());
+        textoFichero.setCaretPosition(textoFichero.getDocument().getLength());
         int fontPoints = 13;
-        Texto.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontPoints));
+        textoFichero.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontPoints));
     }
 
     public Boolean cargarLista(List<String> lista) {
@@ -224,7 +222,7 @@ public class PantallaLeerFichero extends javax.swing.JFrame {
         while (nombreIterator.hasNext()) {
             String elemento = nombreIterator.next();
             try {
-                Texto.append(elemento + "\n");
+                textoFichero.append(elemento + "\n");
             } catch (Exception ex) {
                 Utilidades.escribeLog("Error el escribir texto - Error " + ex.getMessage());
             }

@@ -190,6 +190,9 @@ public class PantallaSesiones extends javax.swing.JFrame {
 
             }
         ));
+        tablaSesiones.setFillsViewportHeight(true);
+        tablaSesiones.setRowSelectionAllowed(true);
+        tablaSesiones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaSesiones.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaSesionesMouseClicked(evt);
@@ -396,9 +399,9 @@ public class PantallaSesiones extends javax.swing.JFrame {
                     };
                 }
                 tablaSesiones.setModel(modeloLotes);
-                tablaSesiones.setShowHorizontalLines(true);
-                tablaSesiones.setRowSelectionAllowed(false);
-                tablaSesiones.setAutoCreateRowSorter(true);
+//                tablaSesiones.setShowHorizontalLines(true);
+//                tablaSesiones.setRowSelectionAllowed(false);
+//                tablaSesiones.setAutoCreateRowSorter(true);
 
                 TableColumn columna = tablaSesiones.getColumnModel().getColumn(0);
                 columna.setPreferredWidth(180);
@@ -452,30 +455,22 @@ public class PantallaSesiones extends javax.swing.JFrame {
                     setBackground(Color.WHITE);
                 }
 
+                if (isSelected) {
+                    setBackground(new Color(175, 205, 235)); // azul claro selección
+                }
+                
                 String valor = (String) table.getValueAt(row, 6);
                 String id = (String) table.getValueAt(row, 1);
 
-//                if (utilDocum.estaSesionArrancado(nombre)) {
-//                    setOpaque(true);
-//                    setForeground(Color.RED);
-//                } else {
-//                    if (valor.equals("Activo")) {
-//                        setOpaque(true);
-//                        setForeground(Color.BLUE);
-//                    } else {
-//                        setOpaque(false);
-//                        setForeground(Color.GRAY);
-//                    }
-//                }
                 if (valor.equals("Activa")) {
-                    setOpaque(true);
+//                    setOpaque(true);
                     setForeground(Color.BLUE);
                 } else {
-                    setOpaque(false);
+//                    setOpaque(false);
                     setForeground(Color.BLACK);
                 }
                 if (id.equals(utilDocum.dameSesionID(gsesion))) {
-                    setOpaque(true);
+//                    setOpaque(true);
                     setForeground(Color.RED);
                 }
 

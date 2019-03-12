@@ -69,7 +69,7 @@
               <Component id="botonSalir" min="-2" pref="101" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
           </Group>
-          <Component id="EtiquetaEstado" alignment="0" max="32767" attributes="0"/>
+          <Component id="etiquetaEstado" alignment="0" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Component id="panelDocumentos" alignment="1" max="32767" attributes="0"/>
           </Group>
@@ -90,7 +90,7 @@
                   </Group>
               </Group>
               <EmptySpace pref="718" max="32767" attributes="0"/>
-              <Component id="EtiquetaEstado" min="-2" pref="36" max="-2" attributes="0"/>
+              <Component id="etiquetaEstado" min="-2" pref="36" max="-2" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
@@ -202,7 +202,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textoIdDocumentumActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="EtiquetaEstado">
+    <Component class="javax.swing.JLabel" name="etiquetaEstado">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>

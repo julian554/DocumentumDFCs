@@ -61,7 +61,7 @@ public class PantallaJobs extends javax.swing.JFrame {
             Utilidades.escribeLog("\nError cargando el Logo " + e.getMessage() + "\n");
         }
     }
-    
+
     protected static Image getLogo() {
         //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
         java.net.URL imgURL = PantallaJobs.class.getClassLoader().getResource("es/documentum/imagenes/jobs.png");
@@ -72,6 +72,7 @@ public class PantallaJobs extends javax.swing.JFrame {
             return null;
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -348,7 +349,7 @@ public class PantallaJobs extends javax.swing.JFrame {
                 }
 
                 Object[][] datos = new Object[jobs.size()][8];
-                Object[] cabecera = {"Nombre", "Descripción", "Tipo", "Ultima ejecución", "Activo", "Resultado", "ID","Próxima ejecución"};
+                Object[] cabecera = {"Nombre", "Descripción", "Tipo", "Ultima ejecución", "Activo", "Resultado", "ID", "Próxima ejecución"};
 
                 for (int n = 0; n < jobs.size(); n++) {
                     ArrayList valores = (ArrayList) jobs.get(n);
@@ -380,9 +381,9 @@ public class PantallaJobs extends javax.swing.JFrame {
                     };
                 }
                 tablaJobs.setModel(modeloLotes);
-                tablaJobs.setShowHorizontalLines(true);
-                tablaJobs.setRowSelectionAllowed(false);
-                tablaJobs.setAutoCreateRowSorter(true);
+//                tablaJobs.setShowHorizontalLines(true);
+//                tablaJobs.setRowSelectionAllowed(false);
+//                tablaJobs.setAutoCreateRowSorter(true);
 
                 TableColumn columna = tablaJobs.getColumnModel().getColumn(0);
                 columna.setPreferredWidth(260);
@@ -454,12 +455,17 @@ public class PantallaJobs extends javax.swing.JFrame {
 //                    }
 //                }
                 if (valor.equals("Activo")) {
-                    setOpaque(true);
+//                    setOpaque(true);
                     setForeground(Color.BLUE);
                 } else {
-                    setOpaque(false);
+//                    setOpaque(false);
                     setForeground(Color.GRAY);
                 }
+
+                if (isSelected) {
+                    setBackground(new Color(175, 205, 235)); // azul claro selección
+                }
+
                 return this;
             }
         });
@@ -493,7 +499,7 @@ public class PantallaJobs extends javax.swing.JFrame {
                 }
                 if (!fichero.isEmpty()) {
                     util.exportarAExcel(tablaJobs, fichero, "Jobs ");
-                 //   util.exportaExcel(tablaJobs, fichero);
+                    //   util.exportaExcel(tablaJobs, fichero);
                 }
             } else {
                 Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");

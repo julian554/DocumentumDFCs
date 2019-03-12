@@ -382,17 +382,17 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="EtiquetaEstado" alignment="0" max="32767" attributes="0"/>
+              <Component id="etiquetaEstado" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="EtiquetaEstado" alignment="0" pref="28" max="32767" attributes="0"/>
+              <Component id="etiquetaEstado" alignment="0" pref="28" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="EtiquetaEstado">
+        <Component class="javax.swing.JLabel" name="etiquetaEstado">
         </Component>
       </SubComponents>
     </Container>

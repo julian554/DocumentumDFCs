@@ -12,9 +12,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,6 +28,8 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
     UtilidadesDocumentum utildocum = new UtilidadesDocumentum();
     IDfSession gsesion = sesionDocumentum();
     String r_object_id;
+    String componente = "";
+    Boolean botonderecho = false;
 
     public String getR_object_id() {
         return r_object_id;
@@ -55,16 +59,37 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupDatos = new javax.swing.JPopupMenu();
+        opcionCopiarValor = new javax.swing.JMenuItem();
+        opcionExportarExcel = new javax.swing.JMenuItem();
         botonCerrar = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        ScrollPropios = new javax.swing.JScrollPane();
         tablaPropios = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        scrollHeredados = new javax.swing.JScrollPane();
         tablaHeredados = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         menuPrincipal = new javax.swing.JMenuBar();
-        opcionOpciones = new javax.swing.JMenu();
+        menuOpciones = new javax.swing.JMenu();
         opcionCerrar = new javax.swing.JMenuItem();
+
+        opcionCopiarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
+        opcionCopiarValor.setText("Copiar Valor");
+        opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionCopiarValorActionPerformed(evt);
+            }
+        });
+        popupDatos.add(opcionCopiarValor);
+
+        opcionExportarExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/excel-24.gif"))); // NOI18N
+        opcionExportarExcel.setText("Exportar a Excel");
+        opcionExportarExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionExportarExcelActionPerformed(evt);
+            }
+        });
+        popupDatos.add(opcionExportarExcel);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tipos Documentales");
@@ -89,7 +114,12 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(tablaPropios);
+        tablaPropios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablaPropiosMousePressed(evt);
+            }
+        });
+        ScrollPropios.setViewportView(tablaPropios);
 
         tablaHeredados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,7 +132,12 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(tablaHeredados);
+        tablaHeredados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablaHeredadosMousePressed(evt);
+            }
+        });
+        scrollHeredados.setViewportView(tablaHeredados);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(102, 0, 0));
@@ -122,9 +157,9 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         jLabel2.setMinimumSize(new java.awt.Dimension(250, 24));
         jLabel2.setPreferredSize(new java.awt.Dimension(250, 24));
 
-        opcionOpciones.setMnemonic('O');
-        opcionOpciones.setText("Opciones");
-        opcionOpciones.setName("opcionOpciones"); // NOI18N
+        menuOpciones.setMnemonic('O');
+        menuOpciones.setText("Opciones");
+        menuOpciones.setName("menuOpciones"); // NOI18N
 
         opcionCerrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
         opcionCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
@@ -136,9 +171,9 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 opcionCerrarActionPerformed(evt);
             }
         });
-        opcionOpciones.add(opcionCerrar);
+        menuOpciones.add(opcionCerrar);
 
-        menuPrincipal.add(opcionOpciones);
+        menuPrincipal.add(menuOpciones);
 
         setJMenuBar(menuPrincipal);
 
@@ -150,7 +185,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 .addContainerGap(782, Short.MAX_VALUE)
                 .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addComponent(jScrollPane2)
+            .addComponent(ScrollPropios)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,7 +193,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 904, Short.MAX_VALUE))
+                .addComponent(scrollHeredados, javax.swing.GroupLayout.DEFAULT_SIZE, 904, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,14 +203,14 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ScrollPropios, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(botonCerrar)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(43, 43, 43)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(scrollHeredados, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                     .addGap(246, 246, 246)))
         );
 
@@ -189,6 +224,71 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
     private void opcionCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCerrarActionPerformed
         this.dispose();
     }//GEN-LAST:event_opcionCerrarActionPerformed
+
+    private void opcionCopiarValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarValorActionPerformed
+        if (componente.equals("tablaPropios")) {
+            Utilidades.copiarTextoPortapapeles(tablaPropios.getModel().getValueAt(tablaPropios.convertRowIndexToModel(tablaPropios.getSelectedRow()), tablaPropios.getSelectedColumn()).toString());
+        }
+        if (componente.startsWith("tablaHeredados")) {
+            Utilidades.copiarTextoPortapapeles(tablaHeredados.getModel().getValueAt(tablaHeredados.convertRowIndexToModel(tablaHeredados.getSelectedRow()), tablaHeredados.getSelectedColumn()).toString());
+        }
+    }//GEN-LAST:event_opcionCopiarValorActionPerformed
+
+    private void opcionExportarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionExportarExcelActionPerformed
+        String fichero = "";
+        if (componente.equals("tablaPropios")) {
+            if (tablaPropios.getModel().getRowCount() > 0) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setCurrentDirectory(new java.io.File("."));
+                chooser.setDialogTitle("Seleccionar directorio y nombre de fichero");
+                chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                    fichero = chooser.getSelectedFile().toString();
+                    if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                        fichero = fichero + ".xlsx";
+                    }
+                    String hoja = "Atributos propios";
+                    util.exportarAExcel(tablaPropios, fichero, hoja);
+                } else {
+                    Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
+                }
+            }
+        }
+        if (componente.equals("tablaHeredados")) {
+            if (tablaHeredados.getModel().getRowCount() > 0) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setCurrentDirectory(new java.io.File("."));
+                chooser.setDialogTitle("Seleccionar directorio y nombre de fichero");
+                chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                    fichero = chooser.getSelectedFile().toString();
+                    if (!fichero.toLowerCase().endsWith(".xlsx")) {
+                        fichero = fichero + ".xlsx";
+                    }
+                    String hoja = "Atributos Heredados";
+                    util.exportarAExcel(tablaHeredados, fichero, hoja);
+                } else {
+                    Utilidades.escribeLog("No se ha seleccionado el fichero de salida ");
+                }
+            }
+        }
+    }//GEN-LAST:event_opcionExportarExcelActionPerformed
+
+    private void tablaHeredadosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaHeredadosMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            botonderecho = true;
+            componente = "tablaHeredados";
+            popupmenu(evt);
+        }
+    }//GEN-LAST:event_tablaHeredadosMousePressed
+
+    private void tablaPropiosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPropiosMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            botonderecho = true;
+            componente = "tablaPropios";
+            popupmenu(evt);
+        }
+    }//GEN-LAST:event_tablaPropiosMousePressed
 
     /**
      * @param args the command line arguments
@@ -229,14 +329,17 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane ScrollPropios;
     private javax.swing.JButton botonCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JMenu menuOpciones;
     private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenuItem opcionCerrar;
-    private javax.swing.JMenu opcionOpciones;
+    private javax.swing.JMenuItem opcionCopiarValor;
+    private javax.swing.JMenuItem opcionExportarExcel;
+    private javax.swing.JPopupMenu popupDatos;
+    private javax.swing.JScrollPane scrollHeredados;
     private javax.swing.JTable tablaHeredados;
     private javax.swing.JTable tablaPropios;
     // End of variables declaration//GEN-END:variables
@@ -247,13 +350,13 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         TablaSinEditarCol modeloLotes = new TablaSinEditarCol();
 
         //Heredados 
-        ArrayList<DatosTipo> resultado = new ArrayList<>();
+        ArrayList<datosTipo> resultado = new ArrayList<>();
         try {
             IDfCollection col = utildocum.ejecutarDql(dql, gsesion);
             if (col != null) {
                 while (col.next()) {
                     IDfTypedObject r = col.getTypedObject();
-                    DatosTipo datostipo = new DatosTipo();
+                    datosTipo datostipo = new datosTipo();
                     datostipo.setAttr_name(r.getString("attr_name"));
                     datostipo.setAttr_type(r.getInt("attr_type"));
                     datostipo.setAttr_length(r.getInt("attr_length"));
@@ -282,14 +385,14 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
 //        columna.sizeWidthToFit();
 
         // Propios
-        dql = "select attr_name, attr_type, attr_repeating,attr_length from dm_type where r_object_id='"+tipo+"' and i_position < -1 * start_pos  order by 1 enable(ROW_BASED)";
-        ArrayList<DatosTipo> resultadoPropios = new ArrayList<>();
+        dql = "select attr_name, attr_type, attr_repeating,attr_length from dm_type where r_object_id='" + tipo + "' and i_position < -1 * start_pos  order by 1 enable(ROW_BASED)";
+        ArrayList<datosTipo> resultadoPropios = new ArrayList<>();
         try {
             IDfCollection colPropios = utildocum.ejecutarDql(dql, gsesion);
             if (colPropios != null) {
                 while (colPropios.next()) {
                     IDfTypedObject r = colPropios.getTypedObject();
-                    DatosTipo datostipo = new DatosTipo();
+                    datosTipo datostipo = new datosTipo();
                     datostipo.setAttr_name(r.getString("attr_name"));
                     datostipo.setAttr_type(r.getInt("attr_type"));
                     datostipo.setAttr_length(r.getInt("attr_length"));
@@ -355,8 +458,18 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
 //                    setBackground(Color.WHITE);
 //                }
                 table.getTableHeader().setFont(table.getTableHeader().getFont().deriveFont(Font.BOLD));
+                if (col == 0) {
+                    DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+                    leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+                    leftRenderer.setBackground(botonCerrar.getBackground());
+                    table.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+                }
                 if (col == 1) {
-                    table.getColumnModel().getColumn(0).setPreferredWidth(300);
+                    table.getColumnModel().getColumn(1).setPreferredWidth(300);
+                    DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+                    leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+                    leftRenderer.setBackground(botonCerrar.getBackground());
+                    table.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
                 }
 
                 if (col == 2) {
@@ -399,8 +512,20 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
 
                 table.getTableHeader().setFont(table.getTableHeader().getFont().deriveFont(Font.BOLD));
+                if (col == 0) {
+                    DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+                    leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+                    leftRenderer.setBackground(botonCerrar.getBackground());
+                    leftRenderer.setForeground(Color.BLUE);
+                    table.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
+                }
                 if (col == 1) {
-                    table.getColumnModel().getColumn(0).setPreferredWidth(300);
+                    table.getColumnModel().getColumn(1).setPreferredWidth(300);
+                    DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+                    leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+                    leftRenderer.setBackground(botonCerrar.getBackground());
+                    leftRenderer.setForeground(Color.BLUE);
+                    table.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
                 }
                 if (col == 2) {
                     table.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -459,7 +584,7 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
         }
     }
 
-    private class DatosTipo implements Serializable {
+    private class datosTipo implements Serializable {
 
         String r_object_id;
         int i_position;
@@ -517,5 +642,31 @@ public class PantallaTipoAtributos extends javax.swing.JFrame {
             this.attr_identifier = attr_identifier;
         }
 
+    }
+
+    private void popupmenu(MouseEvent evt) {
+        if (evt.isPopupTrigger() || botonderecho) {
+            botonderecho = false;
+            if (evt.getSource().getClass().getName().equals("javax.swing.JTable")) {
+                JTable source = (JTable) evt.getSource();
+                int row = source.rowAtPoint(evt.getPoint());
+                int column = source.columnAtPoint(evt.getPoint());
+                if (!source.isRowSelected(row)) {
+                    source.changeSelection(row, column, false, false);
+                }
+
+                if (componente.equals("tablaPropios")) {
+                    if (row >= 0 && column >= 0 && tablaPropios.getModel().getRowCount() > 0) {
+                        popupDatos.show(evt.getComponent(), evt.getX(), evt.getY());
+                    }
+                }
+                if (componente.equals("tablaHeredados")) {
+                    if (row >= 0 && column >= 0 && tablaHeredados.getModel().getRowCount() > 0) {
+                        popupDatos.show(evt.getComponent(), evt.getX(), evt.getY());
+                    }
+                }
+
+            }
+        }
     }
 }

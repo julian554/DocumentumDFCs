@@ -672,7 +672,9 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 if (nombre.equals("Nombre")) {
                     setFont(getFont().deriveFont(Font.BOLD));
                 }
-
+                if (isSelected) {
+                    setBackground(new Color(175, 205, 235)); // azul claro selección
+                }
                 return this;
             }
         });
