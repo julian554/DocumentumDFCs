@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -49,6 +50,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.w3c.dom.DOMImplementation;
@@ -1170,6 +1173,179 @@ public class Utilidades {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    public ArrayList<String> importarExcelEnArrayList(String fichero, int numHoja) {
+        ArrayList libroExcel = new ArrayList();
+        try {
+            Workbook workbook = WorkbookFactory.create(new File(fichero));
+            //   int numHojas = workbook.getNumberOfSheets();
+            Sheet datatypeSheet = workbook.getSheetAt(numHoja);
+            Iterator<Row> iterator = datatypeSheet.iterator();
+            while (iterator.hasNext()) {
+                Row currentRow = iterator.next();
+                Iterator<Cell> cellIterator = currentRow.iterator();
+                ArrayList celdas = new ArrayList();
+                while (cellIterator.hasNext()) {
+                    Cell currentCell = cellIterator.next();
+                    String datoCelda = "";
+                    //getCellTypeEnum shown as deprecated for version 3.15
+                    //getCellTypeEnum will be renamed to getCellType starting from version 4.0
+                    CellType tipoCelda = currentCell.getCellTypeEnum();
+                    switch (tipoCelda) {
+                        case STRING:
+                            datoCelda = currentCell.getStringCellValue();
+                            break;
+                        case NUMERIC:
+                            datoCelda = currentCell.getNumericCellValue() + "";
+                            break;
+                        case BOOLEAN:
+                            datoCelda = currentCell.getBooleanCellValue() ? "true" : "false";
+                            break;
+                        case BLANK:
+                            datoCelda = "";
+                            break;
+                        case FORMULA:
+                            switch (currentCell.getCachedFormulaResultType()) {
+                                case Cell.CELL_TYPE_NUMERIC:
+                                    datoCelda = currentCell.getNumericCellValue() + "";
+                                    break;
+                                case Cell.CELL_TYPE_STRING:
+                                    datoCelda = currentCell.getRichStringCellValue() + "";
+                                    break;
+                            }
+                        default:
+                            if (tipoCelda.toString().equals("FORMULA")) {
+                                switch (currentCell.getCachedFormulaResultType()) {
+                                    case Cell.CELL_TYPE_NUMERIC:
+                                        datoCelda = currentCell.getNumericCellValue() + "";
+                                        break;
+                                    case Cell.CELL_TYPE_STRING:
+                                        datoCelda = currentCell.getRichStringCellValue() + "";
+                                        break;
+                                }
+                            } else {
+                                datoCelda = currentCell.getStringCellValue();
+                            }
+                    }
+                    celdas.add(datoCelda);
+                }
+                libroExcel.add(celdas);
+            }
+            workbook.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Error - " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error - " + e.getMessage());
+        } catch (InvalidFormatException ex) {
+            System.out.println("Error - " + ex.getMessage());
+        } catch (EncryptedDocumentException ex) {
+            System.out.println("Error - " + ex.getMessage());
+        }
+        return libroExcel;
+    }
+
+    public int numeroHojasExcel(String fichero) {
+        int numHojas = 0;
+        try {
+            Workbook workbook = WorkbookFactory.create(new File(fichero));
+            numHojas = workbook.getNumberOfSheets();
+        } catch (Exception ex) {
+
+        }
+        return numHojas;
+
+    }
+
+    public TableModel importarExcelEnTableModel(String fichero, int numHoja) {
+        ArrayList libroExcel = new ArrayList();
+        try {
+            Workbook workbook = WorkbookFactory.create(new File(fichero));
+            //       int numHojas = workbook.getNumberOfSheets();
+            Sheet datatypeSheet = workbook.getSheetAt(numHoja);
+            Iterator<Row> iterator = datatypeSheet.iterator();
+            while (iterator.hasNext()) {
+                Row currentRow = iterator.next();
+                Iterator<Cell> cellIterator = currentRow.iterator();
+                ArrayList celdas = new ArrayList();
+                while (cellIterator.hasNext()) {
+                    Cell currentCell = cellIterator.next();
+                    String datoCelda = "";
+                    //getCellTypeEnum shown as deprecated for version 3.15
+                    //getCellTypeEnum ill be renamed to getCellType starting from version 4.0
+                    CellType tipoCelda = currentCell.getCellTypeEnum();
+                    switch (tipoCelda) {
+                        case STRING:
+                            datoCelda = currentCell.getStringCellValue();
+                            break;
+                        case NUMERIC:
+                            datoCelda = currentCell.getNumericCellValue() + "";
+                            break;
+                        case BOOLEAN:
+                            datoCelda = currentCell.getBooleanCellValue() ? "true" : "false";
+                            break;
+                        case BLANK:
+                            datoCelda = "";
+                            break;
+                        case FORMULA:
+                            switch (currentCell.getCachedFormulaResultType()) {
+                                case Cell.CELL_TYPE_NUMERIC:
+                                    datoCelda = currentCell.getNumericCellValue() + "";
+                                    break;
+                                case Cell.CELL_TYPE_STRING:
+                                    datoCelda = currentCell.getRichStringCellValue() + "";
+                                    break;
+                            }
+                        default:
+                            if (tipoCelda.toString().equals("FORMULA")) {
+                                switch (currentCell.getCachedFormulaResultType()) {
+                                    case Cell.CELL_TYPE_NUMERIC:
+                                        datoCelda = currentCell.getNumericCellValue() + "";
+                                        break;
+                                    case Cell.CELL_TYPE_STRING:
+                                        datoCelda = currentCell.getRichStringCellValue() + "";
+                                        break;
+                                }
+                            } else {
+                                datoCelda = currentCell.getStringCellValue();
+                            }
+                    }
+                    celdas.add(datoCelda);
+                }
+                libroExcel.add(celdas);
+            }
+            workbook.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Error - " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error - " + e.getMessage());
+        } catch (InvalidFormatException ex) {
+            System.out.println("Error - " + ex.getMessage());
+        } catch (EncryptedDocumentException ex) {
+            System.out.println("Error - " + ex.getMessage());
+        }
+        TablaSinEditarCol modeloExcel = new TablaSinEditarCol();
+        if (libroExcel.size() > 0) {
+            ArrayList cabeceraLibroExcel = (ArrayList) libroExcel.get(0);
+            int numeroCampos = cabeceraLibroExcel.size();
+            int numFilas = libroExcel.size();
+            Object[] cabecera = cabeceraLibroExcel.toArray();
+            Object[][] datos = new Object[numFilas - 1][numeroCampos];
+            for (int nf = 1; nf < numFilas; nf++) {
+                ArrayList filaLibroExcel = (ArrayList) libroExcel.get(nf);
+                for (int nc = 0; nc < numeroCampos; nc++) {
+                    int misCampos = filaLibroExcel.size();
+                    if (nc > misCampos - 1) {
+                        datos[nf - 1][nc] = "";
+                    } else {
+                        datos[nf - 1][nc] = filaLibroExcel.get(nc).toString();
+                    }
+                }
+            }
+            modeloExcel = new TablaSinEditarCol(datos, cabecera);
+        }
+        
+        return modeloExcel;
     }
 
     public String humanReadableByteCount(long bytes, boolean si) {

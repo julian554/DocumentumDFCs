@@ -873,11 +873,13 @@ public class UtilidadesDocumentum {
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
 
             if (atributo.toLowerCase().equals("r_folder_path")) {
-                idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + sysObj.getRepeatingString("i_folder_id", 0) + "'");
-                sysObj = (IDfSysObject) sesion.getObject(idObj);
-                for (int i = 0; i < sysObj.getValueCount("r_folder_path"); i++) {
-                    String valores = sysObj.getRepeatingString("r_folder_path", i);
-                    resultado.add(valores);
+                if (!r_object_id.startsWith("0c")) {
+                    idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + sysObj.getRepeatingString("i_folder_id", 0) + "'");
+                    sysObj = (IDfSysObject) sesion.getObject(idObj);
+                    for (int i = 0; i < sysObj.getValueCount("r_folder_path"); i++) {
+                        String valores = sysObj.getRepeatingString("r_folder_path", i);
+                        resultado.add(valores);
+                    }
                 }
             } else if (!sysObj.isAttrRepeating(atributo)) {
                 if (atributo.toLowerCase().contains("date")) {

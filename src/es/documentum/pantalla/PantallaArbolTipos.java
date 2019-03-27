@@ -176,6 +176,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaInfo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaInfo.setShowHorizontalLines(false);
         tablaInfo.setShowVerticalLines(false);
         tablaInfo.addMouseListener(new java.awt.event.MouseAdapter() {

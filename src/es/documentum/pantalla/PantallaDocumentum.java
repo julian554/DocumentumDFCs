@@ -546,7 +546,6 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         tablaDocumentos.setPreferredSize(null);
         tablaDocumentos.setSelectionBackground(new java.awt.Color(204, 255, 255));
         tablaDocumentos.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        tablaDocumentos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaDocumentos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaDocumentosMouseClicked(evt);
@@ -1107,6 +1106,43 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             popupmenu(evt);
         }
 
+//        if (tablaDocumentos.getSelectedRow() < 0) {
+//            return;
+//        }
+
+//        if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1 && tablaDocumentos.getModel().getRowCount() > 0) {
+//            //     Utilidades.escribeLog("Doble click : " + tablaDocumentos.getModel().getValueAt(tablaDocumentos.getSelectedRow(), 0).toString());
+//            cargarAtributos(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString());
+//            utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+//            textoRutaDocumentum.setText(utilDocum.dameAtributo(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString(), "r_folder_path").toString().replace("[", "").replace("]", ""));
+//            if (tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 2).toString().equals("dm_folder")
+//                    || tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString().startsWith("0b")) {
+//                textoRutaDocumentum.setText(textoRutaDocumentum.getText() + "/" + tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString());
+//                buscarEnDocumentum();
+//            } else if (tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 2).toString().equals("dm_cabinet")) {
+//                textoRutaDocumentum.setText("/" + tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString());
+//                buscarEnDocumentum();
+//            } else if (tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString().startsWith("09")
+//                    || !utilDocum.dameAtributo(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString(), "a_storage_type").isEmpty()) {
+//                abrirFicheroDeDocumentum();
+//            } else {
+//                Utilidades.copiarTextoPortapapeles(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString());
+//            }
+//        } else if (tablaDocumentos.getModel().getRowCount() > 0) {
+//            cargarAtributos(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString());
+//            utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+//            if (!utilDocum.dameAtributo(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString(), "r_folder_path").toString().replace("[", "").replace("]", "").isEmpty()) {
+//                textoRutaDocumentum.setText(utilDocum.dameAtributo(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString(), "r_folder_path").toString().replace("[", "").replace("]", ""));
+//            }
+//        } else if (evt.getClickCount() == 1 && evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && tablaDocumentos.getModel().getRowCount() > 0) {
+//            botonderecho = true;
+//            componente = "tablaDocumentos";
+//            popupmenu(evt);
+//        }
+
+    }//GEN-LAST:event_tablaDocumentosMousePressed
+
+    private void tablaDocumentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDocumentosMouseClicked
         if (tablaDocumentos.getSelectedRow() < 0) {
             return;
         }
@@ -1140,41 +1176,6 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             componente = "tablaDocumentos";
             popupmenu(evt);
         }
-
-    }//GEN-LAST:event_tablaDocumentosMousePressed
-
-    private void tablaDocumentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDocumentosMouseClicked
-//        if (tablaDocumentos.getSelectedRow() < 0) {
-//            return;
-//        }
-//
-//        if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1 && tablaDocumentos.getModel().getRowCount() > 0) {
-//            //     Utilidades.escribeLog("Doble click : " + tablaDocumentos.getModel().getValueAt(tablaDocumentos.getSelectedRow(), 0).toString());
-//            cargarAtributos(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString());
-//            utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-//            textoRutaDocumentum.setText(utilDocum.dameAtributo(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString(), "r_folder_path").toString().replace("[", "").replace("]", ""));
-//            if (tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 2).toString().equals("dm_folder")
-//                    || tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString().startsWith("0b")) {
-//                textoRutaDocumentum.setText(textoRutaDocumentum.getText() + "/" + tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString());
-//                buscarEnDocumentum();
-//            } else if (tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 2).toString().equals("dm_cabinet")) {
-//                textoRutaDocumentum.setText("/" + tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 0).toString());
-//                buscarEnDocumentum();
-//            } else if (tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 2).toString().equals("dm_document")) {
-//                abrirFicheroDeDocumentum();
-//            } else {
-//                Utilidades.copiarTextoPortapapeles(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString());
-//            }
-//        } else if (tablaDocumentos.getModel().getRowCount() > 0) {
-//            cargarAtributos(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString());
-//            utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-//            if (!utilDocum.dameAtributo(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString(), "r_folder_path").toString().replace("[", "").replace("]", "").isEmpty()) {
-//                textoRutaDocumentum.setText(utilDocum.dameAtributo(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString(), "r_folder_path").toString().replace("[", "").replace("]", ""));
-//            }
-//        } else if (evt.getClickCount() == 1 && evt.getButton() == java.awt.event.MouseEvent.BUTTON3 && tablaDocumentos.getModel().getRowCount() > 0) {
-//            botonderecho = true;
-//            popupmenu(evt);
-//        }
     }//GEN-LAST:event_tablaDocumentosMouseClicked
 
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
