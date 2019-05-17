@@ -68,6 +68,18 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     static Logger logger = Logger.getLogger(PantallaDocumentum.class);
     public PantallaBarra barradocum = new PantallaBarra(PantallaDocumentum.this, false);
 
+    DefaultTableModel modeloLotes = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int fila, int columna) {
+            if (columna == 0) //Con esto se pueden editar todas las celdas menos la de la columna 0
+            {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    };
+
     public PantallaBarra getBarradocum() {
         return barradocum;
     }
@@ -114,6 +126,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         inicializar();
         setVisible(true);
         timer.start();
+        limpiarPantalla();
     }
 
     protected static Image getLogo() {
@@ -885,7 +898,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         menuUtilidades.setText("Utilidades");
 
         opcionDql.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        opcionDql.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/DQL.png"))); // NOI18N
+        opcionDql.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/dql.png"))); // NOI18N
         opcionDql.setText("Editor de DQL");
         opcionDql.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1109,7 +1122,6 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 //        if (tablaDocumentos.getSelectedRow() < 0) {
 //            return;
 //        }
-
 //        if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1 && tablaDocumentos.getModel().getRowCount() > 0) {
 //            //     Utilidades.escribeLog("Doble click : " + tablaDocumentos.getModel().getValueAt(tablaDocumentos.getSelectedRow(), 0).toString());
 //            cargarAtributos(tablaDocumentos.getModel().getValueAt(tablaDocumentos.convertRowIndexToModel(tablaDocumentos.getSelectedRow()), 1).toString());
@@ -2343,17 +2355,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             public void run() {
                 String mensajeborrado = "";
                 Color colormensaje = Color.BLACK;
-                DefaultTableModel modeloLotes = new DefaultTableModel() {
-                    @Override
-                    public boolean isCellEditable(int fila, int columna) {
-                        if (columna == 0) //Con esto se pueden editar todas las celdas menos la de la columna 0
-                        {
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-                };
+
                 utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
                 if (!esadmin) {
                     modeloLotes = new DefaultTableModel() {
@@ -2370,14 +2372,48 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     };
                 }
                 if (r_object_id.isEmpty()) {
-                    tablaAtributos.setModel(modeloLotes);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            Object[][] datosatri = new Object[0][2];
+                            Object[] cabeceraatri = {"Nombre del Atributo", "Valor del Atributo"};
+                            modeloLotes = new DefaultTableModel(datosatri, cabeceraatri) {
+                                @Override
+                                public boolean isCellEditable(int fila, int columna) {
+                                    if (columna == 0) //Con esto se pueden editar todas las celdas menos la de la columna 0
+                                    {
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                            };
+                            tablaAtributos.setModel(modeloLotes);
+                        }
+                    });
                     etiquetaEstado.setText("");
                     return;
                 }
 
                 atributos = utilDocum.dameTodosAtributos(r_object_id);
                 if (atributos.size() <= 0) {
-                    tablaAtributos.setModel(modeloLotes);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            Object[][] datosatri = new Object[0][2];
+                            Object[] cabeceraatri = {"Nombre del Atributo", "Valor del Atributo"};
+                            modeloLotes = new DefaultTableModel(datosatri, cabeceraatri) {
+                                @Override
+                                public boolean isCellEditable(int fila, int columna) {
+                                    if (columna == 0) //Con esto se pueden editar todas las celdas menos la de la columna 0
+                                    {
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+                            };
+                            tablaAtributos.setModel(modeloLotes);
+                        }
+                    });
                     if (!utilDocum.dameError().isEmpty()) {
                         if (utilDocum.dameError().contains("Bad ID given: 0000000000000000")) {
                             etiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
@@ -2436,13 +2472,16 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     };
                     etiquetaEstado.setText("No se encontró el ID de Documentum " + r_object_id);
                 }
-                tablaAtributos.setModel(modeloLotes);
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        tablaAtributos.setModel(modeloLotes);
+                    }
+                });
                 TableColumn columna = tablaAtributos.getColumnModel().getColumn(0);
                 columna.setPreferredWidth(250);
                 columna.setMaxWidth(250);
                 columna.sizeWidthToFit();
                 tablaAtributos.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-                tablaAtributos.doLayout();
                 if (!mensajeborrado.isEmpty()) {
                     etiquetaEstado.setText(mensajeborrado);
                     etiquetaEstado.setForeground(colormensaje);
@@ -2486,7 +2525,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         new Thread() {
             @Override
             public void run() {
-                DefaultTableModel modeloLotes = (DefaultTableModel) tablaDocumentos.getModel();
+                modeloLotes = (DefaultTableModel) tablaDocumentos.getModel();
                 try {
                     modeloLotes.setRowCount(0);
                     modeloLotes.fireTableDataChanged();
@@ -2527,7 +2566,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             return false;
                         }
                     };
-                    tablaDocumentos.setModel(modeloLotes);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            tablaDocumentos.setModel(modeloLotes);
+                        }
+                    });
                     if (!utilDocum.dameError().isEmpty()) {
                         etiquetaEstado.setText(utilDocum.dameError());
                     } else {
@@ -2579,13 +2622,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
                 modeloLotes.setRowCount(documentos.size());
                 modeloLotes.setColumnCount(6);
-                tablaDocumentos.setModel(modeloLotes);
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        tablaDocumentos.setModel(modeloLotes);
+                    }
+                });
                 TableColumn columna = tablaDocumentos.getColumnModel().getColumn(0);
                 columna.setPreferredWidth(125);
                 columna.setMinWidth(125);
                 columna.sizeWidthToFit();
-
-                tablaDocumentos.doLayout();
                 if (tipo.toLowerCase().equals("id")) {
                     etiquetaEstado.setText("Encontrado(s) " + documentos.size() + " documento(s) con id " + carpeta);
                 } else {
@@ -2725,7 +2770,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         botonBuscar.setEnabled(false);
         opcionBuscar.setEnabled(false);
         botonConectar.setBackground(colornoconex);
-        DefaultTableModel modeloLotes = new DefaultTableModel() {
+        modeloLotes = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
                 return false;
@@ -2742,7 +2787,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             };
             modeloLotes.setColumnCount(0);
             modeloLotes.setRowCount(0);
-            tablaDocumentos.setModel(modeloLotes);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    tablaDocumentos.setModel(modeloLotes);
+                }
+            });
         } catch (Exception ex) {
         }
         cargarAtributos("");
@@ -2956,7 +3005,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             new Thread() {
                 @Override
                 public void run() {
-                    DefaultTableModel modeloLotes = (DefaultTableModel) tablaDocumentos.getModel();
+//                    DefaultTableModel modeloLotes = (DefaultTableModel) tablaDocumentos.getModel();
                     try {
                         modeloLotes.setRowCount(0);
                         modeloLotes.fireTableDataChanged();
@@ -2981,7 +3030,12 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                                 return false;
                             }
                         };
-                        tablaDocumentos.setModel(modeloLotes);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                tablaDocumentos.setModel(modeloLotes);
+                            }
+                        });
+
                         if (!utilDocum.dameError().isEmpty()) {
                             etiquetaEstado.setText(utilDocum.dameError());
                         } else {
@@ -3031,7 +3085,11 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     }
 
                     modeloLotes.setRowCount(documentos.size());
-                    tablaDocumentos.setModel(modeloLotes);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            tablaDocumentos.setModel(modeloLotes);
+                        }
+                    });
                     TableColumn columna = tablaDocumentos.getColumnModel().getColumn(0);
                     columna.setPreferredWidth(125);
                     columna.setMinWidth(125);
@@ -3433,15 +3491,35 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     }
 
     private void limpiarPantalla() {
-        DefaultTableModel modeloLotes = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int fila, int columna) {
-                return false;
-            }
-        };
         try {
-            tablaDocumentos.setModel(modeloLotes);
-            tablaAtributos.setModel(modeloLotes);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    Object[][] datos = new Object[0][6];
+                    Object[] cabecera = {"Nombre ", "ID Documentum", "Tipo Documental", "Fecha Creación", "Usuario", "Check Out"};
+                    modeloLotes = new DefaultTableModel(datos, cabecera) {
+                        @Override
+                        public boolean isCellEditable(int fila, int columna) {
+                            return false;
+                        }
+                    };
+                    tablaDocumentos.setModel(modeloLotes);
+                    Object[][] datosatri = new Object[0][2];
+                    Object[] cabeceraatri = {"Nombre del Atributo", "Valor del Atributo"};
+                    modeloLotes = new DefaultTableModel(datosatri, cabeceraatri) {
+                        @Override
+                        public boolean isCellEditable(int fila, int columna) {
+                            if (columna == 0) //Con esto se pueden editar todas las celdas menos la de la columna 0
+                            {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                    };
+                    tablaAtributos.setModel(modeloLotes);
+                }
+            });
+
         } catch (Exception ex) {
         }
         textoIdDocumentum.setText("");

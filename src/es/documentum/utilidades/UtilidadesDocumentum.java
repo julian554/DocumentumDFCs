@@ -219,8 +219,8 @@ public class UtilidadesDocumentum {
             IDfLoginInfo loginInfo = new DfLoginInfo();
             loginInfo.setUser(usuario);
             loginInfo.setPassword(password);
-            // sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
-            sesMgr.setIdentity(IDfSessionManager.ALL_DOCBASES, loginInfo);
+            sesMgr.setIdentity(docbase + "@" + docbroker, loginInfo);
+//            sesMgr.setIdentity(IDfSessionManager.ALL_DOCBASES, loginInfo);
             docbroker = docbroker.contains(".") ? docbroker.substring(0, docbroker.indexOf(".")) : docbroker;
             sesion = sesMgr.getSession(docbase);
 
@@ -2514,8 +2514,7 @@ public class UtilidadesDocumentum {
     /**
      * Recursive function for generating map of folder structure and documents
      *
-     * @param rootPath absolute path to repository cabinet or folder (i.e.
-     * "/Temp/myfolder")
+     * @param rootPath absolute path to repository cabinet or folder (i.e. "/Temp/myfolder")
      * @param indent string containing indentation tabs
      * @param session repository session
      *
@@ -3126,6 +3125,235 @@ public class UtilidadesDocumentum {
         } catch (DfException ex) {
         }
         return id;
+    }
+
+    public String dameNombrePermiso(String permiso) {
+        String nombre = "";
+
+        switch (permiso) {
+            case "1":
+                nombre = "None";
+                break;
+            case "2":
+                nombre = "Browse";
+                break;
+            case "3":
+                nombre = "Read";
+                break;
+            case "4":
+                nombre = "Relate";
+                break;
+            case "5":
+                nombre = "Version";
+                break;
+            case "6":
+                nombre = "Write";
+                break;
+            case "7":
+                nombre = "Delete";
+                break;
+        }
+        return nombre;
+    }
+
+    public String dameNombreXpermiso(String permiso) {
+        String valor = "";
+
+        switch (permiso) {
+            case "0":
+                valor = "execute_proc,change_location";
+                break;
+            case "1":
+                valor = "execute_proc";
+                break;
+            case "2":
+                valor = "change_location";
+                break;
+            case "3":
+                valor = "";
+                break;
+            case "65536":
+                valor = "execute_proc,change_location,change_state";
+                break;
+            case "65537":
+                valor = "change_location,change_state";
+                break;
+            case "65538":
+                valor = "execute_proc,change_state";
+                break;
+            case "65539":
+                valor = "change_state";
+                break;
+            case "131072":
+                valor = "execute_proc,change_location,change_permissions";
+                break;
+            case "131073":
+                valor = "change_location,change_permissions";
+                break;
+            case "131074":
+                valor = "execute_proc,change_permissions";
+                break;
+            case "131075":
+                valor = "change_permissions";
+                break;
+            case "196608":
+                valor = "execute_proc,change_location,change_state,change_permissions";
+                break;
+            case "196609":
+                valor = "change_location,change_state,change_permissions";
+                break;
+            case "196610":
+                valor = "execute_proc,change_state,change_permissions";
+                break;
+            case "196611":
+                valor = "change_state,change_permissions";
+                break;
+            case "262144":
+                valor = "execute_proc,change_location,change_owner";
+                break;
+            case "262145":
+                valor = "change_location,change_owner";
+                break;
+            case "262146":
+                valor = "execute_proc,change_owner";
+                break;
+            case "262147":
+                valor = "change_owner";
+                break;
+            case "327680":
+                valor = "execute_proc,change_location,change_state,change_owner";
+                break;
+            case "327681":
+                valor = "change_location,change_state,change_owner";
+                break;
+            case "327682":
+                valor = "execute_proc,change_state,change_owner";
+                break;
+            case "327683":
+                valor = "change_state,change_owner";
+                break;
+            case "393216":
+                valor = "execute_proc,change_location,change_permissions,change_owner";
+                break;
+            case "393217":
+                valor = "change_location,change_permissions,change_owner";
+                break;
+            case "393218":
+                valor = "execute_proc,change_permissions,change_owner";
+                break;
+            case "393219":
+                valor = "change_permissions,change_owner";
+                break;
+            case "458752":
+                valor = "execute_proc,change_location,change_state,change_permissions,change_owner";
+                break;
+            case "458753":
+                valor = "change_location,change_state,change_permissions,change_owner";
+                break;
+            case "458754":
+                valor = "execute_proc,change_state,change_permissions,change_owner";
+                break;
+            case "458755":
+                valor = "change_state,change_permissions,change_owner";
+                break;
+            case "524288":
+                valor = "execute_proc,change_location,extended_delete";
+                break;
+            case "524289":
+                valor = "change_location,extended_delete";
+                break;
+            case "524290":
+                valor = "execute_proc,extended_delete";
+                break;
+            case "524291":
+                valor = "extended_delete";
+                break;
+            case "589824":
+                valor = "execute_proc,change_location,change_state,extended_delete";
+                break;
+            case "589825":
+                valor = "change_location,change_state,extended_delete";
+                break;
+            case "589826":
+                valor = "execute_proc,change_state,extended_delete";
+                break;
+            case "589827":
+                valor = "change_state,extended_delete";
+                break;
+            case "655360":
+                valor = "execute_proc,change_location,change_permissions,extended_delete";
+                break;
+            case "655361":
+                valor = "change_location,change_permissions,extended_delete";
+                break;
+            case "655362":
+                valor = "execute_proc,change_permissions,extended_delete";
+                break;
+            case "655363":
+                valor = "change_permissions,extended_delete";
+                break;
+            case "720896":
+                valor = "execute_proc,change_location,change_state,change_permissions,extended_delete";
+                break;
+            case "720897":
+                valor = "change_location,change_state,change_permissions,extended_delete";
+                break;
+            case "720898":
+                valor = "execute_proc,change_state,change_permissions,extended_delete";
+                break;
+            case "720899":
+                valor = "change_state,change_permissions,extended_delete";
+                break;
+            case "786432":
+                valor = "execute_proc,change_location,change_owner,extended_delete";
+                break;
+            case "786433":
+                valor = "change_location,change_owner,extended_delete";
+                break;
+            case "786434":
+                valor = "execute_proc,change_owner,extended_delete";
+                break;
+            case "786435":
+                valor = "change_owner,extended_delete";
+                break;
+            case "851968":
+                valor = "execute_proc,change_location,change_state,change_owner,extended_delete";
+                break;
+            case "851969":
+                valor = "change_location,change_state,change_owner,extended_delete";
+                break;
+            case "851970":
+                valor = "execute_proc,change_state,change_owner,extended_delete";
+                break;
+            case "851971":
+                valor = "change_state,change_owner,extended_delete";
+                break;
+            case "917504":
+                valor = "execute_proc,change_location,change_permissions,change_owner,extended_delete";
+                break;
+            case "917505":
+                valor = "change_location,change_permissions,change_owner,extended_delete";
+                break;
+            case "917506":
+                valor = "execute_proc,change_permissions,change_owner,extended_delete";
+                break;
+            case "917507":
+                valor = "change_permissions,change_owner,extended_delete";
+                break;
+            case "983040":
+                valor = "execute_proc,change_location,change_state,change_permissions,change_owner,extended_delete";
+                break;
+            case "983041":
+                valor = "change_location,change_state,change_permissions,change_owner,extended_delete";
+                break;
+            case "983042":
+                valor = "execute_proc,change_state,change_permissions,change_owner,extended_delete";
+                break;
+            case "983043":
+                valor = "change_state,change_permissions,change_owner,extended_delete";
+                break;
+        }
+        return valor;
     }
 
     public String arrancarIndexAgent(IDfSession sesion) {

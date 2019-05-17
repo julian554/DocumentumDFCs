@@ -8,6 +8,7 @@ import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -416,14 +417,16 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
     }
 
     private void cargarDatos(IDfSession gsesion) {
+        StringBuilder cadenaHTML = new StringBuilder();
+        String dql = "";
         try {
             String id = gsesion.getDocbaseId();
             String idrepositorio = id + " (" + Integer.toHexString(Integer.parseInt(id)) + ")";
-            String dql = "select object_name, r_object_id, web_server_loc, r_server_version from dm_server_config order by r_object_id";
+            dql = "select object_name, r_object_id, web_server_loc, r_server_version from dm_server_config order by r_object_id";
             IDfCollection col = utilDocum.ejecutarDql(dql, gsesion);
             textoInfo.setContentType("text/html");
             textoInfo.addHyperlinkListener(new HTMLListener());
-            StringBuilder cadenaHTML = new StringBuilder();
+
             cadenaHTML.append("<br>");
             while (col.next()) {
                 String repo = col.getTypedObject().getString("object_name");
@@ -447,19 +450,61 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + version + " </font></td");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + mensajeActivo + " </font></td></tr></TABLE><br>");
 
+                cadenaHTML.append("</TABLE><br>");
+
+            }
+
+            if (col != null) {
+                col.close();
+            }
+        } catch (Exception ex) {
+
+        }
+        cadenaHTML.append("</TABLE><br>");
+
+        try {
+            dql = "select object_name, r_object_id from dm_jms_config order by r_object_id";
+            IDfCollection col = utilDocum.ejecutarDql(dql, gsesion);
+            textoInfo.setContentType("text/html");
+            textoInfo.addHyperlinkListener(new HTMLListener());
+            while (col.next()) {
+                String jmsname = col.getTypedObject().getString("object_name");
+                String r_object_id = col.getTypedObject().getString("r_object_id");
+
                 //  dql = "select app_server_name, app_server_uri from dm_server_config_r where r_object_id='" + r_object_id + "'";
-                dql = "select servlet_name as app_server_name, base_uri as app_server_uri from dm_sysprocess_config_r where server_config_id ='" + r_object_id + "'";
+                dql = "select r_object_id,server_config_id, servlet_name as app_server_name, base_uri as app_server_uri from dm_sysprocess_config_r  where r_object_id='" + r_object_id + "'";
                 IDfCollection col_lineas = utilDocum.ejecutarDql(dql, gsesion);
 
+                dql = "select sc.object_name as nombre from dm_server_config sc, dm_sysprocess_config_r r where sc.r_object_id=r.server_config_id  and r.r_object_id='" + r_object_id + "'";
+                IDfCollection col_conf = utilDocum.ejecutarDql(dql, gsesion);
+                String nombre_conf = "";
+                ArrayList listaconf = new ArrayList();
+                while (col_conf.next()) {
+                    String nombre = col_conf.getTypedObject().getString("nombre");
+                    if (!util.estaEnLista(listaconf, nombre)) {
+                        listaconf.add(nombre);
+                    }
+                }
+                for (int i = 0; i < listaconf.size(); i++) {
+                    if (nombre_conf.isEmpty()) {
+                        nombre_conf = listaconf.get(i).toString();
+                    } else {
+                        nombre_conf = nombre_conf + ", " + listaconf.get(i).toString();
+                    }
+                }
+
                 if (col_lineas != null) {
-//                    cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>APLICACIONES EN SERVIDOR</b></CAPTION>");
-                    cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>JAVA METHOD SERVER</b></CAPTION>");
+                    cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\">" + "<tr bgcolor=\"white\"><th><font color=\"black\" size=5>JAVA METHOD SERVER</font></th><th> " + jmsname + " </th><th>Content Server: " + nombre_conf + "</th></tr></TABLE>");
+                    cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\">" + "<tr bgcolor=#f5f5f5><th>ID</th><th>NOMBRE</th><th>URL</th></tr>");
+
+//                                        cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>JAVA METHOD SERVER  -==-  " + jmsname +"  -==-  "+nombre_conf+ "</b></CAPTION>"
+//                            + "<tr bgcolor=#f5f5f5><th>NOMBRE</th><th>URL</th></tr>");
                 }
 
                 while (col_lineas.next()) {
                     String nombre_servlet = col_lineas.getTypedObject().getString("app_server_name");
                     String uri_servlet = col_lineas.getTypedObject().getString("app_server_uri");
-                    cadenaHTML.append("<tr bgcolor=\"white\"><td  width=\"30%\"><font color=\"black\" size=4>" + nombre_servlet + "</font></td>");
+                    cadenaHTML.append("<tr bgcolor=\"white\"><td  width=\"30%\"><font color=\"black\" size=4>" + r_object_id + "</font></td><td>" + nombre_servlet + "</td>");
                     //   cadenaHTML.append("<td><font color=\"blue\" size=4>" + uri_servlet + "</font></td></tr>");
                     cadenaHTML.append("<td><fontsize=4><a href=\"" + uri_servlet + "\">" + uri_servlet + "</a></font></td></tr>");
                 }
@@ -467,17 +512,22 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 if (col_lineas != null) {
                     col_lineas.close();
                 }
-            }
+                if (col_conf != null) {
+                    col_conf.close();
+                }
 
-            if (col != null) {
-                col.close();
             }
-            dql = "SELECT s.object_name as nombre,r_is_public,server_major_version,server_minor_version,dormancy_status,acs_base_url,c.object_name as srv "
+        } catch (Exception ex) {
+
+        }
+
+        try {
+            dql = "SELECT s.object_name as nombre,r_is_public,server_major_version,server_minor_version,dormancy_status,acs_base_url,c.object_name as srv,s.r_object_id as id"
                     + " FROM dm_acs_config_sp s, dm_acs_config_r r, dm_server_config c where s.r_object_id=r.r_object_id "
                     + " and s.svr_config_id=c.r_object_id and acs_base_url !=' '";
-            col = utilDocum.ejecutarDql(dql, gsesion);
+            IDfCollection col = utilDocum.ejecutarDql(dql, gsesion);
             cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>ACS</b></CAPTION>"
-                    + "<tr bgcolor=#f5f5f5><th>NOMBRE</th><th>REPOSITORIO</th><th>VERSION</th><th>ESTADO</th><th>URL</th></tr>");
+                    + "<tr bgcolor=#f5f5f5><th>NOMBRE</th><th>ID</th><th>REPOSITORIO</th><th>VERSION</th><th>ESTADO</th><th>URL</th></tr>");
             while (col.next()) {
                 String nombre_acs = col.getTypedObject().getString("nombre");
                 String acs_publico = col.getTypedObject().getString("r_is_public");
@@ -487,8 +537,10 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 String estado = col.getTypedObject().getString("dormancy_status");
                 estado = estado.trim().equalsIgnoreCase("ACTIVE") ? "Activo" : "No Activo";
                 String acs_url = col.getTypedObject().getString("acs_base_url");
+                String id = col.getTypedObject().getString("id");
 
                 cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + nombre_acs + " </font></td>");
+                cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + id + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + acs_servidor + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + acs_v_mayor + "." + acs_v_menor + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + estado + " </font></td>");
@@ -502,13 +554,15 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
             if (col != null) {
                 col.close();
             }
-
-            cadenaHTML.append("</TABLE><br><br>");
+        } catch (Exception ex) {
+        }
+        cadenaHTML.append("</TABLE><br><br>");
+        try {
 
             dql = "select a.object_name as agent_name, c.object_name as object_name, a.force_inactive as force_inactive,"
                     + " b.ft_engine_id as connected_server_id  from dm_ftindex_agent_config a, dm_fulltext_index b, "
                     + " dm_ftengine_config c  where a.index_name = b.index_name and b.ft_engine_id = c.r_object_id";
-            col = utilDocum.ejecutarDql(dql, gsesion);
+            IDfCollection col = utilDocum.ejecutarDql(dql, gsesion);
             cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>INDEXADOR</b></CAPTION>"
                     + "<tr bgcolor=#f5f5f5><th>NOMBRE DEL AGENTE</th><th>NOMBRE DEL OBJETO</th><th>ID</th><th>URL</th></tr>");
 
@@ -547,11 +601,14 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
             if (col != null) {
                 col.close();
             }
+        } catch (Exception ex) {
+        }
 
-            cadenaHTML.append("</TABLE><br><br>");
+        cadenaHTML.append("</TABLE><br><br>");
 
+        try {
             dql = "select r_object_id,object_name,ldap_host,port_number,ssl_mode,ssl_port,a_application_type,import_mode,first_time_sync from dm_ldap_config";
-            col = utilDocum.ejecutarDql(dql, gsesion);
+            IDfCollection col = utilDocum.ejecutarDql(dql, gsesion);
 
             cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>SINCRONIZACION CON LDAP</b></CAPTION>"
                     + "<tr bgcolor=#f5f5f5><th>NOMBRE DEL OBJETO</th><th>ID</th><th>ESTADO</th><th>SERVIDOR</th><th>PUERTO</th>"
@@ -583,12 +640,11 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 col.close();
             }
 
-            cadenaHTML.append("</TABLE><br>");
-
             textoInfo.setText(cadenaHTML.toString());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+        cadenaHTML.append("</TABLE><br>");
     }
 
     private void popupmenu(MouseEvent evt) {

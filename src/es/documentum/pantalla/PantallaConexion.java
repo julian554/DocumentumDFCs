@@ -19,6 +19,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 
+/**
+ *
+ * @author julian
+ */
 public class PantallaConexion extends javax.swing.JDialog {
 
     public static String valor = "";

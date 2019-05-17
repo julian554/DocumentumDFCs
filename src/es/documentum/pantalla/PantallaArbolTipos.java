@@ -802,7 +802,7 @@ public class PantallaArbolTipos extends javax.swing.JFrame {
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
             System.out.println(node.toString());
-            if (node.toString().toLowerCase().startsWith(s.toLowerCase()) && !util.estaEnLista(busqueda, node.toString())) {
+            if (node.toString().toLowerCase().contains(s.toLowerCase()) && !util.estaEnLista(busqueda, node.toString())) {
                 busqueda.add(node.toString());
                 return new TreePath(node.getPath());
             }
