@@ -1138,25 +1138,30 @@ public class UtilidadesDocumentum {
             IDfId idObj = sesion.getIdByQualification("dm_sysobject where object_name='" + carpeta + "'");
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
             IDfFolder myFolder = sesion.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
-            ficheros = myFolder.getContents(null);
+//            ficheros = myFolder.getContents(null);
+            IDfQuery q = new DfQuery();
+            String dql = "select r_object_id, object_name, r_creation_date, a_content_type, r_full_content_size,r_object_type from dm_sysobject "
+                    + "where folder(id('" + myFolder.getObjectId().toString() + "')) order by r_object_id";
+            q.setDQL(dql);
+            ficheros = q.execute(sesion, DfQuery.DF_EXEC_QUERY);
 
             int conta = 0;
             Boolean seguir = true;
             while (ficheros.next() && seguir) {
                 conta++;
                 AtributosDocumentum datos = new AtributosDocumentum();
-                IDfTypedObject doc = ficheros.getTypedObject();
+//                IDfTypedObject doc = ficheros.getTypedObject();
 //                Utilidades.escribeLog(doc.getString("object_name") + " - " + doc.getString("r_object_id"));
-                datos.setNombre(doc.getString("object_name"));
-                datos.setValor(doc.getString("r_object_id"));
-                datos.setTipoobjeto(doc.getString("r_object_type"));
-                ventanapadre.etiquetaEstado.setText(doc.getString("object_name"));
+                datos.setNombre(ficheros.getString("object_name"));
+                datos.setValor(ficheros.getString("r_object_id"));
+                datos.setTipoobjeto(ficheros.getString("r_object_type"));
+                ventanapadre.etiquetaEstado.setText(ficheros.getString("object_name"));
                 ventanapadre.getBarradocum().labelMensa.setText("Registro(s): " + conta);
                 if (ventanapadre.getBarradocum().PARAR) {
                     seguir = false;
                     ventanapadre.getBarradocum().setPARAR(false);
                 }
-                ArrayList<AtributosDocumentum> atris = dameTodosAtributos(doc.getString("r_object_id"));
+                ArrayList<AtributosDocumentum> atris = dameTodosAtributos(ficheros.getString("r_object_id"));
                 if (atris.size() > 0) {
                     for (int n = 0; n < atris.size(); n++) {
                         if (atris.get(n).getNombre().equalsIgnoreCase("owner_name")) {
@@ -1168,7 +1173,7 @@ public class UtilidadesDocumentum {
                             datos.setFechacreacion(atris.get(n).getValor());
                         }
                     }
-                    datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
+                    datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(ficheros.getString("r_object_id")))).isCheckedOut());
                     listaficheros.add(datos);
                 }
 //                ArrayList resultado = dameAtributo(doc.getString("r_object_id"), "r_creation_date");
@@ -1200,7 +1205,7 @@ public class UtilidadesDocumentum {
         return listaficheros;
     }
 
-    public ArrayList<AtributosDocumentum> listarFicherosRuta(String ruta) {
+    public ArrayList<AtributosDocumentum> listarFicherosRuta(String ruta, int numreg) {
         IDfCollection ficheros;
         ArrayList<AtributosDocumentum> listaficheros = new ArrayList<>();
         IDfSession sesion = conectarDocumentum();
@@ -1214,7 +1219,7 @@ public class UtilidadesDocumentum {
         try {
             String dql;
             if (ruta.equals("/")) {
-                dql = "select * From dm_sysobject where r_object_type='dm_cabinet'";
+                dql = "select r_object_id, object_name, r_creation_date, a_content_type, r_full_content_size, r_object_type From dm_sysobject where r_object_type='dm_cabinet' order by object_name";
                 ficheros = ejecutarDql(dql, sesion);
             } else {
                 IDfFolder folder = (IDfFolder) sesion.getObjectByPath(ruta);
@@ -1223,13 +1228,28 @@ public class UtilidadesDocumentum {
                 IDfId idObj = sesion.getIdByQualification(dql);
                 IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
                 IDfFolder myFolder = sesion.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
-                ficheros = myFolder.getContents(null);
+//                ficheros = myFolder.getContents(null);
+                IDfQuery q = new DfQuery();
+                dql = "select r_object_id, object_name, r_creation_date, a_content_type, r_full_content_size, r_object_type from dm_sysobject "
+                        + "where folder(id('" + myFolder.getObjectId().toString() + "')) order by r_creation_date desc";
+                if (numreg > 0) {
+                    dql = dql + " enable (return_top " + numreg + ")";
+
+                }
+                q.setDQL(dql);
+                ficheros = q.execute(sesion, DfQuery.DF_EXEC_QUERY);
+
             }
             int conta = 0;
             Boolean seguir = true;
 
             Long valor = numeroObjetosDirectorio(sesion, ruta);
             String numficheros = String.valueOf(valor);
+            if (numreg > 0) {
+                if (valor > numreg) {
+                    numficheros = numreg + "";
+                }
+            }
 
             while (ficheros.next() && seguir) {
                 conta++;
@@ -3078,6 +3098,38 @@ public class UtilidadesDocumentum {
         return filestore;
     }
 
+    public String dameClaseGrupo(String grupo, IDfSession sesion) {
+        String clase = "";
+        try {
+            String dql = "Select group_class from dm_group where group_name='" + grupo + "' ";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    clase = r.getValueAt(0).asString();
+                }
+            }
+        } catch (DfException ex) {
+        }
+        return clase;
+    }
+
+    public String dameDescripcionGrupo(String grupo, IDfSession sesion) {
+        String descripcion = "";
+        try {
+            String dql = "Select description from dm_group where group_name='" + grupo + "' ";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    descripcion = r.getValueAt(0).asString();
+                }
+            }
+        } catch (DfException ex) {
+        }
+        return descripcion;
+    }
+
     public String dameSuperTipo(String tipo, IDfSession sesion) {
         String supertipo = "";
         try {
@@ -3111,10 +3163,47 @@ public class UtilidadesDocumentum {
         return hijos;
     }
 
+    public ArrayList<String> dameGruposHijos(String grupo, IDfSession sesion) {
+        ArrayList<String> hijos = new ArrayList<>();
+        try {
+            String dql = "select all dm_repeating.groups_names from dm_group_sp  dm_group, dm_group_rp dm_repeating "
+                    + " where ((dm_group.group_name='" + grupo + "') and "
+                    + " exists (select r_object_id from dm_group_r  where "
+                    + "dm_group.r_object_id = r_object_id and groups_names not in (' ', 'dm_world')) "
+                    + " and dm_repeating.r_object_id=dm_group.r_object_id )  and groups_names is not null order by 1";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    String hijo = r.getValueAt(0).asString();
+                    hijos.add(hijo);
+                }
+            }
+        } catch (DfException ex) {
+        }
+        return hijos;
+    }
+
     public String dameRobjectidDeTipo(String tipo, IDfSession sesion) {
         String id = "";
         try {
             String dql = "Select r_object_id from dm_type where name='" + tipo + "'";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            if (col != null) {
+                while (col.next()) {
+                    IDfTypedObject r = col.getTypedObject();
+                    id = r.getValueAt(0).asString();
+                }
+            }
+        } catch (DfException ex) {
+        }
+        return id;
+    }
+
+    public String dameRobjectidDeGrupo(String grupo, IDfSession sesion) {
+        String id = "";
+        try {
+            String dql = "Select r_object_id from dm_group where group_name='" + grupo + "'";
             IDfCollection col = ejecutarDql(dql, sesion);
             if (col != null) {
                 while (col.next()) {

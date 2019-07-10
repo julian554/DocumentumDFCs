@@ -131,7 +131,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     protected static Image getLogo() {
         //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/storage.gif");
-        java.net.URL imgURL = PantallaStorage.class.getClassLoader().getResource("es/documentum/imagenes/DCTM_32.png");
+        java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/DCTM_32.png");
 
         if (imgURL != null) {
             return new ImageIcon(imgURL).getImage();
@@ -193,6 +193,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         botonConectar = new javax.swing.JButton();
         botonArribaDir = new javax.swing.JButton();
         botonActivarCripto = new javax.swing.JButton();
+        textoNumRegistros = new javax.swing.JFormattedTextField();
+        jLabel4 = new javax.swing.JLabel();
         menuDocumentum = new javax.swing.JMenuBar();
         menuOpciones = new javax.swing.JMenu();
         opcionBuscar = new javax.swing.JMenuItem();
@@ -214,6 +216,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         opcionImportarADocumentum = new javax.swing.JMenuItem();
         opcionRelations = new javax.swing.JMenuItem();
         opcionTipos = new javax.swing.JMenuItem();
+        opcionGrupos = new javax.swing.JMenuItem();
         opcionStorage = new javax.swing.JMenuItem();
         opcionInfoRepo = new javax.swing.JMenuItem();
         opcionSesiones = new javax.swing.JMenuItem();
@@ -735,6 +738,19 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
 
+        textoNumRegistros.setForeground(new java.awt.Color(0, 0, 102));
+        textoNumRegistros.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        textoNumRegistros.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        textoNumRegistros.setText("0");
+        textoNumRegistros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textoNumRegistrosActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Nº de registros");
+
         javax.swing.GroupLayout panelEntradaLayout = new javax.swing.GroupLayout(panelEntrada);
         panelEntrada.setLayout(panelEntradaLayout);
         panelEntradaLayout.setHorizontalGroup(
@@ -757,16 +773,20 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                         .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelEntradaLayout.createSequentialGroup()
                                 .addComponent(textoIdDocumentum, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
                                 .addComponent(botonActivarCripto, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(textoCarpeta))
                         .addGap(35, 35, 35)
-                        .addComponent(botonBuscar)
-                        .addGap(18, 18, 18)
-                        .addComponent(botonConectar)
-                        .addGap(18, 18, 18)
-                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(botonBuscar))
                     .addComponent(textoRutaDocumentum))
+                .addGap(18, 18, 18)
+                .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botonConectar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(botonSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                    .addComponent(textoNumRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -794,12 +814,17 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                             .addComponent(botonConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textoRutaDocumentum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textoRutaDocumentum, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textoNumRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEntradaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(botonArribaDir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        panelEntradaLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel3, jLabel4, textoNumRegistros});
 
         textoRutaDocumentum.getAccessibleContext().setAccessibleName("textoRutaDocumentum");
         textoIdDocumentum.getAccessibleContext().setAccessibleName("textoIdDocumentum");
@@ -965,6 +990,15 @@ public class PantallaDocumentum extends javax.swing.JFrame {
             }
         });
         menuUtilidades.add(opcionTipos);
+
+        opcionGrupos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/grupo.png"))); // NOI18N
+        opcionGrupos.setText("Grupos y roles");
+        opcionGrupos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionGruposActionPerformed(evt);
+            }
+        });
+        menuUtilidades.add(opcionGrupos);
 
         opcionStorage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/storage.png"))); // NOI18N
         opcionStorage.setText("Almacenamiento del repositorio");
@@ -2227,6 +2261,26 @@ public class PantallaDocumentum extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionSesionesActionPerformed
 
+    private void opcionGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionGruposActionPerformed
+        if (botonBuscar.isEnabled()) {
+            PantallaArbolGrupos pantallagrupos = new PantallaArbolGrupos(this, true);
+            pantallagrupos.setTitle("Grupos y Roles del repositorio " + repositorio);
+//            IDfSession lsesion = utilDocum.conectarDocumentum(usuario, clave, repositorio, docbroker, puerto);
+//            pantallagrupos.setGsesion(lsesion);
+//            pantallagrupos.setRepo(repositorio);
+//            pantallagrupos.inicializar();
+//            pantallagrupos.cargarArbol(); 
+            pantallagrupos.setVisible(true);
+        } else {
+            etiquetaEstado.setText("Debe seleccionar antes una conexión.");
+            botonConectar.requestFocus();
+        }
+    }//GEN-LAST:event_opcionGruposActionPerformed
+
+    private void textoNumRegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoNumRegistrosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textoNumRegistrosActionPerformed
+
     public void mostrarAcercade() {
         if (conectado) {
             versiondfcs = utilDocum.dameVersionDFC();
@@ -2276,6 +2330,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu menuAcercade;
     private javax.swing.JMenu menuApariencia;
@@ -2310,6 +2365,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionExportarAtributosExcel;
     private javax.swing.JMenuItem opcionExportarCarpeta;
     private javax.swing.JMenuItem opcionExportarDocumentosExcel;
+    private javax.swing.JMenuItem opcionGrupos;
     private javax.swing.JMenuItem opcionImportarADocumentum;
     private javax.swing.JMenuItem opcionIndexador;
     private javax.swing.JMenuItem opcionInfoRepo;
@@ -2345,6 +2401,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
     private javax.swing.JTable tablaDocumentos;
     private javax.swing.JTextField textoCarpeta;
     private javax.swing.JTextField textoIdDocumentum;
+    private javax.swing.JFormattedTextField textoNumRegistros;
     private javax.swing.JTextField textoRutaDocumentum;
     // End of variables declaration//GEN-END:variables
 
@@ -2552,7 +2609,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                 if (tipo.toLowerCase().equals("carpeta")) {
                     documentos = utilDocum.listarFicheros(carpeta);
                 } else if (tipo.toLowerCase().equals("ruta")) {
-                    documentos = utilDocum.listarFicherosRuta(carpeta);
+                    int numreg = Integer.parseInt(textoNumRegistros.getText());
+                    documentos = utilDocum.listarFicherosRuta(carpeta, numreg);
                 } else if (tipo.toLowerCase().equals("id")) {
                     documentos = utilDocum.listarFicherosId(carpeta);
                 }
@@ -2762,6 +2820,7 @@ public class PantallaDocumentum extends javax.swing.JFrame {
 
     private void salir() {
         Utilidades.escribeLog("Salimos del programa DocumentumDFCs\n");
+        this.dispose();
         System.exit(0);
     }
 
@@ -3019,7 +3078,8 @@ public class PantallaDocumentum extends javax.swing.JFrame {
                     utilDocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
                     ArrayList<AtributosDocumentum> documentos = new ArrayList<AtributosDocumentum>();
                     utilDocum.setVentanapadre(PantallaDocumentum.this);
-                    documentos = utilDocum.listarFicherosRuta(carpeta);
+                    int numreg = Integer.parseInt(textoNumRegistros.getText());
+                    documentos = utilDocum.listarFicherosRuta(carpeta, numreg);
 
                     if (documentos.size() <= 0) {
                         Object[][] datos = new Object[0][7];

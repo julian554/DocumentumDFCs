@@ -8,7 +8,6 @@ import es.documentum.utilidades.UtilidadesDocumentum;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -478,18 +477,13 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 dql = "select sc.object_name as nombre from dm_server_config sc, dm_sysprocess_config_r r where sc.r_object_id=r.server_config_id  and r.r_object_id='" + r_object_id + "'";
                 IDfCollection col_conf = utilDocum.ejecutarDql(dql, gsesion);
                 String nombre_conf = "";
-                ArrayList listaconf = new ArrayList();
+
                 while (col_conf.next()) {
                     String nombre = col_conf.getTypedObject().getString("nombre");
-                    if (!util.estaEnLista(listaconf, nombre)) {
-                        listaconf.add(nombre);
-                    }
-                }
-                for (int i = 0; i < listaconf.size(); i++) {
                     if (nombre_conf.isEmpty()) {
-                        nombre_conf = listaconf.get(i).toString();
+                        nombre_conf = nombre;
                     } else {
-                        nombre_conf = nombre_conf + ", " + listaconf.get(i).toString();
+                        nombre_conf = nombre_conf + ", " + nombre;
                     }
                 }
 
@@ -504,7 +498,7 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 while (col_lineas.next()) {
                     String nombre_servlet = col_lineas.getTypedObject().getString("app_server_name");
                     String uri_servlet = col_lineas.getTypedObject().getString("app_server_uri");
-                    cadenaHTML.append("<tr bgcolor=\"white\"><td  width=\"30%\"><font color=\"black\" size=4>" + r_object_id + "</font></td><td>" + nombre_servlet + "</td>");
+                    cadenaHTML.append("<tr bgcolor=\"white\"><td  width=\"30%\"><font color=\"black\" size=4>" + r_object_id + "</font></td><td>"+nombre_servlet+"</td>");
                     //   cadenaHTML.append("<td><font color=\"blue\" size=4>" + uri_servlet + "</font></td></tr>");
                     cadenaHTML.append("<td><fontsize=4><a href=\"" + uri_servlet + "\">" + uri_servlet + "</a></font></td></tr>");
                 }
@@ -537,7 +531,7 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 String estado = col.getTypedObject().getString("dormancy_status");
                 estado = estado.trim().equalsIgnoreCase("ACTIVE") ? "Activo" : "No Activo";
                 String acs_url = col.getTypedObject().getString("acs_base_url");
-                String id = col.getTypedObject().getString("id");
+                String id= col.getTypedObject().getString("id");
 
                 cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + nombre_acs + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + id + " </font></td>");
