@@ -6,15 +6,22 @@ import com.documentum.fc.client.IDfTypedObject;
 import com.documentum.fc.common.DfException;
 import com.documentum.fc.common.IDfAttr;
 import com.documentum.fc.common.IDfValue;
-import es.documentum.utilidades.ClassPathUpdater;
+import es.documentum.Beans.Pistas;
+import es.documentum.utilidades.CambiarColorTexto;
+import es.documentum.utilidades.FormatoSql;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
@@ -25,17 +32,29 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.StringTokenizer;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 import org.apache.commons.lang.StringUtils;
 
@@ -47,7 +66,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     Boolean botonderecho = false;
     String componente = "";
     public static PantallaDocumentum ventanapadre = null;
-    IDfSession gsesion = sesionDocumentum();
+    IDfSession gsesion = utildocum.sesionDocumentum();
     String ERROR = "";
     SimpleAttributeSet AtributoRojo = new SimpleAttributeSet();
     SimpleAttributeSet AtributoAzul = new SimpleAttributeSet();
@@ -56,6 +75,69 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     JScrollPane[] scroll;
     JTable[] tabla;
     int DQLsExcel = 1;
+    StyleContext styleContext = new StyleContext();
+    Style defaultStyle = styleContext.getStyle(StyleContext.DEFAULT_STYLE);
+    Style cwStyle = styleContext.addStyle("ConstantWidth", null);
+    Style comillaStyle = styleContext.addStyle("ConstantWidth", null);
+    ArrayList<Pistas> listapistasDqlInicio = utildocum.leerDatosAyuda("dql-inicio.xml");
+    ArrayList<Pistas> listapistasExecute = utildocum.leerDatosAyuda("dql-execute.xml");
+    PantallaAyudaLista pantallaayuda = new PantallaAyudaLista(this, true);
+    ArrayList<String> listaPistasLimpia = new ArrayList<>();
+
+    int posicionTextoDql = 0;
+    String tipoLista = "";
+    String tipoListaold = "";
+    String tipoconsulta = "";
+    String textoayudaescrito = "";
+    String WHITESPACE = " \n\r\f\t";
+
+    public String getTextoayudaescrito() {
+        return textoayudaescrito;
+    }
+
+    public void borrarTextoDql(int pos, int tam) {
+        try {
+            if (pos >= 0 && tam >= 0) {
+                textoDql.getDocument().remove(pos, tam);
+            }
+        } catch (BadLocationException ex) {
+
+        }
+    }
+
+    public void asignarFocoTextoDql() {
+        textoDql.requestFocus();
+    }
+
+    public void setTextoayudaescrito(String textoayudaescrito) {
+        this.textoayudaescrito = textoayudaescrito;
+    }
+
+    public int getPosicionTextoDql() {
+        return textoDql.getCaretPosition();
+    }
+
+    public void setPosicionCursorTextoDql(int pos) {
+        final int posicion = pos;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                textoDql.setCaretPosition(posicion);
+            }
+        });
+    }
+
+    public void setPosicionTextoDql(int posicionTextoDql) {
+        this.posicionTextoDql = posicionTextoDql;
+    }
+
+    public void insertartexto(int posicion, String texto) {
+        try {
+            textoDql.getDocument().insertString(posicion, texto, null);
+        } catch (BadLocationException ex) {
+
+        }
+    }
 
     public PantallaDqlconTabs(PantallaDocumentum parent, boolean modal) {
         ventanapadre = parent;
@@ -83,11 +165,19 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         StyleConstants.setForeground(AtributoRojo, Color.RED);
         StyleConstants.setForeground(AtributoAzul, Color.BLUE);
         StyleConstants.setForeground(AtributoNegro, Color.BLACK);
+        StyleConstants.setForeground(cwStyle, Color.BLUE);
+        StyleConstants.setItalic(cwStyle, true);
+        StyleConstants.setBold(cwStyle, true);
+        StyleConstants.setForeground(comillaStyle, Color.RED);
+        StyleConstants.setBold(comillaStyle, true);
+        int tamletra = textoDql.getFont().getSize();
+        textoDql.setFont(new Font(textoDql.getFont().getFontName(), Font.BOLD, tamletra + 2));
+        textoDql.getCaret().setMagicCaretPosition(new Point(0, 0));
     }
 
     protected static Image getLogo() {
         //   java.net.URL imgURL = PantallaDocumentum.class.getClassLoader().getResource("es/documentum/imagenes/documentum_logo_mini.gif");
-        java.net.URL imgURL = PantallaDqlconTabs.class.getClassLoader().getResource("es/documentum/imagenes/DQL.png");
+        java.net.URL imgURL = PantallaDqlconTabs.class.getClassLoader().getResource("es/documentum/imagenes/dql-nuevo.png");
 
         if (imgURL != null) {
             return new ImageIcon(imgURL).getImage();
@@ -103,6 +193,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         popupEditar = new javax.swing.JPopupMenu();
         opcionCopiar = new javax.swing.JMenuItem();
         opcionPegar = new javax.swing.JMenuItem();
+        opcionFormato = new javax.swing.JCheckBoxMenuItem();
         popupDatos = new javax.swing.JPopupMenu();
         opcionCopiarValor = new javax.swing.JMenuItem();
         opcionExportarExcel = new javax.swing.JMenuItem();
@@ -110,8 +201,6 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         popupHistorial = new javax.swing.JPopupMenu();
         opcionVaciarHistorial = new javax.swing.JMenuItem();
         panelDql = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textoDql = new javax.swing.JTextArea();
         botonConsultar = new javax.swing.JButton();
         botonSalir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -120,8 +209,6 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         checkDameSQL = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         textoNumReg = new javax.swing.JFormattedTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        textoMultiplesLogs = new javax.swing.JTextPane();
         jPanel1 = new javax.swing.JPanel();
         checkMultiplesDqls = new javax.swing.JCheckBox();
         checkExportarExcel = new javax.swing.JCheckBox();
@@ -129,6 +216,11 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         textoNumLineasExcel = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
         textoListaDQL = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textoDql = new javax.swing.JTextPane(new CambiarColorTexto(defaultStyle, cwStyle, comillaStyle,"documentum"));
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        textoMultiplesLogs = new javax.swing.JTextPane();
         panelEstado = new javax.swing.JPanel();
         etiquetaEstado = new javax.swing.JLabel();
         panelTabResultados = new javax.swing.JTabbedPane();
@@ -139,6 +231,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         opcionConsultar = new javax.swing.JMenuItem();
         opcionSalir = new javax.swing.JMenuItem();
 
+        opcionCopiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
         opcionCopiar.setText("Copiar Ctrl+C");
         opcionCopiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,6 +240,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
         popupEditar.add(opcionCopiar);
 
+        opcionPegar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/pegar-doc.png"))); // NOI18N
         opcionPegar.setText("Pegar  Ctrl+V");
         opcionPegar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +249,17 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
         popupEditar.add(opcionPegar);
 
-        opcionCopiarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar.png"))); // NOI18N
+        opcionFormato.setText("Dar formato");
+        opcionFormato.setToolTipText("Poner o quitar formato a la(s) Dql(s)");
+        opcionFormato.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/formato-sql.png"))); // NOI18N
+        opcionFormato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcionFormatoActionPerformed(evt);
+            }
+        });
+        popupEditar.add(opcionFormato);
+
+        opcionCopiarValor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/copiar-todo.png"))); // NOI18N
         opcionCopiarValor.setText("Copiar Valor");
         opcionCopiarValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +286,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
         popupDatos.add(opcionSeleccionarColumna);
 
+        opcionVaciarHistorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/borrar_peq.png"))); // NOI18N
         opcionVaciarHistorial.setText("Vaciar Historial de DQL");
         opcionVaciarHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -195,20 +300,9 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1022, 740));
 
         panelDql.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelDql.setMinimumSize(new java.awt.Dimension(1108, 398));
 
-        textoDql.setColumns(1);
-        textoDql.setLineWrap(true);
-        textoDql.setRows(5);
-        textoDql.setWrapStyleWord(true);
-        textoDql.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                textoDqlMousePressed(evt);
-            }
-        });
-        jScrollPane1.setViewportView(textoDql);
-        textoDql.getAccessibleContext().setAccessibleName("textoDql");
-
-        botonConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar_peq.png"))); // NOI18N
+        botonConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar-dql.png"))); // NOI18N
         botonConsultar.setText("Ejecutar");
         botonConsultar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         botonConsultar.setMaximumSize(new java.awt.Dimension(100, 40));
@@ -266,15 +360,8 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
             }
         });
 
-        textoMultiplesLogs.setEditable(false);
-        textoMultiplesLogs.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                textoMultiplesLogsMousePressed(evt);
-            }
-        });
-        jScrollPane3.setViewportView(textoMultiplesLogs);
-
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 153, 255), 1, true));
+        jPanel1.setMinimumSize(new java.awt.Dimension(165, 138));
 
         checkMultiplesDqls.setText("Multiples DQLs");
         checkMultiplesDqls.addActionListener(new java.awt.event.ActionListener() {
@@ -339,6 +426,48 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
             }
         });
 
+        textoDql.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                textoDqlMousePressed(evt);
+            }
+        });
+        textoDql.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textoDqlKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textoDqlKeyReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(textoDql);
+
+        textoMultiplesLogs.setEditable(false);
+        textoMultiplesLogs.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        textoMultiplesLogs.setAutoscrolls(false);
+        textoMultiplesLogs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                textoMultiplesLogsMousePressed(evt);
+            }
+        });
+        jScrollPane3.setViewportView(textoMultiplesLogs);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane3)
+                .addGap(0, 0, 0))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
+
         javax.swing.GroupLayout panelDqlLayout = new javax.swing.GroupLayout(panelDql);
         panelDql.setLayout(panelDqlLayout);
         panelDqlLayout.setHorizontalGroup(
@@ -346,15 +475,17 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
             .addGroup(panelDqlLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDqlLayout.createSequentialGroup()
+                    .addGroup(panelDqlLayout.createSequentialGroup()
                         .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jScrollPane3)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelDqlLayout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(panelDqlLayout.createSequentialGroup()
                                 .addComponent(comboHistorial, 0, 629, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textoListaDQL, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(textoListaDQL, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelDqlLayout.createSequentialGroup()
                                 .addGap(28, 28, 28)
@@ -379,7 +510,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addComponent(jLabel2)
                 .addGap(4, 4, 4)
-                .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelDqlLayout.createSequentialGroup()
                         .addComponent(botonConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -393,15 +524,15 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelDqlLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelDqlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(comboHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textoListaDQL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -427,6 +558,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         panelResultado.setAutoscrolls(true);
 
         tablaResultados.setAutoCreateRowSorter(true);
+        tablaResultados.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         tablaResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -452,7 +584,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         menuOpciones.setText("Opciones");
 
         opcionConsultar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        opcionConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar_peq.png"))); // NOI18N
+        opcionConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/ejecutar-dql.png"))); // NOI18N
         opcionConsultar.setText("Ejecutar");
         opcionConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -461,7 +593,6 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
         menuOpciones.add(opcionConsultar);
 
-        opcionSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
         opcionSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/documentum/imagenes/salir_peq.png"))); // NOI18N
         opcionSalir.setText("Salir");
         opcionSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -488,12 +619,14 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelDql, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(panelTabResultados, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                .addComponent(panelTabResultados, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                 .addGap(1, 1, 1)
                 .addComponent(panelEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         panelTabResultados.getAccessibleContext().setAccessibleName("Pestaña");
+
+        getAccessibleContext().setAccessibleParent(this);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -535,6 +668,9 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                         contdqls++;
                         String dql = misDql.nextToken();
 
+                        if (dql.isEmpty() || dql.equals("\n") || dql.length() < 9) {
+                            continue;
+                        }
                         if (dql.toLowerCase().trim().startsWith("describe")) {
                             textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), dql + "  -  ", AtributoNegro);
                             textoLogDQLMultiple.insertString(textoLogDQLMultiple.getLength(), "  -  Las sentencias 'Describe' solo se pueden ejecutar como DQL simples", AtributoRojo);
@@ -624,6 +760,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                                     scroll[tablasResultado].setAutoscrolls(true);
                                     tabla[tablasResultado].setAutoCreateRowSorter(true);
                                     tabla[tablasResultado].setColumnSelectionAllowed(true);
+                                    tabla[tablasResultado].setFont(tablaResultados.getFont());
                                     scroll[tablasResultado].setViewportView(tabla[tablasResultado]);
                                     tabla[tablasResultado].getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
                                     tabla[tablasResultado].setModel(modeloLotes);
@@ -710,9 +847,17 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
     private void opcionPegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionPegarActionPerformed
         if (componente.equals("textoDql")) {
-            textoDql.setText(Utilidades.pegarTextoPortapapeles());
+            if (checkMultiplesDqls.isSelected()) {
+                int caretPos = textoDql.getCaretPosition();
+                try {
+                    textoDql.getDocument().insertString(caretPos, Utilidades.pegarTextoPortapapeles(), null);
+                } catch (BadLocationException ex) {
+                    Utilidades.escribeLog("Error al pegar texto en 'textoDql'" + ex.getMessage());
+                }
+            } else {
+                textoDql.setText(Utilidades.pegarTextoPortapapeles());
+            }
         }
-
     }//GEN-LAST:event_opcionPegarActionPerformed
 
     private void opcionCopiarValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionCopiarValorActionPerformed
@@ -839,16 +984,16 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                     if (count > 1) {
                         StringTokenizer st = new StringTokenizer(valor, ";");
                         if (!textoDql.getText().isEmpty()) {
-                            textoDql.append((textoDql.getText().endsWith(";") ? "\n" : ";\n"));
+                            textoDql.setText(textoDql.getText() + (textoDql.getText().endsWith(";") ? "\n" : ";\n"));
                         }
                         int num = 1;
                         while (st.hasMoreElements()) {
                             String elemento = st.nextToken();
                             if (!elemento.isEmpty()) {
                                 if (num < count) {
-                                    textoDql.append(elemento.trim() + ";\n");
+                                    textoDql.setText(textoDql.getText() + elemento.trim() + ";\n");
                                 } else {
-                                    textoDql.append(elemento.trim() + ";");
+                                    textoDql.setText(textoDql.getText() + elemento.trim() + ";");
                                 }
                             }
                             num++;
@@ -856,9 +1001,9 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
                     } else {
                         if (textoDql.getText().isEmpty()) {
-                            textoDql.append(valor.endsWith(";") ? valor.trim() : valor.trim() + ";");
+                            textoDql.setText(valor.endsWith(";") ? valor.trim() : valor.trim() + ";");
                         } else {
-                            textoDql.append(valor.endsWith(";") ? "\n" + valor.trim() : "\n" + valor.trim() + ";");
+                            textoDql.setText(textoDql.getText() + (valor.endsWith(";") ? "\n" + valor.trim() : "\n" + valor.trim() + ";"));
                         }
                     }
                 } else {
@@ -890,14 +1035,6 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonConsultarActionPerformed
 
-    private void textoDqlMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoDqlMousePressed
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
-            botonderecho = true;
-            componente = "textoDql";
-            popupmenu(evt);
-        }
-    }//GEN-LAST:event_textoDqlMousePressed
-
     private void textoNumRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoNumRegActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textoNumRegActionPerformed
@@ -917,6 +1054,658 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private void textoListaDQLCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_textoListaDQLCaretPositionChanged
 
     }//GEN-LAST:event_textoListaDQLCaretPositionChanged
+
+    private void textoDqlMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textoDqlMousePressed
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            componente = "textoDql";
+            botonderecho = true;
+            popupmenu(evt);
+        }
+    }//GEN-LAST:event_textoDqlMousePressed
+
+    private void opcionFormatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionFormatoActionPerformed
+        if (opcionFormato.isSelected()) {
+            if (textoDql.getSelectedText() != null) {
+                if (!textoDql.getSelectedText().isEmpty()) {
+                    FormatoSql formato = new FormatoSql();
+                    int caretPos = textoDql.getCaretPosition();
+                    String cadena = textoDql.getSelectedText();
+                    try {
+                        textoDql.getDocument().remove(caretPos, cadena.length());
+                        textoDql.getDocument().insertString(caretPos, formato.format(cadena, "documentum"), null);
+                    } catch (Exception ex) {
+                        Utilidades.escribeLog("Error al pegar texto formateado en 'textoDql' - " + ex.getMessage());
+                    }
+                }
+            } else {
+                if (textoDql.getText() != null && !textoDql.getText().isEmpty()) {
+                    FormatoSql formato = new FormatoSql();
+                    textoDql.setText(formato.format(textoDql.getText(), "documentum"));
+                }
+            }
+        } else {
+            String textohist = textoDql.getText();
+            textoDql.setText(textohist.trim().replaceAll("\\s{2,}", " ").replaceAll("(\r\n|\n)", " "));
+        }
+    }//GEN-LAST:event_opcionFormatoActionPerformed
+
+    private void textoDqlKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoDqlKeyReleased
+        ActualizarToolTipText();
+
+        if (evt.getKeyCode() == KeyEvent.VK_SPACE && evt.isControlDown()) {
+            mostrarVentanaAyuda();
+        }
+
+        if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            pantallaayuda.dispose();
+        }
+
+        if (pantallaayuda.isVisible()) {
+            String textosqlabuscar = textoDql.getText();
+            int posultimaoperacion = textosqlabuscar.lastIndexOf(";");
+            if (posultimaoperacion < 0) {
+                posultimaoperacion = 0;
+            } else {
+                posultimaoperacion = posultimaoperacion + 1;
+            }
+            if (textoDql.getCaretPosition() > posultimaoperacion) {
+                if (!checkMultiplesDqls.isSelected()) {
+                    textosqlabuscar = textoDql.getText().substring(posultimaoperacion, textoDql.getCaretPosition());
+                } else {
+                    int numretornos = StringUtils.countMatches(textoDql.getText(), "\n") - 1;
+                    textosqlabuscar = textoDql.getText().substring(posultimaoperacion, textoDql.getCaretPosition());
+                }
+            } else {
+                textosqlabuscar = textoDql.getText().substring(posultimaoperacion, textoDql.getText().length());
+            }
+
+            posultimaoperacion = textosqlabuscar.toUpperCase().lastIndexOf("UNION");
+            if (posultimaoperacion > 0) {
+                posultimaoperacion = posultimaoperacion + 6;
+                if (textoDql.getCaretPosition() > posultimaoperacion) {
+                    textosqlabuscar = textoDql.getText().substring(posultimaoperacion, textoDql.getText().length());
+                }
+            }
+
+            String primera = utildocum.buscarPalabraInverso(textosqlabuscar, 1, false);
+            if (primera.equals(" ") || primera.equals("(") || primera.equals(")")
+                    || primera.equals(">") || primera.equals("<") || primera.equals("=")
+                    || textosqlabuscar.replaceAll("\r", "").replaceAll("\t", "").replaceAll("\n", "").replaceAll("\f", "").trim().endsWith(";")
+                    || primera.endsWith(".") || primera.endsWith(",")) {
+            } else {
+                setTextoayudaescrito(primera);
+                ArrayList<String> listaFiltro = util.buscarEnArrayList(listaPistasLimpia, primera);
+                pantallaayuda.cargarDatosAyuda(listaFiltro);
+            }
+        } else {
+            KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+            InputMap inputMap = textoDql.getInputMap();
+            inputMap.put(key, DefaultEditorKit.downAction);
+            key = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+            inputMap.put(key, null);
+        }
+    }//GEN-LAST:event_textoDqlKeyReleased
+
+    private void textoDqlKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoDqlKeyPressed
+        if (pantallaayuda.isVisible()) {
+            if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+                pantallaayuda.asignarFocoListaAyuda();
+            }
+        }
+    }//GEN-LAST:event_textoDqlKeyPressed
+
+    private void mostrarVentanaAyuda() {
+        setPosicionTextoDql(textoDql.getCaretPosition());
+        Caret caret = textoDql.getCaret();
+        Point p = new Point(caret.getMagicCaretPosition());
+        p.x += textoDql.getLocationOnScreen().x;
+        p.y += textoDql.getLocationOnScreen().y + 24;
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Double anchopantalla = screenSize.getWidth();
+
+        if ((p.x + pantallaayuda.getWidth() + 5) > anchopantalla) {
+            p.x = anchopantalla.intValue() - pantallaayuda.getWidth() - 5;
+        }
+
+        pantallaayuda.setBounds(p.x, p.y, pantallaayuda.getWidth(), pantallaayuda.getHeight());
+        pantallaayuda.setAlwaysOnTop(true);
+        ArrayList<String> lista = new ArrayList<>();
+
+        String textosqlabuscar = textoDql.getText();
+        int posultimaoperacion = textosqlabuscar.lastIndexOf(";");
+        if (posultimaoperacion < 0) {
+            posultimaoperacion = 0;
+        } else {
+            posultimaoperacion = posultimaoperacion + 1;
+        }
+        if (textoDql.getCaretPosition() > posultimaoperacion) {
+            if (!checkMultiplesDqls.isSelected()) {
+                textosqlabuscar = textoDql.getText().substring(posultimaoperacion, textoDql.getCaretPosition());
+            } else {
+                int numretornos = StringUtils.countMatches(textoDql.getText(), "\n") - 1;
+                textosqlabuscar = textoDql.getText().substring(posultimaoperacion, textoDql.getCaretPosition());
+            }
+        } else {
+            textosqlabuscar = textoDql.getText().substring(posultimaoperacion, textoDql.getText().length());
+        }
+
+        posultimaoperacion = textosqlabuscar.toUpperCase().lastIndexOf("UNION");
+        if (posultimaoperacion > 0) {
+            posultimaoperacion = posultimaoperacion + 6;
+            if (textoDql.getCaretPosition() > posultimaoperacion) {
+                textosqlabuscar = textoDql.getText().substring(posultimaoperacion, textoDql.getText().length());
+            }
+        }
+
+        String primerareservada = utildocum.buscarPalabraSqlInverso(textosqlabuscar, 1);
+        String segundareservada = utildocum.buscarPalabraSqlInverso(textosqlabuscar, 2);
+        String tercerareservada = utildocum.buscarPalabraSqlInverso(textosqlabuscar, 3);
+        String primerainverso = utildocum.buscarPalabraInverso(textosqlabuscar, 1, true);
+        String segundainverso = utildocum.buscarPalabraInverso(textosqlabuscar, 2, true);
+        String tercerainverso = utildocum.buscarPalabraInverso(textosqlabuscar, 3, true);
+        String primera = utildocum.buscarPalabra(textosqlabuscar, 1, true, true);
+        String segunda = utildocum.buscarPalabra(textosqlabuscar, 2, true, true);
+        String tercera = utildocum.buscarPalabra(textosqlabuscar, 3, true, true);
+        String cuarta = utildocum.buscarPalabra(textosqlabuscar, 4, " \n\r\f\t", false, true);
+        tipoconsulta = utildocum.buscarOperacionSqlInverso(textosqlabuscar);
+
+        if (textoDql.getText().isEmpty() || primerareservada.isEmpty()) {
+            tipoLista = "inicio";
+        }
+
+        switch (tipoconsulta) {
+            case "SELECT":
+                if (primerareservada.equals("BY") && segundareservada.equals("ORDER")) {
+                    tipoLista = "campos";
+                } else if (!textosqlabuscar.toUpperCase().contains("FROM")) {
+                    tipoLista = "campos";
+                } else if (primerainverso.endsWith(".")) {
+                    tipoLista = "campos";
+                } else if (primerareservada.equals("HAVING")) {
+                    tipoLista = "having";
+                } else if (primerareservada.equals("BY") && segundareservada.equals("GROUP")) {
+                    tipoLista = "groupby";
+                } else if (primerareservada.equals("WHERE") && (primerainverso.equals("(") || primerainverso.equals(")")
+                        || primerainverso.equals(">") || primerainverso.equals("<") || primerainverso.equals("="))) {
+                    tipoLista = "where";
+                } else if (primerareservada.equals("WHERE") || segundareservada.equals("WHERE")
+                        || tercerareservada.equals("WHERE") || primerareservada.equals("AND")
+                        || primerareservada.equals("OR") || primerareservada.equals("DATE")
+                        || primerareservada.equals("LOWER") || primerareservada.equals("UPPER")
+                        || primerareservada.equals("CABINET") || primerareservada.equals("FOLDER")
+                        || primerareservada.equals("NOT") || primerareservada.equals("IN")
+                        || primerareservada.equals("YEAR") || primerareservada.equals("WEEK")
+                        || primerareservada.equals("TOMORROW") || primerareservada.equals("TODAY")
+                        || primerareservada.equals("NOW") || primerareservada.equals("DAY")) {
+                    tipoLista = "where";
+                } else if (primerareservada.equals("WHERE") && (tipoLista.equals("tablas")
+                        || segundareservada.equals("FROM"))) {
+                    tipoLista = "where";
+                } else if ((primerareservada.equals("FROM")) || primerareservada.equals("UPDATE")
+                        || (primerareservada.equals("INTO") && segundareservada.equals("INSERT"))) {
+                    tipoLista = "tablas";
+                } else if (primerareservada.equals("SELECT") && (segundareservada.equals("COUNT") || segundareservada.equalsIgnoreCase("SUM")
+                        || segundareservada.equalsIgnoreCase("AVG") || segundareservada.equalsIgnoreCase("MIN")
+                        || segundareservada.equalsIgnoreCase("MAX"))) {
+                    tipoLista = "campos";
+                } else if (primerareservada.equals("SELECT") || primerareservada.equals("COUNT") || primerareservada.equals("SUM")
+                        || (primerareservada.equals("UPDATE") && segundareservada.equalsIgnoreCase("SET"))) {
+                    tipoLista = "campos";
+                }
+                break;
+
+            case "INSERT":
+                if (primerareservada.equals("INTO") && segundareservada.equals("INSERT") && cuarta.equals("(") && !primerareservada.equalsIgnoreCase("VALUES")) {
+                    tipoLista = "campos";
+                } else if (primerareservada.equals("INTO") && segundareservada.equals("INSERT")) {
+                    tipoLista = "tablas";
+                }
+                break;
+            case "UPDATE":
+                if (segundareservada.equals("UPDATE") && primerareservada.equals("SET")) {
+                    tipoLista = "campos";
+                } else if (primerareservada.equals("UPDATE")) {
+                    tipoLista = "tablas";
+                }
+                break;
+            case "EXECUTE":
+                if (primera.equals("EXECUTE") && segunda.isEmpty()) {
+                    tipoLista = "execute";
+                } else if (primera.equals("EXECUTE") && !utildocum.encontrarEnSintaxis(segunda, listapistasExecute, "tipo")) {
+                    tipoLista = "execute";
+                } else {
+                    tipoLista = "vacia";
+                    lista.clear();
+                }
+                break;
+            case "DELETE":
+                if (primerareservada.equals("WHERE") && tipoLista.equals("tablas")) {
+                    tipoLista = "where";
+                } else if (segundareservada.equals("DELETE") && primerareservada.equals("FROM")) {
+                    tipoLista = "tablas";
+                }
+
+                break;
+            default:
+//                tipoLista = "vacia";
+//                lista.clear();
+        }
+
+        if (primerainverso.endsWith(";")) {
+            tipoLista = "inicio";
+        }
+
+        if (tipoLista.equals("inicio")) {
+            for (int n = 0; n < listapistasDqlInicio.size(); n++) {
+                lista.add(listapistasDqlInicio.get(n).getTipo());
+            }
+        }
+
+        if (tipoLista.equals("execute")) {
+            for (int n = 0; n < listapistasExecute.size(); n++) {
+                lista.add(listapistasExecute.get(n).getTipo());
+            }
+        }
+
+        if (tipoLista.equals("tablas")) {
+            if (primerareservada.toUpperCase().equals("ENABLE")) {
+                lista.add("CONVERT_FOLDER_LIST_TO_OR");
+                lista.add("FETCH_ALL_RESULTS ");
+                lista.add("FORCE_ORDER");
+                lista.add("FTDQL");
+                lista.add("NOFTDQL");
+                lista.add("FT_CONTAIN_FRAGMENT");
+                lista.add("GENERATE_SQL_ONLY");
+                lista.add("GROUP_LIST_LIMIT ");
+                lista.add("HIDE_SHARED_PARENT ");
+                lista.add("OPTIMIZE_ON_BASE_TABLE");
+                lista.add("OPTIMIZE_TOP ");
+                lista.add("RETURN_RANGE");
+                lista.add("RETURN_TOP ");
+                lista.add("ROW_BASED");
+                lista.add("SQL_DEF_RESULT_SET ");
+                lista.add("TRY_FTDQL_FIRST");
+                lista.add("UNCOMMITTED_READ");
+                lista.add("DM_LEFT_OUTER_JOIN_FOR_ACL");
+            } else {
+                lista = utildocum.listaTablasDocumentum(gsesion);
+                switch (tipoconsulta) {
+                    case "SELECT":
+                        lista.add("WHERE ");
+                        lista.add("LEFT ");
+                        lista.add("RIGHT ");
+                        lista.add("INNER ");
+                        lista.add("OUTER ");
+                        lista.add("JOIN ");
+                        if (!util.esPalabraReservadaSQL(primerainverso, "documentum")) {
+                            lista.add("ORDER BY ");
+                            lista.add("UNION ");
+                            lista.add("ENABLE");
+                        }
+                        if (primerareservada.equals("UNION")) {
+                            lista.add("SELECT ");
+                        }
+                        break;
+                    case "INSERT":
+                        lista.add("VALUES");
+                        break;
+                    case "UPDATE":
+                        lista.add("SET ");
+                        break;
+                    case "DELETE":
+                        lista.add("WHERE ");
+                        break;
+                    default:
+                }
+            }
+        }
+
+//        String sqlactual = textoDql.getText();
+//        posultimaoperacion = sqlactual.lastIndexOf(";");
+//        if (posultimaoperacion < 0) {
+//            posultimaoperacion = 0;
+//        } else {
+//            posultimaoperacion = posultimaoperacion + 1;
+//        }
+//        if (textoDql.getCaretPosition() < posultimaoperacion) {
+//            sqlactual = textoDql.getText().substring(0, textoDql.getCaretPosition());
+//        } else {
+//            sqlactual = textoDql.getText().substring(posultimaoperacion, textoDql.getText().length());
+//        }
+        if (tipoLista.equals("campos")) {
+            if (primerareservada.toUpperCase().equals("ENABLE")) {
+                lista.add("CONVERT_FOLDER_LIST_TO_OR");
+                lista.add("FETCH_ALL_RESULTS ");
+                lista.add("FORCE_ORDER");
+                lista.add("FTDQL");
+                lista.add("NOFTDQL");
+                lista.add("FT_CONTAIN_FRAGMENT");
+                lista.add("GENERATE_SQL_ONLY");
+                lista.add("GROUP_LIST_LIMIT ");
+                lista.add("HIDE_SHARED_PARENT ");
+                lista.add("OPTIMIZE_ON_BASE_TABLE");
+                lista.add("OPTIMIZE_TOP ");
+                lista.add("RETURN_RANGE");
+                lista.add("RETURN_TOP ");
+                lista.add("ROW_BASED");
+                lista.add("SQL_DEF_RESULT_SET ");
+                lista.add("TRY_FTDQL_FIRST");
+                lista.add("UNCOMMITTED_READ");
+                lista.add("DM_LEFT_OUTER_JOIN_FOR_ACL");
+            } else {
+                ArrayList<String> listaDeTablas = utildocum.obtenerNombreTablas(textosqlabuscar);
+                if (listaDeTablas.isEmpty()) {
+                    lista = utildocum.listaCamposTablaDocumentum(gsesion, "");
+                } else {
+                    for (int n = 0; n < listaDeTablas.size(); n++) {
+                        String nombretabla = listaDeTablas.get(n);
+                        if (nombretabla.endsWith("_s") || nombretabla.endsWith("_r")
+                                || nombretabla.endsWith("_sp") || nombretabla.endsWith("_rp")) {
+                            nombretabla = nombretabla.substring(0, nombretabla.lastIndexOf("_"));
+                        }
+                        ArrayList<String> listacampostabla = utildocum.listaCamposTablaDocumentum(gsesion, nombretabla);
+                        for (int i = 0; i < listacampostabla.size(); i++) {
+                            if (!util.estaEnLista(lista, listacampostabla.get(i))) {
+                                lista.add(listacampostabla.get(i));
+                            }
+                        }
+                    }
+                    Collections.sort(lista);
+                }
+                switch (tipoconsulta) {
+                    case "SELECT":
+                        if (primerareservada.equals("UNION")) {
+                            lista.add("SELECT ");
+                        } else if (primerareservada.equals("COUNT")) {
+                            lista.add("DISTINCT ");
+                            lista.add("*");
+                        } else {
+                            if (primerareservada.equals("SUM")) {
+                                lista.add("DISTINCT ");
+                            } else if (primerareservada.equals("DATE")) {
+                                lista.add("DISTINCT ");
+                                lista.add("NOW");
+                                lista.add("TODAY");
+                                lista.add("YESTERDAY");
+                                lista.add("TOMORROW");
+                            } else if (primerareservada.equals("DATEDIFF")) {
+                                lista.add("DAY");
+                                lista.add("WEEK");
+                                lista.add("MOTNH");
+                                lista.add("YEAR");
+                            } else if (primerareservada.equals("BY") && segundareservada.equals("ORDER")
+                                    && !utildocum.encontrarEnSintaxis(primerainverso, listapistasDqlInicio, "tipo")) {
+                                lista.add("ASC");
+                                lista.add("DESC");
+                            } else {
+                                lista.add("ALL ");
+                                lista.add("EXISTS ");
+                                lista.add("SOME ");
+                                lista.add("ANY ");
+                                lista.add("DATE");
+                                lista.add("DATEDIFF");
+                                lista.add("LEFT ");
+                                lista.add("RIGHT ");
+                                lista.add("INNER ");
+                                lista.add("OUTER ");
+                                lista.add("JOIN ");
+                                lista.add("UNION ");
+                                lista.add("IS NULL ");
+                                lista.add("IS NOT NULL ");
+                                lista.add("IS NULLDATE ");
+                                lista.add("IS NOT NULLDATE ");
+                                lista.add("IS NULLSTRING ");
+                                lista.add("IS NOT NULLSTRING ");
+                                lista.add("IS NULLINT ");
+                                lista.add("IS NOT NULLINT ");
+                                lista.add("IS NULLID ");
+                                lista.add("IS NOT NULLID ");
+                                if (textosqlabuscar.toUpperCase().contains("FROM")) {
+                                    lista.add("ENABLE ");
+                                }
+                            }
+                        }
+                        break;
+                    case "UPDATE":
+                        lista.add("WHERE");
+                        break;
+                    default:
+                }
+                if (!tipoconsulta.equalsIgnoreCase("UPDATE")) {
+                    if (!(primerareservada.equals("BY") && segundareservada.equals("ORDER"))) {
+                        lista.add("FROM ");
+                    }
+                }
+            }
+        }
+
+        if (tipoLista.equals("where")) {
+            if (primerareservada.toUpperCase().equals("ENABLE")) {
+                lista.add("CONVERT_FOLDER_LIST_TO_OR");
+                lista.add("FETCH_ALL_RESULTS ");
+                lista.add("FORCE_ORDER");
+                lista.add("FTDQL");
+                lista.add("NOFTDQL");
+                lista.add("FT_CONTAIN_FRAGMENT");
+                lista.add("GENERATE_SQL_ONLY");
+                lista.add("GROUP_LIST_LIMIT ");
+                lista.add("HIDE_SHARED_PARENT ");
+                lista.add("OPTIMIZE_ON_BASE_TABLE");
+                lista.add("OPTIMIZE_TOP ");
+                lista.add("RETURN_RANGE");
+                lista.add("RETURN_TOP ");
+                lista.add("ROW_BASED");
+                lista.add("SQL_DEF_RESULT_SET ");
+                lista.add("TRY_FTDQL_FIRST");
+                lista.add("UNCOMMITTED_READ");
+                lista.add("DM_LEFT_OUTER_JOIN_FOR_ACL");
+            } else {
+                ArrayList<String> listaDeTablas = utildocum.obtenerNombreTablas(textosqlabuscar);
+                if (util.esPalabraReservadaSQL(primerainverso, "documentum") || segundainverso.equals("WHERE")) {
+                    if (listaDeTablas.isEmpty()) {
+                        lista = utildocum.listaCamposTablaDocumentum(gsesion, "");
+                    } else {
+                        for (int n = 0; n < listaDeTablas.size(); n++) {
+                            String nombretabla = listaDeTablas.get(n);
+                            if (nombretabla.endsWith("_s") || nombretabla.endsWith("_r")
+                                    || nombretabla.endsWith("_sp") || nombretabla.endsWith("_rp")) {
+                                nombretabla = nombretabla.substring(0, nombretabla.lastIndexOf("_"));
+                            }
+                            ArrayList<String> listacampostabla = utildocum.listaCamposTablaDocumentum(gsesion, nombretabla);
+                            for (int i = 0; i < listacampostabla.size(); i++) {
+                                if (!util.estaEnLista(lista, listacampostabla.get(i))) {
+                                    lista.add(listacampostabla.get(i));
+                                }
+                            }
+                        }
+                        Collections.sort(lista);
+                    }
+                } else {
+                    lista.add("AND ");
+                    lista.add("OR ");
+                    if (!tipoconsulta.equalsIgnoreCase("DELETE")) {
+                        lista.add("GROUP BY ");
+                        lista.add("ORDER BY ");
+                        lista.add("ENABLE ");
+                        lista.add("UNION ");
+                    }
+                    lista.add("LIKE ");
+                    lista.add("IN");
+                }
+                if (primerareservada.equals("UNION")) {
+                    lista.add("SELECT ");
+                }
+                lista.add("UPPER");
+                lista.add("LOWER");
+                lista.add("ANY ");
+                lista.add("NOT ");
+                lista.add("TYPE");
+                lista.add("FOLDER");
+                lista.add("CABINET");
+                lista.add("DATE");
+                lista.add("DATEDIFF");
+                lista.add("SUBSTR");
+                lista.add("IS NULL ");
+                lista.add("IS NOT NULL ");
+                lista.add("IS NULLDATE ");
+                lista.add("IS NOT NULLDATE ");
+                lista.add("IS NULLSTRING ");
+                lista.add("IS NOT NULLSTRING ");
+                lista.add("IS NULLINT ");
+                lista.add("IS NOT NULLINT ");
+                lista.add("IS NULLID ");
+                lista.add("IS NOT NULLID ");
+                if (primerareservada.equals("DATE")) {
+                    lista.add("DISTINCT ");
+                    lista.add("NOW");
+                    lista.add("TODAY");
+                    lista.add("YESTERDAY");
+                    lista.add("TOMORROW");
+                }
+                if (primerareservada.equals("DATEDIFF")) {
+                    lista.add("DAY");
+                    lista.add("WEEK");
+                    lista.add("MOTNH");
+                    lista.add("YEAR");
+                }
+            }
+        }
+
+        if (tipoLista.equals("groupby")) {
+            if (primerareservada.toUpperCase().equals("ENABLE")) {
+                lista.add("CONVERT_FOLDER_LIST_TO_OR");
+                lista.add("FETCH_ALL_RESULTS ");
+                lista.add("FORCE_ORDER");
+                lista.add("FTDQL");
+                lista.add("NOFTDQL");
+                lista.add("FT_CONTAIN_FRAGMENT");
+                lista.add("GENERATE_SQL_ONLY");
+                lista.add("GROUP_LIST_LIMIT ");
+                lista.add("HIDE_SHARED_PARENT ");
+                lista.add("OPTIMIZE_ON_BASE_TABLE");
+                lista.add("OPTIMIZE_TOP ");
+                lista.add("RETURN_RANGE");
+                lista.add("RETURN_TOP ");
+                lista.add("ROW_BASED");
+                lista.add("SQL_DEF_RESULT_SET ");
+                lista.add("TRY_FTDQL_FIRST");
+                lista.add("UNCOMMITTED_READ");
+                lista.add("DM_LEFT_OUTER_JOIN_FOR_ACL");
+            } else {
+                lista = utildocum.listaCamposTablaDocumentum(gsesion, "");
+                lista.add("HAVING ");
+                lista.add("ORDER BY ");
+                lista.add("ENABLE ");
+                lista.add("UNION ");
+            }
+        }
+
+        if (tipoLista.equals("having")) {
+            lista.add("COUNT");
+        }
+
+        // END_CLAUSES
+        if (tipoLista.equals("END_CLAUSES")) {
+            lista.add("WHERE ");
+            lista.add("SET ");
+            lista.add("HAVING ");
+            lista.add("JOIN ");
+            lista.add("FROM ");
+            lista.add("BY ");
+            lista.add("JOIN ");
+            lista.add("INTO ");
+            lista.add("UNION ");
+        }
+
+        // LOGICAL
+        if (tipoLista.equals("LOGICAL")) {
+            lista.add("AND ");
+            lista.add("OR ");
+            lista.add("WHEN");
+            lista.add("ELSE ");
+            lista.add("END");
+        }
+
+        // QUANTIFIERS
+        if (tipoLista.equals("QUANTIFIERS")) {
+            lista.add("IN ");
+            lista.add("ALL ");
+            lista.add("EXISTS ");
+            lista.add("SOME ");
+            lista.add("ANY ");
+        }
+
+//            if (!textoDql.getText().isEmpty()) {
+//                String escrito = textoDql.getText().substring(textoDql.getText().lastIndexOf(" ", textoDql.getCaretPosition()), textoDql.getCaretPosition());
+//                lista = buscarEnArrayList(lista, escrito);
+//            }
+        if (!lista.isEmpty()) {
+            listaPistasLimpia = lista;
+            pantallaayuda.cargarDatosAyuda(lista);
+            pantallaayuda.setVisible(true);
+            textoDql.requestFocus();
+            textoDql.setFocusTraversalKeysEnabled(false);
+            tipoListaold = tipoLista;
+            KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+            InputMap inputMap = textoDql.getInputMap();
+            Action cambiarFoco = new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    pantallaayuda.asignarFocoListaAyuda();
+                }
+            };
+            inputMap.put(key, cambiarFoco);
+            key = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+            inputMap = textoDql.getInputMap();
+            inputMap.put(key, cambiarFoco);
+
+        } else {
+            pantallaayuda.dispose();
+            textoDql.requestFocus();
+            textoDql.setFocusTraversalKeysEnabled(true);
+        }
+    }
+
+    public void ActualizarToolTipText() {
+        String palabra = "";
+
+        int pos = textoDql.getText().indexOf(",");
+        if (pos < 0) {
+            pos = textoDql.getText().indexOf(" ");
+        }
+
+        if (pos > 0) {
+            palabra = textoDql.getText().substring(0, pos);
+        }
+
+        if (!palabra.isEmpty()) {
+            String sintaxis = "";
+            String textosqlabuscar = textoDql.getText().substring(0, textoDql.getCaretPosition());
+            String primerainverso = utildocum.buscarPalabraInverso(textosqlabuscar, 1, true);
+            String segundainverso = utildocum.buscarPalabraInverso(textosqlabuscar, 1, true);
+            String primera = utildocum.buscarPalabra(textosqlabuscar, 1, true, true);
+            String segunda = utildocum.buscarPalabra(textosqlabuscar, 2, true, true);
+            if (primera.equalsIgnoreCase("EXECUTE")) {
+                sintaxis = utildocum.buscarSintaxis(segunda, listapistasExecute, "tipo");
+            } else if (primera.equalsIgnoreCase("ALTER")) {
+                sintaxis = utildocum.buscarSintaxis(primera + " " + segunda, listapistasDqlInicio, "tipolike");
+            } else {
+                sintaxis = utildocum.buscarSintaxis(palabra, listapistasDqlInicio, "tipo");
+            }
+            sintaxis = sintaxis.replaceAll("@@", "<br>");
+            if (!sintaxis.isEmpty()) {
+                String textoHtml
+                        = "<html><p><b><font color=\"#0e007d\" "
+                        + "size=\"4\" face=\"Verdana\">" + sintaxis
+                        + "</font></b></p></html>";
+                UIManager.put("ToolTip.background", new Color(250, 250, 205));
+                textoDql.setToolTipText(textoHtml);
+            }
+        } else {
+            textoDql.setToolTipText("");
+        }
+    }
 
     private void ejecutarDql(String pdql, String numreg) {
         String sqlfinal = pdql;
@@ -968,7 +1757,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                     int cont = 0;
 
                     if (dql.toLowerCase().startsWith("describe ")) {
-                        IDfCollection col = ejecutarDescribe(dql, gsesion);
+                        IDfCollection col = utildocum.ejecutarDescribe(dql, gsesion);
 
                         ArrayList filas = new ArrayList();
                         while (col.next()) {
@@ -1062,11 +1851,10 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                                 int tam_attr = row.getInt("attr_length");
                                 int repeat = row.getInt("attr_repeating");
                                 datos[i + 5][0] = nombre_attr;
-                                datos[i + 5][1] = dameDescTipo(tipo_attr).equalsIgnoreCase("String") ? "CHAR" + " (" + tam_attr + ")" : dameDescTipo(tipo_attr).toUpperCase();
+                                datos[i + 5][1] = util.dameDescTipo(tipo_attr).equalsIgnoreCase("String") ? "CHAR" + " (" + tam_attr + ")" : util.dameDescTipo(tipo_attr).toUpperCase();
                                 datos[i + 5][2] = repeat == 1 ? "REPEATING" : "";
                             }
                         }
-
                     } else {
                         IDfCollection col = utildocum.ejecutarDql(dql, gsesion);
                         if (!utildocum.dameError().equals("")) {
@@ -1162,8 +1950,8 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
 
                 }
                 if (checkDameSQL.isSelected()) {
-                    String textoSql = utildocum.dameSql(gsesion);
-                    textoMultiplesLogs.setText(textoMultiplesLogs.getText() + "\n" + textoSql);
+                    String textoDql = utildocum.dameSql(gsesion);
+                    textoMultiplesLogs.setText(textoMultiplesLogs.getText() + "\n" + textoDql);
                 }
                 barradocum.dispose();
             }
@@ -1272,83 +2060,14 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         });
     }
 
-    private String dameDescTipo(int tipo) {
-        String valor = "";
-        switch (tipo) {
-            case 0:
-                valor = "Boolean";
-                break;
-            case 1:
-                valor = "Integer";
-                break;
-            case 2:
-                valor = "String";
-                break;
-            case 3:
-                valor = "ID";
-                break;
-            case 4:
-                valor = "Date and Time";
-                break;
-            case 5:
-                valor = "Double";
-        }
-        return valor;
-    }
-
-    private IDfCollection ejecutarDescribe(String dql, IDfSession sesion) {
-        IDfCollection coleccion = null;
-
-        StringTokenizer param = new StringTokenizer(dql.trim(), " ");
-
-        String comando = param.nextElement().toString();
-
-        if (dql.toLowerCase().contains(" table ")) {
-            param.nextElement();
-            String tabla = param.nextElement().toString();
-            coleccion = describeTabla(tabla, sesion);
-        } else {
-            String tipo = param.nextElement().toString();
-            if (tipo.toLowerCase().equalsIgnoreCase("type")) {
-                tipo = param.nextElement().toString();
-            }
-            coleccion = describeTipo(tipo, sesion);
-        }
-        return coleccion;
-    }
-
-    public IDfCollection describeTabla(String tabla, IDfSession sesion) {
-        IDfCollection coleccion = null;
-        String nombre = tabla.toLowerCase().startsWith("dm_dbo") ? tabla.substring(7, tabla.length()) : tabla;
-        if (utildocum.esTablaRegistrada(nombre, sesion)) {
-            String dql = "select cab.table_name,cab.table_owner,lineas.column_name,lineas.column_datatype,lineas.column_length "
-                    + " from dm_registered_r lineas, dm_registered_s cab "
-                    + " where  cab.r_object_id=lineas.r_object_id and lower(cab.table_name)='" + nombre.toLowerCase() + "' order by 3";
-
-            coleccion = utildocum.ejecutarDql(dql, sesion);
-        } else {
-            try {
-                ERROR = "La tabla " + tabla + " no es una tabla registrada en el repositorio " + sesion.getDocbaseName();
-            } catch (DfException ex) {
-
-            }
-        }
-        return coleccion;
-    }
-
-    public IDfCollection describeTipo(String tipo, IDfSession sesion) {
-        IDfCollection coleccion = null;
-        String dql = "select cab.name,lineas.attr_name,lineas.attr_length, attr_repeating, lineas.attr_type "
-                + "from dm_type_r lineas, dm_type_s cab where cab.r_object_id=lineas.r_object_id and lower(cab.name)= '"
-                + tipo.toLowerCase() + "' order by attr_identifier";
-        coleccion = utildocum.ejecutarDql(dql, sesion);
-
-        return coleccion;
-    }
-
     private void cargarComboHistorial() {
         ArrayList comboBoxItems = new ArrayList();
         String dirhist = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador() + "historial-dql.log";
+
+        if (!util.existeFichero(dirhist)) {
+            util.crearFichero(dirhist, "txt");
+        }
+
         BufferedReader br = null;
 
         try {
@@ -1403,13 +2122,15 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenu menuOpciones;
     private javax.swing.JMenuItem opcionConsultar;
     private javax.swing.JMenuItem opcionCopiar;
     private javax.swing.JMenuItem opcionCopiarValor;
     private javax.swing.JMenuItem opcionExportarExcel;
+    private javax.swing.JCheckBoxMenuItem opcionFormato;
     private javax.swing.JMenuItem opcionPegar;
     private javax.swing.JMenuItem opcionSalir;
     private javax.swing.JMenuItem opcionSeleccionarColumna;
@@ -1422,7 +2143,7 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
     private javax.swing.JPopupMenu popupEditar;
     private javax.swing.JPopupMenu popupHistorial;
     private javax.swing.JTable tablaResultados;
-    private javax.swing.JTextArea textoDql;
+    private javax.swing.JTextPane textoDql;
     private javax.swing.JTextField textoListaDQL;
     private javax.swing.JTextPane textoMultiplesLogs;
     private javax.swing.JFormattedTextField textoNumLineasExcel;
@@ -1438,12 +2159,8 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
         };
         tablaResultados.setModel(modeloLotes);
         System.gc();
-        if (gsesion.isConnected()) {
-            try {
-                gsesion.disconnect();
-            } catch (DfException ex) {
-                Utilidades.escribeLog("Error al desconecta la sesión de Documentum (PantallaDql)  - Error: " + ex.getMessage());
-            }
+        if (pantallaayuda.isShowing()) {
+            pantallaayuda.dispose();
         }
         this.dispose();
     }
@@ -1476,30 +2193,23 @@ public class PantallaDqlconTabs extends javax.swing.JFrame {
                 opcionPegar.setEnabled(false);
             }
             if (evt.getSource().getClass().getName().equals("javax.swing.JTextArea")) {
+                opcionPegar.setVisible(true);
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
-                opcionPegar.setEnabled(true);
             }
             if (evt.getSource().getClass().getName().equals("javax.swing.JTextPane")) {
+                if (componente.equals("textoMultiplesLogs")) {
+                    opcionPegar.setVisible(false);
+                    opcionFormato.setVisible(false);
+                } else {
+                    opcionPegar.setVisible(true);
+                    opcionFormato.setVisible(true);
+                }
                 popupEditar.show(evt.getComponent(), evt.getX(), evt.getY());
-                opcionPegar.setEnabled(false);
             }
             if (evt.getSource() == comboHistorial) {
                 popupHistorial.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
-    }
-
-    private IDfSession sesionDocumentum() {
-        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
-        try {
-            ClassPathUpdater.add(dirdfc);
-            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
-        } catch (Exception ex) {
-            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
-        }
-        UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
-        IDfSession nuevasesion = utildocum.conectarDocumentum();
-        return nuevasesion;
     }
 
 }

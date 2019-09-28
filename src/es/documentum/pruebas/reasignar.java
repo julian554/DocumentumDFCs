@@ -25,17 +25,20 @@ import es.documentum.utilidades.ClassPathUpdater;
 import es.documentum.utilidades.MiProperties;
 import es.documentum.utilidades.Utilidades;
 import es.documentum.utilidades.UtilidadesDocumentum;
+import java.util.ArrayList;
 
 public class reasignar {
 
     private String patron_tipodoc = "car";
     private static Date fecha = new Date();
     private static FileWriter fichero = null;
-    protected static String m_docbase = "rep_part02_test";
-    protected static String m_userName = "dmadmin";
-    protected static String m_password = "pasword";
+    protected static String m_docbase = "repo";
+//    protected static String m_userName = "xxxxxx";
+//    protected static String m_password = "xxxxxx";
+    protected static String m_userName = "xxxxxx";
+    protected static String m_password = "xxxxxx";
     protected static String m_domain = "";
-    static String servidor = "192.168.1.27";
+    static String servidor = "server";
     protected String m_jobid = null;
     protected String m_mtl = "0";
     protected static String m_filestore_destino = "filestore_system";
@@ -73,7 +76,7 @@ public class reasignar {
     public static void principal() {
         fecha = new Date();
         try {
-
+            ArrayList<String> listadoFallo = new ArrayList<String>();
             // El log del tbo se crea en el pc/servidor que ejecuta la
             // creación / importación del documento
             fichero = new FileWriter(System.getProperty("user.home").replace("\\", "/") + "/reasignar.log");
@@ -94,50 +97,78 @@ public class reasignar {
             UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
             session = utildocum.conectarDocumentum(m_userName, m_password, m_docbase, servidor, "1489");
 
-            log_f("Inicio del job: " + fecha.toString() + NEWLINE);
+            log_f("Inicio del reasignar: " + fecha.toString() + NEWLINE);
             log_f("Repositorio: " + session.getDocbaseName() + NEWLINE);
-            String dql = "select r_object_id, i_partition,r_object_type,r_creation_date from dm_document_sp where r_object_type like 'car%' and a_storage_type='filestore_system'";
+            String dql = "select r_object_id, i_partition,r_object_type,r_creation_date from dm_sysobject_s where r_object_type like 'correos%' and a_storage_type in ('filestore_system','filestore_general')";
             log_f("DQL: " + dql + NEWLINE);
 
             IDfQuery query = new DfQuery();
             query.setDQL(dql);
-            IDfCollection coleccion = query.execute(session, DfQuery.DF_READ_QUERY);
+            IDfCollection coleccion = query.execute(session, DfQuery.DF_EXEC_QUERY);
 
             String directorio_log = usuarioHome() + separador + "jobs" + separador + "recolocar_hvs" + separador;
             String fichero_log = directorio_log + "recolocar_documentos_" + fecha_log() + ".log";
 
             while (coleccion.next()) {
                 IDfTypedObject r = coleccion.getTypedObject();
-                IDfTime fecha_creacion = r.getValue("r_creation_date").asTime();
-                DateFormat dateFormatCompleta = new SimpleDateFormat("yyMMdd");
-                DateFormat dateFormatMes = new SimpleDateFormat("MM");
-                DateFormat dateFormatAnio = new SimpleDateFormat("yy");
-                String mes = dateFormatMes.format(fecha_creacion.getDate());
-                String anio = dateFormatAnio.format(fecha_creacion.getDate());
-                String fechahoy = dateFormatCompleta.format(fecha_creacion.getDate());
                 String id = r.getValue("r_object_id").asString();
-                String tipo = r.getValue("r_object_type").asString();
-                String retencion = DameCustodia(tipo);
-                String split_mode = DameSplit_mode(tipo);
-                String carIpartition = retencion + fechahoy;
-                log_f("DameIpartition - En String - i_partition: " + carIpartition);
-                int valor = Integer.parseInt(carIpartition);
-                IDfId idObj = session.getIdByQualification("dm_sysobject where r_object_id='" + id + "'");
-                IDfSysObject Documento = (IDfSysObject) session.getObject(idObj);
-                String area_almacenamiento = CalcularAreaAlmacenamiento(Integer.parseInt(split_mode), mes);
-                String storage_type = "filestore_" + retencion + anio + area_almacenamiento;
-                //Documento.setStorageType(storage_type);
-                //Documento.setString("a_storage_type",storage_type);
-                Documento.setPartition(valor);
-            //    Documento.setInt("i_partition", valor);
-                Documento.save();
-                log_f("r_object_id: " + id + "  -  i_partition: " + valor + "  -  r_object_type: " + tipo
-                        + "  -  Filestore: " + storage_type + NEWLINE);
-                String dql_move = "EXECUTE migrate_content FOR '" + id + "' WITH TARGET_STORE='" + storage_type + "',REMOVE_ORIGINAL=TRUE,LOG_FILE='/tmp/migrate_filestore_xxxxx.log',LOG_LEVEL=1,SOURCE_DIRECT_ACCESS_OK=TRUE,IGNORE_CONTENT_VALIDATION_FAILURE=FALSE";
-                String resultado_move = execQuery(dql_move, session);
-                log_f("  -  Resultado migrate: " + resultado_move + NEWLINE);
+                try {
+                    IDfTime fecha_creacion = r.getValue("r_creation_date").asTime();
+                    DateFormat dateFormatCompleta = new SimpleDateFormat("yyMMdd");
+                    DateFormat dateFormatMes = new SimpleDateFormat("MM");
+                    DateFormat dateFormatAnio = new SimpleDateFormat("yy");
+                    String mes = dateFormatMes.format(fecha_creacion.getDate());
+                    String anio = dateFormatAnio.format(fecha_creacion.getDate());
+                    String fechahoy = dateFormatCompleta.format(fecha_creacion.getDate());
+                    String tipo = r.getValue("r_object_type").asString();
+                    String retencion = DameCustodia(tipo);
+                    retencion = retencion.length() == 2 ? "0" + retencion : retencion;
+                    String split_mode = DameSplit_mode(tipo);
+                    String carIpartition = retencion + fechahoy;
+                    log_f("DameIpartition - Antes de i_partition: " + carIpartition + NEWLINE);
+                    int valor = Integer.parseInt(carIpartition);
+                    IDfId idObj = session.getIdByQualification("dm_sysobject where r_object_id='" + id + "'");
+                    IDfSysObject Documento = (IDfSysObject) session.getObject(idObj);
+                    String area_almacenamiento = CalcularAreaAlmacenamiento(Integer.parseInt(split_mode), mes);
+                    String storage_type = "filestore_" + retencion + "_" + anio + area_almacenamiento;
+                    log_f("Stotage - Antes de save: " + storage_type + NEWLINE);
+                    // a_storage_type
+                    Documento.setStorageType(storage_type);
+//                    Documento.setPartition(valor);
+                    // Documento.setInt("i_partition", valor);
+                    Documento.save();
+                    log_f("r_object_id: " + id + "  -  i_partition: " + valor + "  -  r_object_type: " + tipo
+                            + "  -  Filestore: " + storage_type + NEWLINE);
+                    String dql_move = "EXECUTE migrate_content FOR '" + id + "' WITH TARGET_STORE='" + storage_type
+                            + "',REMOVE_ORIGINAL=TRUE,LOG_FILE='/tmp/migrate_filestore_" + session.toString()
+                            + ".log',LOG_LEVEL=1,SOURCE_DIRECT_ACCESS_OK=TRUE,IGNORE_CONTENT_VALIDATION_FAILURE=FALSE";
+                    log_f("DQL migrate_content: " + dql_move + NEWLINE);
+                    log_f("Log del migrate_content en el fichero /tmp/migrate_filestore_" + session.toString()
+                            + ".log" + NEWLINE);
+                    IDfCollection colmove = null;
+                    try {
+                        IDfQuery q = new DfQuery();
+                        q.setDQL(dql_move);
+                        colmove = q.execute(session, DfQuery.EXEC_QUERY);
+                        if (colmove.next()) {
+                            IDfTypedObject resultado = colmove.getTypedObject();
+                            String retVal = resultado.getValueAt(0).asString();
+                            log_f("Resutado migrate: " + retVal + NEWLINE);
+                        }
+                    } catch (DfException ex) {
+                        log_f("execQuery.error al ejecutar DQL (migrate_content): " + ex.getMessage() + NEWLINE);
+                    }
+                    colmove.close();
 
+                    log_f("Filestore tras migrate: " + Documento.getStorageType() + NEWLINE + NEWLINE);
+                } catch (Exception ex1) {
+                    log_f("ERROR - execute: " + ex1.getMessage() + NEWLINE);
+                    log_f("Continua la ejecucion del Script" + NEWLINE);
+                    listadoFallo.add(id);
+                    listadoFallo.add("ERROR - execute: " + ex1.getMessage() + "\r\n");
+                }
             }
+
             coleccion.close();
         } catch (Exception e) {
             log_f("Error al ejecutar la query inicial: " + e.getMessage() + NEWLINE);
@@ -214,10 +245,10 @@ public class reasignar {
             IDfSysObject idfSysObject = (IDfSysObject) idfDfcSesion.getObject(idObj);
             idfSysObject.setString("a_storage_type", valor);
             idfSysObject.save();
-            log_f("AsignarStorageType - a_storage_type: " + valor);
+            writer.append("AsignarStorageType - a_storage_type: " + valor);
         } catch (DfException e) {
             System.out.println("Error al asignar a_storage_type: " + e.getMessage());
-            log_f("AsignarStorageType - Error en AsignarStorageType " + e.getMessage());
+            writer.append("AsignarStorageType - Error en AsignarStorageType " + e.getMessage());
         }
     }
 

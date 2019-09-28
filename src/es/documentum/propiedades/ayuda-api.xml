@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<api>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Cancels an explicit transaction or terminates a workflow</texto>
+        <sintaxis>abort,session[,workflow_id]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Acquires a work item for the current user</texto>
+        <sintaxis>acquire,session,workitem_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Adds a new activity to a process definition</texto>
+        <sintaxis>addactivity,session,process_id,activity_identifier,activity_definition_id[,activity_tipo[,activity_priority]]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Creates an audit trail entry that records the signing of a SysObject by a user</texto>
+        <sintaxis>adddigsignature,session,object_id[,user_name][,reason]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Adds a signature to an object's content and generates an audit trail entry recording the operation</texto>
+        <sintaxis>addesignature,session,object_id[,user_auth_name],password[,justification][,format_to_sign][,hash_algorithm][,presignature_hash],sig_method_name[,app_properties][,passthrough_arg1][,passthrough_arg2]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Creates a link within a workflow definition that connects an output port of a source activity to an input port of a destination activity</texto>
+        <sintaxis>addlink,session,process_id,link_identifier,source_activity,source_port,destination_activity,destination_port</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Adds an annotation to a specified document (or other SysObject) or a workflow package</texto>
+        <sintaxis>addnote,session,annotation_id,object_id[,keep_permanent]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Attaches a new package to the start activity of a workflow or to a work item</texto>
+        <sintaxis>addpackage,session,object_id,start_activity_name,input_port_name,package_name,package_tipo[,note_id,keep_permanent{,component_ID}</sintaxis>
+        <sintaxis2>addpackage,session,object_id,package_name,package_tipo{,component_ID}</sintaxis2>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Adds a package definition to an existing port definition</texto>
+        <sintaxis>addpackageinfo,session,activity_id,port_name,package_name,package_tipo[,package_id[,package_label]][,package_operation]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Adds a new port to an activity definition</texto>
+        <sintaxis>addport,session,activity_id,port_name,port_tipo</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Adds a new rendition to an object</texto>
+        <sintaxis>addrendition,session,object_id,file_name,format[,page_number][,storage_name][,atomic][,keep_flag][,page_modifier][,batch_flag][,other_file]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Adds a route case to an activity definition</texto>
+        <sintaxis>addroutecase,session,activity_id,route_case_identifier,routing_condition{,output_port}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Determines if there are any events waiting for the user</texto>
+        <sintaxis>anyevents,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPISet</tipo>
+        <texto>Adds a value to a repeating attribute</texto>
+        <sintaxis>append,session,object_id,attribute[,pattern]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPISet</tipo>
+        <texto>Appends a content file to an object</texto>
+        <sintaxis>appendcontent,session,object_id[,length][,set_resource]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Appends a content file to an object</texto>
+        <sintaxis>appendfile,session,object_id,file_name[,other_file]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Appends a component to a virtual document</texto>
+        <sintaxis>appendpart,session,document_id,component_id[,version_label][,use_node_ver_label][,follow_assembly][,copy_child][,containment_tipo,containment_desc]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Appends a state to a lifecycle</texto>
+        <sintaxis>appendstate,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Invokes procedures that perform system administration tasks and run external procedures</texto>
+        <sintaxis>apply,session,object_id,admin_method_name{,argument,datatipo,value}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Queues an archive request to the Docbase operator</texto>
+        <sintaxis>archive,session,predicate[,operator][,priority][,send_mail][,due_date]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Selects the components for an assembly</texto>
+        <sintaxis>assemble,session,document_id[,virtual_doc_id][,interrupt_freq][,qualification][,nodesort_list]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Gives ownership of an existing Docbase session to a new user</texto>
+        <sintaxis>assume,session,user_auth_name,password|login_ticket[,domain][,user_arg]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Attaches an object to a lifecycle, replaces an object's lifecycle, or removes an object's lifecycle</texto>
+        <sintaxis>attach,session,object_id[,default|policy_id[,position|state_name]][,alias_set_position|alias_set_name]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Initiates auditing of an event</texto>
+        <sintaxis>audit,session[,object_id],event_name[,audit_subtipos][,controlling_app][,policy_id[,state_name]][,sign_audit][,authentication][,event_description][,attribute_list][,esignature_required]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Validates a user name and password</texto>
+        <sintaxis>authenticate,session [,docbase_name],user_auth_name,password|ticket[,domain][,user_arg]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Opens an explicit database transaction</texto>
+        <sintaxis>begintran,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Binds a content file associated with an object to another object</texto>
+        <sintaxis>bindfile,session,object_id,page_number,src_id,src_page_number</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Creates and checks out a new version of an object</texto>
+        <sintaxis>branch,session,object_id[,version_label]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Executes a query as a read-only query and stores the results in a query cache file</texto>
+        <sintaxis>cachequery,session,dql_query</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Changes a user's password from his or her current password to a new password</texto>
+        <sintaxis>changepassword,session,old_password,new_password</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Creates a new version of an object in the Docbase and removes the lock from the previous version</texto>
+        <sintaxis>checkin,session,object_id[,save_lock]{,version_label}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Creates a new version of an object in the Docbase and removes the lock from the previous version</texto>
+        <sintaxis>checkinapp,session,object_id[,save_lock][,version_label][,old_compound_arch_value][,old_special_app_value][,new_compound_arch_value][,new_special_app_value]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Places a lock on an object from the Docbase</texto>
+        <sintaxis>checkout,session,object_id[,version_label][,compound_arch_value][,special_app_value]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Closes a collection</texto>
+        <sintaxis>close,session,collection_identifier</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Commits an explicit database transaction</texto>
+        <sintaxis>commit,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Marks a work item as finished</texto>
+        <sintaxis>complete,session,workitem_id[,[return_value],[os_error],[result_id]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Establishes a session with a Docbase server</texto>
+        <sintaxis>connect,docbase,username,os_password|ticket[,domain][,user_arg]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the number of attributes in an object</texto>
+        <sintaxis>count,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Creates an object of the specified tipo</texto>
+        <sintaxis>create,session,object_tipo</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Creates an audit trail entry for application events</texto>
+        <sintaxis>createaudit,session,audited_obj_id,event_name[,string_1][,string_2][,string_3][,string_4][,string_5][,id_1][,id_2][,id_3][,id_4][,id_5]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the datatipo of an attribute</texto>
+        <sintaxis>datatipo,session,object_id,attribute</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Reassigns a work item</texto>
+        <sintaxis>delegate,session,workitem_id,user_name</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Demotes a SysObject from its current normal lifecycle state</texto>
+        <sintaxis>demote,session,sysobject_id[,scheduled_date,[pattern]][,to_state|to_position,return_to_base]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes items from an inbox that were placed there using the Queue method</texto>
+        <sintaxis>dequeue,session,stamp</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the object ID of a remote object pointed to by a mirror object or replica in the local Docbase</texto>
+        <sintaxis>dereference,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Describes the attributes of a tipo or registered table</texto>
+        <sintaxis>describe,session,tipo|table,object_tipo|tablename</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes an object from the Docbase</texto>
+        <sintaxis>destroy,session,object_id[,force_flag]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Destroys an assembly</texto>
+        <sintaxis>disassemble,session,document_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Terminates a Docbase session</texto>
+        <sintaxis>disconnect,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Lists an object's attributes and their values</texto>
+        <sintaxis>dump,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Provides a list of subconnections and the Docbases to which they are connected</texto>
+        <sintaxis>dumpconnection[,session]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Encrypts a password</texto>
+        <sintaxis>encryptpass,session,password</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Executes a DQL statement</texto>
+        <sintaxis>execquery,session,[readquery_flag],dql_query</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Executes SQL (Structured Query Language) statements</texto>
+        <sintaxis>execsql,session,sql_statement</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Starts or restarts a workflow</texto>
+        <sintaxis>execute,session,workflow_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Fetches an object from the Docbase without placing a lock on the object</texto>
+        <sintaxis>fetch,session,object_id[,tipo]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes cached queries from the client's query caches; ACLs or groups from the session cache; objects from the persistent client caches; or non-persistent objects from the data dictionary cache</texto>
+        <sintaxis>flush,session,cache_keyword,[object_tipo][,reset_change_bit][,include_subtipos]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes objects from the server and client in-memory caches</texto>
+        <sintaxis>flushcache,session[,discard_changed]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Disconnects all free connections in the connection pool and removes them from the pool</texto>
+        <sintaxis>flushconnectpool</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Marks an object and, optionally, its components if the object is a virtual document, as unchangeable</texto>
+        <sintaxis>freeze,session,object_id[,freeze_components]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Gets the value of an attribute or information about a Content Server installation</texto>
+        <sintaxis>get,session,object_id,attribute[[index]][,pattern]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the subconnection identifier for a Docbase or establishes a subconnection to the Docbase if none exists</texto>
+        <sintaxis>getconnection,session,scoping_value[,connect_flag]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Copies a content file in the Docbase into memory</texto>
+        <sintaxis>getcontent,session,document_id[,format][,page_num][,page_modifier][,get_resource]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns information about the Docbases that are known to the responding DocBroker</texto>
+        <sintaxis>getdocbasemap,session[,protocol][,host_name][,port_number]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns information about the DocBrokers that are known to the client DMCL</texto>
+        <sintaxis>getdocbrokermap,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns all unread items in the user's inbox</texto>
+        <sintaxis>getevents,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Retrieves a content file from the Docbase</texto>
+        <sintaxis>getfile,session,object_id[,file_name][,format][,page_number][,get_resource][,page_modifier]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the collection ID of the last executed query</texto>
+        <sintaxis>getlastcoll,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns a ticket from the current session that an application can use to launch another session as the currently logged-in user</texto>
+        <sintaxis>getlogin,session [,user]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns all messages from the session at or above a specified severity level</texto>
+        <sintaxis>getmessage,[session][,severity_level]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Retrieves the storage location of a content file</texto>
+        <sintaxis>getpath,session,object_id[,page][,format][,page_modifier][,get_resource]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns information about the servers known to a DocBroker</texto>
+        <sintaxis>getservermap,session,docbase_name[,protocol][,host_name][,port_number]</sintaxis>
+    </pista>
+
+    <pista from="1.0" to="5.2.5">
+        <tipo>dmAPIExec</tipo>
+        <texto>Creates an entry in an ACL object, assigning an access level to a specified user or group</texto>
+        <sintaxis>grant,session,object_id,accessor_name|alias,basic_permission[,extended_permission]</sintaxis>
+    </pista>
+    <pista from="5.3">
+        <tipo>dmAPIExec</tipo>
+        <texto>Creates an entry in an ACL object, assigning an access level to a specified user or group</texto>
+        <sintaxis>grant,session,object_id,accessor_name|alias[,permit_tipo][,unused][,basic_permit|extended_permit],[application_permit]</sintaxis>
+    </pista>
+
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Halts the specified workflow or a specific activity</texto>
+        <sintaxis>halt,session,workflow_id[,activity_sequence_number]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the ID of the object that satisfies a specified qualification</texto>
+        <sintaxis>id,session,qualification</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Initializes an AEK file</texto>
+        <sintaxis>initcrypto,apisession[,location][,passphrase]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPISet</tipo>
+        <texto>Inserts a value into a repeating attribute</texto>
+        <sintaxis>insert,sesion,object_id,attribute[[index]][,pattern]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPISet</tipo>
+        <texto>Inserts a new content file into an object</texto>
+        <sintaxis>insertcontent,session,object_id[,page_number][,length]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Inserts a new content file into an object</texto>
+        <sintaxis>insertfile,session,object_id,file_name[,page_number]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Inserts a component into a virtual document</texto>
+        <sintaxis>insertpart,session,document_id,component_id[,version_label],containment_id|order_no[,orderno_flag][,use_node_ver_label][,follow_assembly][,copy_child][,containment_tipo,containment_desc]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Inserts a state into a lifecycle</texto>
+        <sintaxis>insertstate,session,policy_id[,position|state_name]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Installs a validated lifecycle, workflow, or activity definition</texto>
+        <sintaxis>install,session,object_id[,notify_flag|install_activity][,|resume]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Changes the state of a validated workflow definition or activity definition to draft</texto>
+        <sintaxis>invalidate,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Indicates whether a particular object tipo is in the DMCL tipo cache</texto>
+        <sintaxis>iscached,session,tipocache,cache_key</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Terminates a Docbase session or flushes an object from the DMCL cache</texto>
+        <sintaxis>kill,session,object_id|session_to_kill[,|immediacy_level][,|message]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Associates an object with a folder or cabinet</texto>
+        <sintaxis>link,session,object_id,folder_specification|alias</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the subconnections and the Docbases to which they are connected for a specified session</texto>
+        <sintaxis>listconnection,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns all the messages generated by a session which are at or above a specified severity level</texto>
+        <sintaxis>listmessage,session[,severity_level]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Searches through a repeating attribute and returns the index value that corresponds to a specified value in the attribute</texto>
+        <sintaxis>locate,session,object_id,attribute,value</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Places a database lock on an object</texto>
+        <sintaxis>lock,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Retrieves the print queue for a specified printer</texto>
+        <sintaxis>lpq,session[,printer]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Assigns one or more symbolic version labels to an object</texto>
+        <sintaxis>mark,session,object_id,label{,label}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Sets the content location for an external store object</texto>
+        <sintaxis>mount,session,object_id,path</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Rearranges the state definitions within a lifecycle definition</texto>
+        <sintaxis>movestate,session,object_id,old_position,new_position</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Returns objects from collections</texto>
+        <sintaxis>next,session,collection_identifier</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Determines an attribute's position in the list of attributes that belong to an object</texto>
+        <sintaxis>offset,session,object_id,attribute</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Suspends a work item</texto>
+        <sintaxis>pause,session,workitem_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Prints a specified document</texto>
+        <sintaxis>print,session,object_id[,printer][,print_cover][,save_output][,num_copies][,starting_content_page][,ending_content_page]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Promotes a SysObject from its current normal state to the next normal state defined in the attached lifecycle</texto>
+        <sintaxis>promote,session,object_id[,to_state|to_position,test_only_flag,override_flag]</sintaxis>
+        <sintaxis2>promote,session,object_id,scheduled_date[,pattern],to_state|to_position|cancel[,override_flag]</sintaxis2>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes unwanted versions of an object</texto>
+        <sintaxis>prune,session,object_id[,keepSLabel]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Publishes data dictionary information</texto>
+        <sintaxis>publish_dd,session[,locale][,tipo][,attribute][,force_publish]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes all files that have been copied into the local area during the current session</texto>
+        <sintaxis>purgelocal,session</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Executes a DQL query</texto>
+        <sintaxis>query_cmd,session[,read_only][,persistent_cache][,consistency_check_value][,unused][,unused][,unused],dql_query</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Executes DQL statements</texto>
+        <sintaxis>query,session,dql_query</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Places an object in an inbox or posts an event to a workflow</texto>
+        <sintaxis>queue,session,object_id,queue_owner,event,priority[,send_mail],[due_date],message</sintaxis>
+        <sintaxis2>queue,session,workflow_id,[supervisor],event_tipo,[priority,[send_mail[,due_date[,message]]]]</sintaxis2>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Executes DQL queries that do not require database access during query result processing</texto>
+        <sintaxis>readquery,session,dql_query</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Updates the attributes values of a mirror object in the Docbase</texto>
+        <sintaxis>refresh,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPISet</tipo>
+        <texto>Registers the current user to receive notification when the specified event occurs</texto>
+        <sintaxis>register,session,object_id,event[,priority][,send_mail]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Restarts the root Content Server thread (process)</texto>
+        <sintaxis>reinit,session[,server_config_name][,send_to_docbroker]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a value in a repeating attribute</texto>
+        <sintaxis>remove,session,object_id,attribute[[index]]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes an activity from a workflow definition</texto>
+        <sintaxis>removeactivity,session,process_id,activity_identifier</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Deletes a content file from an object</texto>
+        <sintaxis>removecontent,session,object_id[,page_number]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a link from a workflow definition</texto>
+        <sintaxis>removelink,session,process_id,link_identifier</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Detaches an annotation from a document or other SysObject or removes a note from a package</texto>
+        <sintaxis>removenote,session,annotation_id,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Detaches a package from a specific port of a start activity or from a work item</texto>
+        <sintaxis>removepackage,session,object_id,package_name|start_activity_name,|port_name,|package_name</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a package definition from a port</texto>
+        <sintaxis>removepackageinfo,session,activity_id,port_name,package_name</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a component of a virtual document</texto>
+        <sintaxis>removepart,session,document_id,containment_id|order_no[,orderno_flag]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a port added with the Addport method</texto>
+        <sintaxis>removeport,session,activity_id,port_name</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Deletes a rendition from an object</texto>
+        <sintaxis>removerendition,session,object_id,format[,page_number][,atomic][,page_modifier]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a route case from the condition list</texto>
+        <sintaxis>removeroutecase,session,activity_id,route_case_identifier</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a state from a lifecycle</texto>
+        <sintaxis>removestate,session,object_id[,position|state_name]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Allows a user to repeat a work item</texto>
+        <sintaxis>repeat,session,workitem_id{,user_name|group_name}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Determines if an attribute is a repeating attribute or a single-valued attribute</texto>
+        <sintaxis>repeating,session,object_id,attribute</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Resets the _status attribute of an object</texto>
+        <sintaxis>reset,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Resolves an alias</texto>
+        <sintaxis>resolvealias,session,[object_id],%[alias_set_name.]alias_name</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Reinitializes a session's server thread (process) or restarts a halted workflow</texto>
+        <sintaxis>restart,session,workflow_id[,activity_seq_no]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Queues a request to restore a content file from the archives</texto>
+        <sintaxis>restore,session[,predicate][,dump_file][,operator][,priority][,send_mail][,due_date]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Queues a request to restore a content file from the archives</texto>
+        <sintaxis>resume,session,sysobject_id[,from_state |from_position,return_to_base_flag,test_only_flag,override_flag]</sintaxis>
+        <sintaxis2>resume,session,sysobject_id,scheduled_date,[pattern],[from_state |from_position |cancel,return_to_base_flag,override_flag]</sintaxis2>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Finds the object that satisfies a specified qualification</texto>
+        <sintaxis>retrieve,session,qualification</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Refetches an object from the Docbase or throws away unsaved permission changes</texto>
+        <sintaxis>revert,session,object_id [,acl_only]</sintaxis>
+    </pista>
+    <pista from="1.0" to="5.2.5">
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes access control entries from an ACL object for a specified user or group</texto>
+        <sintaxis>revoke,session,object_id,accessor_name|alias[,extended_permission_name]</sintaxis>
+    </pista>
+    <pista from="5.3">
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes access control entries from an ACL object for a specified user or group</texto>
+        <sintaxis>revoke,session,object_id,accessor_name|alias[,permit_tipo][,unused][,basic_permit|extended_permit|application_permit]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Writes an object to the Docbase without creating a new version of the object</texto>
+        <sintaxis>save,session,object_id[,save_lock]{,version_label}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Copies an object</texto>
+        <sintaxis>saveasnew,session,object_id,share_content</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Defines the starting position (byte range) for the next reading of a file retrieved using a Getcontent method</texto>
+        <sintaxis>seek,session,collection,position[,direction]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPISet</tipo>
+        <texto>Sets the value of an object's attribute</texto>
+        <sintaxis>set,session,object_id,attribute[[index]][,pattern]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Defines a maximum number of rows that can be returned to the server in each call to the underlying RDBMS</texto>
+        <sintaxis>setbatchpista,session,size</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPISet</tipo>
+        <texto>Sets the content of an object</texto>
+        <sintaxis>setcontent,session,object_id[,format][,page_number][,length][,set_resource]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Sets the content-related attributes in a content object</texto>
+        <sintaxis>setcontentattrs,session,object_id,format[,page_number][,page_modifier],parameters</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Sets the r_is_virtual_doc attribute of a SysObject</texto>
+        <sintaxis>setdoc,session,object_id,is_virtual_doc</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Adds a content file to an object or replaces an existing content</texto>
+        <sintaxis>setfile,session,object_id,file_name[,page_number|format][,other_file]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Specifies the output port for manual transition of a work item</texto>
+        <sintaxis>setoutput,session,workitem_id{,output_port_name}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Adds a file in an external storage area to a document as primary content</texto>
+        <sintaxis>setpath,session,object_id,file_name[,page_number|format[,other_file]]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Sets the performer or performers for an activity</texto>
+        <sintaxis>setperformers,session,object_id,activity_name[,performer_list]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Sets the priority of a work item in a workflow</texto>
+        <sintaxis>setpriority,session,workitem_id,priority</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Changes the supervisor of a workflow</texto>
+        <sintaxis>setsupervisor,session,workflow_id,new_supervisor</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Shuts down Content Server</texto>
+        <sintaxis>shutdown,session[,immediate][,delete_entry]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Creates an audit trail entry of signoff information for an object</texto>
+        <sintaxis>signoff,session,object_id,[user_auth_name],password[,reason]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Suspends the lifecycle of an object</texto>
+        <sintaxis>suspend,session,sysobject_id[,from_state|from_position,test_only_flag,override_flag</sintaxis>
+        <sintaxis2>suspend,session,sysobject_id,scheduled_date,[pattern],from_state|from_position|cancel[,override_flag]</sintaxis2>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Turns on tracing for the session or returns information about tracing options</texto>
+        <sintaxis>trace,session,severity_level[,logfile],option|facility|all</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes all the values in a repeating attribute</texto>
+        <sintaxis>truncate,session,object_id,attribute</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns an identifier that is used in read-only calls to obtain the data dictionary information for a tipo or attribute</texto>
+        <sintaxis>tipo,session,object_tipo[,attribute][,bus_policy_id,state]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Stops auditing of an event</texto>
+        <sintaxis>unaudit,session[,object_id],event_name[,controlling_app][,policy_id ][,state_name]]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Unfreezes a frozen object and, optionally, if the object is a virtual document, the object's associated assembly</texto>
+        <sintaxis>unfreeze,session,object_id[,thaw_components]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Uninstalls an installed lifecycle, workflow, or activity definition</texto>
+        <sintaxis>uninstall,session,object_id[,notify_flag]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a link between an object and a folder</texto>
+        <sintaxis>unlink,session,object_id,location|alias</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes an intention lock without saving any changes that may have been made to the locked object</texto>
+        <sintaxis>unlock,session,object_id[,send_mail][,compound_arch_value][,special_app_value]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes symbolic labels from an object</texto>
+        <sintaxis>unmark,session,object_id,label{,label}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes a job from a print queue</texto>
+        <sintaxis>unprint,session[,printer_name],job_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Removes the current user's registration for a specified event</texto>
+        <sintaxis>unregister,session,object_id,event[,user]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Modifies an existing component of a virtual document</texto>
+        <sintaxis>updatepart,session,virtdoc_id,containment_id[,version_label][,order_no][,use_node_ver_label][,follow_assembly][,copy_child][,containment_tipo,containment_desc]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Assigns an ACL to an object</texto>
+        <sintaxis>useacl,session,object_id,acl_specification</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Validates a lifecycle, workflow, or activity definition</texto>
+        <sintaxis>validate,session,object_id[,check_activity]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the number of values in an attribute</texto>
+        <sintaxis>values,session,object_id,attribute</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the path or paths through a virtual document that lead to a particular component</texto>
+        <sintaxis>vdmpath,session,component_id[,root_id][,shortest_path]{,version_list}</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIGet</tipo>
+        <texto>Returns the path or paths through a virtual document that lead to a particular component</texto>
+        <sintaxis>vdmpathdql,session,component_id[,root_id][,shortest_path][,tipo][,binding_condition][,nodesort_by]</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Verifies that an audit trail object has not been modified</texto>
+        <sintaxis>verifyaudit,session,object_id</sintaxis>
+    </pista>
+    <pista>
+        <tipo>dmAPIExec</tipo>
+        <texto>Verifies that an electronic signature added by Addesignature is valid</texto>
+        <sintaxis>verifyesignature,session,object_id</sintaxis>
+    </pista>
+</api>
+
+	
+	
+

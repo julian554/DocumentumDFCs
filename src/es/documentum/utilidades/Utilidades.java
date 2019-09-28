@@ -13,6 +13,8 @@ import com.jcraft.jsch.SftpException;
 import com.zehon.FileTransferStatus;
 import com.zehon.exception.FileTransferException;
 import com.zehon.scp.SCP;
+import es.documentum.Beans.Pistas;
+import es.documentum.pantalla.PantallaMensaje;
 import static es.documentum.utilidades.UtilidadesDocumentum.getDfObjectValue;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -54,9 +56,13 @@ import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -1069,7 +1075,7 @@ public class Utilidades {
             estiloTodo.setBorderTop(BorderStyle.THIN);
             Sheet sheet = (Sheet) wb.createSheet(); //WorkSheet
             wb.setSheetName(0, hoja);
-            Row row = sheet.createRow(2); //Row created at line 3
+            Row row = sheet.createRow(1); //Row created at line 3
 
             Row headerRow = sheet.createRow(0); //Create row at line 0
             for (int i = 0; i < numcolumnas; i++) { //For each column
@@ -1089,9 +1095,9 @@ public class Utilidades {
                 }
 
                 //Set the row to the next one in the sequence
-                row = sheet.createRow((rows + 3));
+                row = sheet.createRow((rows + 2));
 
-                if (rows >= numfilas - 3 || numfilas < 4) {
+                if (rows >= numfilas - 2 || numfilas < 3) {
                     for (int cols = 0; cols < numcolumnas; cols++) {
                         // Este codigo penaliza el rendimiento por eso se ejecuta casi al final
                         sheet.autoSizeColumn(cols);
@@ -1117,10 +1123,9 @@ public class Utilidades {
         try {
             //   new WorkbookFactory();
             Workbook wb = new XSSFWorkbook(); //Excell workbook
-
             Sheet sheet = (Sheet) wb.createSheet(); //WorkSheet
             wb.setSheetName(0, hoja);
-            Row row = sheet.createRow(2); //Row created at line 3
+            Row row = sheet.createRow(1); //Row created at line 3
             TableModel model = table.getModel(); //Table model
             CellStyle estiloCabecera = wb.createCellStyle();//Create estiloCabecera
             Font font = wb.createFont();//Create font
@@ -1155,9 +1160,9 @@ public class Utilidades {
                 }
 
                 //Set the row to the next one in the sequence
-                row = sheet.createRow((rows + 3));
+                row = sheet.createRow((rows + 2));
 
-                if (rows >= numrows - 3 || numrows < 4) {
+                if (rows >= numrows - 2 || numrows < 3) {
                     for (int cols = 0; cols < numcols; cols++) {
                         // Este codigo penaliza el rendimiento por eso se ejecuta casi al final
                         sheet.autoSizeColumn(cols);
@@ -1344,7 +1349,7 @@ public class Utilidades {
             }
             modeloExcel = new TablaSinEditarCol(datos, cabecera);
         }
-        
+
         return modeloExcel;
     }
 
@@ -1464,8 +1469,108 @@ public class Utilidades {
         return -1;
     }
 
+    public void mensaje(java.awt.Frame ventana, String titulo, String texto) {
+        PantallaMensaje mensaje = new PantallaMensaje(ventana, true);
+        mensaje.setTitle(titulo);
+        mensaje.etiqueta.setOpaque(false);
+        mensaje.etiqueta.setBackground(new java.awt.Color(0, 0, 0, 0));
+        mensaje.etiqueta.setText(texto);
+        mensaje.setVisible(true);
+    }
+
+    public boolean esPalabraReservadaSQL(String word, String tipoSQL) {
+        Boolean respuesta = false;
+        String nombreFichero = "reservadas-" + tipoSQL.toLowerCase() + ".txt";
+        BufferedReader br = null;
+        try {
+            String leida;
+            String ficheroInterno = "/es/documentum/propiedades/" + nombreFichero;
+            InputStream is = getClass().getResourceAsStream(ficheroInterno);
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((leida = br.readLine()) != null) {
+                if (word.toUpperCase().trim().equals(leida.toUpperCase())) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            escribeLog("Error al cargar el fichero de historial. (cargarComboHistorial) Error: " + e.getMessage());
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException ex) {
+                escribeLog("Error al cerrar el fichero de historial. (cargarComboHistorial) Error: " + ex.getMessage());
+            }
+        }
+        return respuesta;
+    }
+
+    public ArrayList<Pistas> leerXMLPistaApi(InputStream archivo) {
+        ArrayList<Pistas> pistasapi = new ArrayList<>();
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+            Document document = documentBuilder.parse(archivo);
+            document.getDocumentElement().normalize();
+            NodeList listaAPI = document.getElementsByTagName("pista");
+            for (int temp = 0; temp < listaAPI.getLength(); temp++) {
+                Node nodo = listaAPI.item(temp);
+                //        System.out.println("Elemento:" + nodo.getNodeName());
+                if (nodo.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nodo;
+                    Pistas mipista = new Pistas();
+                    mipista.setTipo(element.getElementsByTagName("tipo").item(0).getTextContent());
+                    mipista.setTexto(element.getElementsByTagName("texto").item(0).getTextContent());
+                    mipista.setSintaxis(element.getElementsByTagName("sintaxis").item(0).getTextContent());
+                    pistasapi.add(mipista);
+                }
+            }
+        } catch (IOException | ParserConfigurationException | DOMException | SAXException ex) {
+            System.out.println("Error al leer fichero XML - Error: " + ex.getMessage());
+        }
+        return pistasapi;
+    }
+
     public static void main(String args[]) {
         Utilidades util = new Utilidades();
+    }
+
+    public String dameDescTipo(int tipo) {
+        String valor = "";
+        switch (tipo) {
+            case 0:
+                valor = "Boolean";
+                break;
+            case 1:
+                valor = "Integer";
+                break;
+            case 2:
+                valor = "String";
+                break;
+            case 3:
+                valor = "ID";
+                break;
+            case 4:
+                valor = "Date and Time";
+                break;
+            case 5:
+                valor = "Double";
+        }
+        return valor;
+    }
+
+    public ArrayList<String> buscarEnArrayList(ArrayList<String> lista, String cadena) {
+        if (cadena.isEmpty()) {
+            return lista;
+        }
+        ArrayList<String> listaPistas = new ArrayList<>();
+        for (int n = 0; n < lista.size(); n++) {
+            if (lista.get(n).toLowerCase().contains(cadena.toLowerCase())) {
+                listaPistas.add(lista.get(n));
+            }
+        }
+        return listaPistas;
     }
 }
 

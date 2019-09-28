@@ -516,9 +516,15 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
         }
 
         try {
-            dql = "SELECT s.object_name as nombre,r_is_public,server_major_version,server_minor_version,dormancy_status,acs_base_url,c.object_name as srv,s.r_object_id as id"
+            dql = "SELECT s.object_name as nombre,r_is_public,server_major_version,server_minor_version,dormancy_status,acs_base_url,c.object_name as srv,s.r_object_id "
                     + " FROM dm_acs_config_sp s, dm_acs_config_r r, dm_server_config c where s.r_object_id=r.r_object_id "
                     + " and s.svr_config_id=c.r_object_id and acs_base_url !=' '";
+            
+            /*
+            The current dormancy status of the ACS server. Valid values are:
+                * Dormant
+                * Active
+            */
             IDfCollection col = utilDocum.ejecutarDql(dql, gsesion);
             cadenaHTML.append("<TABLE BORDER CELLSPACING=0 WIDTH=\"100%\"><CAPTION ALIGN=top><b>ACS</b></CAPTION>"
                     + "<tr bgcolor=#f5f5f5><th>NOMBRE</th><th>ID</th><th>REPOSITORIO</th><th>VERSION</th><th>ESTADO</th><th>URL</th></tr>");
@@ -531,7 +537,7 @@ public class PantallaInfoRepositorio extends javax.swing.JFrame {
                 String estado = col.getTypedObject().getString("dormancy_status");
                 estado = estado.trim().equalsIgnoreCase("ACTIVE") ? "Activo" : "No Activo";
                 String acs_url = col.getTypedObject().getString("acs_base_url");
-                String id= col.getTypedObject().getString("id");
+                String id= col.getTypedObject().getString("r_object_id");
 
                 cadenaHTML.append("<tr bgcolor=\"white\"><td><font color=\"black\" size=4> " + nombre_acs + " </font></td>");
                 cadenaHTML.append("<td style=\"text-align:center\"><font color=\"black\" size=4> " + id + " </font></td>");

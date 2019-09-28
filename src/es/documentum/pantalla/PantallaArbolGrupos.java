@@ -927,7 +927,7 @@ public class PantallaArbolGrupos extends javax.swing.JFrame {
             return informacion;
         }
         Object nodeInfo = nodo.getUserObject();
-        String nombrefichero = nodeInfo.toString();
+//        String nombrefichero = nodeInfo.toString();
         String rutafichero = nodeInfo.toString();
 
         DefaultMutableTreeNode nodopadre = nodo;

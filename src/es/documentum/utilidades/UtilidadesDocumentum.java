@@ -12,9 +12,11 @@ import com.documentum.operations.*;
 import com.documentum.xml.xdql.IDfXmlQuery;
 import com.google.common.io.Files;
 import es.documentum.Beans.AtributosDocumentum;
+import es.documentum.Beans.Pistas;
 import es.documentum.Beans.ResultadoGDBean;
 import es.documentum.pantalla.PantallaBarra;
 import es.documentum.pantalla.PantallaDocumentum;
+import es.documentum.pruebas.LeerXML;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class UtilidadesDocumentum {
@@ -235,6 +239,19 @@ public class UtilidadesDocumentum {
             ERROR = "Error al conectar con Documentum (conectarDocumentum): " + dfe.toString();
         }
         return sesion;
+    }
+
+    public IDfSession sesionDocumentum() {
+        String dirdfc = util.usuarioHome() + util.separador() + "documentumdfcs" + util.separador() + "documentum" + util.separador() + "shared" + util.separador();
+        try {
+            ClassPathUpdater.add(dirdfc);
+            ClassPathUpdater.add(dirdfc + "lib" + util.separador() + "jsafeFIPS.jar");
+        } catch (Exception ex) {
+            Utilidades.escribeLog("Error al actualizar el Classpath  - Error: " + ex.getMessage());
+        }
+        UtilidadesDocumentum utildocum = new UtilidadesDocumentum(dirdfc + "dfc.properties");
+        IDfSession nuevasesion = utildocum.conectarDocumentum();
+        return nuevasesion;
     }
 
     public IDfCollection ejecutarDql(String dql) {
@@ -671,34 +688,42 @@ public class UtilidadesDocumentum {
         }
 
         return resultado;
+    }
 
-//        if (sesion == null) {
-//            if (ERROR.isEmpty()) {
-//                ERROR = "Error al crear sesión en Documentum (dameVersionDocumentum)";
-//            }
-//            return resultado;
-//        }
-//        ERROR = "";
-//        try {
-//            //object ID based on the object ID string.
-//            IDfId idObj = sesion.getIdByQualification("dm_server_config ");
-//            // Instantiate an object from the ID.
-//            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
-//            resultado = sysObj.getValue("r_server_version").toString();
-//
-//        } catch (DfException ex) {
-//            ERROR = "Error al obtener versión de Documentum (dameVersionDocumentum) - Error: " + ex.getMessage();
-//            return "";
-//        }
-//
-//        try {
-//            sesion.disconnect();
-//        } catch (DfException ex) {
-//            Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
-//            ERROR = "Error al desconectar la sesión en Documentum  (dameVersionDocumentum). - " + ex.getMessage();
-//        }
-//
-//        return resultado;
+    public int dameNumeroVersionDocumentum() {
+        int resultado = 5;
+
+        IDfSession sesion = conectarDocumentum();
+        try {
+            String version = sesion.getServerConfig().getString("r_server_version");
+            version = version.substring(0, version.indexOf("."));
+            resultado = Integer.parseInt(version);
+        } catch (Exception ex) {
+
+        }
+
+        return resultado;
+    }
+
+    public String dameGestorBbddDocumentum() {
+        String resultado = "";
+        String version = dameVersionDocumentum();
+
+        if (version.toLowerCase().contains("oracle")) {
+            resultado = "oracle";
+        }
+        if (version.toLowerCase().contains("db2")) {
+            resultado = "db2";
+        }
+        if (version.toLowerCase().contains("postgres")) {
+            resultado = "postgresql";
+        }
+        if (version.toLowerCase().contains("sqlserver")
+                || version.toLowerCase().contains("sql server")
+                || version.toUpperCase().contains("MSSQL")) {
+            resultado = "sqlserver";
+        }
+        return resultado;
     }
 
     public String dameVersionDFC() {
@@ -851,6 +876,73 @@ public class UtilidadesDocumentum {
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al desconectar la sesión en Documentum " + " - " + ex.getMessage());
             ERROR = "Error al desconectar la sesión en Documentum  (DameTodosAtributos). - " + ex.getMessage();
+        }
+        return resultado;
+    }
+
+    public ArrayList<AtributosDocumentum> dameTodosAtributos(String r_object_id, IDfSession sesion) {
+        ArrayList<AtributosDocumentum> resultado = new ArrayList<>();
+        if (sesion == null) {
+            if (ERROR.isEmpty()) {
+                ERROR = "Error al crear sesión en Documentum (DameTodosAtributos)";
+            }
+            return resultado;
+        }
+        ERROR = "";
+        try {
+            //object ID based on the object ID string.
+            IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + r_object_id + "'");
+            DfId dfId = new DfId(r_object_id);
+            // Instantiate an object from the ID.
+            //   IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
+            IDfSysObject sysObj = (IDfSysObject) sesion.getObject(dfId);
+//            Utilidades.escribeLog("Nº de atributos: " + sysObj.getAttrCount());
+            String nombre = "";
+            for (int i = 0; i < sysObj.getAttrCount(); i++) {
+                nombre = sysObj.getAttr(i).getName();
+                AtributosDocumentum atri = new AtributosDocumentum();
+//                Utilidades.escribeLog(nombre+" : ");
+                if (sysObj.getAttr(i).isRepeating()) {
+                    int j = sysObj.getValueCount(nombre);
+                    if (j == 0) {
+                        String valor = sysObj.getRepeatingString(nombre, 0);
+//                        System.out.println(nombre + "[" + 0 + "] : " + valor);
+                        atri.setNombre(nombre + "[" + 0 + "]");
+                        atri.setValor(valor);
+                        atri.setMultivalor(true);
+                        atri.setTipo(sysObj.getAttr(i).getDataType());
+                        atri.setLongitud(sysObj.getAttr(i).getLength());
+                        resultado.add(atri);
+                    } else {
+                        for (int n = 0; n < sysObj.getValueCount(nombre); n++) {
+                            atri = new AtributosDocumentum();
+                            String valor = sysObj.getRepeatingString(nombre, n);
+//                            System.out.println(nombre + "[" + n + "] : " + valor);
+                            atri.setNombre(nombre + "[" + n + "]");
+                            atri.setValor(valor);
+                            atri.setMultivalor(true);
+                            atri.setTipo(sysObj.getAttr(i).getDataType());
+                            atri.setLongitud(sysObj.getAttr(i).getLength());
+                            resultado.add(atri);
+                        }
+                    }
+                } else {
+                    atri.setNombre(nombre);
+                    if (sysObj.getAttrDataType(nombre) == IDfValue.DF_TIME) {
+                        atri.setValor(sysObj.getValue(nombre).asTime().asString("yyyy/mm/dd hh:mi:ss"));
+                    } else {
+                        atri.setValor(sysObj.getValue(nombre).toString());
+                    }
+                    atri.setMultivalor(false);
+                    atri.setTipo(sysObj.getAttrDataType(nombre));
+                    atri.setLongitud(sysObj.getAttr(i).getLength());
+//                    System.out.println(nombre + " : " + sysObj.getValue(nombre));
+                    resultado.add(atri);
+                }
+            }
+        } catch (DfException ex) {
+            ERROR = "Error al recuperar atributos de " + r_object_id + " (DameTodosAtributos) - Error: " + ex.getMessage();
+            return new ArrayList<>();
         }
         return resultado;
     }
@@ -1086,10 +1178,15 @@ public class UtilidadesDocumentum {
         String valor = "0";
         try {
             coleccion.next();
+            if (coleccion.getState() > 1) {
+                coleccion.close();
+                return resultado;
+            }
             valor = "" + coleccion.getInt("user_privileges");
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al comprobar usuario Administrador (EsUsuarioAdmin): " + ex.getMessage());
             ERROR = "Error al comprobar si " + usuario + " es Administrador (EsUsuarioAdmin): " + ex.getMessage();
+
         }
         resultado = valor.equals("16");
         return resultado;
@@ -1108,7 +1205,7 @@ public class UtilidadesDocumentum {
             IDfId idObj = sesion.getIdByQualification("dm_sysobject where r_object_id='" + r_object_id + "'");
             IDfDocument Documento = (IDfDocument) sesion.getObject(idObj);
             Documento.destroyAllVersions();
-        } catch (DfException ex) {
+        } catch (Exception ex) {
             this.ERROR = ("Error al Borrar el documento con ID: " + r_object_id + " - Error: " + ex.getMessage());
             Utilidades.escribeLog(this.ERROR);
             return false;
@@ -1138,7 +1235,7 @@ public class UtilidadesDocumentum {
             IDfId idObj = sesion.getIdByQualification("dm_sysobject where object_name='" + carpeta + "'");
             IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
             IDfFolder myFolder = sesion.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
-//            ficheros = myFolder.getContents(null);
+//            col = myFolder.getContents(null);
             IDfQuery q = new DfQuery();
             String dql = "select r_object_id, object_name, r_creation_date, a_content_type, r_full_content_size,r_object_type from dm_sysobject "
                     + "where folder(id('" + myFolder.getObjectId().toString() + "')) order by r_object_id";
@@ -1150,7 +1247,7 @@ public class UtilidadesDocumentum {
             while (ficheros.next() && seguir) {
                 conta++;
                 AtributosDocumentum datos = new AtributosDocumentum();
-//                IDfTypedObject doc = ficheros.getTypedObject();
+//                IDfTypedObject doc = col.getTypedObject();
 //                Utilidades.escribeLog(doc.getString("object_name") + " - " + doc.getString("r_object_id"));
                 datos.setNombre(ficheros.getString("object_name"));
                 datos.setValor(ficheros.getString("r_object_id"));
@@ -1206,12 +1303,12 @@ public class UtilidadesDocumentum {
     }
 
     public ArrayList<AtributosDocumentum> listarFicherosRuta(String ruta, int numreg) {
-        IDfCollection ficheros;
+        IDfCollection col;
         ArrayList<AtributosDocumentum> listaficheros = new ArrayList<>();
         IDfSession sesion = conectarDocumentum();
         if (sesion == null) {
             if (ERROR.isEmpty()) {
-                ERROR = "Error al crear sesión en Documentum (ListarFicherosRuta)";
+                ERROR = "Error con la sesión en Documentum (ListarFicherosRuta)";
             }
             return listaficheros;
         }
@@ -1219,25 +1316,22 @@ public class UtilidadesDocumentum {
         try {
             String dql;
             if (ruta.equals("/")) {
-                dql = "select r_object_id, object_name, r_creation_date, a_content_type, r_full_content_size, r_object_type From dm_sysobject where r_object_type='dm_cabinet' order by object_name";
-                ficheros = ejecutarDql(dql, sesion);
+                dql = "select r_object_id, object_name, r_creation_date, a_content_type, r_full_content_size, r_object_type,owner_name From dm_sysobject where r_object_type='dm_cabinet' order by object_name";
+                if (numreg > 0) {
+                    dql = dql + " enable (return_top " + numreg + ")";
+                }
+                col = ejecutarDql(dql, sesion);
             } else {
-                IDfFolder folder = (IDfFolder) sesion.getObjectByPath(ruta);
-                IDfId idfolder = folder.getId("r_object_id");
-                dql = "dm_sysobject where r_object_id='" + idfolder.toString() + "'";
-                IDfId idObj = sesion.getIdByQualification(dql);
-                IDfSysObject sysObj = (IDfSysObject) sesion.getObject(idObj);
-                IDfFolder myFolder = sesion.getFolderByPath(sysObj.getRepeatingString("r_folder_path", 0));
-//                ficheros = myFolder.getContents(null);
                 IDfQuery q = new DfQuery();
-                dql = "select r_object_id, object_name, r_creation_date, a_content_type, r_full_content_size, r_object_type from dm_sysobject "
-                        + "where folder(id('" + myFolder.getObjectId().toString() + "')) order by r_creation_date desc";
+                dql = "select r_object_id, object_name, r_creation_date, a_content_type, r_full_content_size, r_object_type,owner_name from dm_sysobject "
+                        + "where folder('" + ruta + "') order by r_creation_date desc";
+
                 if (numreg > 0) {
                     dql = dql + " enable (return_top " + numreg + ")";
 
                 }
                 q.setDQL(dql);
-                ficheros = q.execute(sesion, DfQuery.DF_EXEC_QUERY);
+                col = q.execute(sesion, DfQuery.DF_EXEC_QUERY);
 
             }
             int conta = 0;
@@ -1251,16 +1345,16 @@ public class UtilidadesDocumentum {
                 }
             }
 
-            while (ficheros.next() && seguir) {
+            while (col.next() && seguir) {
                 conta++;
                 AtributosDocumentum datos = new AtributosDocumentum();
-                IDfTypedObject doc = ficheros.getTypedObject();
-//                Utilidades.escribeLog(doc.getString("object_name") + " - " + doc.getString("r_object_id"));
+                IDfTypedObject doc = col.getTypedObject();
                 datos.setNombre(doc.getString("object_name"));
                 datos.setValor(doc.getString("r_object_id"));
                 datos.setTipoobjeto(doc.getString("r_object_type"));
+                datos.setUsuario(doc.getString("owner_name"));
+                datos.setFechacreacion(doc.getString("r_creation_date"));
                 ventanapadre.etiquetaEstado.setText(doc.getString("object_name"));
-                //   String textocuenta = numficheros.equals("0") ? "Registro(s): " + conta : "Registro(s): " + conta + " de " + numficheros;
                 String textocuenta = "Registro(s): " + conta + " de " + numficheros;
                 ventanapadre.getBarradocum().labelMensa.setText(textocuenta);
                 if (ventanapadre.getBarradocum().PARAR) {
@@ -1268,30 +1362,10 @@ public class UtilidadesDocumentum {
                     ventanapadre.getBarradocum().setPARAR(false);
                     ventanapadre.getBarradocum().dispose();
                 }
-                ArrayList<AtributosDocumentum> atris = dameTodosAtributos(doc.getString("r_object_id"));
-                if (atris.size() > 0) {
-                    for (int n = 0; n < atris.size(); n++) {
-                        if (atris.get(n).getNombre().equalsIgnoreCase("owner_name")) {
-                            // datos[n][1] = atributos.get(n).getValor();
-                            datos.setUsuario(atris.get(n).getValor());
-                        }
-                        if (atris.get(n).getNombre().equalsIgnoreCase("r_creation_date")) {
-                            // datos[n][1] = atributos.get(n).getValor();
-                            datos.setFechacreacion(atris.get(n).getValor());
-                        }
-                    }
-                    datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
-                    listaficheros.add(datos);
-                }
-//                ArrayList resultado = dameAtributo(doc.getString("r_object_id"), "r_creation_date");
-//                if (resultado.size() > 0) {
-//                    String fechacreacion = resultado.get(0).toString();
-//                    datos.setFechacreacion(fechacreacion);
-//                    datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
-//                    listaficheros.add(datos);
-//                }
+                datos.setCheckin(!((IDfSysObject) sesion.getObject(new DfId(doc.getString("r_object_id")))).isCheckedOut());
+                listaficheros.add(datos);
             }
-
+            col.close();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error al listar directorio " + ruta + " (ListarFicherosRuta) - Error: " + ex.getMessage());
             if (ex.getMessage() != null) {
@@ -1429,7 +1503,7 @@ public class UtilidadesDocumentum {
 
             // Formato y extensión del documento
             String tipoFichero = doc.getValue("a_content_type").asString();
-            String formato = dameExtension(tipoFichero);
+            String formato = dameExtensionDocumentum(tipoFichero);
             // Nombre del documento  
             String nombre = doc.getValue("object_name").asString();
             // En el nombre del documento cambiamos caracteres no validos ("/" y ":") por "-"
@@ -1876,6 +1950,7 @@ public class UtilidadesDocumentum {
                     IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
                     IDfValue attrValue = row.getValue("name");
                     tipo = getDfObjectValue(attrValue).toString();
+                    col.close();
                 } catch (Exception e) {
                     tipo = "unknown";
                 }
@@ -1883,18 +1958,55 @@ public class UtilidadesDocumentum {
         return tipo;
     }
 
-    private String dameExtension(String tipo) {
+    public String dameExtensionDocumentum(String tipo) {
         String extension;
         try {
-            IDfCollection col = ejecutarDql("SELECT dos_extension  from dm_format WHERE name = lower('" + tipo + "')");
+            IDfCollection col = ejecutarDql("SELECT dos_extension from dm_format WHERE name = lower('" + tipo + "')");
             col.next();
             IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
             IDfValue attrValue = row.getValue("dos_extension");
             extension = getDfObjectValue(attrValue).toString();
-        } catch (Exception e) {
+            col.close();
+        } catch (DfException e) {
             extension = "";
         }
         return extension;
+    }
+
+    public Boolean tieneCarpetas(String nombre, IDfSession sesion) {
+        try {
+            String dql = "SELECT count(r_object_id) as cuenta FROM dm_folder WHERE folder('/" + nombre + "')";
+            dql = "select count(r_object_id) as cuenta from dm_sysobject where folder ('/" + nombre + "') and r_object_id like '0b%'";
+            IDfCollection col = ejecutarDql(dql, sesion);
+            col.next();
+            IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
+            Long numeroCarpetas = row.getLong("cuenta");
+            col.close();
+            if (numeroCarpetas > 0) {
+                return true;
+            }
+        } catch (DfException ex) {
+
+        }
+        return false;
+    }
+
+    public Boolean tieneCarpetas2(String nombre, IDfSession sesion) {
+        Boolean hay = false;
+        try {
+            String dql = "SELECT r_object_id as cuenta FROM dm_folder WHERE folder('/" + nombre + "') ";
+            dql = "select r_object_id  from dm_sysobject where folder ('/" + nombre + "') and r_object_id like '0b%' enable (return_top 5)";
+            IDfCollection col = ejecutarDql(dql, sesion);
+
+            while (col.next() && !hay) {
+                IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
+                hay = true;
+            }
+            col.close();
+        } catch (DfException ex) {
+
+        }
+        return hay;
     }
 
     public ArrayList dameRenditions(IDfSession sesion, String r_object_id) {
@@ -1947,7 +2059,7 @@ public class UtilidadesDocumentum {
     public ArrayList dameJobs(IDfSession sesion) {
         ArrayList lista = new ArrayList();
         try {
-            String dql = "select object_name,subject,title,a_last_completion,is_inactive,a_current_status,r_object_id,a_next_invocation from dm_job_sp order by object_name";
+            String dql = "select object_name,subject,title,a_last_completion,is_inactive,a_current_status,r_object_id,a_next_invocation,a_special_app from dm_job_sp order by object_name";
             IDfCollection myColl = ejecutarDql(dql, sesion);
             if (myColl == null) {
                 return lista;
@@ -1976,6 +2088,7 @@ public class UtilidadesDocumentum {
                 } catch (Exception ex) {
                 }
                 datos.add(prox_invo);
+                datos.add(myColl.getString("a_special_app"));
                 lista.add(datos);
             }
             myColl.close();
@@ -2180,20 +2293,45 @@ public class UtilidadesDocumentum {
     }
 
     public Boolean hayADTS() {
+        String tipoSql = dameGestorBbddDocumentum().toLowerCase();
+        String sql = "";
+        IDfSession sesion = sesionDocumentum();
+
+        switch (tipoSql) {
+            case "postgresql":
+                sql = "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'cts_instance_info_s')";
+                break;
+            case "oracle":
+                sql = "SELECT COUNT(1) FROM user_tables WHERE table_name='CTS_INSTANCE_INFO_S'";
+                break;
+            case "sqlserver":
+                sql = "SELECT COUNT(1) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='cts_instance_info_s'";
+                break;
+            case "db2":
+                sql = "SELECT COUNT(*) FROM SysCat.Tables WHERE TabName = 'cts_instance_info_s'";
+                break;
+        }
+
+        sql = sql.replaceAll("'", "''");
+        String Sqlfinal = "EXECUTE exec_select_sql with query='" + sql + "'";
         try {
-            IDfCollection col = ejecutarDql("select status from cts_instance_info");
+            IDfCollection col = ejecutarDql(Sqlfinal, sesion);
             if (col == null) {
                 return false;
             }
             String valor = "";
 
             while (col.next()) {
+                if (col.getState() > 1) {
+                    col.close();
+                    return false;
+                }
                 IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
-                IDfValue attrValue = row.getValue("status");
+                IDfValue attrValue = row.getValueAt(0);
                 valor = getDfObjectValue(attrValue).toString();
             }
             col.close();
-            if (valor.equals("") || !valor.equals("1")) {
+            if (valor.equals("0")) {
                 return false;
             }
         } catch (DfException Ex) {
@@ -2304,6 +2442,7 @@ public class UtilidadesDocumentum {
             cmd.setMethod("replicate_setup_methods");
             cmd.setArguments(argumento);
             cmd.execute(session);
+            col.close();
         } catch (DfException dfException) {
         }
     }
@@ -2398,10 +2537,7 @@ public class UtilidadesDocumentum {
                     System.gc();
                 }
             }
-
-            if (col != null) {
-                col.close();
-            }
+            col.close();
         } catch (DfException | IOException ex) {
 
         }
@@ -2681,7 +2817,7 @@ public class UtilidadesDocumentum {
                     System.out.println("La instancia de index agent '" + indexAgentName + "' está en ejecución");
                     break;
             }
-
+            col.close();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());
         }
@@ -2700,6 +2836,7 @@ public class UtilidadesDocumentum {
             IDfCollection col = q.execute(sesion, IDfQuery.DF_APPLY);
             col.next();
             String resul = col.getTypedObject().getRepeatingString("status", 0);
+            col.close();
         } catch (DfException ex) {
             Utilidades.escribeLog("Error parar el Index Agent de " + repositorio + ": " + ex.getMessage());
         }
@@ -3492,16 +3629,12 @@ public class UtilidadesDocumentum {
                 while (col.next()) {
                     numero = col.getTypedObject().getString("numero");
                 }
-
-                if (col != null) {
-                    col.close();
-                }
-
+                col.close();
                 if (Integer.parseInt(numero) > 0) {
                     resultado = "Activo";
                 }
             }
-        } catch (Exception ex) {
+        } catch (DfException | NumberFormatException ex) {
 
         }
         return resultado;
@@ -3570,6 +3703,415 @@ public class UtilidadesDocumentum {
             }
         }
         return retval;
+    }
+
+    public ArrayList<Pistas> leerDatosAyuda(String fichero) {
+        ArrayList<Pistas> pistas = new ArrayList<>();
+        LeerXML leerxml = new LeerXML();
+        String ficheroInterno = "/es/documentum/propiedades/" + fichero;
+        try {
+            InputStream is = leerxml.getClass().getResourceAsStream(ficheroInterno);
+            pistas = leerxml.leerXMLPistas(is);
+        } catch (Exception ex) {
+
+        }
+        return pistas;
+    }
+
+    public String buscarSintaxis(String palabra, ArrayList<Pistas> listaPistas, String campo) {
+        String ayuda = "";
+        int n = 0;
+        while (ayuda.isEmpty() && n < listaPistas.size()) {
+            switch (campo) {
+                case "tipo":
+                    if (listaPistas.get(n).getTipo().trim().toLowerCase().equals(palabra.trim().toLowerCase())) {
+                        ayuda = listaPistas.get(n).getSintaxis();
+                    }
+                    break;
+                case "tipolike":
+                    if (listaPistas.get(n).getTipo().trim().toLowerCase().contains(palabra.trim().toLowerCase())) {
+                        ayuda = listaPistas.get(n).getSintaxis();
+                    }
+                    break;
+                case "sintaxis":
+                    if (listaPistas.get(n).getSintaxis().trim().toLowerCase().contains(palabra.toLowerCase())) {
+                        ayuda = listaPistas.get(n).getSintaxis();
+
+                    }
+                default:
+            }
+            n++;
+        }
+        return ayuda;
+    }
+
+    public Boolean encontrarEnSintaxis(String palabra, ArrayList<Pistas> listaPistas, String campo) {
+        Boolean respuesta = false;
+        int n = 0;
+        while (!respuesta && n < listaPistas.size()) {
+            switch (campo) {
+                case "tipo":
+                    if (listaPistas.get(n).getTipo().trim().toLowerCase().equals(palabra.trim().toLowerCase())) {
+                        respuesta = true;
+                    }
+                    break;
+                case "sintaxis":
+                    if (listaPistas.get(n).getSintaxis().trim().toLowerCase().contains(palabra.toLowerCase())) {
+                        respuesta = true;
+                    }
+                default:
+            }
+            n++;
+        }
+        return respuesta;
+    }
+
+    public ArrayList<String> listaTablasDocumentum(IDfSession sesion) {
+        ArrayList<String> lista = new ArrayList<>();
+        String dql = "SELECT name AS nombre FROM dm_type_s order by 1";
+        try {
+            IDfCollection col = ejecutarDql(dql, sesion);
+            String tabla = "";
+            while (col.next()) {
+                tabla = col.getTypedObject().getString("nombre");
+                lista.add(tabla);
+            }
+            dql = "SELECT table_name AS nombre  FROM dm_registered_s WHERE table_name NOT LIKE '%\\_s' ESCAPE '\\' AND table_name NOT LIKE '%\\_r' ESCAPE '\\' ORDER BY 1 asc";
+            col = ejecutarDql(dql, sesion);
+            while (col.next()) {
+                tabla = col.getTypedObject().getString("nombre");
+                lista.add("dm_dbo." + tabla);
+            }
+            col.close();
+
+            java.util.Collections.sort(lista);
+        } catch (Exception ex) {
+
+        }
+        return lista;
+    }
+
+    public ArrayList<String> listaCamposTablaDocumentum(IDfSession sesion, String tabla) {
+        ArrayList<String> lista = new ArrayList<>();
+
+        String dql = "SELECT DISTINCT attr_name as nombre FROM dm_type WHERE name = 'dm_document' "
+                + "UNION SELECT DISTINCT attr_name as nombre FROM dm_type WHERE name = 'dm_sysobject' "
+                + "UNION select 'r_object_id' as nombre from dm_type order by 1";
+
+        if (!tabla.isEmpty()) {
+            dql = "SELECT attr_name as nombre FROM dm_type WHERE name = '" + tabla + "' order by 1";
+        }
+
+        try {
+            IDfCollection col = ejecutarDql(dql, sesion);
+            String campo = "";
+            while (col.next()) {
+                campo = col.getTypedObject().getString("nombre");
+                lista.add(campo);
+            }
+            col.close();
+            lista.add("r_object_id");
+            java.util.Collections.sort(lista);
+        } catch (Exception ex) {
+
+        }
+        return lista;
+    }
+
+    public String buscarPalabraSqlInverso(String sql, int cuantas) {
+        if (sql == null || sql.isEmpty()) {
+            return "";
+        }
+        if (cuantas <= 0) {
+            cuantas = 1;
+        }
+
+        String resultado = "";
+        String WHITESPACE = " \n\r\f\t";
+        StringTokenizer tokens = new StringTokenizer(
+                sql,
+                "()+/-=<>'`\"[]," + WHITESPACE,
+                false
+        );
+
+        ArrayList<String> lista = new ArrayList<>();
+        while (tokens.hasMoreTokens()) {
+            String palabra = tokens.nextToken();
+            lista.add(palabra);
+        }
+
+        int contador = 0;
+        for (int n = lista.size() - 1; n >= 0; n--) {
+            String palabra = lista.get(n);
+            if (util.esPalabraReservadaSQL(palabra, "documentum")) {
+                contador++;
+            }
+            if (contador == cuantas) {
+                return palabra.toUpperCase();
+            }
+        }
+        return resultado;
+    }
+
+    public String buscarOperacionSqlInverso(String sql) {
+        if (sql == null || sql.isEmpty()) {
+            return "";
+        }
+        String sqlactual = sql;
+
+        int posultimaoperacion = sqlactual.lastIndexOf(";");
+        if (posultimaoperacion < 0) {
+            posultimaoperacion = 0;
+        } else {
+            posultimaoperacion = posultimaoperacion - 1;
+        }
+
+        sqlactual = sql.substring(posultimaoperacion, sql.length());
+
+        String resultado = "";
+        String WHITESPACE = " \n\r\f\t";
+        StringTokenizer tokens = new StringTokenizer(
+                sqlactual,
+                "()+/-=<>'`\"[],;" + WHITESPACE,
+                false
+        );
+
+        ArrayList<String> lista = new ArrayList<>();
+        while (tokens.hasMoreTokens()) {
+            String palabra = tokens.nextToken();
+            lista.add(palabra);
+        }
+
+        for (int n = lista.size() - 1; n >= 0; n--) {
+            String palabra = lista.get(n);
+            if (util.esPalabraReservadaSQL(palabra, "dql-operacion")) {
+                return palabra.toUpperCase();
+            }
+        }
+        return resultado;
+    }
+
+    public String buscarPalabraInverso(String sql, int cuantas, Boolean ignoraespacios) {
+        if (sql == null || sql.isEmpty()) {
+            return "";
+        }
+        if (cuantas <= 0) {
+            cuantas = 1;
+        }
+
+        String resultado = "";
+        String WHITESPACE = " \n\r\f\t";
+        StringTokenizer tokens = new StringTokenizer(
+                sql,
+                "()*+/-=<>'`\"[]," + WHITESPACE,
+                true
+        );
+
+        ArrayList<String> lista = new ArrayList<>();
+        while (tokens.hasMoreTokens()) {
+            String palabra = tokens.nextToken();
+            lista.add(palabra);
+        }
+
+        int contador = 0;
+        for (int n = lista.size() - 1; n >= 0; n--) {
+            String palabra = lista.get(n);
+            if (ignoraespacios) {
+                if (!WHITESPACE.contains(palabra)) {
+                    contador++;
+                }
+            } else {
+                contador++;
+            }
+
+            if (contador == cuantas) {
+                return palabra.toUpperCase();
+            }
+        }
+        return resultado;
+    }
+
+    public String buscarPalabra(String sql, int cuantas, Boolean ignoraespacios, Boolean traspuntoycoma) {
+        String resultado = buscarPalabra(sql, cuantas, "", true, true);
+        return resultado;
+    }
+
+    public String buscarPalabra(String sql, int cuantas, String caracteres, Boolean ignoraespacios, Boolean traspuntoycoma) {
+        if (sql == null || sql.isEmpty()) {
+            return "";
+        }
+        if (cuantas <= 0) {
+            cuantas = 1;
+        }
+
+        int posicion = sql.lastIndexOf(";");
+        if (posicion < 0) {
+            posicion = 0;
+        } else {
+            posicion = posicion + 1;
+        }
+        String sqlabuscar;
+        sqlabuscar = sql.substring(posicion, sql.length());
+        String resultado = "";
+        String WHITESPACE = " \n\r\f\t";
+        String separadores = "";
+        if (caracteres.isEmpty()) {
+            separadores = "()*+/-=<>'`\"[],;" + WHITESPACE;
+        } else {
+            separadores = caracteres;
+        }
+
+        StringTokenizer tokens = new StringTokenizer(
+                sqlabuscar,
+                separadores,
+                ignoraespacios
+        );
+
+        ArrayList<String> lista = new ArrayList<>();
+        while (tokens.hasMoreTokens()) {
+            String palabra = tokens.nextToken();
+            lista.add(palabra);
+        }
+
+        int contador = 0;
+        for (int n = 0; n < lista.size(); n++) {
+            String palabra = lista.get(n);
+            if (ignoraespacios) {
+                if (!WHITESPACE.contains(palabra)) {
+                    contador++;
+                }
+            } else {
+                contador++;
+            }
+
+            if (contador == cuantas) {
+                return palabra.toUpperCase();
+            }
+        }
+        return resultado;
+    }
+
+    public ArrayList<String> obtenerNombreTablas(String sql) {
+        ArrayList<String> lista = new ArrayList<>();
+//        Pattern p = Pattern.compile("from\\s+(?:\\w+\\.)*(\\w+)(\\s*$|\\s+(WHERE|JOIN|START\\s+WITH|ORDER\\s+BY|GROUP\\s+BY))", Pattern.CASE_INSENSITIVE);
+//        Pattern p = Pattern.compile("from\\s+(?:\\w+\\.)*(\\w+)(\\s*$|\\s+(WHERE|JOIN|START\\s+WITH|ORDER\\s+BY|GROUP\\s+BY))",Pattern.CASE_INSENSITIVE);
+
+//        Pattern p = Pattern.compile(".*FROM\\s+(?:\\w+\\.)*(\\w+)(\\s*$|\\s+\\w+)", Pattern.CASE_INSENSITIVE);
+//        Matcher m = p.matcher(sql);
+//        while (m.find()) {
+////            System.out.println(m.group(1));
+//
+//            lista.add(m.group(1));
+//        }
+        lista = new TableNameParser(sql).tablas();
+
+        return lista;
+    }
+
+    public boolean estaJobArrancado(String nombre) {
+        IDfCollection col = ejecutarDql("select a_special_app from dm_job where object_name = '" + nombre + "'");
+        Boolean arrancado = false;
+        if (col == null) {
+            return arrancado;
+        }
+        try {
+            while (col.next()) {
+                IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
+                String a_special_app = row.getValueAt(0).asString();
+                if (a_special_app.equalsIgnoreCase("agentexec")) {
+                    return true;
+                }
+            }
+            col.close();
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al relanzar tareas del indexador - Error: " + ex.getMessage());
+        }
+        return arrancado;
+    }
+
+    public void cambiarEstadoJob(String nombre, Boolean activar, IDfSession sesion) {
+        String dql = "update dm_job objects set is_inactive = 0 where object_name='" + nombre + "'";
+        if (!activar) {
+            dql = "update dm_job objects set is_inactive = 1 where object_name='" + nombre + "'";
+        }
+        IDfCollection col = ejecutarDql(dql, sesion);
+
+        try {
+            while (col.next()) {
+                IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
+                String resultado = row.getValueAt(0).asString();
+            }
+            col.close();
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al cambiar estado del job (cambiarEstadoJob) '" + nombre + "' - " + ex.getMessage());
+        }
+    }
+
+    public Boolean estaJobActivo(String nombre, IDfSession sesion) {
+        Boolean respuesta = false;
+        String dql = "select is_inactive From dm_job where object_name='" + nombre + "'";
+        IDfCollection col = ejecutarDql(dql, sesion);
+
+        try {
+            while (col.next()) {
+                IDfTypedObject row = (IDfTypedObject) col.getTypedObject();
+                String resultado = row.getValueAt(0).asString();
+                if (resultado.equals("0")) {
+                    respuesta = true;
+                }
+            }
+            col.close();
+        } catch (DfException ex) {
+            Utilidades.escribeLog("Error al consultar estado del job (estaJobActivo) '" + nombre + "' - " + ex.getMessage());
+        }
+
+        return respuesta;
+    }
+
+    public IDfCollection ejecutarDescribe(String dql, IDfSession sesion) {
+        IDfCollection coleccion = null;
+        StringTokenizer param = new StringTokenizer(dql.trim(), " ");
+        String comando = param.nextElement().toString();
+
+        if (dql.toLowerCase().contains(" table ")) {
+            param.nextElement();
+            String tabla = param.nextElement().toString();
+            coleccion = describeTabla(tabla, sesion);
+        } else {
+            String tipo = param.nextElement().toString();
+            if (tipo.toLowerCase().equalsIgnoreCase("type")) {
+                tipo = param.nextElement().toString();
+            }
+            coleccion = describeTipo(tipo, sesion);
+        }
+        return coleccion;
+    }
+
+    public IDfCollection describeTabla(String tabla, IDfSession sesion) {
+        IDfCollection coleccion = null;
+        String nombre = tabla.toLowerCase().startsWith("dm_dbo") ? tabla.substring(7, tabla.length()) : tabla;
+        if (esTablaRegistrada(nombre, sesion)) {
+            String dql = "select cab.table_name,cab.table_owner,lineas.column_name,lineas.column_datatype,lineas.column_length "
+                    + " from dm_registered_r lineas, dm_registered_s cab "
+                    + " where  cab.r_object_id=lineas.r_object_id and lower(cab.table_name)='" + nombre.toLowerCase() + "' order by 3";
+            coleccion = ejecutarDql(dql, sesion);
+        } else {
+            try {
+                ERROR = "La tabla " + tabla + " no es una tabla registrada en el repositorio " + sesion.getDocbaseName();
+            } catch (DfException ex) {
+
+            }
+        }
+        return coleccion;
+    }
+
+    public IDfCollection describeTipo(String tipo, IDfSession sesion) {
+        IDfCollection coleccion = null;
+        String dql = "select cab.name,lineas.attr_name,lineas.attr_length, attr_repeating, lineas.attr_type "
+                + "from dm_type_r lineas, dm_type_s cab where cab.r_object_id=lineas.r_object_id and lower(cab.name)= '"
+                + tipo.toLowerCase() + "' order by attr_identifier";
+        coleccion = ejecutarDql(dql, sesion);
+        return coleccion;
     }
 
 }

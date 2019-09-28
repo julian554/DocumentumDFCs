@@ -1,15 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.documentum.Beans;
 
 import java.io.Serializable;
 
-/**
- *
- * @author julian
- */
 public class AtributosDocumentum implements Serializable {
 
     private String nombre;
