@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<execute>
+    <pista>
+        <tipo>can_fetch</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE can_fetch FOR 'content_object_id'
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>check_cache_config</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE check_cache_config                        @@
+            [FOR 'cache_config_id']                           @@
+            [WITH argument = value ][,argument = value]       @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>check_retention_expired</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE check_retention_expired                  @@
+            WITH QUERY='where_clause'                        @@
+            [,SELECT_LIST='property_list']                   @@
+            [,INCLUDE_ZERO_RETENTION_OBJECTS=T|F]            @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>check_security</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE check_security                                  @@
+            WITH user_name='name'|group_name='name',                @@
+            level=security_level,object_list='list_of_objectids'    @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>clean_links</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE clean_links (DEPRICATED IN VERSION 6)         @@
+            [WITH force_active=true|false]                        @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>count_sessions</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE count_sessions
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>db_stats</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE db_stats [WITH clear = true|false]
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>delete_replica</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE delete_replica                           @@
+            FOR 'content_object_id'                          @@
+            WITH STORE='storage_name'                        @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>destroy_content</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE destroy_content FOR 'content_obj_id'
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>do_method</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE do_method                                 @@
+            WITH METHOD='method_name'{,arguments=value}       @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>drop_index</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE drop_index                               @@
+            [[FOR] 'dmi_index_id']                           @@
+            [WITH name = 'index_name']                       @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>estimate_search</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE estimate_search                                                      @@
+            [[FOR] 'fulltext_index_obj_id']                                              @@
+            WITH [name = 'index_name'] [,type = 'object_type'] [,query = 'value']        @@
+                                                                                        
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>exec_sql</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE exec_sql WITH query='sql_query'
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>exec_select_sql</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE exec_sql WITH query='sql_query'
+        </sintaxis>
+    </pista>	
+    <pista>
+        <tipo>export_ticket_key</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE export_ticket_key                       @@
+            WITH PASSWORD='password'                        @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>finish_index_moves</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE finish_index_moves
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>fix_link_cnt</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE fix_link_cnt FOR folder_object_id
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>get_file_url</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE get_file_url                                                          @@
+            FOR object_id                                                                 @@
+            WITH format='format_name'[,page=page_number,][page_modifier='value']          @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>get_inbox</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE get_inbox                                                @@
+            [WITH name='user_name'][,category='value']                       @@
+            [,batch=value]{,order_by='attr_name [asc|desc]'}]                @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>get_last_sql</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE get_last_sql
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>get_path</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE get_path                                                 @@
+            [FOR] 'content_obj_id'                                           @@
+            [WITH store = 'value']                                           @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>get_session_dd_locale</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE get_session_dd_locale
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>http_post</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE http_post                                                                    @@
+            WITH app_server_name='name'[,arguments=argument_list][,save_response=value]          @@
+            [,time_out=value][,launch_asynch=value][,trace_launch=value]                         @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>import_replica</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE import_replica                                          @@
+            FOR 'content_object_id'                                         @@
+            WITH store='storage_name',file='file_name'                      @@
+            [,other_file='other_file_name']                                 @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>import_ticket_key</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE import_ticket_key                                      @@
+            WITH KEY_STRING='string',                                      @@
+            PASSWORD='password'                                            @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>list_auth_plugins</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE list_auth_plugins
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>list_resources</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE list_resources [WITH reset=true|false]
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>list_sessions</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE list_sessions[WITH brief_info=true|false]
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>list_targets</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE list_targets
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>log_off</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE log_off
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>log_on</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE log_on [WITH detail=true|false]
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>make_index</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE make_index                                                                         @@
+            WITH type_name='object_type',attribute='property_name',{property='property_name',}         @@
+            [unique=true|false][,index_space='name'][,use_id_col=true|false]                           @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>mark_as_archived</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE mark_as_archived FOR audit_obj_id
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>mark_for_retry</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE mark_for_retry
+            WITH NAME = 'index_name'
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>migrate_content</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE migrate_content [FOR] content_obj_id                                               @@
+            WITH target_store='target_storage_name'                                                    @@
+            [,renditions=value][,remove_original=T|F]                                                  @@
+            [,log_file='log_file_path']                                                                @@
+            EXECUTE migrate_content WITH source_store='source_storage_name',                           @@
+            target_store='target_storage_name',log_file='log_file_path'                                @@
+            [,max_migrate_count=value][,batch_size=value]                                              @@
+            [,remove_original=T|F]                                                                     @@
+            EXECUTE migrate_content WITH target_store='target_storage_name',query=                     @@
+            'DQL_predicate'[,sysobject_query=T|F][,type_to_query='type_name'],                  	   @@
+            log_file='log_file_path'[,renditions=value]                                                @@
+            [,max_migrate_count=value][,batch_size=value]                                              @@
+            [,remove_original=T|F]                                                                     @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>modify_trace</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE modify_trace                                                @@
+            WITH subsystem='fulltext',value='tracing_level'                     @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>move_index</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE move_index                                                @@
+            FOR 'dmi_index_obj_id'                                            @@
+            WITH name = 'new_home'                                            @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>purge_audit</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE purge_audit                                                           @@
+            WITH delete_mode='mode'[,date_start='start_date',date_end='end_date']         @@
+            [,id_start='start_id',id_end='end_id'][,object_id='object_id']                @@
+            [,dql_predicate='predicate'][,purge_non_archived=T|F]                         @@
+            [,purge_signed=T|F][,commit_size=value]                                       @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>purge_content</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE purge_content FOR 'content_object_id'
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>push_content_attrs</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE push_content_attrs                                                @@
+            FOR object_id                                                             @@
+            WITH format=format_name [,page=number][,page_modifier=value]              @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>recover_timeout_tasks</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE recover_timeout_tasks
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>recover_auto_tasks</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE recover_auto_tasks                                             @@
+            WITH server_config_name=name                                           @@
+                                                                                   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>register_asset</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE register_asset                                                 @@
+            FOR object_id                                                          @@
+            WITH [page=page_number][,priority=priority_level]                      @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>reorganize_table</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE reorganize_table                                               @@
+            WITH table_name='name' [,index='index_name']                           @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>replicate</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE replicate                                                      @@
+            WITH query='value',store='value'[,type='value']                        @@
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>reset_ticket_key</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE reset_ticket_key
+   
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>restore_content</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE restore_content                                                @@
+            FOR 'content_object_id'                                                @@
+            WITH file = 'path_name' [,other file = 'other_path_name']              @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>roles_for_user</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE roles_for_user                                                 @@
+            [[FOR] 'dm_user_id']                                                   @@
+            WITH [USER_NAME=value][,DOMAIN=domain_name]                            @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>set_apideadlock</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE set_apideadlock                                                 @@
+            WITH API=api_name,VALUE=T|F{,API=api_name,VALUE=T|F}                    @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>set_content_attrs</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE set_content_attrs                                                  @@
+            FOR object_id                                                              @@
+            WITH format='format_name',[page=page_number,][page_modifier='value',]      @@
+            parameters='name="value"{,name="value"}'[,truncate=T|F]                    @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>set_options</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE set_options                                                      @@
+            WITH option='option_name',"value"=true|false                             @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>set_session_dd_locale</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE set_session_dd_locale                                         @@
+            WITH locale='locale'                                                  @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>set_storage_state</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE set_storage_state                                       @@
+            [[FOR] 'storage_area_obj_id']                                   @@
+            [WITH store=storage_area_name{,argument=value}]                 @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>show_sessions</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE show_sessions
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>sync_replica_records</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE sync_replica_records                                      @@
+            [[FOR]'storage_obj_id']                                           @@
+            [WITH argument=value {,argument=value}]                           @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>transcode_content</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE transcode_content                                          @@
+            FOR object_id                                                      @@
+            WITH [page=page_number,] [priority=priority_level,]                @@
+            message='message',source_format='format_name',                     @@
+            target_format='format_name'                                        @@
+        </sintaxis>
+    </pista>
+    <pista>
+        <tipo>update_statistics</tipo>
+        <texto></texto>
+        <sintaxis> 
+            EXECUTE update_statistics                                           @@
+            WITH table_name='name'[,count=integer][,extra_data=value]           @@
+        </sintaxis>
+    </pista>
+   
+</execute>
