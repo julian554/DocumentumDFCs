@@ -78,3 +78,19 @@ Herramienta Java Swing usando DFCs para acceder al Repositorio de Documentum
     
     Nueva pantalla de información del Repositorio
 
+    * Pantalla Documentum 
+    - Añadido árbol de navegación entre cabinets y carpetas (Deshabilitado por defecto)
+    - Mejorada notable de la velocidad de recuperación de archivos al ejecutar búsquedas. 
+
+    * Añadida Pantalla SQL 
+    - Permite ejecutar sentencias SQL nativas. 
+    - Permiten ejecutar múltiples sentencias (separadas por ; )
+    - Analizador sintáctico para mostrar en distindo color las palabras claves (Oracle, Postgresql, SQl Server y DB2) 
+
+    * Pantalla DQL 
+    - Añadido analizador sintáctico para mostrar en distindo color las palabras claves de Documentum. 
+    - Asistente de escritura que permite completar las sentencias DQL según las escribimos utilizando "CTRL + espacio". 
+    - Añadido "Tooltip" con la ayuda de la sentencia DQL que estamos escribiendo, detecta la primera palbra completa y nos muestra la sintáxis completa.
+
+    * Pantalla Jobs 
+    - Añadida la opción de habilitar y deshabilitar el job con botón derecho del ratón.
